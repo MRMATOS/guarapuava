@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { DailyDigest } from "@/types/news";
 import { MainNav } from "@/components/ui/MainNav";
+import { getTodayDateString, formatRelativeUpdateText } from "@/lib/utils/date";
 
 interface HomeFeedProps {
   digest: DailyDigest;
@@ -15,6 +16,12 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
   onOpenDetails,
   onSelectVagas,
 }) => {
+  const todayDisplay = useMemo(() => getTodayDateString(), []);
+  const relativeUpdateDisplay = useMemo(
+    () => formatRelativeUpdateText({ date: digest.date, time: digest.lastUpdatedTime }),
+    [digest.date, digest.lastUpdatedTime]
+  );
+
   return (
     <div className="page-shell">
       {/* Cartão-resumo do dia */}
@@ -31,17 +38,17 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
         aria-label="Abrir resumo detalhado das notícias de hoje"
         className="surface-card w-full p-6 sm:p-7 cursor-pointer transition-transform duration-150 active:scale-[0.992] touch-manipulation select-none"
       >
-        {/* Metadados: data e horário */}
+        {/* Metadados: data de hoje fixa à esquerda e horário de atualização relativo à direita */}
         <div className="flex items-center justify-between mb-5 tracking-tight tabular-time">
           <span className="font-semibold text-ink text-[15px]">
-            {digest.date}
+            {todayDisplay}
           </span>
           <span className="badge-inset">
             <span
               className="w-1.5 h-1.5 rounded-full bg-coral animate-pulse"
               aria-hidden="true"
             />
-            atualizado às {digest.lastUpdatedTime}
+            {relativeUpdateDisplay}
           </span>
         </div>
 

@@ -201,11 +201,17 @@ Uma tecla de aparelho: firme, curta, afunda ao toque.
 - **Dock de detalhe (Vagas):** alinhamento dividido (`justify-between`), com tecla de ação externa em coral/laranja à esquerda (`Abrir site da vaga`) e tecla Voltar (`variant="icon"`) à direita. Mantém exatamente a mesma geometria de 64px e safe-area offsets dos demais rodapés.
 
 ### Vagas (Feed e Detalhe)
-- **Cabeçalho de Vagas:** indicador único "Última atualização: DD/MM - HH:MM" alinhado estritamente à direita, com título visual omitido (título semântico apenas em `sr-only`).
-- **Feed de Vagas (`JobsFeed`):** lista vertical rolável com múltiplos cartões menores de vagas. Cada cartão contém estritamente:
+- **Card Compacto de Atualização (`JobsFeed`):** card pequeno e independente (`surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 mb-4`) com a mesma largura, raio e elevação neumórfica dos cartões de vagas, comportando apenas a linha de metadados:
+  - **Lado esquerdo:** sempre a **data atual (hoje)** no padrão `DD/MM/AAAA` (âncora temporal fixa para o leitor se situar frente às datas de publicação das vagas).
+  - **Lado direito:** selo em baixo-relevo (`badge-inset`) com ponto coral pulsante (`bg-coral animate-pulse`) e texto relativo unificado:
+    - Atualizado no dia corrente: `atualizado hoje às HH:MM`
+    - Atualizado no dia anterior: `atualizado ontem às HH:MM`
+    - Atualizado há 2 ou mais dias: `atualizado em DD/MM às HH:MM`
+  *(Esta mesma regra de texto relativo e data atual no lado esquerdo é compartilhada pelo cartão de resumo de notícias em `HomeFeed`).*
+- **Feed de Vagas (`JobsFeed`):** lista vertical rolável com múltiplos cartões de vagas (`space-y-4`). Cada cartão contém estritamente:
   1. Título da vaga (`15px`, `font-bold`, `text-ink`).
   2. Nome da empresa (`14px` / `14.5px`, `text-ink-muted`).
-  3. Data da publicação alinhada à direita na parte inferior do cartão (`Data da publicação: 06/10/2026`).
+  3. Data da publicação alinhada à direita na parte inferior do cartão (`Data da publicação: DD/MM/AAAA`).
   Ao toque, o cartão afunda suavemente e abre o detalhe daquela vaga.
 - **Detalhe da Vaga (`JobDetail`):**
   - Inicia diretamente com o título da vaga em headline (`20px` / `21px`), sem linha de metadados ou tag "Vaga de emprego" no topo.

@@ -5,6 +5,7 @@ import { DailyDigest, NewsBatch } from "@/types/news";
 import { ArrowLeft, X } from "lucide-react";
 import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
+import { formatRelativeUpdateText } from "@/lib/utils/date";
 
 interface DetailedFeedProps {
   digest: DailyDigest;
@@ -68,7 +69,9 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
                 <span className="font-semibold text-ink text-[15px]">
                   {batch.date}
                 </span>
-                <span className="badge-inset">atualizado às {batch.time}</span>
+                <span className="badge-inset">
+                  {formatRelativeUpdateText({ date: batch.date, time: batch.time })}
+                </span>
               </div>
 
               {/* Lista de notícias do bloco */}

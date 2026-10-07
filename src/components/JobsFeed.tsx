@@ -3,6 +3,11 @@
 import React, { useMemo } from "react";
 import { JobOpening } from "@/types/job";
 import { MainNav } from "@/components/ui/MainNav";
+import {
+  getTodayDateString,
+  getLatestJobUpdateDate,
+  formatRelativeUpdateText,
+} from "@/lib/utils/date";
 
 interface JobsFeedProps {
   jobs: JobOpening[];
@@ -11,85 +16,38 @@ interface JobsFeedProps {
   lastUpdated?: string;
 }
 
-/**
- * Formata o timestamp da última atualização no padrão: DD/MM - HH:MM (horário de Brasília)
- */
-function formatLastUpdated(jobs: JobOpening[], customText?: string): string {
-  if (customText) return customText;
-
-  let latestDate: Date | null = null;
-
-  for (const job of jobs) {
-    const raw = job.updatedAt || job.createdAt;
-    if (raw) {
-      const d = new Date(raw);
-      if (!isNaN(d.getTime()) && (!latestDate || d > latestDate)) {
-        latestDate = d;
-      }
-    }
-  }
-
-  if (!latestDate) {
-    for (const job of jobs) {
-      const reg = job.registeredAt || (job as Record<string, any>).registeredDate;
-      if (typeof reg === "string") {
-        const match = reg.match(
-          /([0-9]{2})\/([0-9]{2})\/([0-9]{4})\s*(?:as|às|ás)\s*([0-9]{2}):([0-9]{2})/i
-        );
-        if (match) {
-          const [, day, month, year, hour, minute] = match;
-          const d = new Date(`${year}-${month}-${day}T${hour}:${minute}:00-03:00`);
-          if (!isNaN(d.getTime()) && (!latestDate || d > latestDate)) {
-            latestDate = d;
-          }
-        }
-      }
-    }
-  }
-
-  const target = latestDate || new Date();
-
-  try {
-    const parts = new Intl.DateTimeFormat("pt-BR", {
-      timeZone: "America/Sao_Paulo",
-      day: "2-digit",
-      month: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    }).formatToParts(target);
-
-    const day = parts.find((p) => p.type === "day")?.value || "07";
-    const month = parts.find((p) => p.type === "month")?.value || "10";
-    const hour = parts.find((p) => p.type === "hour")?.value || "12";
-    const minute = parts.find((p) => p.type === "minute")?.value || "00";
-
-    return `${day}/${month} - ${hour}:${minute}`;
-  } catch {
-    return "07/10 - 12:00";
-  }
-}
-
 export const JobsFeed: React.FC<JobsFeedProps> = ({
   jobs,
   onSelectJob,
   onSelectNoticias,
   lastUpdated,
 }) => {
-  const lastUpdatedDisplay = useMemo(
-    () => formatLastUpdated(jobs, lastUpdated),
-    [jobs, lastUpdated]
-  );
+  const todayDisplay = useMemo(() => getTodayDateString(), []);
+
+  const lastUpdatedDisplay = useMemo(() => {
+    if (lastUpdated) {
+      return formatRelativeUpdateText(lastUpdated);
+    }
+    const latestDate = getLatestJobUpdateDate(jobs);
+    return formatRelativeUpdateText(latestDate);
+  }, [jobs, lastUpdated]);
 
   return (
     <div className="page-shell">
       {/* Título semântico para acessibilidade/SEO */}
       <h1 className="sr-only">Vagas em Guarapuava</h1>
 
-      {/* Indicador de última atualização alinhado à direita */}
-      <div className="flex justify-end mb-4 px-1 tracking-tight">
-        <span className="font-semibold text-ink text-[14px] sm:text-[14.5px] tabular-time">
-          Última atualização: {lastUpdatedDisplay}
+      {/* Card compacto com data de hoje e status da última atualização */}
+      <div className="surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 mb-4 flex items-center justify-between tracking-tight tabular-time">
+        <span className="font-semibold text-ink text-[15px]">
+          {todayDisplay}
+        </span>
+        <span className="badge-inset">
+          <span
+            className="w-1.5 h-1.5 rounded-full bg-coral animate-pulse"
+            aria-hidden="true"
+          />
+          {lastUpdatedDisplay}
         </span>
       </div>
 
@@ -139,3 +97,4 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
     </div>
   );
 };
+
