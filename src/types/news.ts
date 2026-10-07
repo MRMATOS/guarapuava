@@ -3,6 +3,7 @@ export interface NewsItem {
   category: string; // Ex: "Política", "Saúde", "Prazos", "Clima", "Lazer & Cultura", "Educação"
   title: string;    // Ex: "Bancada regional na ALEP"
   text: string;     // Descrição resumida da notícia
+  source?: string;  // Ex: "Portal RSN", "Prefeitura de Guarapuava"
 }
 
 export interface NewsBatch {
@@ -13,9 +14,25 @@ export interface NewsBatch {
 }
 
 export interface DailyDigest {
+  id?: string;
   date: string;
+  dateIso?: string;
   lastUpdatedTime: string;
   headline: string;
   highlights: NewsItem[];
   batches: NewsBatch[];
+  isActive?: boolean;
+}
+
+export interface DatabaseNewsDigestRow {
+  id: string;
+  date: string;
+  date_iso: string;
+  last_updated_time: string;
+  headline: string;
+  highlights: NewsItem[];
+  batches: NewsBatch[];
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
