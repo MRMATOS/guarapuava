@@ -137,6 +137,42 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
     }
   }
 
+  // Fallback: se nenhum bloco clássico com "Empresa:" foi encontrado,
+  // mas existem parágrafos individuais com hiperlinks de vagas
+  if (rawJobs.length === 0) {
+    const IGNORED = [
+      'oportunidades e vagas',
+      'atualização diária',
+      'vagas registradas',
+      'este documento é atualizado',
+    ];
+
+    for (const p of paragraphs) {
+      const textClean = p.text.replace(/^[\s\-*•_#]+/, '').trim();
+      const isIgnored = IGNORED.some((ig) => textClean.toLowerCase().includes(ig));
+      if (!isIgnored && p.links.length > 0 && textClean.length > 5) {
+        let company = 'Empresa Confidencial';
+        if (textClean.includes(' - ')) {
+          const parts = textClean.split(' - ');
+          company = parts[parts.length - 1].replace(/\(.*?\)/g, '').trim() || company;
+        } else if (p.links[0]?.includes('sicredi')) {
+          company = 'Sicredi';
+        }
+
+        rawJobs.push({
+          title: textClean,
+          link: p.links[0],
+          fields: [
+            `Empresa: ${company}`,
+            'Modalidade: Presencial',
+            'Descrição da Vaga: Oportunidade de trabalho em Guarapuava / PR divulgada nos canais oficiais.',
+            'Requisitos: Consultar requisitos completos e instruções no link da vaga.',
+          ],
+        });
+      }
+    }
+  }
+
   // 4. Normaliza cada vaga para o schema
   const validatedJobs: JobOpeningInput[] = [];
 
