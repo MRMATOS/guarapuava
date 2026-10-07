@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import { GET, POST } from '../src/app/api/mcp/route';
 
+process.env.MCP_REQUIRE_AUTH = 'true';
+
 async function runTests() {
-  console.log('--- Test 1: Rejeição 401 sem autenticação ---');
+  console.log('--- Test 1: Rejeição 401 sem autenticação (quando MCP_REQUIRE_AUTH=true) ---');
   const unauthReq = new Request('http://localhost:3000/api/mcp', {
     method: 'GET',
   });

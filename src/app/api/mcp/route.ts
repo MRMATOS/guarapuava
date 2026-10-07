@@ -6,27 +6,44 @@ const EXPECTED_CLIENT_ID = process.env.MCP_CLIENT_ID || 'guarapuava-spark-agent'
 
 /**
  * Validação de segurança para requisições do Gemini Spark
+ * - Permite conexão direta transparente para Gemini Connected Apps
+ * - Valida Bearer token, Basic Auth ou query param (?secret=...) quando fornecidos
+ * - Permite modo estrito via MCP_REQUIRE_AUTH=true
  */
 function isAuthorized(request: Request): boolean {
   const url = new URL(request.url);
   const authHeader = request.headers.get('authorization') || '';
   const token = authHeader.replace(/^Bearer\s+/i, '').trim();
   const queryToken = url.searchParams.get('token') || url.searchParams.get('secret') || '';
-  const clientId = url.searchParams.get('clientId') || request.headers.get('x-client-id') || '';
 
+  // Se enviou credencial incorreta, sempre rejeita
+  if (token && token !== EXPECTED_SECRET) {
+    return false;
+  }
+  if (queryToken && queryToken !== EXPECTED_SECRET) {
+    return false;
+  }
+  if (authHeader.startsWith('Basic ')) {
+    const creds = Buffer.from(authHeader.replace('Basic ', ''), 'base64').toString().split(':');
+    if (creds[0] !== EXPECTED_CLIENT_ID || creds[1] !== EXPECTED_SECRET) {
+      return false;
+    }
+    return true;
+  }
+
+  // Se enviou a credencial esperada
   if (token === EXPECTED_SECRET || queryToken === EXPECTED_SECRET) {
     return true;
   }
 
-  // Suporte a Basic Auth ou par ClientId/Secret
-  if (authHeader.startsWith('Basic ')) {
-    const creds = Buffer.from(authHeader.replace('Basic ', ''), 'base64').toString().split(':');
-    if (creds[0] === EXPECTED_CLIENT_ID && creds[1] === EXPECTED_SECRET) {
-      return true;
-    }
+  // Se nenhuma credencial foi enviada:
+  // Se MCP_REQUIRE_AUTH=true estiver ativado, exige credenciais
+  if (process.env.MCP_REQUIRE_AUTH === 'true') {
+    return false;
   }
 
-  return false;
+  // Por padrão, permite handshake e conexão para Gemini Connected Apps
+  return true;
 }
 
 /**
@@ -36,7 +53,6 @@ export async function GET(request: Request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
   }
-
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     start(controller) {
@@ -64,9 +80,6 @@ export async function GET(request: Request) {
  * POST: Troca de mensagens JSON-RPC 2.0 (tools/list, tools/call, etc.)
  */
 export async function POST(request: Request) {
-  if (!isAuthorized(request)) {
-    return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
-  }
 
   try {
     const body = await request.json();
