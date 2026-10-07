@@ -1,6 +1,7 @@
 import { supabase, supabaseAdmin } from './client';
 import { JobOpening } from '@/types/job';
 import { JobOpeningInput } from '../mcp/schema';
+import { sortJobsByPublishedDate } from '../utils/date';
 
 // Interface do modelo no PostgreSQL (snake_case)
 export interface DatabaseJobRow {
@@ -80,7 +81,8 @@ export async function listActiveJobs(limit = 500): Promise<JobOpening[]> {
       return [];
     }
 
-    return (data as DatabaseJobRow[]).map(mapRowToJob);
+    const mapped = (data as DatabaseJobRow[]).map(mapRowToJob);
+    return sortJobsByPublishedDate(mapped);
   } catch (err) {
     console.error('Exceção ao consultar Supabase:', err);
     return [];

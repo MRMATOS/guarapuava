@@ -157,7 +157,9 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
       <MainNav
         active="vagas"
         onNoticias={onSelectNoticias}
-        onVagas={() => {}}
+        onVagas={() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
         isFilterOpen={isFilterOpen}
         onToggleFilter={onToggleFilter}
         filterButtonRef={filterButtonRef}

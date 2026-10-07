@@ -137,7 +137,9 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
 
       <MainNav
         active="noticias"
-        onNoticias={onOpenDetails}
+        onNoticias={() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
         onVagas={onSelectVagas}
         isFilterOpen={isFilterOpen}
         onToggleFilter={onToggleFilter}

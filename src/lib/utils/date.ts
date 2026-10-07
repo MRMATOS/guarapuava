@@ -201,3 +201,39 @@ export function formatRelativeUpdateText(
   const dateStr = `${pad(targetParts.day)}/${pad(targetParts.month)}`;
   return `atualizado em ${dateStr} às ${timeStr}`;
 }
+
+/**
+ * Ordena uma lista de vagas pela data de publicação, da mais recente para a mais antiga.
+ * Em caso de empate na data, utiliza registeredAt, createdAt ou updatedAt como desempate.
+ */
+export function sortJobsByPublishedDate(jobs: JobOpening[]): JobOpening[] {
+  return [...jobs].sort((a, b) => {
+    const dateA = parseDateInput(a.publishedDate);
+    const dateB = parseDateInput(b.publishedDate);
+
+    const timeA = dateA ? dateA.getTime() : 0;
+    const timeB = dateB ? dateB.getTime() : 0;
+
+    if (timeB !== timeA) {
+      return timeB - timeA;
+    }
+
+    // Desempate secundário: registeredAt / registeredDate
+    const regA = parseDateInput(a.registeredAt || a.registeredDate);
+    const regB = parseDateInput(b.registeredAt || b.registeredDate);
+    const timeRegA = regA ? regA.getTime() : 0;
+    const timeRegB = regB ? regB.getTime() : 0;
+
+    if (timeRegB !== timeRegA) {
+      return timeRegB - timeRegA;
+    }
+
+    // Desempate terciário: createdAt / updatedAt
+    const createA = parseDateInput(a.createdAt || a.updatedAt);
+    const createB = parseDateInput(b.createdAt || b.updatedAt);
+    const timeCreateA = createA ? createA.getTime() : 0;
+    const timeCreateB = createB ? createB.getTime() : 0;
+
+    return timeCreateB - timeCreateA;
+  });
+}

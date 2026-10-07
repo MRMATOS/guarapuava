@@ -10,12 +10,13 @@ import { JobsFeed } from "@/components/JobsFeed";
 import { JobDetail } from "@/components/JobDetail";
 import { listActiveJobs } from "@/lib/supabase/jobs";
 import { filterJobs } from "@/lib/utils/search";
+import { sortJobsByPublishedDate } from "@/lib/utils/date";
 
 type ActiveView = "home" | "details" | "vagas" | "vaga-detail";
 
 export default function Page() {
   const [view, setView] = useState<ActiveView>("home");
-  const [jobs, setJobs] = useState<JobOpening[]>(mockJobs);
+  const [jobs, setJobs] = useState<JobOpening[]>(() => sortJobsByPublishedDate(mockJobs));
   const [selectedJob, setSelectedJob] = useState<JobOpening | null>(null);
 
   // Estados dos filtros de Vagas (persistem na navegação)
@@ -37,12 +38,13 @@ export default function Page() {
 
   // Aplica a busca universal e os 3 botões combináveis na lista de vagas
   const filteredJobs = useMemo(() => {
-    return filterJobs(jobs, {
+    const list = filterJobs(jobs, {
       query: jobSearchQuery,
       contractState,
       pcdState,
       experienceState,
     });
+    return sortJobsByPublishedDate(list);
   }, [jobs, jobSearchQuery, contractState, pcdState, experienceState]);
 
   // Vagas a serem exibidas no feed de detalhes (mantém os filtros ativos)
@@ -63,7 +65,7 @@ export default function Page() {
       try {
         const liveJobs = await listActiveJobs();
         if (liveJobs && liveJobs.length > 0) {
-          setJobs(liveJobs);
+          setJobs(sortJobsByPublishedDate(liveJobs));
         }
       } catch (err) {
         console.warn("Usando mockJobs como fallback:", err);
