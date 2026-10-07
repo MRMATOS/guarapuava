@@ -18,6 +18,7 @@ interface JobsFeedProps {
   jobs: JobOpening[];
   onSelectJob: (job: JobOpening) => void;
   onSelectNoticias: () => void;
+  onSelectInfo?: () => void;
   lastUpdated?: string;
 
   // Estados e manipuladores dos filtros
@@ -43,6 +44,7 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
   jobs,
   onSelectJob,
   onSelectNoticias,
+  onSelectInfo,
   lastUpdated,
   searchQuery,
   onSearchChange,
@@ -195,8 +197,10 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
         onVagas={() => {
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
+        onSelectInfo={onSelectInfo}
         isFilterOpen={isFilterOpen}
         onToggleFilter={onToggleFilter}
+        onCloseFilter={onCloseFilter}
         filterButtonRef={filterButtonRef}
         above={
           <>

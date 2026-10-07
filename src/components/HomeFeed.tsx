@@ -13,6 +13,7 @@ interface HomeFeedProps {
   digest: DailyDigest;
   onOpenDetails: () => void;
   onSelectVagas: () => void;
+  onSelectInfo?: () => void;
 
   // Filtros de notícias
   searchQuery: string;
@@ -29,6 +30,7 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
   digest,
   onOpenDetails,
   onSelectVagas,
+  onSelectInfo,
   searchQuery,
   onSearchChange,
   selectedCategory,
@@ -141,8 +143,10 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
         onVagas={onSelectVagas}
+        onSelectInfo={onSelectInfo}
         isFilterOpen={isFilterOpen}
         onToggleFilter={onToggleFilter}
+        onCloseFilter={onCloseFilter}
         filterButtonRef={filterButtonRef}
         above={
           <>

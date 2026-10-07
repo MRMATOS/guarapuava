@@ -8,6 +8,7 @@ import { HomeFeed } from "@/components/HomeFeed";
 import { DetailedFeed } from "@/components/DetailedFeed";
 import { JobsFeed } from "@/components/JobsFeed";
 import { JobDetail } from "@/components/JobDetail";
+import { InfoFeed } from "@/components/InfoFeed";
 import { listActiveJobs } from "@/lib/supabase/jobs";
 import { filterJobs } from "@/lib/utils/search";
 import { sortJobsByPublishedDate } from "@/lib/utils/date";
@@ -18,7 +19,7 @@ import {
   toggleFavoriteJobId,
 } from "@/lib/utils/storage";
 
-type ActiveView = "home" | "details" | "vagas" | "vaga-detail";
+type ActiveView = "home" | "details" | "vagas" | "vaga-detail" | "info";
 
 export default function Page() {
   const [view, setView] = useState<ActiveView>("home");
@@ -104,7 +105,9 @@ export default function Page() {
   useEffect(() => {
     const handlePopState = () => {
       const hash = window.location.hash;
-      if (hash === "#noticias") {
+      if (hash === "#informacoes" || hash === "#info") {
+        setView("info");
+      } else if (hash === "#noticias") {
         setView("details");
       } else if (hash.startsWith("#vaga-")) {
         const jobId = hash.replace("#vaga-", "");
@@ -133,7 +136,9 @@ export default function Page() {
       setSelectedJob(job);
     }
     try {
-      if (newView === "details") {
+      if (newView === "info") {
+        window.history.pushState(null, "", "#informacoes");
+      } else if (newView === "details") {
         window.history.pushState(null, "", "#noticias");
       } else if (newView === "vagas") {
         window.history.pushState(null, "", "#vagas");
@@ -162,6 +167,8 @@ export default function Page() {
         }
         if (view === "vaga-detail") {
           navigateTo("vagas");
+        } else if (view === "info") {
+          navigateTo("home");
         } else if (view !== "home") {
           navigateTo("home");
         }
@@ -180,6 +187,10 @@ export default function Page() {
           onSelectVagas={() => {
             setIsNewsFilterOpen(false);
             navigateTo("vagas");
+          }}
+          onSelectInfo={() => {
+            setIsNewsFilterOpen(false);
+            navigateTo("info");
           }}
           searchQuery={newsSearchQuery}
           onSearchChange={setNewsSearchQuery}
@@ -212,6 +223,10 @@ export default function Page() {
             setIsJobFilterOpen(false);
             navigateTo("home");
           }}
+          onSelectInfo={() => {
+            setIsJobFilterOpen(false);
+            navigateTo("info");
+          }}
           searchQuery={jobSearchQuery}
           onSearchChange={setJobSearchQuery}
           contractState={contractState}
@@ -228,6 +243,20 @@ export default function Page() {
           onToggleFilter={() => setIsJobFilterOpen((prev) => !prev)}
           onCloseFilter={() => setIsJobFilterOpen(false)}
           onResetFilters={handleResetJobFilters}
+        />
+      )}
+
+      {view === "info" && (
+        <InfoFeed
+          onSelectNoticias={() => {
+            navigateTo("home");
+          }}
+          onSelectVagas={() => {
+            navigateTo("vagas");
+          }}
+          onSelectInfo={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
         />
       )}
 
