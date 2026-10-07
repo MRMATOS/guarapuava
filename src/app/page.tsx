@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { initialDigest, availableTags } from "@/data/mockNews";
 import { mockJobs } from "@/data/mockJobs";
 import { JobOpening } from "@/types/job";
@@ -35,6 +35,10 @@ export default function Page() {
   const [favoriteJobIds, setFavoriteJobIds] = useState<string[]>(getFavoriteJobIds);
   const [viewedJobIds, setViewedJobIds] = useState<string[]>(getViewedJobIds);
   const [isJobFilterOpen, setIsJobFilterOpen] = useState(false);
+
+  // Rastreamento de navegação e posição de scroll para restauração precisa
+  const hasNavigatedInApp = useRef(false);
+  const savedVagasScrollY = useRef(0);
 
   const handleToggleFavorite = useCallback((jobId: string) => {
     const updated = toggleFavoriteJobId(jobId);
@@ -120,6 +124,10 @@ export default function Page() {
         }
       } else if (hash === "#vagas") {
         setView("vagas");
+        const targetY = savedVagasScrollY.current;
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: targetY || 0, behavior: "instant" });
+        });
       } else {
         setView("home");
       }
@@ -153,6 +161,18 @@ export default function Page() {
     }
   };
 
+  const handleBackFromJobDetail = useCallback(() => {
+    setIsJobFilterOpen(false);
+    if (hasNavigatedInApp.current && window.history.length > 1) {
+      window.history.back();
+    } else {
+      navigateTo("vagas");
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: savedVagasScrollY.current || 0, behavior: "instant" });
+      });
+    }
+  }, []);
+
   // Suporte à tecla Esc no desktop
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -166,17 +186,22 @@ export default function Page() {
           return;
         }
         if (view === "vaga-detail") {
-          navigateTo("vagas");
-        } else if (view === "info") {
+          handleBackFromJobDetail();
+          return;
+        }
+        if (view === "info") {
           navigateTo("home");
-        } else if (view !== "home") {
+          return;
+        }
+        if (view !== "home") {
           navigateTo("home");
+          return;
         }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [view, isJobFilterOpen, isNewsFilterOpen]);
+  }, [view, isJobFilterOpen, isNewsFilterOpen, handleBackFromJobDetail]);
 
   return (
     <div className="min-h-[100dvh] bg-canvas text-ink flex justify-center">
@@ -185,6 +210,7 @@ export default function Page() {
           digest={initialDigest}
           onOpenDetails={() => navigateTo("details")}
           onSelectVagas={() => {
+            savedVagasScrollY.current = 0;
             setIsNewsFilterOpen(false);
             navigateTo("vagas");
           }}
@@ -215,6 +241,8 @@ export default function Page() {
         <JobsFeed
           jobs={jobs}
           onSelectJob={(job) => {
+            hasNavigatedInApp.current = true;
+            savedVagasScrollY.current = window.scrollY;
             const key = job.id || job.externalId || "";
             if (key) handleMarkJobViewed(key);
             navigateTo("vaga-detail", job);
@@ -252,6 +280,7 @@ export default function Page() {
             navigateTo("home");
           }}
           onSelectVagas={() => {
+            savedVagasScrollY.current = 0;
             navigateTo("vagas");
           }}
           onSelectInfo={() => {
@@ -264,10 +293,7 @@ export default function Page() {
         <JobDetail
           jobs={detailFeedJobs}
           initialJobId={selectedJob?.id || selectedJob?.externalId}
-          onBack={() => {
-            setIsJobFilterOpen(false);
-            navigateTo("vagas");
-          }}
+          onBack={handleBackFromJobDetail}
           searchQuery={jobSearchQuery}
           onSearchChange={setJobSearchQuery}
           contractState={contractState}
