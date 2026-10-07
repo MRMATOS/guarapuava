@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { initialDigest, availableTags } from "@/data/mockNews";
 import { mockJobs } from "@/data/mockJobs";
+import { DailyDigest } from "@/types/news";
 import { JobOpening } from "@/types/job";
 import { HomeFeed } from "@/components/HomeFeed";
 import { DetailedFeed } from "@/components/DetailedFeed";
@@ -10,6 +11,7 @@ import { JobsFeed } from "@/components/JobsFeed";
 import { JobDetail } from "@/components/JobDetail";
 import { InfoFeed } from "@/components/InfoFeed";
 import { listActiveJobs } from "@/lib/supabase/jobs";
+import { listActiveNewsDigests } from "@/lib/supabase/news";
 import { filterJobs } from "@/lib/utils/search";
 import { sortJobsByPublishedDate } from "@/lib/utils/date";
 import {
@@ -25,6 +27,10 @@ export default function Page() {
   const [view, setView] = useState<ActiveView>("home");
   const [jobs, setJobs] = useState<JobOpening[]>(() => sortJobsByPublishedDate(mockJobs));
   const [selectedJob, setSelectedJob] = useState<JobOpening | null>(null);
+
+  // Estados das Notícias (Multi-dia e digest selecionado)
+  const [newsDigests, setNewsDigests] = useState<DailyDigest[]>([initialDigest]);
+  const [selectedDigest, setSelectedDigest] = useState<DailyDigest>(initialDigest);
 
   // Estados dos filtros de Vagas (persistem na navegação)
   const [jobSearchQuery, setJobSearchQuery] = useState("");
@@ -90,7 +96,7 @@ export default function Page() {
     setSelectedNewsCategory(null);
   };
 
-  // Carrega vagas do Supabase com fallback seguro para mockJobs
+  // Carrega vagas e notícias do Supabase com fallback seguro
   useEffect(() => {
     async function loadJobs() {
       try {
@@ -102,8 +108,34 @@ export default function Page() {
         console.warn("Usando mockJobs como fallback:", err);
       }
     }
+
+    async function loadNews() {
+      try {
+        const liveDigests = await listActiveNewsDigests();
+        if (liveDigests && liveDigests.length > 0) {
+          setNewsDigests(liveDigests);
+          setSelectedDigest(liveDigests[0]);
+        }
+      } catch (err) {
+        console.warn("Usando initialDigest como fallback:", err);
+      }
+    }
+
     loadJobs();
+    loadNews();
   }, []);
+
+  // Extrai tags únicas disponíveis a partir dos lotes do dia selecionado
+  const currentNewsTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    for (const batch of selectedDigest.batches) {
+      for (const item of batch.items) {
+        if (item.category) tagSet.add(item.category);
+      }
+    }
+    if (tagSet.size === 0) return availableTags;
+    return Array.from(tagSet);
+  }, [selectedDigest]);
 
   // Sincroniza com o histórico do navegador e suporta o botão/gesto voltar nativo do celular
   useEffect(() => {
@@ -111,7 +143,14 @@ export default function Page() {
       const hash = window.location.hash;
       if (hash === "#informacoes" || hash === "#info") {
         setView("info");
-      } else if (hash === "#noticias") {
+      } else if (hash === "#noticias" || hash.startsWith("#noticia-")) {
+        if (hash.startsWith("#noticia-")) {
+          const datePart = hash.replace("#noticia-", "").replace(/-/g, "/");
+          const found = newsDigests.find((d) => d.date === datePart);
+          if (found) {
+            setSelectedDigest(found);
+          }
+        }
         setView("details");
       } else if (hash.startsWith("#vaga-")) {
         const jobId = hash.replace("#vaga-", "");
@@ -136,18 +175,23 @@ export default function Page() {
     handlePopState();
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [jobs]);
+  }, [jobs, newsDigests]);
 
-  const navigateTo = (newView: ActiveView, job?: JobOpening) => {
+  const navigateTo = (newView: ActiveView, job?: JobOpening, digest?: DailyDigest) => {
     setView(newView);
     if (job) {
       setSelectedJob(job);
+    }
+    if (digest) {
+      setSelectedDigest(digest);
     }
     try {
       if (newView === "info") {
         window.history.pushState(null, "", "#informacoes");
       } else if (newView === "details") {
-        window.history.pushState(null, "", "#noticias");
+        const targetDate = (digest || selectedDigest).date;
+        const key = targetDate.replace(/\//g, "-");
+        window.history.pushState(null, "", `#noticia-${key}`);
       } else if (newView === "vagas") {
         window.history.pushState(null, "", "#vagas");
       } else if (newView === "vaga-detail" && job) {
@@ -207,8 +251,8 @@ export default function Page() {
     <div className="min-h-[100dvh] bg-canvas text-ink flex justify-center">
       {view === "home" && (
         <HomeFeed
-          digest={initialDigest}
-          onOpenDetails={() => navigateTo("details")}
+          digests={newsDigests}
+          onOpenDetails={(d) => navigateTo("details", undefined, d)}
           onSelectVagas={() => {
             savedVagasScrollY.current = 0;
             setIsNewsFilterOpen(false);
@@ -231,8 +275,8 @@ export default function Page() {
 
       {view === "details" && (
         <DetailedFeed
-          digest={initialDigest}
-          tags={availableTags}
+          digest={selectedDigest}
+          tags={currentNewsTags}
           onBack={() => navigateTo("home")}
         />
       )}
