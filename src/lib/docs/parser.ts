@@ -58,6 +58,13 @@ export async function parseDocxBuffer(buffer: ArrayBuffer | Buffer): Promise<Job
     }
   }
 
+  return parseJobParagraphs(paragraphs);
+}
+
+/**
+ * Converte parágrafos com texto e links no formato normalizado de vagas JobOpeningInput[].
+ */
+export function parseJobParagraphs(paragraphs: { text: string; links: string[] }[]): JobOpeningInput[] {
   // 3. Agrupa parágrafos em blocos de vagas
   const rawJobs: { title: string; link: string; fields: string[] }[] = [];
   let i = 0;
@@ -270,3 +277,34 @@ export async function parseDocxBuffer(buffer: ArrayBuffer | Buffer): Promise<Job
 
   return validatedJobs;
 }
+
+/**
+ * Converte o texto recebido do Google Apps Script (preservando links embutidos) em JobOpeningInput[].
+ */
+export function parseDocText(content: string): JobOpeningInput[] {
+  const lines = content.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  const paragraphs: { text: string; links: string[] }[] = [];
+
+  for (const line of lines) {
+    const links: string[] = [];
+    let cleanText = line;
+
+    // Detecta padrão customizado: (Link: https://...)
+    const customLinkMatch = line.match(/\(Link:\s*(https?:\/\/[^\s)]+)\)/i);
+    if (customLinkMatch) {
+      links.push(customLinkMatch[1]);
+      cleanText = line.replace(/\(Link:\s*https?:\/\/[^\s)]+\)/i, '').trim();
+    } else {
+      // Detecta URL direta na linha caso exista
+      const urlMatch = line.match(/(https?:\/\/[^\s]+)/i);
+      if (urlMatch) {
+        links.push(urlMatch[1]);
+      }
+    }
+
+    paragraphs.push({ text: cleanText, links });
+  }
+
+  return parseJobParagraphs(paragraphs);
+}
+

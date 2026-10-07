@@ -60,7 +60,7 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
   return (
     <div className="page-shell">
       {/* Cartão do feed de atualizações */}
-      <main className="surface-card w-full p-6 sm:p-7">
+      <main className="surface-card w-full pt-3.5 px-5 pb-6 sm:pt-4 sm:px-6 sm:pb-7">
         {filteredBatches.length > 0 ? (
           filteredBatches.map((batch, batchIndex) => (
             <section key={batch.id} aria-label={`Atualização das ${batch.time}`}>

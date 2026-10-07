@@ -36,7 +36,7 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
           }
         }}
         aria-label="Abrir resumo detalhado das notícias de hoje"
-        className="surface-card w-full p-6 sm:p-7 cursor-pointer transition-transform duration-150 active:scale-[0.992] touch-manipulation select-none"
+        className="surface-card w-full pt-3.5 px-5 pb-6 sm:pt-4 sm:px-6 sm:pb-7 cursor-pointer transition-transform duration-150 active:scale-[0.992] touch-manipulation select-none"
       >
         {/* Metadados: data de hoje fixa à esquerda e horário de atualização relativo à direita */}
         <div className="flex items-center justify-between mb-5 tracking-tight tabular-time">
