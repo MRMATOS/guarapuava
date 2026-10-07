@@ -149,11 +149,11 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
                   <span>{job.company}</span>
                 </p>
 
-                {/* 3. Data da publicação alinhada à esquerda e tag visualizada à direita */}
+                {/* 3. Data de publicação alinhada à esquerda e tag visualizada à direita */}
                 <div className="mt-3 pt-1 flex items-center justify-between gap-2">
                   <p className="text-[14px] sm:text-[14.5px] text-ink-muted leading-[1.4]">
                     <strong className="font-semibold text-ink-body">
-                      Data da publicação:
+                      Publicada em:
                     </strong>{" "}
                     <span className="tabular-time">{job.publishedDate}</span>
                   </p>
