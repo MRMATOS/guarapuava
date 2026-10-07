@@ -61,6 +61,28 @@ export async function parseDocxBuffer(buffer: ArrayBuffer | Buffer): Promise<Job
   return parseJobParagraphs(paragraphs);
 }
 
+function isCompanyLine(txt: string): boolean {
+  if (!txt) return false;
+  const clean = txt.replace(/^[\s\-*•_#]+/, '').trim();
+  return (
+    COMPANY_PREFIXES.some((pfx) => clean.toLowerCase().startsWith(pfx.toLowerCase())) ||
+    /^(?:empresa(?:\s*[\/\-]\s*(?:entidade|instituição|instituicao|plataforma|órgão|orgao))?\s*(?:contratante)?)\s*:/i.test(clean)
+  );
+}
+
+function extractCompany(txt: string): string {
+  const clean = txt.replace(/^[\s\-*•_#]+/, '').trim();
+  const replaced = clean.replace(
+    /^(?:empresa(?:\s*[\/\-]\s*(?:entidade|instituição|instituicao|plataforma|órgão|orgao))?\s*(?:contratante)?)\s*:\s*/i,
+    ''
+  );
+  return replaced.replace(/[\*_]/g, '').trim() || 'Empresa Confidencial';
+}
+
+function cleanField(f: string): string {
+  return f.replace(/^[\s\-*•_#]+/, '').trim();
+}
+
 /**
  * Converte parágrafos com texto e links no formato normalizado de vagas JobOpeningInput[].
  */
@@ -71,9 +93,9 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
 
   while (i < paragraphs.length) {
     const txt = paragraphs[i].text;
-    if (COMPANY_PREFIXES.some((pfx) => txt.startsWith(pfx))) {
+    if (isCompanyLine(txt)) {
       const titleItem = i > 0 ? paragraphs[i - 1] : { text: '', links: [] };
-      const title = titleItem.text;
+      const title = titleItem.text.replace(/^[\s\-*•_#]+/, '').replace(/[\*_]/g, '').trim();
       let link = titleItem.links[0] || (paragraphs[i].links[0] ?? '');
 
       const jobFields = [txt];
@@ -81,19 +103,19 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
 
       while (j < paragraphs.length) {
         const nextTxt = paragraphs[j].text;
-        if (COMPANY_PREFIXES.some((pfx) => nextTxt.startsWith(pfx))) {
+        if (isCompanyLine(nextTxt)) {
           break;
         }
         if (
           j + 1 < paragraphs.length &&
-          COMPANY_PREFIXES.some((pfx) => paragraphs[j + 1].text.startsWith(pfx))
+          isCompanyLine(paragraphs[j + 1].text)
         ) {
           break;
         }
         if (
           nextTxt &&
-          !['Vagas Registradas', 'Atualização Diária de Vagas', 'Oportunidades e Vagas de Emprego - Guarapuava / PR'].includes(
-            nextTxt
+          !['Vagas Registradas', 'Atualização Diária de Vagas', 'Oportunidades e Vagas de Emprego - Guarapuava / PR'].some(
+            (ignored) => nextTxt.includes(ignored)
           )
         ) {
           jobFields.push(nextTxt);
@@ -144,16 +166,17 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
     }
 
     for (const f of r.fields) {
-      if (COMPANY_PREFIXES.some((pfx) => f.startsWith(pfx))) {
-        company = f.split(':', 2)[1]?.trim() || company;
-      } else if (f.startsWith('Registro no documento:')) {
-        registeredAt = f.split(':', 2)[1]?.trim() || null;
+      const clean = cleanField(f);
+
+      if (isCompanyLine(clean)) {
+        company = extractCompany(clean);
+      } else if (/^registro\s+no\s+documento\s*:/i.test(clean) || /^registrad[ao]\s+em\s*:/i.test(clean)) {
+        registeredAt = clean.split(':', 2)[1]?.trim() || null;
       } else if (
-        f.startsWith('Data de publicação original:') ||
-        f.startsWith('Data de publicacao original:') ||
-        f.startsWith('Data de Publicação:')
+        /^data\s+de\s+publica[çc][ãa]o(?:\s+original)?\s*:/i.test(clean) ||
+        /^publicad[ao]\s+em\s*:/i.test(clean)
       ) {
-        const val = f.split(':', 2)[1]?.trim() || '';
+        const val = clean.split(':', 2)[1]?.trim() || '';
         const dlMatch = val.match(/[Ii]nscrições.*?(?:até|encerram em)\s+([0-9]{2}\/[0-9]{2}\/[0-9]{4})/);
         if (dlMatch) {
           deadline = dlMatch[1];
@@ -163,11 +186,10 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
           publishedDate = dateMatch[1];
         }
       } else if (
-        f.startsWith('Modalidade e local:') ||
-        f.startsWith('Modalidade:') ||
-        f.startsWith('Local e Atendimento:')
+        /^modalidade(?:\s+e\s+local)?\s*:/i.test(clean) ||
+        /^local(?:\s+e\s+atendimento)?\s*:/i.test(clean)
       ) {
-        const val = f.split(':', 2)[1]?.trim() || '';
+        const val = clean.split(':', 2)[1]?.trim() || '';
         if (val.includes('Remoto')) workModel = 'Remoto';
         else if (val.includes('Híbrido') || val.includes('Hibrido')) workModel = 'Híbrido';
         else if (val.includes('Externo') || val.includes('Campo')) workModel = 'Externo/Campo';
@@ -191,12 +213,9 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
           location = 'Guarapuava - PR';
         }
       } else if (
-        f.startsWith('Descrição e responsabilidades:') ||
-        f.startsWith('Descricao e responsabilidades:') ||
-        f.startsWith('Descrição da Vaga:') ||
-        f.startsWith('Descrição e Destaques das Oportunidades:')
+        /^descri[çc][ãa]o(?:\s+e\s+responsabilidades|\s+da\s+vaga|\s+e\s+destaques)?\s*:/i.test(clean)
       ) {
-        const val = f.split(':', 2)[1]?.trim() || '';
+        const val = clean.split(':', 2)[1]?.trim() || '';
         const items = val.split(';').map((x) => x.trim()).filter((x) => x.length > 3);
         if (items.length > 0) {
           descItems.push(...items);
@@ -204,11 +223,9 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
           descItems.push(val);
         }
       } else if (
-        f.startsWith('Requisitos:') ||
-        f.startsWith('Requisitos Gerais:') ||
-        f.startsWith('Requisitos e Seleção:')
+        /^requisitos(?:\s+gerais|\s+e\s+sele[çc][ãa]o)?\s*:/i.test(clean)
       ) {
-        const val = f.split(':', 2)[1]?.trim() || '';
+        const val = clean.split(':', 2)[1]?.trim() || '';
         const items = val.split(';').map((x) => x.trim()).filter((x) => x.length > 3);
         if (items.length > 0) {
           reqItems.push(...items);
@@ -216,26 +233,22 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
           reqItems.push(val);
         }
       } else if (
-        f.startsWith('Benefícios:') ||
-        f.startsWith('Beneficios:') ||
-        f.startsWith('Bolsa e Benefícios:')
+        /^benef[íi]cios(?:\s+e\s+vantagens)?\s*:/i.test(clean) ||
+        /^bolsa\s+e\s+benef[íi]cios\s*:/i.test(clean)
       ) {
-        const val = f.split(':', 2)[1]?.trim() || '';
+        const val = clean.split(':', 2)[1]?.trim() || '';
         const items = val
           .split(/[,;]/)
           .map((x) => x.trim())
           .filter((x) => x.length > 2);
         benItems.push(...items);
       } else if (
-        f.startsWith('Jornada e Remuneração:') ||
-        f.startsWith('Remuneração:') ||
-        f.startsWith('Remuneracao:') ||
-        f.startsWith('Bolsa-Auxílio:')
+        /^(?:jornada\s+e\s+remunera[çc][ãa]o|remunera[çc][ãa]o|sal[áa]rio|bolsa-?aux[íi]lio)\s*:/i.test(clean)
       ) {
-        compensation = f.split(':', 2)[1]?.trim() || null;
+        compensation = clean.split(':', 2)[1]?.trim() || null;
       } else {
-        if (f.length > 10) {
-          descItems.push(f);
+        if (clean.length > 10) {
+          descItems.push(clean);
         }
       }
     }

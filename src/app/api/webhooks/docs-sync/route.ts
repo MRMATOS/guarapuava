@@ -50,6 +50,10 @@ export async function POST(request: Request) {
     }
 
     const docIdentifier = documento || documentId || 'google-apps-script';
+
+    const linesSample = conteudo.split(/\r?\n/).slice(0, 10).filter(Boolean);
+    console.log(`📥 Webhook [${docIdentifier}]: Recebeu ${conteudo.length} caracteres. Exemplo:`, linesSample);
+
     const result = await syncJobsFromText(conteudo, docIdentifier);
 
     return NextResponse.json({
