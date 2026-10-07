@@ -52,6 +52,8 @@ next-env.d.ts
 .pi/
 .qoder/
 .rovodev/
+.superpowers/
 .vibe/
+.vscode/
 *.docx
 

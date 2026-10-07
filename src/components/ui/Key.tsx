@@ -12,17 +12,24 @@ type KeyProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
  * Alto-relevo em repouso, afunda ao toque e permanece afundada quando `pressed`.
  * Ver DESIGN.md › Components › Buttons.
  */
-export const Key: React.FC<KeyProps> = ({
-  pressed,
-  variant = "label",
-  className = "",
-  type = "button",
-  ...rest
-}) => (
-  <button
-    type={type}
-    aria-pressed={pressed}
-    className={`key ${variant === "icon" ? "key--icon" : ""} ${className}`.trim()}
-    {...rest}
-  />
+export const Key = React.forwardRef<HTMLButtonElement, KeyProps>(
+  (
+    {
+      pressed,
+      variant = "label",
+      className = "",
+      type = "button",
+      ...rest
+    },
+    ref
+  ) => (
+    <button
+      ref={ref}
+      type={type}
+      aria-pressed={pressed}
+      className={`key ${variant === "icon" ? "key--icon" : ""} ${className}`.trim()}
+      {...rest}
+    />
+  )
 );
+Key.displayName = "Key";

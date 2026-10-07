@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { Dock } from "./Dock";
@@ -12,34 +12,41 @@ interface MainNavProps {
   active: Section;
   onNoticias: () => void;
   onVagas: () => void;
-  onPesquisar?: () => void;
+  isFilterOpen?: boolean;
+  onToggleFilter?: () => void;
+  above?: React.ReactNode;
+  filterButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }
+
+const emptySubscribe = () => () => {};
 
 /**
  * Navegação principal do Painel de Rádio:
- * - À esquerda: 1. Tecla de Tema (ícone apenas) e 2. Pesquisar (textual).
- * - À direita: 3. Notícias (textual) e 4. Vagas (textual).
- * Dois botões de um lado e dois do outro.
+ * - À esquerda: 1. Tecla de Tema (ícone apenas).
+ * - À direita: 2. Filtrar, 3. Notícias e 4. Vagas (alinhados à direita).
  */
 export const MainNav: React.FC<MainNavProps> = ({
   active,
   onNoticias,
   onVagas,
-  onPesquisar,
+  isFilterOpen = false,
+  onToggleFilter,
+  above,
+  filterButtonRef,
 }) => {
   const { theme, toggleTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
   const isDark = mounted && theme === "dark";
 
   return (
-    <Dock align="between" aria-label="Navegação principal">
-      {/* Grupo da esquerda: Tema e Pesquisar */}
-      <div className="flex items-center gap-1.5 sm:gap-2">
+    <Dock align="between" above={above} aria-label="Navegação principal">
+      {/* Grupo da esquerda: apenas o botão de alternar tema */}
+      <div className="flex items-center">
         <Key
           variant="icon"
           onClick={toggleTheme}
@@ -52,27 +59,31 @@ export const MainNav: React.FC<MainNavProps> = ({
             <Moon className="w-5 h-5" strokeWidth={2.2} />
           )}
         </Key>
-        <Key
-          onClick={onPesquisar}
-          className="px-2.5 sm:px-4 text-[14.5px]"
-        >
-          Pesquisar
-        </Key>
       </div>
 
-      {/* Grupo da direita: Notícias e Vagas */}
+      {/* Grupo da direita: Filtrar, Notícias e Vagas */}
       <div className="flex items-center gap-1.5 sm:gap-2">
+        <Key
+          ref={filterButtonRef}
+          pressed={isFilterOpen}
+          onClick={onToggleFilter}
+          aria-expanded={isFilterOpen}
+          aria-label={isFilterOpen ? "Fechar bloco de filtros" : "Abrir bloco de filtros"}
+          className="px-2.5 sm:px-3.5 text-[14px]"
+        >
+          Filtrar
+        </Key>
         <Key
           aria-current={active === "noticias" ? "page" : undefined}
           onClick={onNoticias}
-          className="px-2.5 sm:px-4 text-[14.5px]"
+          className="px-2.5 sm:px-3.5 text-[14px]"
         >
           Notícias
         </Key>
         <Key
           aria-current={active === "vagas" ? "page" : undefined}
           onClick={onVagas}
-          className="px-2.5 sm:px-4 text-[14.5px]"
+          className="px-2.5 sm:px-3.5 text-[14px]"
         >
           Vagas
         </Key>

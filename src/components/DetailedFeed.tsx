@@ -5,6 +5,7 @@ import { DailyDigest, NewsBatch } from "@/types/news";
 import { ArrowLeft, X } from "lucide-react";
 import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
+import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { formatRelativeUpdateText } from "@/lib/utils/date";
 
 interface DetailedFeedProps {
@@ -43,18 +44,14 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
     .filter((batch) => batch.items.length > 0);
 
   const filterIndicator = activeTag ? (
-    <div className="badge-inset self-start border border-coral/40 rounded-xl px-3.5 py-1.5 text-[12px] text-coral">
-      <span>
-        Filtrando por: <strong className="text-ink font-bold">{activeTag}</strong>
-      </span>
-      <button
-        type="button"
-        onClick={() => setActiveTag(null)}
-        className="text-coral hover:text-coral-deep font-bold cursor-pointer underline underline-offset-2 ml-1 touch-manipulation"
-      >
-        Limpar
-      </button>
-    </div>
+    <FilterIndicator
+      label={
+        <span>
+          Filtrando por: <strong className="text-ink font-bold">{activeTag}</strong>
+        </span>
+      }
+      onClear={() => setActiveTag(null)}
+    />
   ) : null;
 
   return (
@@ -79,7 +76,7 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
                 {batch.items.map((item) => (
                   <li key={item.id} className="flex items-start">
                     <span
-                      className="mr-2 text-coral font-black text-[17px] leading-[1.1] select-none shrink-0"
+                      className="mr-2 text-coral font-black text-[15px] leading-[1.1] select-none shrink-0"
                       aria-hidden="true"
                     >
                       •

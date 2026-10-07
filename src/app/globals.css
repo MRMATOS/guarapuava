@@ -112,6 +112,23 @@ body {
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.01em;
   }
+
+  /* Garante que os utilitários de sombra sigam as variáveis CSS dinâmicas em light e dark mode */
+  .shadow-raised-lg {
+    box-shadow: var(--shadow-raised-lg) !important;
+  }
+  .shadow-raised-md {
+    box-shadow: var(--shadow-raised-md) !important;
+  }
+  .shadow-raised-sm {
+    box-shadow: var(--shadow-raised-sm) !important;
+  }
+  .shadow-inset {
+    box-shadow: var(--shadow-inset) !important;
+  }
+  .shadow-inset-sm {
+    box-shadow: var(--shadow-inset-sm) !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -271,5 +288,30 @@ body {
   .key--coral:active {
     box-shadow: var(--shadow-inset);
     transform: scale(0.97);
+  }
+
+  /* Painel de filtros flutuante: mesma geometria e elevação do dock */
+  .filter-panel {
+    background: var(--color-canvas);
+    border: 1px solid var(--color-surface-border, rgb(255 255 255 / 0.8));
+    border-radius: var(--radius-dock);
+    box-shadow: var(--shadow-raised-md);
+  }
+
+  /* Campo de busca no painel de filtros */
+  .filter-input {
+    background: var(--color-canvas);
+    border-radius: var(--radius-key);
+    box-shadow: var(--shadow-inset);
+    color: var(--color-ink);
+  }
+
+  /* Indicador de filtros ativos (estilo glass em baixo-relevo) */
+  .filter-indicator {
+    background: color-mix(in srgb, var(--color-canvas) 88%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 71, 66, 0.4);
+    box-shadow: var(--shadow-inset-sm);
   }
 }

@@ -12,54 +12,68 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function applyTheme(newTheme: Theme) {
+  if (typeof document === "undefined") return;
+  const root = document.documentElement;
+  if (newTheme === "dark") {
+    root.classList.add("dark");
+    root.setAttribute("data-theme", "dark");
+  } else {
+    root.classList.remove("dark");
+    root.setAttribute("data-theme", "light");
+  }
+
+  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute(
+      "content",
+      newTheme === "dark" ? "#16181b" : "#eff0f3"
+    );
+  }
+}
+
+function getInitialTheme(): Theme {
+  if (typeof window === "undefined") return "light";
+  try {
+    const savedTheme = localStorage.getItem("guarapuava-theme") as Theme | null;
+    if (savedTheme === "dark" || savedTheme === "light") {
+      return savedTheme;
+    }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  } catch {
+    return "light";
+  }
+}
+
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [theme, setThemeState] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
 
+  // Sincroniza o DOM com o tema selecionado
   useEffect(() => {
-    try {
-      const savedTheme = localStorage.getItem("guarapuava-theme") as Theme | null;
-      if (savedTheme === "dark" || savedTheme === "light") {
-        setThemeState(savedTheme);
-        applyTheme(savedTheme);
-      } else {
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-        const initialTheme: Theme = prefersDark ? "dark" : "light";
-        setThemeState(initialTheme);
-        applyTheme(initialTheme);
+    applyTheme(theme);
+  }, [theme]);
+
+  // Escuta preferências do sistema caso não haja preferência salva
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e: MediaQueryListEvent) => {
+      try {
+        const saved = localStorage.getItem("guarapuava-theme");
+        if (!saved) {
+          setThemeState(e.matches ? "dark" : "light");
+        }
+      } catch {
+        // Ignora erro em ambientes restritos
       }
-    } catch {
-      // Ignora erro em ambientes sem suporte
-    }
-    setMounted(true);
+    };
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
-
-  const applyTheme = (newTheme: Theme) => {
-    const root = document.documentElement;
-    if (newTheme === "dark") {
-      root.classList.add("dark");
-      root.setAttribute("data-theme", "dark");
-    } else {
-      root.classList.remove("dark");
-      root.setAttribute("data-theme", "light");
-    }
-
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-    if (metaThemeColor) {
-      metaThemeColor.setAttribute(
-        "content",
-        newTheme === "dark" ? "#16181b" : "#eff0f3"
-      );
-    }
-  };
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    applyTheme(newTheme);
     try {
       localStorage.setItem("guarapuava-theme", newTheme);
     } catch {

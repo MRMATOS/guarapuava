@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { initialDigest, availableTags } from "@/data/mockNews";
 import { mockJobs } from "@/data/mockJobs";
 import { JobOpening } from "@/types/job";
@@ -9,6 +9,7 @@ import { DetailedFeed } from "@/components/DetailedFeed";
 import { JobsFeed } from "@/components/JobsFeed";
 import { JobDetail } from "@/components/JobDetail";
 import { listActiveJobs } from "@/lib/supabase/jobs";
+import { filterJobs } from "@/lib/utils/search";
 
 type ActiveView = "home" | "details" | "vagas" | "vaga-detail";
 
@@ -16,6 +17,45 @@ export default function Page() {
   const [view, setView] = useState<ActiveView>("home");
   const [jobs, setJobs] = useState<JobOpening[]>(mockJobs);
   const [selectedJob, setSelectedJob] = useState<JobOpening | null>(null);
+
+  // Estados dos filtros de Vagas (persistem na navegação)
+  const [jobSearchQuery, setJobSearchQuery] = useState("");
+  const [contractState, setContractState] = useState(0); // 0 = Contrato, 1 = CLT, 2 = PJ
+  const [pcdState, setPcdState] = useState(0); // 0 = PCD, 1 = Somente PCD, 2 = Aceita PCD
+  const [experienceState, setExperienceState] = useState(0); // 0 = Experiência, 1 = Com experiência, 2 = Sem experiência
+  const [isJobFilterOpen, setIsJobFilterOpen] = useState(false);
+
+  const handleCycleContract = () => setContractState((prev) => (prev + 1) % 3);
+  const handleCyclePcd = () => setPcdState((prev) => (prev + 1) % 3);
+  const handleCycleExperience = () => setExperienceState((prev) => (prev + 1) % 3);
+  const handleResetJobFilters = () => {
+    setJobSearchQuery("");
+    setContractState(0);
+    setPcdState(0);
+    setExperienceState(0);
+  };
+
+  // Aplica a busca universal e os 3 botões combináveis na lista de vagas
+  const filteredJobs = useMemo(() => {
+    return filterJobs(jobs, {
+      query: jobSearchQuery,
+      contractState,
+      pcdState,
+      experienceState,
+    });
+  }, [jobs, jobSearchQuery, contractState, pcdState, experienceState]);
+
+  // Vagas a serem exibidas no feed de detalhes (mantém os filtros ativos)
+  const detailFeedJobs = filteredJobs;
+
+  // Estados dos filtros de Notícias
+  const [newsSearchQuery, setNewsSearchQuery] = useState("");
+  const [selectedNewsCategory, setSelectedNewsCategory] = useState<string | null>(null);
+  const [isNewsFilterOpen, setIsNewsFilterOpen] = useState(false);
+  const handleResetNewsFilters = () => {
+    setNewsSearchQuery("");
+    setSelectedNewsCategory(null);
+  };
 
   // Carrega vagas do Supabase com fallback seguro para mockJobs
   useEffect(() => {
@@ -84,6 +124,14 @@ export default function Page() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        if (isJobFilterOpen) {
+          setIsJobFilterOpen(false);
+          return;
+        }
+        if (isNewsFilterOpen) {
+          setIsNewsFilterOpen(false);
+          return;
+        }
         if (view === "vaga-detail") {
           navigateTo("vagas");
         } else if (view !== "home") {
@@ -93,7 +141,7 @@ export default function Page() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [view]);
+  }, [view, isJobFilterOpen, isNewsFilterOpen]);
 
   return (
     <div className="min-h-[100dvh] bg-canvas text-ink flex justify-center">
@@ -101,7 +149,18 @@ export default function Page() {
         <HomeFeed
           digest={initialDigest}
           onOpenDetails={() => navigateTo("details")}
-          onSelectVagas={() => navigateTo("vagas")}
+          onSelectVagas={() => {
+            setIsNewsFilterOpen(false);
+            navigateTo("vagas");
+          }}
+          searchQuery={newsSearchQuery}
+          onSearchChange={setNewsSearchQuery}
+          selectedCategory={selectedNewsCategory}
+          onSelectCategory={setSelectedNewsCategory}
+          isFilterOpen={isNewsFilterOpen}
+          onToggleFilter={() => setIsNewsFilterOpen((prev) => !prev)}
+          onCloseFilter={() => setIsNewsFilterOpen(false)}
+          onResetFilters={handleResetNewsFilters}
         />
       )}
 
@@ -117,14 +176,45 @@ export default function Page() {
         <JobsFeed
           jobs={jobs}
           onSelectJob={(job) => navigateTo("vaga-detail", job)}
-          onSelectNoticias={() => navigateTo("home")}
+          onSelectNoticias={() => {
+            setIsJobFilterOpen(false);
+            navigateTo("home");
+          }}
+          searchQuery={jobSearchQuery}
+          onSearchChange={setJobSearchQuery}
+          contractState={contractState}
+          onCycleContract={handleCycleContract}
+          pcdState={pcdState}
+          onCyclePcd={handleCyclePcd}
+          experienceState={experienceState}
+          onCycleExperience={handleCycleExperience}
+          isFilterOpen={isJobFilterOpen}
+          onToggleFilter={() => setIsJobFilterOpen((prev) => !prev)}
+          onCloseFilter={() => setIsJobFilterOpen(false)}
+          onResetFilters={handleResetJobFilters}
         />
       )}
 
       {view === "vaga-detail" && (selectedJob || jobs[0]) && (
         <JobDetail
-          job={selectedJob || jobs[0]}
-          onBack={() => navigateTo("vagas")}
+          jobs={detailFeedJobs}
+          initialJobId={selectedJob?.id || selectedJob?.externalId}
+          onBack={() => {
+            setIsJobFilterOpen(false);
+            navigateTo("vagas");
+          }}
+          searchQuery={jobSearchQuery}
+          onSearchChange={setJobSearchQuery}
+          contractState={contractState}
+          onCycleContract={handleCycleContract}
+          pcdState={pcdState}
+          onCyclePcd={handleCyclePcd}
+          experienceState={experienceState}
+          onCycleExperience={handleCycleExperience}
+          isFilterOpen={isJobFilterOpen}
+          onToggleFilter={() => setIsJobFilterOpen((prev) => !prev)}
+          onCloseFilter={() => setIsJobFilterOpen(false)}
+          onResetFilters={handleResetJobFilters}
         />
       )}
     </div>
