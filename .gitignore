@@ -39,3 +39,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# agent harnesses & temporary folders
+.agent/
+.claude/
+.gemini/
+.grok/
+.hermes/
+.impeccable/
+.kiro/
+.opencode/
+.pi/
+.qoder/
+.rovodev/
+.vibe/
+*.docx
+

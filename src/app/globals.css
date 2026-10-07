@@ -1,26 +1,275 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Design System — "O Painel de Rádio"
+   Fonte de verdade dos tokens. Documentação completa em /DESIGN.md.
+   Primitivos (@theme) geram utilitários Tailwind: bg-canvas, text-ink,
+   rounded-key, shadow-raised-sm etc.
+   ========================================================================== */
+
+@theme {
+  /* Cores — superfície única + tinta + um sinal */
+  --color-canvas: #eff0f3; /* Alabastro: fundo e TODAS as superfícies */
+  --color-ink: #191c1f; /* Tinta: títulos, rótulos ativos */
+  --color-ink-body: #34383d; /* Tinta de leitura: corpo de texto, rótulos de tecla */
+  --color-ink-muted: #585d62; /* Tinta apagada: metadados, horários */
+  --color-coral: #ff4742; /* Sinal: marcadores, ao vivo, foco. Nunca preenchimento de tecla */
+  --color-coral-deep: #d93833; /* Sinal pressionado / hover de link */
+  --color-rule: #cbd0dc; /* Linhas pontilhadas entre blocos */
+  --color-highlight: #ffffff; /* Luz da sombra neumórfica e bordas de luz */
+
+  /* Raios */
+  --radius-key: 12px; /* Teclas (botões, tags) */
+  --radius-dock: 16px; /* Dock do rodapé */
+  --radius-card: 32px; /* Cartão de conteúdo */
+
+  /* Sombras — luz vem do canto superior esquerdo */
+  --shadow-raised-lg: 10px 10px 24px rgba(163, 177, 198, 0.45), -10px -10px 24px #ffffff;
+  --shadow-raised-md: 6px 6px 18px rgba(163, 177, 198, 0.42), -6px -6px 18px #ffffff;
+  --shadow-raised-sm: 3px 3px 6px rgba(163, 177, 198, 0.35), -3px -3px 6px rgba(255, 255, 255, 0.85);
+  --shadow-inset: inset 3px 3px 6px rgba(163, 177, 198, 0.62), inset -3px -3px 6px #ffffff;
+  --shadow-inset-sm: inset 2px 2px 5px rgba(163, 177, 198, 0.5), inset -2px -2px 5px #ffffff;
+
+  /* Movimento */
+  --ease-key: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Tokens de layout e temas */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --shell-max: 430px; /* Largura máxima da coluna do app */
+  --page-pad: 16px; /* Margem lateral e superior da página */
+
+  --key-height: 42px; /* Altura fixa de toda tecla */
+  --dock-pad: 10px; /* Respiro interno do dock */
+  --dock-height: calc(var(--key-height) + var(--dock-pad) * 2 + 2px); /* 64px: tecla + respiro + borda de luz */
+  --dock-offset: max(12px, env(safe-area-inset-bottom)); /* Distância do dock até a borda inferior */
+  --dock-clearance: 24px; /* Espaço mínimo entre o fim do conteúdo e o topo do dock */
+
+  --color-surface-border: rgb(255 255 255 / 0.8);
+  --dock-fade-gradient: rgb(239 240 243 / 0);
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (min-width: 640px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --page-pad: 20px;
   }
 }
 
+/* Modo escuro neumórfico — superfícies grafite/ardósia, sombras profundas e reflexos especulares */
+html.dark,
+[data-theme="dark"] {
+  --color-canvas: #16181b;
+  --color-ink: #f0f2f5;
+  --color-ink-body: #c8cbd0;
+  --color-ink-muted: #828892;
+  --color-coral: #ff5752;
+  --color-coral-deep: #e04440;
+  --color-rule: #282c33;
+  --color-highlight: rgba(255, 255, 255, 0.05);
+
+  --shadow-raised-lg: 10px 10px 26px rgba(0, 0, 0, 0.65), -6px -6px 18px rgba(255, 255, 255, 0.035);
+  --shadow-raised-md: 6px 6px 18px rgba(0, 0, 0, 0.58), -4px -4px 12px rgba(255, 255, 255, 0.04);
+  --shadow-raised-sm: 3px 3px 7px rgba(0, 0, 0, 0.52), -2px -2px 5px rgba(255, 255, 255, 0.045);
+  --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.72), inset -2px -2px 5px rgba(255, 255, 255, 0.045);
+  --shadow-inset-sm: inset 2px 2px 5px rgba(0, 0, 0, 0.62), inset -1px -1px 3px rgba(255, 255, 255, 0.04);
+
+  --color-surface-border: rgba(255, 255, 255, 0.07);
+  --dock-fade-gradient: rgba(22, 24, 27, 0);
+  color-scheme: dark;
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
+::selection {
+  background-color: var(--color-coral);
+  color: #ffffff;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Números tabulares para datas e horários */
+  .tabular-time {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Componentes
+   -------------------------------------------------------------------------- */
+
+@layer components {
+  /* Coluna da página: reserva o espaço exato do dock fixo */
+  .page-shell {
+    position: relative;
+    width: 100%;
+    max-width: var(--shell-max);
+    min-height: 100dvh;
+    margin-inline: auto;
+    padding: var(--page-pad) var(--page-pad)
+      calc(var(--dock-offset) + var(--dock-height) + var(--dock-clearance));
+  }
+
+  /* Cartão de conteúdo (alto-relevo grande) */
+  .surface-card {
+    background: var(--color-canvas);
+    border: 1px solid var(--color-surface-border, rgb(255 255 255 / 0.8));
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-raised-lg);
+  }
+
+  /* Selo em baixo-relevo (horário, status) */
+  .badge-inset {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--color-canvas);
+    box-shadow: var(--shadow-inset-sm);
+    color: var(--color-ink-muted);
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+
+  /* Dock: moldura fixa idêntica em todas as telas */
+  .dock-shell {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px var(--page-pad) var(--dock-offset);
+    background: linear-gradient(
+      to top,
+      var(--color-canvas) 60%,
+      var(--dock-fade-gradient, rgb(239 240 243 / 0))
+    );
+    pointer-events: none;
+  }
+
+  .dock-stack {
+    display: flex;
+    width: 100%;
+    max-width: var(--shell-max);
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .dock-stack > * {
+    pointer-events: auto;
+  }
+
+  .dock {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: var(--dock-height);
+    padding: var(--dock-pad);
+    background: var(--color-canvas);
+    border: 1px solid var(--color-surface-border, rgb(255 255 255 / 0.8));
+    border-radius: var(--radius-dock);
+    box-shadow: var(--shadow-raised-md);
+  }
+
+  /* Tecla: o único botão do sistema */
+  .key {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    height: var(--key-height);
+    padding-inline: 20px;
+    border-radius: var(--radius-key);
+    background: var(--color-canvas);
+    box-shadow: var(--shadow-raised-sm);
+    color: var(--color-ink-body);
+    font-size: 14.5px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    white-space: nowrap;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      box-shadow 180ms var(--ease-key),
+      transform 180ms var(--ease-key),
+      color 180ms var(--ease-key);
+  }
+
+  .key:active {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.97);
+  }
+
+  /* Estado travado: tecla afundada (seleção, página atual) */
+  .key[aria-pressed="true"],
+  .key[aria-current="page"] {
+    box-shadow: var(--shadow-inset);
+    color: var(--color-ink);
+  }
+
+  .key:focus-visible {
+    outline: 2px solid var(--color-coral);
+    outline-offset: 3px;
+  }
+
+  .key--icon {
+    width: var(--key-height);
+    min-width: var(--key-height);
+    padding-inline: 0;
+    color: var(--color-ink);
+  }
+
+  @media (hover: hover) {
+    .key--icon:hover {
+      color: var(--color-coral);
+    }
+  }
+
+  /* Tecla de ação externa em coral/laranja (Abrir site da vaga) */
+  .key--coral {
+    background: var(--color-coral);
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-raised-sm);
+    transition:
+      background-color 150ms ease,
+      transform 180ms var(--ease-key),
+      box-shadow 180ms var(--ease-key);
+  }
+
+  .key--coral:hover {
+    background: var(--color-coral-deep);
+    color: #ffffff;
+  }
+
+  .key--coral:active {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.97);
+  }
 }
