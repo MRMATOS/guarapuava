@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
-import { runJobsCrawlerAgent } from '@/lib/gemini/agent';
+import { downloadAndSyncGoogleDoc } from '@/lib/docs/sync';
 
 export const dynamic = 'force-dynamic';
-export const maxDuration = 60; // Permite até 60 segundos de execução na Vercel
+export const maxDuration = 60; // Permite até 60s na Vercel
 
 /**
- * Validação de segurança para rota de Cron
+ * Validação de segurança para a rota de Cron
  */
 function isAuthorized(request: Request): boolean {
-  // Em ambiente local de desenvolvimento, permite disparo direto
   if (process.env.NODE_ENV === 'development') {
     return true;
   }
@@ -19,17 +18,11 @@ function isAuthorized(request: Request): boolean {
   const cronSecret = process.env.CRON_SECRET;
   const mcpSecret = process.env.MCP_CLIENT_SECRET;
 
-  if (cronSecret && token === cronSecret) {
-    return true;
-  }
+  if (cronSecret && token === cronSecret) return true;
+  if (mcpSecret && token === mcpSecret) return true;
 
-  if (mcpSecret && token === mcpSecret) {
-    return true;
-  }
-
-  // Verifica cabeçalho especial da Vercel se configurado
-  const vercelCronHeader = request.headers.get('x-vercel-cron');
-  if (vercelCronHeader) {
+  // Validação nativa do Vercel Cron
+  if (request.headers.get('x-vercel-cron')) {
     return true;
   }
 
@@ -42,18 +35,18 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result = await runJobsCrawlerAgent();
+    const result = await downloadAndSyncGoogleDoc();
     return NextResponse.json({
       status: 'success',
       timestamp: new Date().toISOString(),
       ...result,
     });
   } catch (err: any) {
-    console.error('Erro na execução do Cron de Vagas:', err);
+    console.error('Erro na sincronização do Google Docs via Cron:', err);
     return NextResponse.json(
       {
         status: 'error',
-        message: err?.message || 'Falha na execução do agente',
+        message: err?.message || 'Falha na sincronização do documento',
       },
       { status: 500 }
     );
