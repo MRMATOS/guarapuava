@@ -66,7 +66,7 @@ export function mapRowToJob(row: DatabaseJobRow): JobOpening {
 /**
  * Lista todas as vagas ativas no portal, ordenadas pela data de criação.
  */
-export async function listActiveJobs(limit = 100): Promise<JobOpening[]> {
+export async function listActiveJobs(limit = 500): Promise<JobOpening[]> {
   try {
     const { data, error } = await supabase
       .from('jobs')
@@ -125,10 +125,17 @@ export async function syncJobs(
     updated_at: new Date().toISOString(),
   }));
 
+  // Deduplica itens no mesmo lote por external_id para evitar conflito 21000 no PostgreSQL
+  const uniqueRowsMap = new Map<string, (typeof rowsToUpsert)[0]>();
+  for (const row of rowsToUpsert) {
+    uniqueRowsMap.set(row.external_id, row);
+  }
+  const deduplicatedRows = Array.from(uniqueRowsMap.values());
+
   // Executa UPSERT no Supabase Admin
   const { data: upsertData, error: upsertError } = await supabaseAdmin
     .from('jobs')
-    .upsert(rowsToUpsert, { onConflict: 'external_id' })
+    .upsert(deduplicatedRows, { onConflict: 'external_id' })
     .select('id, external_id');
 
   if (upsertError) {

@@ -20,29 +20,31 @@ export function generateExternalId(title: string, company: string, sourceUrl: st
 }
 
 export const jobOpeningInputSchema = z.object({
-  externalId: z.string().optional(),
+  externalId: z.string().nullable().optional(),
   title: z.string().min(1, 'Título é obrigatório'),
   company: z.string().min(1, 'Empresa é obrigatória'),
-  intermediary: z.string().optional(),
+  intermediary: z.string().nullable().optional(),
   location: z.string().default('Guarapuava - PR'),
-  workModel: z.enum(['Presencial', 'Híbrido', 'Remoto', 'Externo/Campo']).optional(),
-  contractType: z.string().optional(),
-  vacanciesCount: z.number().int().positive().optional().default(1),
+  workModel: z.enum(['Presencial', 'Híbrido', 'Remoto', 'Externo/Campo']).nullable().optional(),
+  contractType: z.string().nullable().optional(),
+  vacanciesCount: z.number().int().positive().nullable().optional().default(1),
   isPcd: z.boolean().optional().default(false),
   isPcdExclusive: z.boolean().optional().default(false),
   publishedDate: z.string().min(1, 'Data de publicação é obrigatória'),
-  registeredAt: z.string().optional(),
-  applicationDeadline: z.string().optional(),
-  compensation: z.string().optional(),
-  schedule: z.string().optional(),
+  registeredAt: z.string().nullable().optional(),
+  applicationDeadline: z.string().nullable().optional(),
+  compensation: z.string().nullable().optional(),
+  schedule: z.string().nullable().optional(),
   sourceUrl: z.string().url('URL de origem inválida'),
-  applicationInstructions: z.string().optional(),
+  applicationInstructions: z.string().nullable().optional(),
   descriptionItems: z.array(z.string()).default([]),
   requirementItems: z.array(z.string()).default([]),
-  benefitItems: z.array(z.string()).optional().default([]),
+  benefitItems: z.array(z.string()).nullable().optional().default([]),
 }).transform((data) => ({
   ...data,
   externalId: data.externalId || generateExternalId(data.title, data.company, data.sourceUrl),
+  benefitItems: data.benefitItems || [],
+  vacanciesCount: data.vacanciesCount || 1,
 }));
 
 export const jobOpeningSchema = jobOpeningInputSchema;
