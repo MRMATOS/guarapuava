@@ -201,7 +201,7 @@ Uma tecla de aparelho: firme, curta, afunda ao toque.
 - **Dock de detalhe (Vagas):** alinhamento dividido (`justify-between`), com tecla de ação externa em coral/laranja à esquerda (`Abrir site da vaga`) e tecla Voltar (`variant="icon"`) à direita. Mantém exatamente a mesma geometria de 64px e safe-area offsets dos demais rodapés.
 
 ### Vagas (Feed e Detalhe)
-- **Cabeçalho de Vagas:** título da seção ("Vagas em Guarapuava") à esquerda e data ("06/10/2026") à direita na mesma linha, sem tags soltas acima.
+- **Cabeçalho de Vagas:** indicador único "Última atualização: DD/MM - HH:MM" alinhado estritamente à direita, com título visual omitido (título semântico apenas em `sr-only`).
 - **Feed de Vagas (`JobsFeed`):** lista vertical rolável com múltiplos cartões menores de vagas. Cada cartão contém estritamente:
   1. Título da vaga (`15px`, `font-bold`, `text-ink`).
   2. Nome da empresa (`14px` / `14.5px`, `text-ink-muted`).
