@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo, useRef } from "react";
+import { Eye } from "lucide-react";
 import { JobOpening } from "@/types/job";
 import { MainNav } from "@/components/ui/MainNav";
 import { FilterPanel } from "@/components/ui/FilterPanel";
@@ -28,6 +29,10 @@ interface JobsFeedProps {
   onCyclePcd: () => void;
   experienceState: number;
   onCycleExperience: () => void;
+  favoritesOnly?: boolean;
+  onToggleFavoritesOnly?: () => void;
+  favoriteJobIds?: string[];
+  viewedJobIds?: string[];
   isFilterOpen: boolean;
   onToggleFilter: () => void;
   onCloseFilter: () => void;
@@ -47,6 +52,10 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
   onCyclePcd,
   experienceState,
   onCycleExperience,
+  favoritesOnly = false,
+  onToggleFavoritesOnly,
+  favoriteJobIds = [],
+  viewedJobIds = [],
   isFilterOpen,
   onToggleFilter,
   onCloseFilter,
@@ -64,21 +73,24 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
     return formatRelativeUpdateText(latestDate);
   }, [jobs, lastUpdated]);
 
-  // Aplica a busca universal e os 3 botões combináveis
+  // Aplica a busca universal e os botões combináveis
   const filteredJobs = useMemo(() => {
     return filterJobs(jobs, {
       query: searchQuery,
       contractState,
       pcdState,
       experienceState,
+      favoritesOnly,
+      favoriteJobIds,
     });
-  }, [jobs, searchQuery, contractState, pcdState, experienceState]);
+  }, [jobs, searchQuery, contractState, pcdState, experienceState, favoritesOnly, favoriteJobIds]);
 
   const hasActiveFilters =
     Boolean(searchQuery.trim()) ||
     contractState !== 0 ||
     pcdState !== 0 ||
-    experienceState !== 0;
+    experienceState !== 0 ||
+    Boolean(favoritesOnly);
 
   return (
     <div className="page-shell">
@@ -102,41 +114,64 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
       {/* Lista de cartões de vagas ou Estado Vazio */}
       {filteredJobs.length > 0 ? (
         <div className="space-y-4">
-          {filteredJobs.map((job) => (
-            <article
-              key={job.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => onSelectJob(job)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  onSelectJob(job);
-                }
-              }}
-              aria-label={`Ver detalhes da vaga: ${job.title}`}
-              className="surface-card w-full p-5 sm:p-6 cursor-pointer transition-transform duration-150 active:scale-[0.99] touch-manipulation select-none"
-            >
-              {/* 1. Título da vaga */}
-              <h2 className="text-[15px] font-bold text-ink leading-[1.35] tracking-[-0.015em] mb-2 text-balance">
-                {job.title}
-              </h2>
+          {filteredJobs.map((job) => {
+            const isViewed = Boolean(
+              viewedJobIds &&
+                ((job.id && viewedJobIds.includes(job.id)) ||
+                  (job.externalId && viewedJobIds.includes(job.externalId)))
+            );
 
-              {/* 2. Nome da empresa */}
-              <p className="text-[14px] sm:text-[14.5px] text-ink-muted leading-[1.4]">
-                <strong className="font-semibold text-ink-body">Empresa:</strong>{" "}
-                <span>{job.company}</span>
-              </p>
+            return (
+              <article
+                key={job.id}
+                role="button"
+                tabIndex={0}
+                onClick={() => onSelectJob(job)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onSelectJob(job);
+                  }
+                }}
+                aria-label={`Ver detalhes da vaga: ${job.title}`}
+                className="surface-card w-full p-5 sm:p-6 cursor-pointer transition-transform duration-150 active:scale-[0.99] touch-manipulation select-none"
+              >
+                {/* 1. Título da vaga */}
+                <h2 className="text-[15px] font-bold text-ink leading-[1.35] tracking-[-0.015em] mb-2 text-balance">
+                  {job.title}
+                </h2>
 
-              {/* 3. Data da publicação alinhada à direita */}
-              <div className="mt-3 pt-1 text-right text-[12.5px] text-ink-muted tabular-time">
-                <span>Data da publicação: </span>
-                <strong className="font-medium text-ink-body">
-                  {job.publishedDate}
-                </strong>
-              </div>
-            </article>
-          ))}
+                {/* 2. Nome da empresa */}
+                <p className="text-[14px] sm:text-[14.5px] text-ink-muted leading-[1.4]">
+                  <strong className="font-semibold text-ink-body">
+                    Empresa:
+                  </strong>{" "}
+                  <span>{job.company}</span>
+                </p>
+
+                {/* 3. Data da publicação alinhada à esquerda e tag visualizada à direita */}
+                <div className="mt-3 pt-1 flex items-center justify-between gap-2">
+                  <p className="text-[14px] sm:text-[14.5px] text-ink-muted leading-[1.4]">
+                    <strong className="font-semibold text-ink-body">
+                      Data da publicação:
+                    </strong>{" "}
+                    <span className="tabular-time">{job.publishedDate}</span>
+                  </p>
+
+                  {isViewed && (
+                    <span className="badge-inset flex items-center gap-1.5 text-[12px] font-medium text-ink-body shrink-0">
+                      <Eye
+                        className="w-3.5 h-3.5 text-coral shrink-0"
+                        strokeWidth={2.2}
+                        aria-hidden="true"
+                      />
+                      <span>visualizada</span>
+                    </span>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       ) : (
         <div className="surface-card w-full p-8 text-center text-ink-muted text-[15px]">
@@ -192,6 +227,8 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
                 onCyclePcd={onCyclePcd}
                 experienceState={experienceState}
                 onCycleExperience={onCycleExperience}
+                favoritesOnly={favoritesOnly}
+                onToggleFavoritesOnly={onToggleFavoritesOnly}
                 searchQuery={searchQuery}
                 onSearchChange={onSearchChange}
               />

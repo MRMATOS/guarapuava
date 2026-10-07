@@ -133,6 +133,19 @@ async function runTests() {
   assert.equal(sorted[2].id, 'intermediaria', 'A vaga intermediária deve ser a terceira');
   assert.equal(sorted[3].id, 'antiga', 'A vaga mais antiga deve ser a última');
 
+  // 5. Teste de filtro por favoritas
+  const favResult = filterJobs(mockJobsList, {
+    query: '',
+    contractState: 0,
+    pcdState: 0,
+    experienceState: 0,
+    favoritesOnly: true,
+    favoriteJobIds: ['vaga-1', 'vaga-4'],
+  });
+  assert.equal(favResult.length, 2, 'Deve retornar apenas as 2 vagas favoritas');
+  assert.equal(favResult[0].id, '1');
+  assert.equal(favResult[1].id, '4');
+
   console.log('✅ Todos os testes de lógica do feed passaram com sucesso!');
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { initialDigest, availableTags } from "@/data/mockNews";
 import { mockJobs } from "@/data/mockJobs";
 import { JobOpening } from "@/types/job";
@@ -11,6 +11,12 @@ import { JobDetail } from "@/components/JobDetail";
 import { listActiveJobs } from "@/lib/supabase/jobs";
 import { filterJobs } from "@/lib/utils/search";
 import { sortJobsByPublishedDate } from "@/lib/utils/date";
+import {
+  getViewedJobIds,
+  saveViewedJobId,
+  getFavoriteJobIds,
+  toggleFavoriteJobId,
+} from "@/lib/utils/storage";
 
 type ActiveView = "home" | "details" | "vagas" | "vaga-detail";
 
@@ -24,7 +30,24 @@ export default function Page() {
   const [contractState, setContractState] = useState(0); // 0 = Contrato, 1 = CLT, 2 = PJ
   const [pcdState, setPcdState] = useState(0); // 0 = PCD, 1 = Somente PCD, 2 = Aceita PCD
   const [experienceState, setExperienceState] = useState(0); // 0 = Experiência, 1 = Com experiência, 2 = Sem experiência
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [favoriteJobIds, setFavoriteJobIds] = useState<string[]>(getFavoriteJobIds);
+  const [viewedJobIds, setViewedJobIds] = useState<string[]>(getViewedJobIds);
   const [isJobFilterOpen, setIsJobFilterOpen] = useState(false);
+
+  const handleToggleFavorite = useCallback((jobId: string) => {
+    const updated = toggleFavoriteJobId(jobId);
+    setFavoriteJobIds(updated);
+  }, []);
+
+  const handleMarkJobViewed = useCallback((jobId: string) => {
+    const updated = saveViewedJobId(jobId);
+    setViewedJobIds(updated);
+  }, []);
+
+  const handleToggleFavoritesOnly = () => {
+    setFavoritesOnly((prev) => !prev);
+  };
 
   const handleCycleContract = () => setContractState((prev) => (prev + 1) % 3);
   const handleCyclePcd = () => setPcdState((prev) => (prev + 1) % 3);
@@ -34,18 +57,21 @@ export default function Page() {
     setContractState(0);
     setPcdState(0);
     setExperienceState(0);
+    setFavoritesOnly(false);
   };
 
-  // Aplica a busca universal e os 3 botões combináveis na lista de vagas
+  // Aplica a busca universal e os botões combináveis na lista de vagas
   const filteredJobs = useMemo(() => {
     const list = filterJobs(jobs, {
       query: jobSearchQuery,
       contractState,
       pcdState,
       experienceState,
+      favoritesOnly,
+      favoriteJobIds,
     });
     return sortJobsByPublishedDate(list);
-  }, [jobs, jobSearchQuery, contractState, pcdState, experienceState]);
+  }, [jobs, jobSearchQuery, contractState, pcdState, experienceState, favoritesOnly, favoriteJobIds]);
 
   // Vagas a serem exibidas no feed de detalhes (mantém os filtros ativos)
   const detailFeedJobs = filteredJobs;
@@ -177,7 +203,11 @@ export default function Page() {
       {view === "vagas" && (
         <JobsFeed
           jobs={jobs}
-          onSelectJob={(job) => navigateTo("vaga-detail", job)}
+          onSelectJob={(job) => {
+            const key = job.id || job.externalId || "";
+            if (key) handleMarkJobViewed(key);
+            navigateTo("vaga-detail", job);
+          }}
           onSelectNoticias={() => {
             setIsJobFilterOpen(false);
             navigateTo("home");
@@ -190,6 +220,10 @@ export default function Page() {
           onCyclePcd={handleCyclePcd}
           experienceState={experienceState}
           onCycleExperience={handleCycleExperience}
+          favoritesOnly={favoritesOnly}
+          onToggleFavoritesOnly={handleToggleFavoritesOnly}
+          favoriteJobIds={favoriteJobIds}
+          viewedJobIds={viewedJobIds}
           isFilterOpen={isJobFilterOpen}
           onToggleFilter={() => setIsJobFilterOpen((prev) => !prev)}
           onCloseFilter={() => setIsJobFilterOpen(false)}
@@ -213,6 +247,11 @@ export default function Page() {
           onCyclePcd={handleCyclePcd}
           experienceState={experienceState}
           onCycleExperience={handleCycleExperience}
+          favoritesOnly={favoritesOnly}
+          onToggleFavoritesOnly={handleToggleFavoritesOnly}
+          favoriteJobIds={favoriteJobIds}
+          onToggleFavorite={handleToggleFavorite}
+          onMarkJobViewed={handleMarkJobViewed}
           isFilterOpen={isJobFilterOpen}
           onToggleFilter={() => setIsJobFilterOpen((prev) => !prev)}
           onCloseFilter={() => setIsJobFilterOpen(false)}

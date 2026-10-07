@@ -22,10 +22,17 @@ interface JobDetailProps {
   onCyclePcd?: () => void;
   experienceState?: number;
   onCycleExperience?: () => void;
+  favoritesOnly?: boolean;
+  onToggleFavoritesOnly?: () => void;
   isFilterOpen?: boolean;
   onToggleFilter?: () => void;
   onCloseFilter?: () => void;
   onResetFilters?: () => void;
+
+  // Favoritos e histórico de visualizadas
+  favoriteJobIds?: string[];
+  onToggleFavorite?: (jobId: string) => void;
+  onMarkJobViewed?: (jobId: string) => void;
 }
 
 export const JobDetail: React.FC<JobDetailProps> = ({
@@ -40,10 +47,15 @@ export const JobDetail: React.FC<JobDetailProps> = ({
   onCyclePcd,
   experienceState = 0,
   onCycleExperience,
+  favoritesOnly = false,
+  onToggleFavoritesOnly,
   isFilterOpen = false,
   onToggleFilter,
   onCloseFilter,
   onResetFilters,
+  favoriteJobIds = [],
+  onToggleFavorite,
+  onMarkJobViewed,
 }) => {
   const cardRefs = useRef<Map<string, HTMLElement>>(new Map());
   const filterButtonRef = useRef<HTMLButtonElement>(null);
@@ -53,7 +65,8 @@ export const JobDetail: React.FC<JobDetailProps> = ({
     searchQuery.trim() ||
       contractState !== 0 ||
       pcdState !== 0 ||
-      experienceState !== 0
+      experienceState !== 0 ||
+      favoritesOnly
   );
 
   // Scroll inicial instantâneo até a vaga clicada (permite rolar tanto para cima quanto para baixo)
@@ -62,6 +75,10 @@ export const JobDetail: React.FC<JobDetailProps> = ({
 
     const targetId = initialJobId || jobs[0]?.id || jobs[0]?.externalId;
     if (!targetId) return;
+
+    if (onMarkJobViewed) {
+      onMarkJobViewed(targetId);
+    }
 
     // Aguarda um pequeno tick para garantir que o DOM esteja montado
     const timer = setTimeout(() => {
@@ -75,7 +92,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
     }, 10);
 
     return () => clearTimeout(timer);
-  }, [initialJobId, jobs]);
+  }, [initialJobId, jobs, onMarkJobViewed]);
 
   // Atualiza a URL hash via replaceState conforme o usuário rola o feed de detalhes
   useEffect(() => {
@@ -88,6 +105,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
         if (visibleEntry) {
           const jobId = visibleEntry.target.getAttribute("data-job-id");
           if (jobId) {
+            onMarkJobViewed?.(jobId);
             const nextHash = `#vaga-${jobId}`;
             if (window.location.hash !== nextHash) {
               window.history.replaceState(null, "", nextHash);
@@ -109,7 +127,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, [jobs]);
+  }, [jobs, onMarkJobViewed]);
 
   return (
     <div className="page-shell">
@@ -326,8 +344,8 @@ export const JobDetail: React.FC<JobDetailProps> = ({
                   aria-hidden="true"
                 />
 
-                {/* Botão Abrir site da vaga dentro do próprio card */}
-                <div className="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center">
+                {/* Botões de Ação dentro do próprio card: Abrir site e Favoritar */}
+                <div className="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                   <a
                     href={targetUrl}
                     target="_blank"
@@ -336,6 +354,36 @@ export const JobDetail: React.FC<JobDetailProps> = ({
                   >
                     Abrir site da vaga
                   </a>
+
+                  {onToggleFavorite && (
+                    <Key
+                      pressed={
+                        Boolean(
+                          favoriteJobIds.includes(jobKey) ||
+                            (job.id && favoriteJobIds.includes(job.id)) ||
+                            (job.externalId &&
+                              favoriteJobIds.includes(job.externalId))
+                        )
+                      }
+                      onClick={() => onToggleFavorite(jobKey)}
+                      className="w-full sm:w-auto px-5 text-[14px]"
+                      aria-label={
+                        favoriteJobIds.includes(jobKey) ||
+                        (job.id && favoriteJobIds.includes(job.id)) ||
+                        (job.externalId &&
+                          favoriteJobIds.includes(job.externalId))
+                          ? "Remover dos favoritos"
+                          : "Salvar como favorita"
+                      }
+                    >
+                      {favoriteJobIds.includes(jobKey) ||
+                      (job.id && favoriteJobIds.includes(job.id)) ||
+                      (job.externalId &&
+                        favoriteJobIds.includes(job.externalId))
+                        ? "Desfavoritar"
+                        : "Favoritar"}
+                    </Key>
+                  )}
                 </div>
               </article>
             );
@@ -392,6 +440,8 @@ export const JobDetail: React.FC<JobDetailProps> = ({
                 onCycleExperience={onCycleExperience ?? (() => {})}
                 searchQuery={searchQuery}
                 onSearchChange={onSearchChange ?? (() => {})}
+                favoritesOnly={favoritesOnly}
+                onToggleFavoritesOnly={onToggleFavoritesOnly}
               />
             )}
           </>

@@ -52,18 +52,29 @@ export interface JobFilterOptions {
   contractState: number; // 0 = Contrato (todas), 1 = CLT, 2 = PJ
   pcdState: number; // 0 = PCD (todas), 1 = Somente PCD, 2 = Aceita PCD
   experienceState: number; // 0 = Experiência (todas), 1 = Com experiência, 2 = Sem experiência
+  favoritesOnly?: boolean;
+  favoriteJobIds?: string[];
 }
 
 /**
- * Filtra a lista de vagas de acordo com a barra de busca e os 3 botões dinâmicos de estado.
+ * Filtra a lista de vagas de acordo com a barra de busca e os botões dinâmicos de estado.
  */
 export function filterJobs(
   jobs: JobOpening[],
   options: JobFilterOptions
 ): JobOpening[] {
-  const { query, contractState, pcdState, experienceState } = options;
+  const { query, contractState, pcdState, experienceState, favoritesOnly, favoriteJobIds } = options;
 
   return jobs.filter((job) => {
+    // 0. Filtro de Favoritas
+    if (favoritesOnly) {
+      const favList = favoriteJobIds || [];
+      const isFav =
+        Boolean(job.id && favList.includes(job.id)) ||
+        Boolean(job.externalId && favList.includes(job.externalId));
+      if (!isFav) return false;
+    }
+
     // 1. Filtro textual geral (busca por empresa, salário, palavra-chave, data, título, requisitos)
     if (query.trim()) {
       const jobCorpus = [

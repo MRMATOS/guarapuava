@@ -16,6 +16,8 @@ export interface FilterPanelProps {
   onCyclePcd?: () => void;
   experienceState?: number; // 0: Experiência, 1: Com experiência, 2: Sem experiência
   onCycleExperience?: () => void;
+  favoritesOnly?: boolean;
+  onToggleFavoritesOnly?: () => void;
 
   // Search input
   searchQuery: string;
@@ -36,6 +38,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onCyclePcd,
   experienceState = 0,
   onCycleExperience,
+  favoritesOnly = false,
+  onToggleFavoritesOnly,
   searchQuery,
   onSearchChange,
   selectedCategory = null,
@@ -146,46 +150,100 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
       )}
 
-      {/* Linha 2: Barra de Pesquisa */}
-      <div className="relative w-full">
-        <span
-          className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
-          aria-hidden="true"
-        >
-          <Search className="w-4 h-4" strokeWidth={2.2} />
-        </span>
+      {/* Linha 2: Barra de Pesquisa e Botão Favoritas (em vagas) */}
+      {mode === "vagas" ? (
+        <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+          {/* Input de busca ocupando as 2 primeiras colunas (até o fim do botão PCD) */}
+          <div className="col-span-2 relative w-full">
+            <span
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
+              aria-hidden="true"
+            >
+              <Search className="w-4 h-4" strokeWidth={2.2} />
+            </span>
 
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          onKeyDown={(e) => {
-            // Garante que a tecla Enter não feche nem recarregue a página
-            if (e.key === "Enter") {
-              e.preventDefault();
-            }
-          }}
-          placeholder="Pesquisar..."
-          aria-label={
-            mode === "vagas"
-              ? "Pesquisar por vaga, empresa, salário, requisitos ou palavras-chave"
-              : "Pesquisar notícias por manchete, assunto ou palavra-chave"
-          }
-          className="filter-input w-full h-[42px] pl-10 pr-9 text-[14.5px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
-        />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              onKeyDown={(e) => {
+                // Garante que a tecla Enter não feche nem recarregue a página
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
+              placeholder="Pesquisar..."
+              aria-label="Pesquisar por vaga, empresa, salário, requisitos ou palavras-chave"
+              className="filter-input w-full h-[42px] pl-10 pr-9 text-[14.5px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
+            />
 
-        {searchQuery ? (
-          <button
-            type="button"
-            onClick={() => onSearchChange("")}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
-            aria-label="Limpar texto da pesquisa"
-            title="Limpar pesquisa"
+            {searchQuery ? (
+              <button
+                type="button"
+                onClick={() => onSearchChange("")}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
+                aria-label="Limpar texto da pesquisa"
+                title="Limpar pesquisa"
+              >
+                <X className="w-4 h-4" strokeWidth={2.2} />
+              </button>
+            ) : null}
+          </div>
+
+          {/* Botão Favoritas na 3ª coluna (abaixo do botão de Experiência) */}
+          <div className="col-span-1">
+            <Key
+              pressed={favoritesOnly}
+              onClick={onToggleFavoritesOnly}
+              className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+              title={
+                favoritesOnly
+                  ? "Mostrar todas as vagas"
+                  : "Filtrar apenas vagas favoritas"
+              }
+              aria-label="Filtrar por vagas favoritas"
+            >
+              Favoritas
+            </Key>
+          </div>
+        </div>
+      ) : (
+        /* Linha 2 para notícias: input largura cheia */
+        <div className="relative w-full">
+          <span
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
+            aria-hidden="true"
           >
-            <X className="w-4 h-4" strokeWidth={2.2} />
-          </button>
-        ) : null}
-      </div>
+            <Search className="w-4 h-4" strokeWidth={2.2} />
+          </span>
+
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+              }
+            }}
+            placeholder="Pesquisar..."
+            aria-label="Pesquisar notícias por manchete, assunto ou palavra-chave"
+            className="filter-input w-full h-[42px] pl-10 pr-9 text-[14.5px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
+          />
+
+          {searchQuery ? (
+            <button
+              type="button"
+              onClick={() => onSearchChange("")}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
+              aria-label="Limpar texto da pesquisa"
+              title="Limpar pesquisa"
+            >
+              <X className="w-4 h-4" strokeWidth={2.2} />
+            </button>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };
