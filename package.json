@@ -6,9 +6,11 @@
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync:gemini": "tsx --env-file=.env.local scripts/run-gemini-agent.ts"
   },
   "dependencies": {
+    "@google/genai": "^2.27.0",
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@supabase/supabase-js": "^2.117.2",
     "lucide-react": "^1.52.0",
