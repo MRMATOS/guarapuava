@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { downloadAndSyncGoogleDocsNews } from '@/lib/docs/news-sync';
 
 export const dynamic = 'force-dynamic';
@@ -36,6 +37,13 @@ export async function GET(request: Request) {
 
   try {
     const result = await downloadAndSyncGoogleDocsNews();
+
+    try {
+      revalidatePath('/', 'page');
+    } catch (revalErr) {
+      console.warn('Aviso: Falha ao revalidar cache da home no cron:', revalErr);
+    }
+
     return NextResponse.json({
       status: 'success',
       timestamp: new Date().toISOString(),

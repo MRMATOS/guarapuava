@@ -8,10 +8,12 @@ import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { Key } from "@/components/ui/Key";
 import { formatRelativeUpdateText } from "@/lib/utils/date";
 import { filterNewsHighlights } from "@/lib/utils/search";
+import { NewsCardSkeleton } from "@/components/ui/NewsCardSkeleton";
 
 interface HomeFeedProps {
   digests: DailyDigest[];
   categories?: string[];
+  isLoading?: boolean;
   onOpenDetails: (digest: DailyDigest) => void;
   onSelectVagas: () => void;
   onSelectInfo?: () => void;
@@ -30,6 +32,7 @@ interface HomeFeedProps {
 export const HomeFeed: React.FC<HomeFeedProps> = ({
   digests,
   categories,
+  isLoading = false,
   onOpenDetails,
   onSelectVagas,
   onSelectInfo,
@@ -131,6 +134,29 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
             </article>
           );
         })}
+
+        {/* Esqueletos de carregamento suave caso esteja buscando do Supabase */}
+        {isLoading && digests.length === 0 && (
+          <>
+            <NewsCardSkeleton />
+            <NewsCardSkeleton />
+          </>
+        )}
+
+        {/* Estado Vazio caso não haja notícias cadastradas ainda */}
+        {!isLoading && digests.length === 0 && !hasActiveFilters && (
+          <div className="surface-card w-full py-12 px-6 text-center text-ink-muted text-[14.5px]">
+            <p className="font-semibold text-ink mb-1.5 text-[16px]">
+              Nenhuma notícia disponível
+            </p>
+            <p className="text-[13px] text-ink-muted mb-5 max-w-[280px] mx-auto leading-relaxed">
+              Não encontramos notícias recentes no momento. Verifique sua conexão com a internet.
+            </p>
+            <Key onClick={() => window.location.reload()} className="mx-auto">
+              Recarregar página
+            </Key>
+          </div>
+        )}
 
         {/* Estado Vazio caso filtros não encontrem nada em nenhum dia */}
         {hasActiveFilters && totalFilteredCount === 0 && (

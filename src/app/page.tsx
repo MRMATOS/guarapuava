@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import { initialDigest, availableTags } from "@/data/mockNews";
-import { mockJobs } from "@/data/mockJobs";
 import { DailyDigest } from "@/types/news";
 import { JobOpening } from "@/types/job";
 import { HomeFeed } from "@/components/HomeFeed";
@@ -10,27 +8,34 @@ import { DetailedFeed } from "@/components/DetailedFeed";
 import { JobsFeed } from "@/components/JobsFeed";
 import { JobDetail } from "@/components/JobDetail";
 import { InfoFeed } from "@/components/InfoFeed";
+import { NewsCardSkeleton } from "@/components/ui/NewsCardSkeleton";
 import { listActiveJobs } from "@/lib/supabase/jobs";
 import { listActiveNewsDigests } from "@/lib/supabase/news";
-import { filterJobs, normalizeCategory } from "@/lib/utils/search";
+import { filterJobs, normalizeCategory, DEFAULT_NEWS_CATEGORIES } from "@/lib/utils/search";
 import { sortJobsByPublishedDate } from "@/lib/utils/date";
 import {
   getViewedJobIds,
   saveViewedJobId,
   getFavoriteJobIds,
   toggleFavoriteJobId,
+  getCachedNewsDigests,
+  saveCachedNewsDigests,
+  getCachedJobs,
+  saveCachedJobs,
 } from "@/lib/utils/storage";
 
 type ActiveView = "home" | "details" | "vagas" | "vaga-detail" | "info";
 
 export default function Page() {
   const [view, setView] = useState<ActiveView>("home");
-  const [jobs, setJobs] = useState<JobOpening[]>(() => sortJobsByPublishedDate(mockJobs));
+  const [jobs, setJobs] = useState<JobOpening[]>([]);
+  const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const [selectedJob, setSelectedJob] = useState<JobOpening | null>(null);
 
   // Estados das Notícias (Multi-dia e digest selecionado)
-  const [newsDigests, setNewsDigests] = useState<DailyDigest[]>([initialDigest]);
-  const [selectedDigest, setSelectedDigest] = useState<DailyDigest>(initialDigest);
+  const [newsDigests, setNewsDigests] = useState<DailyDigest[]>([]);
+  const [selectedDigest, setSelectedDigest] = useState<DailyDigest | null>(null);
+  const [isLoadingNews, setIsLoadingNews] = useState(true);
 
   // Estados dos filtros de Vagas (persistem na navegação)
   const [jobSearchQuery, setJobSearchQuery] = useState("");
@@ -96,16 +101,35 @@ export default function Page() {
     setSelectedNewsCategory(null);
   };
 
-  // Carrega vagas e notícias do Supabase com fallback seguro
+  // Carrega vagas e notícias: primeiro do cache local (instantâneo), depois do Supabase
   useEffect(() => {
+    // 1. Restauração imediata a partir do cache local
+    const cachedNews = getCachedNewsDigests();
+    if (cachedNews.length > 0) {
+      setNewsDigests(cachedNews);
+      setSelectedDigest((prev) => prev || cachedNews[0]);
+      setIsLoadingNews(false);
+    }
+
+    const cachedJobs = getCachedJobs();
+    if (cachedJobs.length > 0) {
+      setJobs(sortJobsByPublishedDate(cachedJobs));
+      setIsLoadingJobs(false);
+    }
+
+    // 2. Consulta concorrente ao Supabase (Stale-While-Revalidate)
     async function loadJobs() {
       try {
         const liveJobs = await listActiveJobs();
         if (liveJobs && liveJobs.length > 0) {
-          setJobs(sortJobsByPublishedDate(liveJobs));
+          const sorted = sortJobsByPublishedDate(liveJobs);
+          setJobs(sorted);
+          saveCachedJobs(sorted);
         }
       } catch (err) {
-        console.warn("Usando mockJobs como fallback:", err);
+        console.warn("Falha ao consultar vagas no Supabase:", err);
+      } finally {
+        setIsLoadingJobs(false);
       }
     }
 
@@ -114,10 +138,19 @@ export default function Page() {
         const liveDigests = await listActiveNewsDigests();
         if (liveDigests && liveDigests.length > 0) {
           setNewsDigests(liveDigests);
-          setSelectedDigest(liveDigests[0]);
+          saveCachedNewsDigests(liveDigests);
+          setSelectedDigest((prev) => {
+            if (prev) {
+              const matched = liveDigests.find((d) => d.date === prev.date);
+              if (matched) return matched;
+            }
+            return liveDigests[0];
+          });
         }
       } catch (err) {
-        console.warn("Usando initialDigest como fallback:", err);
+        console.warn("Falha ao consultar notícias no Supabase:", err);
+      } finally {
+        setIsLoadingNews(false);
       }
     }
 
@@ -127,6 +160,7 @@ export default function Page() {
 
   // Extrai tags únicas disponíveis a partir dos lotes do dia selecionado (deduplicadas e ordenadas)
   const currentNewsTags = useMemo(() => {
+    if (!selectedDigest || !selectedDigest.batches) return DEFAULT_NEWS_CATEGORIES;
     const tagSet = new Set<string>();
     for (const batch of selectedDigest.batches) {
       for (const item of batch.items) {
@@ -135,7 +169,7 @@ export default function Page() {
         }
       }
     }
-    if (tagSet.size === 0) return availableTags;
+    if (tagSet.size === 0) return DEFAULT_NEWS_CATEGORIES;
     return Array.from(tagSet).sort((a, b) => a.localeCompare(b, "pt-BR"));
   }, [selectedDigest]);
 
@@ -143,6 +177,7 @@ export default function Page() {
   const allNewsCategories = useMemo(() => {
     const tagSet = new Set<string>();
     for (const digest of newsDigests) {
+      if (!digest.batches) continue;
       for (const batch of digest.batches) {
         for (const item of batch.items) {
           if (item.category) {
@@ -151,7 +186,7 @@ export default function Page() {
         }
       }
     }
-    if (tagSet.size === 0) return availableTags;
+    if (tagSet.size === 0) return DEFAULT_NEWS_CATEGORIES;
     return Array.from(tagSet).sort((a, b) => a.localeCompare(b, "pt-BR"));
   }, [newsDigests]);
 
@@ -207,9 +242,11 @@ export default function Page() {
       if (newView === "info") {
         window.history.pushState(null, "", "#informacoes");
       } else if (newView === "details") {
-        const targetDate = (digest || selectedDigest).date;
-        const key = targetDate.replace(/\//g, "-");
-        window.history.pushState(null, "", `#noticia-${key}`);
+        const targetDate = (digest || selectedDigest)?.date;
+        if (targetDate) {
+          const key = targetDate.replace(/\//g, "-");
+          window.history.pushState(null, "", `#noticia-${key}`);
+        }
       } else if (newView === "vagas") {
         window.history.pushState(null, "", "#vagas");
       } else if (newView === "vaga-detail" && job) {
@@ -271,6 +308,7 @@ export default function Page() {
         <HomeFeed
           digests={newsDigests}
           categories={allNewsCategories}
+          isLoading={isLoadingNews}
           onOpenDetails={(d) => navigateTo("details", undefined, d)}
           onSelectVagas={() => {
             savedVagasScrollY.current = 0;
@@ -292,17 +330,24 @@ export default function Page() {
         />
       )}
 
-      {view === "details" && (
+      {view === "details" && selectedDigest ? (
         <DetailedFeed
           digest={selectedDigest}
           tags={currentNewsTags}
           onBack={() => navigateTo("home")}
         />
-      )}
+      ) : view === "details" ? (
+        <div className="page-shell">
+          <div className="w-full space-y-4">
+            <NewsCardSkeleton />
+          </div>
+        </div>
+      ) : null}
 
       {view === "vagas" && (
         <JobsFeed
           jobs={jobs}
+          isLoading={isLoadingJobs}
           onSelectJob={(job) => {
             hasNavigatedInApp.current = true;
             savedVagasScrollY.current = window.scrollY;

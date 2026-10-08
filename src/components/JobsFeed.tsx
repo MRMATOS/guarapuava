@@ -13,9 +13,11 @@ import {
   formatRelativeUpdateText,
 } from "@/lib/utils/date";
 import { filterJobs } from "@/lib/utils/search";
+import { JobCardSkeleton } from "@/components/ui/JobCardSkeleton";
 
 interface JobsFeedProps {
   jobs: JobOpening[];
+  isLoading?: boolean;
   onSelectJob: (job: JobOpening) => void;
   onSelectNoticias: () => void;
   onSelectInfo?: () => void;
@@ -42,6 +44,7 @@ interface JobsFeedProps {
 
 export const JobsFeed: React.FC<JobsFeedProps> = ({
   jobs,
+  isLoading = false,
   onSelectJob,
   onSelectNoticias,
   onSelectInfo,
@@ -174,6 +177,25 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
               </article>
             );
           })}
+        </div>
+      ) : isLoading && jobs.length === 0 ? (
+        <div className="w-full space-y-4">
+          <JobCardSkeleton />
+          <JobCardSkeleton />
+          <JobCardSkeleton />
+          <JobCardSkeleton />
+        </div>
+      ) : !hasActiveFilters && jobs.length === 0 ? (
+        <div className="surface-card w-full py-12 px-6 text-center text-ink-muted text-[15px]">
+          <p className="font-semibold text-ink mb-1.5">
+            Nenhuma vaga disponível no momento
+          </p>
+          <p className="text-[12.5px] text-ink-muted mb-5 max-w-[280px] mx-auto leading-relaxed">
+            Não encontramos vagas ativas no banco de dados agora. Tente recarregar.
+          </p>
+          <Key onClick={() => window.location.reload()} className="mx-auto">
+            Recarregar página
+          </Key>
         </div>
       ) : (
         <div className="surface-card w-full p-8 text-center text-ink-muted text-[15px]">

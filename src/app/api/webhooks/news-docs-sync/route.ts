@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { syncNewsFromText } from '@/lib/docs/news-sync';
 
 export const dynamic = 'force-dynamic';
@@ -58,6 +59,12 @@ export async function POST(request: Request) {
     console.log(`📥 Webhook Notícias [${docIdentifier}]: Recebeu ${conteudo.length} caracteres. Exemplo:`, linesSample);
 
     const result = await syncNewsFromText(conteudo, docIdentifier);
+
+    try {
+      revalidatePath('/', 'page');
+    } catch (revalErr) {
+      console.warn('Aviso: Falha ao revalidar cache da home no webhook:', revalErr);
+    }
 
     return NextResponse.json({
       status: 'success',

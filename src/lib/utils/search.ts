@@ -38,6 +38,17 @@ export const CANONICAL_NEWS_CATEGORIES: Record<string, string> = {
   meioambiente: "Meio Ambiente",
 };
 
+export const DEFAULT_NEWS_CATEGORIES: string[] = [
+  "Cultura",
+  "Clima",
+  "Prazos",
+  "Saúde",
+  "Política",
+  "Educação",
+  "Segurança",
+  "Trânsito",
+];
+
 /**
  * Normaliza uma categoria de notícia para sua grafia canônica e padronizada.
  */
