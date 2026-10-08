@@ -165,13 +165,24 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
               <FilterIndicator
                 label={
                   <span>
-                    Filtrando:{" "}
-                    <strong className="text-ink font-bold">
-                      {totalFilteredCount}
-                    </strong>{" "}
-                    {totalFilteredCount === 1
-                      ? "tópico encontrado"
-                      : "tópicos encontrados"}
+                    {selectedCategory && (
+                      <>
+                        Categoria: <strong className="text-ink font-bold">{selectedCategory}</strong>
+                        {" • "}
+                      </>
+                    )}
+                    {searchQuery.trim() && (
+                      <>
+                        Busca: &ldquo;<strong className="text-ink font-bold">{searchQuery.trim()}</strong>&rdquo;
+                        {" • "}
+                      </>
+                    )}
+                    <span>
+                      <strong className="text-ink font-bold">{totalFilteredCount}</strong>{" "}
+                      {totalFilteredCount === 1
+                        ? "tópico encontrado"
+                        : "tópicos encontrados"}
+                    </span>
                   </span>
                 }
                 onClear={onResetFilters}

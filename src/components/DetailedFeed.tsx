@@ -127,7 +127,7 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
           {activeTag && (
             <>
               Categoria: <strong className="text-ink font-bold">{activeTag}</strong>
-              {searchQuery.trim() && " • "}
+              {" • "}
             </>
           )}
           {searchQuery.trim() && (
@@ -137,7 +137,8 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
             </>
           )}
           <span>
-            {totalItemsCount} {totalItemsCount === 1 ? "notícia encontrada" : "notícias encontradas"}
+            <strong className="text-ink font-bold">{totalItemsCount}</strong>{" "}
+            {totalItemsCount === 1 ? "notícia encontrada" : "notícias encontradas"}
           </span>
         </span>
       }
