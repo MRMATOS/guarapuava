@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { DailyDigest, NewsBatch } from "@/types/news";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, Search, X } from "lucide-react";
 import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
@@ -20,37 +20,113 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
   onBack,
 }) => {
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // Toggle do filtro: clicar na mesma tag limpa o filtro
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Fecha o painel se clicar fora ou pressionar Escape
+  useEffect(() => {
+    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node;
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(target) &&
+        (!filterButtonRef.current || !filterButtonRef.current.contains(target))
+      ) {
+        setIsFilterOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsFilterOpen(false);
+      }
+    };
+
+    if (isFilterOpen) {
+      document.addEventListener("pointerdown", handlePointerDown);
+      document.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isFilterOpen]);
+
+  // Toggle do filtro de categoria: clicar na mesma tag limpa o filtro
   const handleTagClick = (tag: string) => {
     setActiveTag((prev) => (prev === tag ? null : tag));
   };
 
-  // Filtragem flexível por categoria
-  const filteredBatches: NewsBatch[] = digest.batches
-    .map((batch) => {
-      if (!activeTag) return batch;
-      const filteredItems = batch.items.filter((item) => {
-        return (
-          item.category.toLowerCase().includes(activeTag.toLowerCase()) ||
-          activeTag.toLowerCase().includes(item.category.toLowerCase())
-        );
-      });
-      return {
-        ...batch,
-        items: filteredItems,
-      };
-    })
-    .filter((batch) => batch.items.length > 0);
+  const handleResetFilters = () => {
+    setActiveTag(null);
+    setSearchQuery("");
+  };
 
-  const filterIndicator = activeTag ? (
+  // Filtragem flexível por categoria e busca textual
+  const filteredBatches: NewsBatch[] = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return digest.batches
+      .map((batch) => {
+        const filteredItems = batch.items.filter((item) => {
+          // Filtro por categoria (tag)
+          if (activeTag) {
+            const tagMatch =
+              item.category.toLowerCase().includes(activeTag.toLowerCase()) ||
+              activeTag.toLowerCase().includes(item.category.toLowerCase());
+            if (!tagMatch) return false;
+          }
+
+          // Filtro por texto de pesquisa (título, texto ou categoria)
+          if (query) {
+            const textMatch =
+              item.title.toLowerCase().includes(query) ||
+              item.text.toLowerCase().includes(query) ||
+              item.category.toLowerCase().includes(query);
+            if (!textMatch) return false;
+          }
+
+          return true;
+        });
+
+        return {
+          ...batch,
+          items: filteredItems,
+        };
+      })
+      .filter((batch) => batch.items.length > 0);
+  }, [digest.batches, activeTag, searchQuery]);
+
+  const totalItemsCount = useMemo(() => {
+    return filteredBatches.reduce((acc, b) => acc + b.items.length, 0);
+  }, [filteredBatches]);
+
+  const hasActiveFilters = Boolean(activeTag) || Boolean(searchQuery.trim());
+
+  const filterIndicator = hasActiveFilters ? (
     <FilterIndicator
       label={
         <span>
-          Filtrando por: <strong className="text-ink font-bold">{activeTag}</strong>
+          {activeTag && (
+            <>
+              Categoria: <strong className="text-ink font-bold">{activeTag}</strong>
+              {searchQuery.trim() && " • "}
+            </>
+          )}
+          {searchQuery.trim() && (
+            <>
+              Busca: &ldquo;<strong className="text-ink font-bold">{searchQuery.trim()}</strong>&rdquo;
+              {" • "}
+            </>
+          )}
+          <span>
+            {totalItemsCount} {totalItemsCount === 1 ? "notícia encontrada" : "notícias encontradas"}
+          </span>
         </span>
       }
-      onClear={() => setActiveTag(null)}
+      onClear={handleResetFilters}
     />
   ) : null;
 
@@ -100,40 +176,121 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
           ))
         ) : (
           <div className="py-14 text-center text-ink-muted text-[15px]">
-            <p>
-              Nenhuma notícia recente na categoria{" "}
-              <strong className="text-ink">&ldquo;{activeTag}&rdquo;</strong>.
+            <p className="font-semibold text-ink mb-1.5 text-[16px]">
+              Nenhuma notícia encontrada
             </p>
-            <Key onClick={() => setActiveTag(null)} className="mt-4 gap-1.5">
+            <p className="text-[13px] text-ink-muted mb-5 max-w-[280px] mx-auto leading-relaxed">
+              {activeTag
+                ? `Nenhuma notícia na categoria "${activeTag}" corresponde aos filtros aplicados.`
+                : "Nenhum resultado corresponde à palavra-chave pesquisada."}
+            </p>
+            <Key onClick={handleResetFilters} className="mx-auto gap-1.5">
               <X className="w-4 h-4" strokeWidth={2.2} />
-              Remover filtro
+              Limpar filtros
             </Key>
           </div>
         )}
       </main>
 
-      <Dock above={filterIndicator} align="between" aria-label="Filtros e navegação">
-        {/* Carrossel de tags (4ª tag propositalmente cortada) */}
-        <div
-          role="toolbar"
-          aria-label="Filtro de categorias"
-          className="flex-1 min-w-0 self-stretch overflow-x-auto no-scrollbar scroll-smooth flex items-center gap-2.5 py-2 px-1.5 -my-2 -mx-1.5"
-        >
-          {tags.map((tag) => (
-            <Key
-              key={tag}
-              pressed={activeTag === tag}
-              onClick={() => handleTagClick(tag)}
-              title={activeTag === tag ? `Remover filtro ${tag}` : `Filtrar apenas por ${tag}`}
-            >
-              {tag}
-            </Key>
-          ))}
-        </div>
+      {/* Footer com botões Filtrar e Voltar agrupados à direita */}
+      <Dock
+        align="end"
+        above={
+          <>
+            {filterIndicator}
 
-        <Key variant="icon" onClick={onBack} aria-label="Voltar para a página inicial">
-          <ArrowLeft className="w-5 h-5" strokeWidth={2.2} />
-        </Key>
+            {/* Painel de Filtros flutuante idêntico ao padrão de vagas */}
+            {isFilterOpen && (
+              <div
+                ref={panelRef}
+                role="region"
+                aria-label="Painel de filtros de notícias"
+                className="filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none"
+              >
+                {/* Linha 1 (superior): carrossel com scroll horizontal de categorias */}
+                <div
+                  role="toolbar"
+                  aria-label="Filtro de categorias"
+                  className="w-full overflow-x-auto no-scrollbar scroll-smooth flex items-center gap-2 py-1 px-0.5"
+                >
+                  {tags.map((tag) => (
+                    <Key
+                      key={tag}
+                      pressed={activeTag === tag}
+                      onClick={() => handleTagClick(tag)}
+                      title={activeTag === tag ? `Remover filtro ${tag}` : `Filtrar apenas por ${tag}`}
+                      className="shrink-0 text-[12.5px] px-2.5"
+                    >
+                      {tag}
+                    </Key>
+                  ))}
+                </div>
+
+                {/* Linha 2 (inferior): input de busca de notícias em largura cheia */}
+                <div className="relative w-full">
+                  <span
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
+                    aria-hidden="true"
+                  >
+                    <Search className="w-4 h-4" strokeWidth={2.2} />
+                  </span>
+
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                      }
+                    }}
+                    placeholder="Pesquisar..."
+                    aria-label="Pesquisar notícias do dia por assunto ou palavra-chave"
+                    className="filter-input w-full h-[42px] pl-10 pr-9 text-[14.5px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
+                  />
+
+                  {searchQuery ? (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
+                      aria-label="Limpar texto da pesquisa"
+                      title="Limpar pesquisa"
+                    >
+                      <X className="w-4 h-4" strokeWidth={2.2} />
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+            )}
+          </>
+        }
+        aria-label="Ações e filtros da notícia"
+      >
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <Key
+            ref={filterButtonRef}
+            pressed={isFilterOpen}
+            onClick={() => setIsFilterOpen((prev) => !prev)}
+            aria-expanded={isFilterOpen}
+            aria-label={
+              isFilterOpen
+                ? "Fechar bloco de filtros"
+                : "Abrir bloco de filtros"
+            }
+            className="px-2.5 sm:px-3.5 text-[14px]"
+          >
+            Filtrar
+          </Key>
+
+          <Key
+            variant="icon"
+            onClick={onBack}
+            aria-label="Voltar para a página inicial"
+          >
+            <ArrowLeft className="w-5 h-5" strokeWidth={2.2} />
+          </Key>
+        </div>
       </Dock>
     </div>
   );
