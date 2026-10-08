@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { X, Search } from "lucide-react";
 import { Key } from "./Key";
+import { normalizeText } from "@/lib/utils/search";
 
 export interface FilterPanelProps {
   mode: "vagas" | "noticias";
@@ -24,6 +25,7 @@ export interface FilterPanelProps {
   onSearchChange: (value: string) => void;
 
   // Noticias filter states
+  categories?: string[];
   selectedCategory?: string | null;
   onSelectCategory?: (category: string | null) => void;
 }
@@ -42,6 +44,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onToggleFavoritesOnly,
   searchQuery,
   onSearchChange,
+  categories,
   selectedCategory = null,
   onSelectCategory,
 }) => {
@@ -132,21 +135,35 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           </Key>
         </div>
       ) : (
-        /* Linha 1 para Notícias: categorias rápidas */
-        <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-          {["Política", "Saúde", "Clima"].map((cat) => (
-            <Key
-              key={cat}
-              pressed={selectedCategory === cat}
-              onClick={() =>
-                onSelectCategory?.(selectedCategory === cat ? null : cat)
-              }
-              className="w-full px-1 text-[12.5px] justify-center text-center"
-              aria-label={`Filtrar notícias por ${cat}`}
-            >
-              {cat}
-            </Key>
-          ))}
+        /* Linha 1 para Notícias: categorias dinâmicas em carrossel horizontal */
+        <div
+          role="toolbar"
+          aria-label="Filtro de categorias de notícias"
+          className="w-full overflow-x-auto no-scrollbar scroll-smooth flex items-center gap-2 py-1 px-0.5"
+        >
+          {(categories && categories.length > 0 ? categories : ["Política", "Saúde", "Clima"]).map((cat) => {
+            const isPressed =
+              selectedCategory !== null &&
+              normalizeText(selectedCategory) === normalizeText(cat);
+            return (
+              <Key
+                key={cat}
+                pressed={isPressed}
+                onClick={() =>
+                  onSelectCategory?.(isPressed ? null : cat)
+                }
+                title={
+                  isPressed
+                    ? `Remover filtro ${cat}`
+                    : `Filtrar apenas por ${cat}`
+                }
+                className="shrink-0 text-[12.5px] px-2.5"
+                aria-label={`Filtrar notícias por ${cat}`}
+              >
+                {cat}
+              </Key>
+            );
+          })}
         </div>
       )}
 

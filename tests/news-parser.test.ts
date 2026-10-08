@@ -18,6 +18,26 @@ Atos Oficiais: Boletim Oficial nº 3510 detalha dispensas de servidores.
 `;
 
 function testParser() {
+  const customSample = `
+Atualização em 08/10/2026 às 09:00
+DELTA FEED - [09:00]
+[Saude] Notícia 1: Sem acento na categoria
+[Saúde] Notícia 2: Com acento na categoria
+[Transito] Notícia 3: Sem acento no trânsito
+[Trânsito] Notícia 4: Com acento no trânsito
+[Politica] Notícia 5: Sem acento na política
+Card Principal do Dia
+Manchete: Teste de normalização de categorias.
+`;
+  const normalizedDigests = parseNewsDocText(customSample);
+  assert.equal(normalizedDigests.length, 1);
+  const items = normalizedDigests[0].batches[0].items;
+  assert.equal(items[0].category, 'Saúde');
+  assert.equal(items[1].category, 'Saúde');
+  assert.equal(items[2].category, 'Trânsito');
+  assert.equal(items[3].category, 'Trânsito');
+  assert.equal(items[4].category, 'Política');
+
   const digests = parseNewsDocText(sampleNewsText);
   assert.equal(digests.length, 1, 'Deve extrair 1 dia consolidado');
   const d = digests[0];
@@ -29,7 +49,7 @@ function testParser() {
   assert.equal(d.batches[0].items.length, 2, 'Deve extrair 2 notícias do Delta Feed');
   assert.equal(d.batches[0].items[0].category, 'Saúde');
   assert.equal(d.batches[0].items[1].category, 'Política');
-  console.log('✅ Task 2 parser unit test passed');
+  console.log('✅ Task 2 parser unit test passed (including category canonicalization)');
 }
 
 async function testRealDocx() {

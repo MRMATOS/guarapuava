@@ -7,6 +7,7 @@ import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { formatRelativeUpdateText } from "@/lib/utils/date";
+import { normalizeText, normalizeCategory } from "@/lib/utils/search";
 
 interface DetailedFeedProps {
   digest: DailyDigest;
@@ -25,6 +26,15 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
 
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+
+  // Garante tags canônicas, únicas e ordenadas
+  const normalizedTags = useMemo(() => {
+    const set = new Set<string>();
+    for (const t of tags) {
+      if (t) set.add(normalizeCategory(t));
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  }, [tags]);
 
   // Fecha o painel se clicar fora ou pressionar Escape
   useEffect(() => {
@@ -57,7 +67,9 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
 
   // Toggle do filtro de categoria: clicar na mesma tag limpa o filtro
   const handleTagClick = (tag: string) => {
-    setActiveTag((prev) => (prev === tag ? null : tag));
+    setActiveTag((prev) =>
+      prev !== null && normalizeText(prev) === normalizeText(tag) ? null : tag
+    );
   };
 
   const handleResetFilters = () => {
@@ -67,24 +79,27 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
 
   // Filtragem flexível por categoria e busca textual
   const filteredBatches: NewsBatch[] = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
+    const queryNorm = normalizeText(searchQuery);
     return digest.batches
       .map((batch) => {
         const filteredItems = batch.items.filter((item) => {
           // Filtro por categoria (tag)
           if (activeTag) {
+            const itemCatNorm = normalizeText(item.category);
+            const activeTagNorm = normalizeText(activeTag);
             const tagMatch =
-              item.category.toLowerCase().includes(activeTag.toLowerCase()) ||
-              activeTag.toLowerCase().includes(item.category.toLowerCase());
+              itemCatNorm === activeTagNorm ||
+              itemCatNorm.includes(activeTagNorm) ||
+              activeTagNorm.includes(itemCatNorm);
             if (!tagMatch) return false;
           }
 
           // Filtro por texto de pesquisa (título, texto ou categoria)
-          if (query) {
+          if (queryNorm) {
             const textMatch =
-              item.title.toLowerCase().includes(query) ||
-              item.text.toLowerCase().includes(query) ||
-              item.category.toLowerCase().includes(query);
+              normalizeText(item.title).includes(queryNorm) ||
+              normalizeText(item.text).includes(queryNorm) ||
+              normalizeText(item.category).includes(queryNorm);
             if (!textMatch) return false;
           }
 
@@ -213,17 +228,26 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
                   aria-label="Filtro de categorias"
                   className="w-full overflow-x-auto no-scrollbar scroll-smooth flex items-center gap-2 py-1 px-0.5"
                 >
-                  {tags.map((tag) => (
-                    <Key
-                      key={tag}
-                      pressed={activeTag === tag}
-                      onClick={() => handleTagClick(tag)}
-                      title={activeTag === tag ? `Remover filtro ${tag}` : `Filtrar apenas por ${tag}`}
-                      className="shrink-0 text-[12.5px] px-2.5"
-                    >
-                      {tag}
-                    </Key>
-                  ))}
+                  {normalizedTags.map((tag) => {
+                    const isPressed =
+                      activeTag !== null &&
+                      normalizeText(activeTag) === normalizeText(tag);
+                    return (
+                      <Key
+                        key={tag}
+                        pressed={isPressed}
+                        onClick={() => handleTagClick(tag)}
+                        title={
+                          isPressed
+                            ? `Remover filtro ${tag}`
+                            : `Filtrar apenas por ${tag}`
+                        }
+                        className="shrink-0 text-[12.5px] px-2.5"
+                      >
+                        {tag}
+                      </Key>
+                    );
+                  })}
                 </div>
 
                 {/* Linha 2 (inferior): input de busca de notícias em largura cheia */}

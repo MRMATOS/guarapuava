@@ -11,6 +11,7 @@ import { filterNewsHighlights } from "@/lib/utils/search";
 
 interface HomeFeedProps {
   digests: DailyDigest[];
+  categories?: string[];
   onOpenDetails: (digest: DailyDigest) => void;
   onSelectVagas: () => void;
   onSelectInfo?: () => void;
@@ -28,6 +29,7 @@ interface HomeFeedProps {
 
 export const HomeFeed: React.FC<HomeFeedProps> = ({
   digests,
+  categories,
   onOpenDetails,
   onSelectVagas,
   onSelectInfo,
@@ -178,6 +180,7 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
             {isFilterOpen && (
               <FilterPanel
                 mode="noticias"
+                categories={categories}
                 onClose={onCloseFilter}
                 filterButtonRef={filterButtonRef}
                 searchQuery={searchQuery}

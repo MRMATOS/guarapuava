@@ -13,6 +13,55 @@ export function normalizeText(text: string): string {
 }
 
 /**
+ * Mapeamento canônico de categorias conhecidas de notícias para garantir
+ * acentuação correta e evitar botões duplicados (ex: Saude vs Saúde, Politica vs Política).
+ */
+export const CANONICAL_NEWS_CATEGORIES: Record<string, string> = {
+  saude: "Saúde",
+  politica: "Política",
+  transito: "Trânsito",
+  educacao: "Educação",
+  seguranca: "Segurança",
+  gestao: "Gestão",
+  economia: "Economia",
+  comunidade: "Comunidade",
+  cultura: "Cultura",
+  clima: "Clima",
+  tecnologia: "Tecnologia",
+  prazos: "Prazos",
+  esporte: "Esportes",
+  esportes: "Esportes",
+  habitacao: "Habitação",
+  obras: "Obras",
+  turismo: "Turismo",
+  legislacao: "Legislação",
+  meioambiente: "Meio Ambiente",
+};
+
+/**
+ * Normaliza uma categoria de notícia para sua grafia canônica e padronizada.
+ */
+export function normalizeCategory(raw: string): string {
+  if (!raw) return "";
+  const cleaned = raw.trim();
+  const key = normalizeText(cleaned).replace(/[^a-z0-9]/g, "");
+  if (CANONICAL_NEWS_CATEGORIES[key]) {
+    return CANONICAL_NEWS_CATEGORIES[key];
+  }
+  // Mantém maiúsculas apropriadas respeitando preposições
+  return cleaned
+    .split(/\s+/)
+    .map((word) => {
+      const lower = word.toLowerCase();
+      if (["e", "de", "da", "do", "das", "dos", "em", "na", "no"].includes(lower)) {
+        return lower;
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+}
+
+/**
  * Verifica se um texto contém todos os tokens da busca (insensível a acentos e maiúsculas).
  * Também suporta buscas numéricas flexíveis (ex: "5.000" vs "5000").
  */

@@ -1,5 +1,6 @@
 import JSZip from 'jszip';
 import { DailyDigest, NewsBatch, NewsItem } from '@/types/news';
+import { normalizeCategory } from '@/lib/utils/search';
 
 export interface RawNewsRound {
   date: string;
@@ -170,7 +171,8 @@ export function parseNewsParagraphs(paragraphs: { text: string; links: string[] 
       // Padrão: "[Categoria] Notícia nova: texto Fonte: fonte" ou variações
       const deltaItemMatch = text.match(/^\[([^\]]+)\]\s*(?:Notícia nova:\s*)?(.*?)(?:\s*Fonte:\s*(.*))?$/i);
       if (deltaItemMatch) {
-        const category = deltaItemMatch[1].trim();
+        const rawCategory = deltaItemMatch[1].trim();
+        const category = normalizeCategory(rawCategory);
         const rawBody = deltaItemMatch[2].trim();
         const rawSource = deltaItemMatch[3]?.trim();
 
@@ -212,7 +214,8 @@ export function parseNewsParagraphs(paragraphs: { text: string; links: string[] 
       // Destaques por categoria: "Categoria: texto"
       const highlightMatch = text.match(/^([^:]+):\s*(.+)$/);
       if (highlightMatch) {
-        const cat = highlightMatch[1].trim();
+        const rawCat = highlightMatch[1].trim();
+        const cat = normalizeCategory(rawCat);
         const body = highlightMatch[2].trim();
 
         // Evita capturar cabeçalhos estranhos

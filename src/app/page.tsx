@@ -12,7 +12,7 @@ import { JobDetail } from "@/components/JobDetail";
 import { InfoFeed } from "@/components/InfoFeed";
 import { listActiveJobs } from "@/lib/supabase/jobs";
 import { listActiveNewsDigests } from "@/lib/supabase/news";
-import { filterJobs } from "@/lib/utils/search";
+import { filterJobs, normalizeCategory } from "@/lib/utils/search";
 import { sortJobsByPublishedDate } from "@/lib/utils/date";
 import {
   getViewedJobIds,
@@ -125,17 +125,35 @@ export default function Page() {
     loadNews();
   }, []);
 
-  // Extrai tags únicas disponíveis a partir dos lotes do dia selecionado
+  // Extrai tags únicas disponíveis a partir dos lotes do dia selecionado (deduplicadas e ordenadas)
   const currentNewsTags = useMemo(() => {
     const tagSet = new Set<string>();
     for (const batch of selectedDigest.batches) {
       for (const item of batch.items) {
-        if (item.category) tagSet.add(item.category);
+        if (item.category) {
+          tagSet.add(normalizeCategory(item.category));
+        }
       }
     }
     if (tagSet.size === 0) return availableTags;
-    return Array.from(tagSet);
+    return Array.from(tagSet).sort((a, b) => a.localeCompare(b, "pt-BR"));
   }, [selectedDigest]);
+
+  // Extrai todas as categorias disponíveis somando todos os dias ativos no portal
+  const allNewsCategories = useMemo(() => {
+    const tagSet = new Set<string>();
+    for (const digest of newsDigests) {
+      for (const batch of digest.batches) {
+        for (const item of batch.items) {
+          if (item.category) {
+            tagSet.add(normalizeCategory(item.category));
+          }
+        }
+      }
+    }
+    if (tagSet.size === 0) return availableTags;
+    return Array.from(tagSet).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  }, [newsDigests]);
 
   // Sincroniza com o histórico do navegador e suporta o botão/gesto voltar nativo do celular
   useEffect(() => {
@@ -252,6 +270,7 @@ export default function Page() {
       {view === "home" && (
         <HomeFeed
           digests={newsDigests}
+          categories={allNewsCategories}
           onOpenDetails={(d) => navigateTo("details", undefined, d)}
           onSelectVagas={() => {
             savedVagasScrollY.current = 0;
