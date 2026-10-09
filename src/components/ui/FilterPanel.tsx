@@ -53,14 +53,17 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   // Fecha o bloco se clicar fora (exceto se for no botão Filtrar do rodapé)
   useEffect(() => {
     const handlePointerDown = (event: MouseEvent | TouchEvent) => {
-      const target = event.target as Node;
+      const target = event.target as HTMLElement;
+      // Se o clique for dentro do painel ou na área do dock, o dock gerencia a alternância
       if (
-        panelRef.current &&
-        !panelRef.current.contains(target) &&
-        (!filterButtonRef?.current || !filterButtonRef.current.contains(target))
+        panelRef.current?.contains(target as Node) ||
+        target.closest?.(".dock-shell") ||
+        target.closest?.(".dock") ||
+        (filterButtonRef?.current && filterButtonRef.current.contains(target as Node))
       ) {
-        onClose();
+        return;
       }
+      onClose();
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -102,37 +105,43 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       {mode === "vagas" ? (
         <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
           {/* 1. Botão Contrato (Contrato -> CLT -> PJ -> Contrato) */}
-          <Key
-            pressed={contractState !== 0}
-            onClick={onCycleContract}
-            className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-            title={`Filtro de Contrato: ${contractLabel} (clique para alternar)`}
-            aria-label={`Filtrar por contrato: ${contractLabel}`}
-          >
-            {contractLabel}
-          </Key>
+          <div className="w-full animate-stagger-item" style={{ animationDelay: "25ms" }}>
+            <Key
+              pressed={contractState !== 0}
+              onClick={onCycleContract}
+              className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+              title={`Filtro de Contrato: ${contractLabel} (clique para alternar)`}
+              aria-label={`Filtrar por contrato: ${contractLabel}`}
+            >
+              {contractLabel}
+            </Key>
+          </div>
 
           {/* 2. Botão PCD (PCD -> Somente PCD -> Aceita PCD -> PCD) */}
-          <Key
-            pressed={pcdState !== 0}
-            onClick={onCyclePcd}
-            className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-            title={`Filtro PCD: ${pcdLabel} (clique para alternar)`}
-            aria-label={`Filtrar PCD: ${pcdLabel}`}
-          >
-            {pcdLabel}
-          </Key>
+          <div className="w-full animate-stagger-item" style={{ animationDelay: "50ms" }}>
+            <Key
+              pressed={pcdState !== 0}
+              onClick={onCyclePcd}
+              className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+              title={`Filtro PCD: ${pcdLabel} (clique para alternar)`}
+              aria-label={`Filtrar PCD: ${pcdLabel}`}
+            >
+              {pcdLabel}
+            </Key>
+          </div>
 
           {/* 3. Botão Experiência (Experiência -> Com experiência -> Sem experiência -> Experiência) */}
-          <Key
-            pressed={experienceState !== 0}
-            onClick={onCycleExperience}
-            className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-            title={`Filtro Experiência: ${experienceLabel} (clique para alternar)`}
-            aria-label={`Filtrar experiência: ${experienceLabel}`}
-          >
-            {experienceLabel}
-          </Key>
+          <div className="w-full animate-stagger-item" style={{ animationDelay: "75ms" }}>
+            <Key
+              pressed={experienceState !== 0}
+              onClick={onCycleExperience}
+              className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+              title={`Filtro Experiência: ${experienceLabel} (clique para alternar)`}
+              aria-label={`Filtrar experiência: ${experienceLabel}`}
+            >
+              {experienceLabel}
+            </Key>
+          </div>
         </div>
       ) : (
         /* Linha 1 para Notícias: categorias dinâmicas em carrossel horizontal */
@@ -141,27 +150,32 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           aria-label="Filtro de categorias de notícias"
           className="w-full overflow-x-auto no-scrollbar scroll-smooth flex items-center gap-2 py-1 px-0.5"
         >
-          {(categories && categories.length > 0 ? categories : ["Política", "Saúde", "Clima"]).map((cat) => {
+          {(categories && categories.length > 0 ? categories : ["Política", "Saúde", "Clima"]).map((cat, idx) => {
             const isPressed =
               selectedCategory !== null &&
               normalizeText(selectedCategory) === normalizeText(cat);
             return (
-              <Key
+              <div
                 key={cat}
-                pressed={isPressed}
-                onClick={() =>
-                  onSelectCategory?.(isPressed ? null : cat)
-                }
-                title={
-                  isPressed
-                    ? `Remover filtro ${cat}`
-                    : `Filtrar apenas por ${cat}`
-                }
-                className="shrink-0 text-[12.5px] px-2.5"
-                aria-label={`Filtrar notícias por ${cat}`}
+                className="shrink-0 animate-stagger-item"
+                style={{ animationDelay: `${25 + idx * 25}ms` }}
               >
-                {cat}
-              </Key>
+                <Key
+                  pressed={isPressed}
+                  onClick={() =>
+                    onSelectCategory?.(isPressed ? null : cat)
+                  }
+                  title={
+                    isPressed
+                      ? `Remover filtro ${cat}`
+                      : `Filtrar apenas por ${cat}`
+                  }
+                  className="shrink-0 text-[12.5px] px-2.5"
+                  aria-label={`Filtrar notícias por ${cat}`}
+                >
+                  {cat}
+                </Key>
+              </div>
             );
           })}
         </div>
@@ -171,7 +185,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       {mode === "vagas" ? (
         <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
           {/* Input de busca ocupando as 2 primeiras colunas (até o fim do botão PCD) */}
-          <div className="col-span-2 relative w-full">
+          <div
+            className="col-span-2 relative w-full animate-stagger-item"
+            style={{ animationDelay: "100ms" }}
+          >
             <span
               className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
               aria-hidden="true"
@@ -208,7 +225,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           </div>
 
           {/* Botão Favoritas na 3ª coluna (abaixo do botão de Experiência) */}
-          <div className="col-span-1">
+          <div
+            className="col-span-1 animate-stagger-item"
+            style={{ animationDelay: "125ms" }}
+          >
             <Key
               pressed={favoritesOnly}
               onClick={onToggleFavoritesOnly}
@@ -226,7 +246,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
       ) : (
         /* Linha 2 para notícias: input largura cheia */
-        <div className="relative w-full">
+        <div
+          className="relative w-full animate-stagger-item"
+          style={{ animationDelay: "100ms" }}
+        >
           <span
             className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
             aria-hidden="true"

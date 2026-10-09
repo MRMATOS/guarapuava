@@ -5,6 +5,7 @@ import { DailyDigest } from "@/types/news";
 import { MainNav } from "@/components/ui/MainNav";
 import { FilterPanel } from "@/components/ui/FilterPanel";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
+import { Presence } from "@/components/ui/Presence";
 import { Key } from "@/components/ui/Key";
 import { formatRelativeUpdateText } from "@/lib/utils/date";
 import { filterNewsHighlights } from "@/lib/utils/search";
@@ -186,47 +187,47 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
         onCloseFilter={onCloseFilter}
         filterButtonRef={filterButtonRef}
         above={
-          <>
-            {hasActiveFilters && (
-              <FilterIndicator
-                label={
+          <Presence isVisible={hasActiveFilters} duration={180}>
+            <FilterIndicator
+              label={
+                <span>
+                  {selectedCategory && (
+                    <>
+                      Categoria: <strong className="text-ink font-bold">{selectedCategory}</strong>
+                      {" • "}
+                    </>
+                  )}
+                  {searchQuery.trim() && (
+                    <>
+                      Busca: &ldquo;<strong className="text-ink font-bold">{searchQuery.trim()}</strong>&rdquo;
+                      {" • "}
+                    </>
+                  )}
                   <span>
-                    {selectedCategory && (
-                      <>
-                        Categoria: <strong className="text-ink font-bold">{selectedCategory}</strong>
-                        {" • "}
-                      </>
-                    )}
-                    {searchQuery.trim() && (
-                      <>
-                        Busca: &ldquo;<strong className="text-ink font-bold">{searchQuery.trim()}</strong>&rdquo;
-                        {" • "}
-                      </>
-                    )}
-                    <span>
-                      <strong className="text-ink font-bold">{totalFilteredCount}</strong>{" "}
-                      {totalFilteredCount === 1
-                        ? "tópico encontrado"
-                        : "tópicos encontrados"}
-                    </span>
+                    <strong className="text-ink font-bold">{totalFilteredCount}</strong>{" "}
+                    {totalFilteredCount === 1
+                      ? "tópico encontrado"
+                      : "tópicos encontrados"}
                   </span>
-                }
-                onClear={onResetFilters}
-              />
-            )}
-            {isFilterOpen && (
-              <FilterPanel
-                mode="noticias"
-                categories={categories}
-                onClose={onCloseFilter}
-                filterButtonRef={filterButtonRef}
-                searchQuery={searchQuery}
-                onSearchChange={onSearchChange}
-                selectedCategory={selectedCategory}
-                onSelectCategory={onSelectCategory}
-              />
-            )}
-          </>
+                </span>
+              }
+              onClear={onResetFilters}
+            />
+          </Presence>
+        }
+        filterPanel={
+          <Presence isVisible={isFilterOpen} duration={180}>
+            <FilterPanel
+              mode="noticias"
+              categories={categories}
+              onClose={onCloseFilter}
+              filterButtonRef={filterButtonRef}
+              searchQuery={searchQuery}
+              onSearchChange={onSearchChange}
+              selectedCategory={selectedCategory}
+              onSelectCategory={onSelectCategory}
+            />
+          </Presence>
         }
       />
     </div>

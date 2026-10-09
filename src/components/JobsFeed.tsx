@@ -6,6 +6,7 @@ import { JobOpening } from "@/types/job";
 import { MainNav } from "@/components/ui/MainNav";
 import { FilterPanel } from "@/components/ui/FilterPanel";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
+import { Presence } from "@/components/ui/Presence";
 import { Key } from "@/components/ui/Key";
 import {
   getTodayDateString,
@@ -225,41 +226,41 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
         onCloseFilter={onCloseFilter}
         filterButtonRef={filterButtonRef}
         above={
-          <>
-            {hasActiveFilters && (
-              <FilterIndicator
-                label={
-                  <span>
-                    Exibindo{" "}
-                    <strong className="text-ink font-bold">
-                      {filteredJobs.length}
-                    </strong>{" "}
-                    {filteredJobs.length === 1
-                      ? "vaga encontrada"
-                      : "vagas encontradas"}
-                  </span>
-                }
-                onClear={onResetFilters}
-              />
-            )}
-            {isFilterOpen && (
-              <FilterPanel
-                mode="vagas"
-                onClose={onCloseFilter}
-                filterButtonRef={filterButtonRef}
-                contractState={contractState}
-                onCycleContract={onCycleContract}
-                pcdState={pcdState}
-                onCyclePcd={onCyclePcd}
-                experienceState={experienceState}
-                onCycleExperience={onCycleExperience}
-                favoritesOnly={favoritesOnly}
-                onToggleFavoritesOnly={onToggleFavoritesOnly}
-                searchQuery={searchQuery}
-                onSearchChange={onSearchChange}
-              />
-            )}
-          </>
+          <Presence isVisible={hasActiveFilters} duration={180}>
+            <FilterIndicator
+              label={
+                <span>
+                  Exibindo{" "}
+                  <strong className="text-ink font-bold">
+                    {filteredJobs.length}
+                  </strong>{" "}
+                  {filteredJobs.length === 1
+                    ? "vaga encontrada"
+                    : "vagas encontradas"}
+                </span>
+              }
+              onClear={onResetFilters}
+            />
+          </Presence>
+        }
+        filterPanel={
+          <Presence isVisible={isFilterOpen} duration={180}>
+            <FilterPanel
+              mode="vagas"
+              onClose={onCloseFilter}
+              filterButtonRef={filterButtonRef}
+              contractState={contractState}
+              onCycleContract={onCycleContract}
+              pcdState={pcdState}
+              onCyclePcd={onCyclePcd}
+              experienceState={experienceState}
+              onCycleExperience={onCycleExperience}
+              favoritesOnly={favoritesOnly}
+              onToggleFavoritesOnly={onToggleFavoritesOnly}
+              searchQuery={searchQuery}
+              onSearchChange={onSearchChange}
+            />
+          </Presence>
         }
       />
     </div>

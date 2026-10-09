@@ -7,6 +7,7 @@ import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
 import { FilterPanel } from "@/components/ui/FilterPanel";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
+import { Presence } from "@/components/ui/Presence";
 
 interface JobDetailProps {
   jobs: JobOpening[];
@@ -411,39 +412,43 @@ export const JobDetail: React.FC<JobDetailProps> = ({
         align="end"
         above={
           <>
-            {hasActiveFilters && onResetFilters && (
-              <FilterIndicator
-                label={
-                  <span>
-                    Exibindo{" "}
-                    <strong className="text-ink font-bold">
-                      {jobs.length}
-                    </strong>{" "}
-                    {jobs.length === 1
-                      ? "vaga encontrada"
-                      : "vagas encontradas"}
-                  </span>
-                }
-                onClear={onResetFilters}
-              />
-            )}
-            {isFilterOpen && onCloseFilter && (
-              <FilterPanel
-                mode="vagas"
-                onClose={onCloseFilter}
-                filterButtonRef={filterButtonRef}
-                contractState={contractState}
-                onCycleContract={onCycleContract ?? (() => {})}
-                pcdState={pcdState}
-                onCyclePcd={onCyclePcd ?? (() => {})}
-                experienceState={experienceState}
-                onCycleExperience={onCycleExperience ?? (() => {})}
-                searchQuery={searchQuery}
-                onSearchChange={onSearchChange ?? (() => {})}
-                favoritesOnly={favoritesOnly}
-                onToggleFavoritesOnly={onToggleFavoritesOnly}
-              />
-            )}
+            <Presence isVisible={Boolean(hasActiveFilters && onResetFilters)} duration={200}>
+              {onResetFilters && (
+                <FilterIndicator
+                  label={
+                    <span>
+                      Exibindo{" "}
+                      <strong className="text-ink font-bold">
+                        {jobs.length}
+                      </strong>{" "}
+                      {jobs.length === 1
+                        ? "vaga encontrada"
+                        : "vagas encontradas"}
+                    </span>
+                  }
+                  onClear={onResetFilters}
+                />
+              )}
+            </Presence>
+            <Presence isVisible={Boolean(isFilterOpen && onCloseFilter)} duration={200}>
+              {onCloseFilter && (
+                <FilterPanel
+                  mode="vagas"
+                  onClose={onCloseFilter}
+                  filterButtonRef={filterButtonRef}
+                  contractState={contractState}
+                  onCycleContract={onCycleContract ?? (() => {})}
+                  pcdState={pcdState}
+                  onCyclePcd={onCyclePcd ?? (() => {})}
+                  experienceState={experienceState}
+                  onCycleExperience={onCycleExperience ?? (() => {})}
+                  searchQuery={searchQuery}
+                  onSearchChange={onSearchChange ?? (() => {})}
+                  favoritesOnly={favoritesOnly}
+                  onToggleFavoritesOnly={onToggleFavoritesOnly}
+                />
+              )}
+            </Presence>
           </>
         }
         aria-label="Ações e filtros da vaga"
