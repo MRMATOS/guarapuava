@@ -62,22 +62,19 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
                 if (isInfoOpen) onCloseInfo();
                 onCloseDetail();
               }}
-              className="desktop-parked-panel w-full group relative animate-stagger-item"
+              className="desktop-parked-panel w-full group relative"
               title="Clique para voltar a interagir com este feed"
             >
-              {/* Selo tátil superior indicando o retorno ao centro */}
-              <div className="flex items-center justify-between mb-3 px-1 pointer-events-none">
+              {/* Selo tátil superior indicando o retorno ao centro: alinhado à direita com seta para a direita */}
+              <div className="flex items-center justify-end mb-3 pr-2 pointer-events-none">
                 <span className="badge-inset text-[12px] group-hover:border-coral/50 transition-colors">
-                  <span className="text-coral font-bold mr-1">←</span>
                   Clique para voltar ao feed
-                </span>
-                <span className="text-[12px] text-ink-muted opacity-75">
-                  Em espera
+                  <span className="text-coral font-bold ml-1.5">→</span>
                 </span>
               </div>
 
-              {/* Pré-visualização do feed (interação desabilitada no modo rebatido) */}
-              <div className="pointer-events-none select-none max-h-[calc(100vh-140px)] overflow-hidden rounded-[28px] opacity-90">
+              {/* Pré-visualização do feed (com respiro generoso para evitar corte de sombras neumórficas) */}
+              <div className="pointer-events-none select-none max-h-[calc(100vh-140px)] -mx-8 px-8 -my-8 py-8 overflow-hidden desktop-parked-scroll-mask">
                 {slotLeft}
               </div>
             </div>
