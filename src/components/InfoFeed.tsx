@@ -8,12 +8,14 @@ interface InfoFeedProps {
   onSelectNoticias: () => void;
   onSelectVagas: () => void;
   onSelectInfo?: () => void;
+  hideNav?: boolean;
 }
 
 export const InfoFeed: React.FC<InfoFeedProps> = ({
   onSelectNoticias,
   onSelectVagas,
   onSelectInfo,
+  hideNav = false,
 }) => {
   return (
     <div className="page-shell">
@@ -251,15 +253,17 @@ export const InfoFeed: React.FC<InfoFeedProps> = ({
       </div>
 
       {/* Rodapé padrão com os 4 botões para retorno imediato a Notícias ou Vagas */}
-      <MainNav
-        active="info"
-        onNoticias={onSelectNoticias}
-        onVagas={onSelectVagas}
-        onSelectInfo={() => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          onSelectInfo?.();
-        }}
-      />
+      {!hideNav && (
+        <MainNav
+          active="info"
+          onNoticias={onSelectNoticias}
+          onVagas={onSelectVagas}
+          onSelectInfo={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            onSelectInfo?.();
+          }}
+        />
+      )}
     </div>
   );
 };

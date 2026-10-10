@@ -213,6 +213,20 @@ body {
       calc(var(--dock-offset) + var(--dock-height) + var(--dock-clearance));
   }
 
+  @media (min-width: 1024px) {
+    .page-shell {
+      padding-top: 0;
+      padding-inline: 0;
+      padding-bottom: var(--page-pad);
+      min-height: auto;
+    }
+
+    .dock-shell {
+      display: none !important;
+    }
+  }
+
+
   /* Cartão de conteúdo (alto-relevo grande) */
   .surface-card {
     background: var(--color-canvas);

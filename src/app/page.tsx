@@ -9,6 +9,8 @@ import { JobsFeed } from "@/components/JobsFeed";
 import { JobDetail } from "@/components/JobDetail";
 import { InfoFeed } from "@/components/InfoFeed";
 import { NewsCardSkeleton } from "@/components/ui/NewsCardSkeleton";
+import { DesktopStage } from "@/components/desktop/DesktopStage";
+import { FilterPanel } from "@/components/ui/FilterPanel";
 import { listActiveJobs } from "@/lib/supabase/jobs";
 import { listActiveNewsDigests } from "@/lib/supabase/news";
 import { filterJobs, normalizeCategory, DEFAULT_NEWS_CATEGORIES } from "@/lib/utils/search";
@@ -46,6 +48,7 @@ export default function Page() {
   const [favoriteJobIds, setFavoriteJobIds] = useState<string[]>(getFavoriteJobIds);
   const [viewedJobIds, setViewedJobIds] = useState<string[]>(getViewedJobIds);
   const [isJobFilterOpen, setIsJobFilterOpen] = useState(false);
+  const [isDesktopInfoOpen, setIsDesktopInfoOpen] = useState(false);
 
   // Rastreamento de navegação e posição de scroll para restauração precisa
   const hasNavigatedInApp = useRef(false);
@@ -276,6 +279,10 @@ export default function Page() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        if (isDesktopInfoOpen) {
+          setIsDesktopInfoOpen(false);
+          return;
+        }
         if (isJobFilterOpen) {
           setIsJobFilterOpen(false);
           return;
@@ -286,6 +293,10 @@ export default function Page() {
         }
         if (view === "vaga-detail") {
           handleBackFromJobDetail();
+          return;
+        }
+        if (view === "details") {
+          navigateTo("home");
           return;
         }
         if (view === "info") {
@@ -300,127 +311,374 @@ export default function Page() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [view, isJobFilterOpen, isNewsFilterOpen, handleBackFromJobDetail]);
+  }, [view, isDesktopInfoOpen, isJobFilterOpen, isNewsFilterOpen, handleBackFromJobDetail]);
+
+  const desktopActiveTab: "noticias" | "vagas" =
+    view === "vagas" || view === "vaga-detail" ? "vagas" : "noticias";
+
+  const isDesktopDetailOpen = view === "details" || view === "vaga-detail";
+  const isDesktopInfoActive = isDesktopInfoOpen || view === "info";
+
+  const handleDesktopSelectTab = (tab: "noticias" | "vagas") => {
+    setIsDesktopInfoOpen(false);
+    if (tab === "vagas") {
+      savedVagasScrollY.current = 0;
+      navigateTo("vagas");
+    } else {
+      navigateTo("home");
+    }
+  };
+
+  const handleDesktopCloseDetail = () => {
+    if (view === "details") {
+      navigateTo("home");
+    } else if (view === "vaga-detail") {
+      handleBackFromJobDetail();
+    }
+  };
+
+  const handleToggleDesktopInfo = () => {
+    if (isDesktopInfoActive) {
+      setIsDesktopInfoOpen(false);
+      if (view === "info") {
+        navigateTo(desktopActiveTab === "vagas" ? "vagas" : "home");
+      }
+    } else {
+      setIsDesktopInfoOpen(true);
+    }
+  };
+
+  const handleCloseDesktopInfo = () => {
+    setIsDesktopInfoOpen(false);
+    if (view === "info") {
+      navigateTo(desktopActiveTab === "vagas" ? "vagas" : "home");
+    }
+  };
 
   return (
     <div className="min-h-[100dvh] bg-canvas text-ink flex justify-center">
-      {view === "home" && (
-        <HomeFeed
-          digests={newsDigests}
-          categories={allNewsCategories}
-          isLoading={isLoadingNews}
-          onOpenDetails={(d) => navigateTo("details", undefined, d)}
-          onSelectVagas={() => {
-            savedVagasScrollY.current = 0;
-            setIsNewsFilterOpen(false);
-            navigateTo("vagas");
-          }}
-          onSelectInfo={() => {
-            setIsNewsFilterOpen(false);
-            navigateTo("info");
-          }}
-          searchQuery={newsSearchQuery}
-          onSearchChange={setNewsSearchQuery}
-          selectedCategory={selectedNewsCategory}
-          onSelectCategory={setSelectedNewsCategory}
-          isFilterOpen={isNewsFilterOpen}
-          onToggleFilter={() => setIsNewsFilterOpen((prev) => !prev)}
-          onCloseFilter={() => setIsNewsFilterOpen(false)}
-          onResetFilters={handleResetNewsFilters}
-        />
-      )}
+      {/* 1. Casca Mobile / Tablet (< 1024px) com Dock Inferior intacto */}
+      <div className="lg:hidden w-full flex justify-center">
+        {view === "home" && (
+          <HomeFeed
+            digests={newsDigests}
+            categories={allNewsCategories}
+            isLoading={isLoadingNews}
+            onOpenDetails={(d) => navigateTo("details", undefined, d)}
+            onSelectVagas={() => {
+              savedVagasScrollY.current = 0;
+              setIsNewsFilterOpen(false);
+              navigateTo("vagas");
+            }}
+            onSelectInfo={() => {
+              setIsNewsFilterOpen(false);
+              navigateTo("info");
+            }}
+            searchQuery={newsSearchQuery}
+            onSearchChange={setNewsSearchQuery}
+            selectedCategory={selectedNewsCategory}
+            onSelectCategory={setSelectedNewsCategory}
+            isFilterOpen={isNewsFilterOpen}
+            onToggleFilter={() => setIsNewsFilterOpen((prev) => !prev)}
+            onCloseFilter={() => setIsNewsFilterOpen(false)}
+            onResetFilters={handleResetNewsFilters}
+          />
+        )}
 
-      {view === "details" && selectedDigest ? (
-        <DetailedFeed
-          digest={selectedDigest}
-          tags={currentNewsTags}
-          onBack={() => navigateTo("home")}
-        />
-      ) : view === "details" ? (
-        <div className="page-shell">
-          <div className="w-full space-y-4">
-            <NewsCardSkeleton />
+        {view === "details" && selectedDigest ? (
+          <DetailedFeed
+            digest={selectedDigest}
+            tags={currentNewsTags}
+            onBack={() => navigateTo("home")}
+          />
+        ) : view === "details" ? (
+          <div className="page-shell">
+            <div className="w-full space-y-4">
+              <NewsCardSkeleton />
+            </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
 
-      {view === "vagas" && (
-        <JobsFeed
-          jobs={jobs}
-          isLoading={isLoadingJobs}
-          onSelectJob={(job) => {
-            hasNavigatedInApp.current = true;
-            savedVagasScrollY.current = window.scrollY;
-            const key = job.id || job.externalId || "";
-            if (key) handleMarkJobViewed(key);
-            navigateTo("vaga-detail", job);
-          }}
-          onSelectNoticias={() => {
-            setIsJobFilterOpen(false);
-            navigateTo("home");
-          }}
-          onSelectInfo={() => {
-            setIsJobFilterOpen(false);
-            navigateTo("info");
-          }}
-          searchQuery={jobSearchQuery}
-          onSearchChange={setJobSearchQuery}
-          contractState={contractState}
-          onCycleContract={handleCycleContract}
-          pcdState={pcdState}
-          onCyclePcd={handleCyclePcd}
-          experienceState={experienceState}
-          onCycleExperience={handleCycleExperience}
-          favoritesOnly={favoritesOnly}
-          onToggleFavoritesOnly={handleToggleFavoritesOnly}
-          favoriteJobIds={favoriteJobIds}
-          viewedJobIds={viewedJobIds}
-          isFilterOpen={isJobFilterOpen}
-          onToggleFilter={() => setIsJobFilterOpen((prev) => !prev)}
-          onCloseFilter={() => setIsJobFilterOpen(false)}
-          onResetFilters={handleResetJobFilters}
-        />
-      )}
+        {view === "vagas" && (
+          <JobsFeed
+            jobs={jobs}
+            isLoading={isLoadingJobs}
+            onSelectJob={(job) => {
+              hasNavigatedInApp.current = true;
+              savedVagasScrollY.current = window.scrollY;
+              const key = job.id || job.externalId || "";
+              if (key) handleMarkJobViewed(key);
+              navigateTo("vaga-detail", job);
+            }}
+            onSelectNoticias={() => {
+              setIsJobFilterOpen(false);
+              navigateTo("home");
+            }}
+            onSelectInfo={() => {
+              setIsJobFilterOpen(false);
+              navigateTo("info");
+            }}
+            searchQuery={jobSearchQuery}
+            onSearchChange={setJobSearchQuery}
+            contractState={contractState}
+            onCycleContract={handleCycleContract}
+            pcdState={pcdState}
+            onCyclePcd={handleCyclePcd}
+            experienceState={experienceState}
+            onCycleExperience={handleCycleExperience}
+            favoritesOnly={favoritesOnly}
+            onToggleFavoritesOnly={handleToggleFavoritesOnly}
+            favoriteJobIds={favoriteJobIds}
+            viewedJobIds={viewedJobIds}
+            isFilterOpen={isJobFilterOpen}
+            onToggleFilter={() => setIsJobFilterOpen((prev) => !prev)}
+            onCloseFilter={() => setIsJobFilterOpen(false)}
+            onResetFilters={handleResetJobFilters}
+          />
+        )}
 
-      {view === "info" && (
-        <InfoFeed
-          onSelectNoticias={() => {
-            navigateTo("home");
-          }}
-          onSelectVagas={() => {
-            savedVagasScrollY.current = 0;
-            navigateTo("vagas");
-          }}
-          onSelectInfo={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-        />
-      )}
+        {view === "info" && (
+          <InfoFeed
+            onSelectNoticias={() => {
+              navigateTo("home");
+            }}
+            onSelectVagas={() => {
+              savedVagasScrollY.current = 0;
+              navigateTo("vagas");
+            }}
+            onSelectInfo={() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          />
+        )}
 
-      {view === "vaga-detail" && (selectedJob || jobs[0]) && (
-        <JobDetail
-          jobs={detailFeedJobs}
-          initialJobId={selectedJob?.id || selectedJob?.externalId}
-          onBack={handleBackFromJobDetail}
-          searchQuery={jobSearchQuery}
-          onSearchChange={setJobSearchQuery}
-          contractState={contractState}
-          onCycleContract={handleCycleContract}
-          pcdState={pcdState}
-          onCyclePcd={handleCyclePcd}
-          experienceState={experienceState}
-          onCycleExperience={handleCycleExperience}
-          favoritesOnly={favoritesOnly}
-          onToggleFavoritesOnly={handleToggleFavoritesOnly}
-          favoriteJobIds={favoriteJobIds}
-          onToggleFavorite={handleToggleFavorite}
-          onMarkJobViewed={handleMarkJobViewed}
-          isFilterOpen={isJobFilterOpen}
-          onToggleFilter={() => setIsJobFilterOpen((prev) => !prev)}
-          onCloseFilter={() => setIsJobFilterOpen(false)}
-          onResetFilters={handleResetJobFilters}
+        {view === "vaga-detail" && (selectedJob || jobs[0]) && (
+          <JobDetail
+            jobs={detailFeedJobs}
+            initialJobId={selectedJob?.id || selectedJob?.externalId}
+            onBack={handleBackFromJobDetail}
+            searchQuery={jobSearchQuery}
+            onSearchChange={setJobSearchQuery}
+            contractState={contractState}
+            onCycleContract={handleCycleContract}
+            pcdState={pcdState}
+            onCyclePcd={handleCyclePcd}
+            experienceState={experienceState}
+            onCycleExperience={handleCycleExperience}
+            favoritesOnly={favoritesOnly}
+            onToggleFavoritesOnly={handleToggleFavoritesOnly}
+            favoriteJobIds={favoriteJobIds}
+            onToggleFavorite={handleToggleFavorite}
+            onMarkJobViewed={handleMarkJobViewed}
+            isFilterOpen={isJobFilterOpen}
+            onToggleFilter={() => setIsJobFilterOpen((prev) => !prev)}
+            onCloseFilter={() => setIsJobFilterOpen(false)}
+            onResetFilters={handleResetJobFilters}
+          />
+        )}
+      </div>
+
+      {/* 2. Palco Desktop (>= 1024px) Multi-Colunas com Perspectiva 3D */}
+      <div className="hidden lg:flex w-full justify-center">
+        <DesktopStage
+          activeTab={desktopActiveTab}
+          onSelectTab={handleDesktopSelectTab}
+          isDetailOpen={isDesktopDetailOpen}
+          onCloseDetail={handleDesktopCloseDetail}
+          isInfoOpen={isDesktopInfoActive}
+          onToggleInfo={handleToggleDesktopInfo}
+          onCloseInfo={handleCloseDesktopInfo}
+          slotLeft={
+            view === "details" ? (
+              <HomeFeed
+                digests={newsDigests}
+                categories={allNewsCategories}
+                isLoading={isLoadingNews}
+                onOpenDetails={(d) => navigateTo("details", undefined, d)}
+                onSelectVagas={() => {
+                  savedVagasScrollY.current = 0;
+                  navigateTo("vagas");
+                }}
+                onSelectInfo={handleToggleDesktopInfo}
+                searchQuery={newsSearchQuery}
+                onSearchChange={setNewsSearchQuery}
+                selectedCategory={selectedNewsCategory}
+                onSelectCategory={setSelectedNewsCategory}
+                isFilterOpen={false}
+                onToggleFilter={() => {}}
+                onCloseFilter={() => {}}
+                onResetFilters={handleResetNewsFilters}
+              />
+            ) : view === "vaga-detail" ? (
+              <JobsFeed
+                jobs={jobs}
+                isLoading={isLoadingJobs}
+                onSelectJob={(job) => {
+                  hasNavigatedInApp.current = true;
+                  savedVagasScrollY.current = window.scrollY;
+                  const key = job.id || job.externalId || "";
+                  if (key) handleMarkJobViewed(key);
+                  navigateTo("vaga-detail", job);
+                }}
+                onSelectNoticias={() => navigateTo("home")}
+                onSelectInfo={handleToggleDesktopInfo}
+                searchQuery={jobSearchQuery}
+                onSearchChange={setJobSearchQuery}
+                contractState={contractState}
+                onCycleContract={handleCycleContract}
+                pcdState={pcdState}
+                onCyclePcd={handleCyclePcd}
+                experienceState={experienceState}
+                onCycleExperience={handleCycleExperience}
+                favoritesOnly={favoritesOnly}
+                onToggleFavoritesOnly={handleToggleFavoritesOnly}
+                favoriteJobIds={favoriteJobIds}
+                viewedJobIds={viewedJobIds}
+                isFilterOpen={false}
+                onToggleFilter={() => {}}
+                onCloseFilter={() => {}}
+                onResetFilters={handleResetJobFilters}
+              />
+            ) : null
+          }
+          slotCenter={
+            view === "details" ? (
+              selectedDigest ? (
+                <DetailedFeed
+                  digest={selectedDigest}
+                  tags={currentNewsTags}
+                  onBack={() => navigateTo("home")}
+                />
+              ) : (
+                <div className="page-shell">
+                  <div className="w-full space-y-4">
+                    <NewsCardSkeleton />
+                  </div>
+                </div>
+              )
+            ) : view === "vaga-detail" ? (
+              (selectedJob || jobs[0]) ? (
+                <JobDetail
+                  jobs={detailFeedJobs}
+                  initialJobId={selectedJob?.id || selectedJob?.externalId}
+                  onBack={handleBackFromJobDetail}
+                  searchQuery={jobSearchQuery}
+                  onSearchChange={setJobSearchQuery}
+                  contractState={contractState}
+                  onCycleContract={handleCycleContract}
+                  pcdState={pcdState}
+                  onCyclePcd={handleCyclePcd}
+                  experienceState={experienceState}
+                  onCycleExperience={handleCycleExperience}
+                  favoritesOnly={favoritesOnly}
+                  onToggleFavoritesOnly={handleToggleFavoritesOnly}
+                  favoriteJobIds={favoriteJobIds}
+                  onToggleFavorite={handleToggleFavorite}
+                  onMarkJobViewed={handleMarkJobViewed}
+                  isFilterOpen={false}
+                  onToggleFilter={() => {}}
+                  onCloseFilter={() => {}}
+                  onResetFilters={handleResetJobFilters}
+                />
+              ) : null
+            ) : desktopActiveTab === "vagas" ? (
+              <JobsFeed
+                jobs={jobs}
+                isLoading={isLoadingJobs}
+                onSelectJob={(job) => {
+                  hasNavigatedInApp.current = true;
+                  savedVagasScrollY.current = window.scrollY;
+                  const key = job.id || job.externalId || "";
+                  if (key) handleMarkJobViewed(key);
+                  navigateTo("vaga-detail", job);
+                }}
+                onSelectNoticias={() => navigateTo("home")}
+                onSelectInfo={handleToggleDesktopInfo}
+                searchQuery={jobSearchQuery}
+                onSearchChange={setJobSearchQuery}
+                contractState={contractState}
+                onCycleContract={handleCycleContract}
+                pcdState={pcdState}
+                onCyclePcd={handleCyclePcd}
+                experienceState={experienceState}
+                onCycleExperience={handleCycleExperience}
+                favoritesOnly={favoritesOnly}
+                onToggleFavoritesOnly={handleToggleFavoritesOnly}
+                favoriteJobIds={favoriteJobIds}
+                viewedJobIds={viewedJobIds}
+                isFilterOpen={false}
+                onToggleFilter={() => {}}
+                onCloseFilter={() => {}}
+                onResetFilters={handleResetJobFilters}
+              />
+            ) : (
+              <HomeFeed
+                digests={newsDigests}
+                categories={allNewsCategories}
+                isLoading={isLoadingNews}
+                onOpenDetails={(d) => navigateTo("details", undefined, d)}
+                onSelectVagas={() => {
+                  savedVagasScrollY.current = 0;
+                  navigateTo("vagas");
+                }}
+                onSelectInfo={handleToggleDesktopInfo}
+                searchQuery={newsSearchQuery}
+                onSearchChange={setNewsSearchQuery}
+                selectedCategory={selectedNewsCategory}
+                onSelectCategory={setSelectedNewsCategory}
+                isFilterOpen={false}
+                onToggleFilter={() => {}}
+                onCloseFilter={() => {}}
+                onResetFilters={handleResetNewsFilters}
+              />
+            )
+          }
+          slotRightFilter={
+            desktopActiveTab === "vagas" ? (
+              <FilterPanel
+                mode="vagas"
+                persistent
+                contractState={contractState}
+                onCycleContract={handleCycleContract}
+                pcdState={pcdState}
+                onCyclePcd={handleCyclePcd}
+                experienceState={experienceState}
+                onCycleExperience={handleCycleExperience}
+                favoritesOnly={favoritesOnly}
+                onToggleFavoritesOnly={handleToggleFavoritesOnly}
+                searchQuery={jobSearchQuery}
+                onSearchChange={setJobSearchQuery}
+                onClose={() => {}}
+              />
+            ) : (
+              <FilterPanel
+                mode="noticias"
+                persistent
+                categories={view === "details" ? currentNewsTags : allNewsCategories}
+                searchQuery={newsSearchQuery}
+                onSearchChange={setNewsSearchQuery}
+                selectedCategory={selectedNewsCategory}
+                onSelectCategory={setSelectedNewsCategory}
+                onClose={() => {}}
+              />
+            )
+          }
+          slotRightInfo={
+            <InfoFeed
+              hideNav
+              onSelectNoticias={() => {
+                handleCloseDesktopInfo();
+                navigateTo("home");
+              }}
+              onSelectVagas={() => {
+                handleCloseDesktopInfo();
+                savedVagasScrollY.current = 0;
+                navigateTo("vagas");
+              }}
+            />
+          }
         />
-      )}
+      </div>
     </div>
   );
 }

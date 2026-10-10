@@ -9,6 +9,7 @@ export interface FilterPanelProps {
   mode: "vagas" | "noticias";
   onClose: () => void;
   filterButtonRef?: React.RefObject<HTMLButtonElement | null>;
+  persistent?: boolean;
 
   // Vagas filter states
   contractState?: number; // 0: Contrato, 1: CLT, 2: PJ
@@ -34,6 +35,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   mode,
   onClose,
   filterButtonRef,
+  persistent = false,
   contractState = 0,
   onCycleContract,
   pcdState = 0,
@@ -50,8 +52,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Fecha o bloco se clicar fora (exceto se for no botão Filtrar do rodapé)
+  // Fecha o bloco se clicar fora (exceto se for no botão Filtrar do rodapé ou modo persistente)
   useEffect(() => {
+    if (persistent) return;
+
     const handlePointerDown = (event: MouseEvent | TouchEvent) => {
       const target = event.target as HTMLElement;
       // Se o clique for dentro do painel ou na área do dock, o dock gerencia a alternância
