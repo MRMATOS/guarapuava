@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { parseNewsDocText, parseNewsDocxBuffer } from '../src/lib/docs/news-parser';
+import { parseNewsDocText, parseNewsDocxBuffer } from '@/lib/docs/news-parser';
+import { DailyDigest } from '@/types/news';
 
 const sampleNewsText = `
 Atualização em 07/10/2026 às 12:20
@@ -9,11 +10,11 @@ Texto aleatório de notícias antigas...
 Seção 4: Bloco Delta Feed
 DELTA FEED - [12:20]
 (Alimentação de novidades do site - apenas fatos inéditos desta rodada)
-[Saúde] Notícia nova: Unimed Guarapuava convoca assembleia para 22 de outubro. Fonte: Portal RSN
+[Saúde] Notícia nova: Unimed Guarapuava convoca assembleia para 22 de outubro. Fonte: Portal RSN (Link: https://redesuldenoticias.com.br/unimed)
 [Política] Notícia nova: Prefeitura publica Boletim Oficial 3510. Fonte: Prefeitura de Guarapuava
 Card Principal do Dia
 Manchete: Unimed Guarapuava convoca cooperados para criar Diretoria de Saúde.
-Saúde e Gestão: Unimed propõe ampliação da Diretoria Executiva para 4 membros.
+Saúde e Gestão: Unimed propõe ampliação da Diretoria Executiva para 4 membros. (Link: https://redesuldenoticias.com.br/unimed-destaque)
 Atos Oficiais: Boletim Oficial nº 3510 detalha dispensas de servidores.
 `;
 
@@ -45,11 +46,15 @@ Manchete: Teste de normalização de categorias.
   assert.equal(d.lastUpdatedTime, '12:20');
   assert.equal(d.headline, 'Unimed Guarapuava convoca cooperados para criar Diretoria de Saúde.');
   assert.equal(d.highlights.length, 2, 'Deve extrair 2 destaques do card principal');
+  assert.equal(d.highlights[0].url, 'https://redesuldenoticias.com.br/unimed-destaque', 'Destaque deve extrair URL embutida');
   assert.equal(d.batches.length, 1, 'Deve extrair 1 lote horário');
   assert.equal(d.batches[0].items.length, 2, 'Deve extrair 2 notícias do Delta Feed');
   assert.equal(d.batches[0].items[0].category, 'Saúde');
+  assert.equal(d.batches[0].items[0].source, 'Portal RSN');
+  assert.equal(d.batches[0].items[0].url, 'https://redesuldenoticias.com.br/unimed', 'Notícia do Delta Feed deve ter url extraída');
   assert.equal(d.batches[0].items[1].category, 'Política');
-  console.log('✅ Task 2 parser unit test passed (including category canonicalization)');
+  assert.equal(d.batches[0].items[1].url, undefined, 'Notícia sem link deve ter url indefinida');
+  console.log('✅ Task 2 parser unit test passed (including category canonicalization and URLs)');
 }
 
 async function testRealDocx() {
@@ -59,13 +64,16 @@ async function testRealDocx() {
     const digests = await parseNewsDocxBuffer(buf);
     assert.ok(digests.length >= 1, 'Deve extrair ao menos 1 dia do documento real');
     console.log(`✅ Extraídos ${digests.length} dias do docx real.`);
-    digests.forEach((d) => {
+    digests.forEach((d: DailyDigest) => {
       console.log(`   - Data: ${d.date} (${d.lastUpdatedTime}) | Manchete: "${d.headline.slice(0, 50)}..." | Batches: ${d.batches.length}`);
     });
 
-    const day07 = digests.find((d) => d.date === '07/10/2026');
+    const day07 = digests.find((d: DailyDigest) => d.date === '07/10/2026');
     assert.ok(day07, 'Deve conter o dia 07/10/2026');
     assert.ok(day07.batches.length > 0, 'Deve conter batches no dia 07/10/2026');
+    const firstItem = day07.batches[0].items[0];
+    assert.ok(firstItem.url?.startsWith('http'), 'Primeiro item do dia 07/10 deve conter URL válida extraída do docx');
+    console.log(`✅ Item verificado com sucesso: [${firstItem.category}] ${firstItem.text.slice(0, 40)}... -> URL: ${firstItem.url}`);
     console.log('✅ Task 2 real docx extraction test passed');
   }
 }

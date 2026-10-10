@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { DailyDigest, NewsBatch } from "@/types/news";
-import { ArrowLeft, Search, X } from "lucide-react";
+import { ArrowLeft, ExternalLink, Search, X } from "lucide-react";
 import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
@@ -165,20 +165,50 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
 
               {/* Lista de notícias do bloco */}
               <ul className="space-y-4 text-[14.5px] sm:text-[15px] leading-[1.48] text-ink-body">
-                {batch.items.map((item) => (
-                  <li key={item.id} className="flex items-start">
-                    <span
-                      className="mr-2 text-coral font-black text-[15px] leading-[1.1] select-none shrink-0"
-                      aria-hidden="true"
-                    >
-                      •
-                    </span>
-                    <p className="flex-1">
-                      <strong className="font-bold text-ink">{item.title}:</strong>{" "}
-                      <span>{item.text}</span>
-                    </p>
-                  </li>
-                ))}
+                {batch.items.map((item) => {
+                  const hasLink = Boolean(item.url);
+
+                  return (
+                    <li key={item.id} className="flex items-start">
+                      <span
+                        className="mr-2 text-coral font-black text-[15px] leading-[1.1] select-none shrink-0"
+                        aria-hidden="true"
+                      >
+                        •
+                      </span>
+                      {hasLink ? (
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex-1 rounded-md -mx-1.5 -my-1 px-1.5 py-1 transition-all duration-150 hover:bg-coral/[0.04] active:bg-coral/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral/40"
+                          title="Acessar notícia completa no site de origem"
+                          aria-label={`${item.title}: ${item.text}. Acessar notícia completa no site original.`}
+                        >
+                          <p className="inline">
+                            <strong className="font-bold text-ink group-hover:text-coral transition-colors duration-150">
+                              {item.title}:
+                            </strong>{" "}
+                            <span>{item.text}</span>
+                            <span className="inline-flex items-center ml-1.5 align-baseline text-coral/80 group-hover:text-coral transition-colors select-none">
+                              <ExternalLink
+                                className="w-3.5 h-3.5 inline shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                                strokeWidth={2.2}
+                                aria-hidden="true"
+                              />
+                              <span className="sr-only"> (abre notícia completa em nova aba)</span>
+                            </span>
+                          </p>
+                        </a>
+                      ) : (
+                        <p className="flex-1">
+                          <strong className="font-bold text-ink">{item.title}:</strong>{" "}
+                          <span>{item.text}</span>
+                        </p>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
 
               {/* Separador pontilhado entre blocos */}

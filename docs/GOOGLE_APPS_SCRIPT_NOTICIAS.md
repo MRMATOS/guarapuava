@@ -35,11 +35,16 @@ function sincronizarNoticiasComServidor() {
       for (let j = 0; j < container.getNumChildren(); j++) {
         const elem = container.getChild(j);
         if (elem.getType() === DocumentApp.ElementType.TEXT) {
-          const url = elem.asText().getLinkUrl();
-          if (url) {
-            linkUrl = url;
-            break;
+          const textElem = elem.asText();
+          const indices = textElem.getTextAttributeIndices();
+          for (let k = 0; k < indices.length; k++) {
+            const url = textElem.getLinkUrl(indices[k]);
+            if (url && typeof url === 'string' && url.indexOf('http') === 0) {
+              linkUrl = url;
+              break;
+            }
           }
+          if (linkUrl) break;
         }
       }
 

@@ -86,13 +86,27 @@ export function parseNewsDocText(content: string): DailyDigest[] {
     const links: string[] = [];
     let cleanText = line;
 
+    // Detecta links em formato markdown: [Texto](https://...)
+    const mdLinkMatches = [...cleanText.matchAll(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g)];
+    if (mdLinkMatches.length > 0) {
+      for (const m of mdLinkMatches) {
+        if (!links.includes(m[2])) links.push(m[2]);
+      }
+      cleanText = cleanText.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '$1').trim();
+    }
+
     // Detecta padrão customizado: (Link: https://...)
-    const customLinkMatch = line.match(/\(Link:\s*(https?:\/\/[^\s)]+)\)/i);
-    if (customLinkMatch) {
-      links.push(customLinkMatch[1]);
-      cleanText = line.replace(/\(Link:\s*https?:\/\/[^\s)]+\)/i, '').trim();
-    } else {
-      const urlMatch = line.match(/(https?:\/\/[^\s]+)/i);
+    const customLinkMatches = [...cleanText.matchAll(/\(Link:\s*(https?:\/\/[^\s)]+)\)/gi)];
+    if (customLinkMatches.length > 0) {
+      for (const m of customLinkMatches) {
+        if (!links.includes(m[1])) links.push(m[1]);
+      }
+      cleanText = cleanText.replace(/\(Link:\s*https?:\/\/[^\s)]+\)/gi, '').trim();
+    }
+
+    // Fallback: detecta URL direta na linha caso não tenha encontrado acima
+    if (links.length === 0) {
+      const urlMatch = cleanText.match(/(https?:\/\/[^\s)]+)/i);
       if (urlMatch) {
         links.push(urlMatch[1]);
       }
@@ -178,7 +192,7 @@ export function parseNewsParagraphs(paragraphs: { text: string; links: string[] 
 
         // Extrai link caso presente nos nós do parágrafo
         const link = p.links[0];
-        const fullSource = rawSource ? rawSource : (link ? link : undefined);
+        const fullSource: string | undefined = rawSource || undefined;
 
         const id = `item-${currentRound.date.replace(/\//g, '')}-${currentRound.time.replace(/:/g, '')}-${currentRound.deltaItems.length + 1}`;
 
@@ -197,6 +211,7 @@ export function parseNewsParagraphs(paragraphs: { text: string; links: string[] 
           title: itemTitle,
           text: itemText,
           source: fullSource,
+          url: link || undefined,
         });
       }
       continue;
@@ -221,11 +236,13 @@ export function parseNewsParagraphs(paragraphs: { text: string; links: string[] 
         // Evita capturar cabeçalhos estranhos
         if (!['Modalidade', 'Local', 'Data e Horário', 'Divulgação'].includes(cat)) {
           const id = `h-${currentRound.date.replace(/\//g, '')}-${currentRound.highlights.length + 1}`;
+          const link = p.links[0];
           currentRound.highlights.push({
             id,
             category: cat,
             title: cat,
             text: body,
+            url: link || undefined,
           });
         }
       }
@@ -276,11 +293,13 @@ export function parseNewsParagraphs(paragraphs: { text: string; links: string[] 
           items: [...round.deltaItems],
         });
       } else {
-        // Mescla sem duplicar itens com mesmo id
         const existingBatch = day.batchesMap.get(round.time)!;
         for (const item of round.deltaItems) {
-          if (!existingBatch.items.some((it) => it.text === item.text)) {
+          const matchIndex = existingBatch.items.findIndex((it) => it.text === item.text);
+          if (matchIndex === -1) {
             existingBatch.items.push(item);
+          } else if (!existingBatch.items[matchIndex].url && item.url) {
+            existingBatch.items[matchIndex].url = item.url;
           }
         }
       }

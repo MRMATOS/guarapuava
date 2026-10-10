@@ -4,6 +4,7 @@ export interface NewsItem {
   title: string;    // Ex: "Bancada regional na ALEP"
   text: string;     // Descrição resumida da notícia
   source?: string;  // Ex: "Portal RSN", "Prefeitura de Guarapuava"
+  url?: string;     // Link direto para a matéria completa no site de origem
 }
 
 export interface NewsBatch {
