@@ -23,6 +23,7 @@ interface JobsFeedProps {
   onSelectNoticias: () => void;
   onSelectInfo?: () => void;
   lastUpdated?: string;
+  hideHeader?: boolean;
 
   // Estados e manipuladores dos filtros
   searchQuery: string;
@@ -44,6 +45,45 @@ interface JobsFeedProps {
   onResetFilters: () => void;
 }
 
+export interface JobsDateHeaderProps {
+  lastUpdated?: string;
+  jobs?: JobOpening[];
+  className?: string;
+}
+
+export const JobsDateHeader: React.FC<JobsDateHeaderProps> = ({
+  lastUpdated,
+  jobs = [],
+  className = "",
+}) => {
+  const todayDisplay = useMemo(() => getTodayDateString(), []);
+
+  const lastUpdatedDisplay = useMemo(() => {
+    if (lastUpdated) {
+      return formatRelativeUpdateText(lastUpdated);
+    }
+    const latestDate = getLatestJobUpdateDate(jobs);
+    return formatRelativeUpdateText(latestDate);
+  }, [jobs, lastUpdated]);
+
+  return (
+    <div
+      className={`surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 flex items-center justify-between tracking-tight tabular-time ${className}`}
+    >
+      <span className="font-semibold text-ink text-[15px]">
+        {todayDisplay}
+      </span>
+      <span className="badge-inset">
+        <span
+          className="w-1.5 h-1.5 rounded-full bg-coral animate-pulse"
+          aria-hidden="true"
+        />
+        {lastUpdatedDisplay}
+      </span>
+    </div>
+  );
+};
+
 export const JobsFeed: React.FC<JobsFeedProps> = ({
   jobs,
   isLoading = false,
@@ -51,6 +91,7 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
   onSelectNoticias,
   onSelectInfo,
   lastUpdated,
+  hideHeader = false,
   searchQuery,
   onSearchChange,
   contractState,
@@ -70,16 +111,6 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
   onResetFilters,
 }) => {
   const filterButtonRef = useRef<HTMLButtonElement>(null);
-
-  const todayDisplay = useMemo(() => getTodayDateString(), []);
-
-  const lastUpdatedDisplay = useMemo(() => {
-    if (lastUpdated) {
-      return formatRelativeUpdateText(lastUpdated);
-    }
-    const latestDate = getLatestJobUpdateDate(jobs);
-    return formatRelativeUpdateText(latestDate);
-  }, [jobs, lastUpdated]);
 
   // Aplica a busca universal e os botões combináveis
   const filteredJobs = useMemo(() => {
@@ -105,21 +136,14 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
       {/* Título semântico para acessibilidade/SEO */}
       <h1 className="sr-only">Vagas em Guarapuava</h1>
 
-      {/* Card compacto com data de hoje e status da última atualização (fixo no topo com vagas rolando por baixo) */}
-      <div className="sticky -top-4 z-20 pt-2 pb-4 bg-canvas">
-        <div className="surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 flex items-center justify-between tracking-tight tabular-time">
-          <span className="font-semibold text-ink text-[15px]">
-            {todayDisplay}
-          </span>
-          <span className="badge-inset">
-            <span
-              className="w-1.5 h-1.5 rounded-full bg-coral animate-pulse"
-              aria-hidden="true"
-            />
-            {lastUpdatedDisplay}
-          </span>
-        </div>
-      </div>
+      {/* Card compacto com data de hoje e status da última atualização (ocultado quando fixo no palco desktop) */}
+      {!hideHeader && (
+        <JobsDateHeader
+          lastUpdated={lastUpdated}
+          jobs={jobs}
+          className="mb-4"
+        />
+      )}
 
       {/* Lista de cartões de vagas ou Estado Vazio */}
       {filteredJobs.length > 0 ? (

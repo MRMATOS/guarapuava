@@ -216,9 +216,11 @@ body {
   @media (min-width: 1024px) {
     .page-shell {
       padding-top: 0;
-      padding-inline: 14px;
+      padding-inline: 0;
       padding-bottom: var(--page-pad);
       min-height: auto;
+      width: 100%;
+      max-width: var(--shell-max);
     }
 
     .dock-shell {
@@ -407,16 +409,16 @@ body {
 
   .desktop-parked-panel {
     transform-origin: right center;
-    transform: rotateY(-10deg) scale(0.96) translateZ(-8px);
-    opacity: 0.9;
-    cursor: default;
+    transform: rotateY(-8deg);
+    opacity: 0.92;
+    pointer-events: auto;
     transition:
       transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
       opacity 320ms ease;
   }
 
   .desktop-parked-panel:hover {
-    transform: rotateY(-4deg) scale(0.98);
+    transform: rotateY(-3deg);
     opacity: 1;
   }
 

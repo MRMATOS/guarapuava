@@ -148,11 +148,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           </div>
         </div>
       ) : (
-        /* Linha 1 para Notícias: categorias dinâmicas em carrossel horizontal */
+        /* Linha 1 para Notícias: grid de 4 colunas no desktop (sem scroll horizontal) e carrossel fluido no mobile */
         <div
           role="toolbar"
           aria-label="Filtro de categorias de notícias"
-          className="w-full overflow-x-auto no-scrollbar scroll-smooth flex items-center gap-2 py-1 px-0.5"
+          className="w-full flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible no-scrollbar scroll-smooth items-center lg:items-stretch gap-1.5 sm:gap-2 py-1 px-0.5 lg:py-0"
         >
           {(categories && categories.length > 0 ? categories : ["Política", "Saúde", "Clima"]).map((cat, idx) => {
             const isPressed =
@@ -161,7 +161,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             return (
               <div
                 key={cat}
-                className="shrink-0 animate-stagger-item"
+                className="shrink-0 lg:shrink lg:w-full animate-stagger-item"
                 style={{ animationDelay: `${25 + idx * 25}ms` }}
               >
                 <Key
@@ -174,7 +174,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                       ? `Remover filtro ${cat}`
                       : `Filtrar apenas por ${cat}`
                   }
-                  className="shrink-0 text-[12.5px] px-2.5"
+                  className="w-full text-[12px] sm:text-[12.5px] px-1 sm:px-1.5 justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
                   aria-label={`Filtrar notícias por ${cat}`}
                 >
                   {cat}

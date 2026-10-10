@@ -5,7 +5,7 @@ import { DailyDigest } from "@/types/news";
 import { JobOpening } from "@/types/job";
 import { HomeFeed } from "@/components/HomeFeed";
 import { DetailedFeed } from "@/components/DetailedFeed";
-import { JobsFeed } from "@/components/JobsFeed";
+import { JobsFeed, JobsDateHeader } from "@/components/JobsFeed";
 import { JobDetail } from "@/components/JobDetail";
 import { InfoFeed } from "@/components/InfoFeed";
 import { NewsCardSkeleton } from "@/components/ui/NewsCardSkeleton";
@@ -393,6 +393,11 @@ export default function Page() {
             digest={selectedDigest}
             tags={currentNewsTags}
             onBack={() => navigateTo("home")}
+            searchQuery={newsSearchQuery}
+            onSearchChange={setNewsSearchQuery}
+            selectedCategory={selectedNewsCategory}
+            onSelectCategory={setSelectedNewsCategory}
+            onResetFilters={handleResetNewsFilters}
           />
         ) : view === "details" ? (
           <div className="page-shell">
@@ -491,6 +496,11 @@ export default function Page() {
           isInfoOpen={isDesktopInfoActive}
           onToggleInfo={handleToggleDesktopInfo}
           onCloseInfo={handleCloseDesktopInfo}
+          slotLeftHeader={
+            view === "vaga-detail" ? (
+              <JobsDateHeader jobs={jobs} />
+            ) : undefined
+          }
           slotLeft={
             view === "details" ? (
               <HomeFeed
@@ -517,6 +527,7 @@ export default function Page() {
               <JobsFeed
                 jobs={jobs}
                 isLoading={isLoadingJobs}
+                hideHeader={true}
                 activeJobId={selectedJob?.id || selectedJob?.externalId}
                 onSelectJob={(job) => {
                   hasNavigatedInApp.current = true;
@@ -553,6 +564,11 @@ export default function Page() {
                   digest={selectedDigest}
                   tags={currentNewsTags}
                   onBack={() => navigateTo("home")}
+                  searchQuery={newsSearchQuery}
+                  onSearchChange={setNewsSearchQuery}
+                  selectedCategory={selectedNewsCategory}
+                  onSelectCategory={setSelectedNewsCategory}
+                  onResetFilters={handleResetNewsFilters}
                 />
               ) : (
                 <div className="page-shell">
@@ -659,7 +675,7 @@ export default function Page() {
               <FilterPanel
                 mode="noticias"
                 persistent
-                categories={view === "details" ? currentNewsTags : allNewsCategories}
+                categories={allNewsCategories}
                 searchQuery={newsSearchQuery}
                 onSearchChange={setNewsSearchQuery}
                 selectedCategory={selectedNewsCategory}

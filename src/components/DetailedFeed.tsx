@@ -7,25 +7,41 @@ import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { formatRelativeUpdateText } from "@/lib/utils/date";
-import { normalizeText, normalizeCategory } from "@/lib/utils/search";
+import { normalizeText, normalizeCategory, matchesQuery } from "@/lib/utils/search";
 
 interface DetailedFeedProps {
   digest: DailyDigest;
   tags: string[];
   onBack: () => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
+  selectedCategory?: string | null;
+  onSelectCategory?: (category: string | null) => void;
+  onResetFilters?: () => void;
 }
 
 export const DetailedFeed: React.FC<DetailedFeedProps> = ({
   digest,
   tags,
   onBack,
+  searchQuery: controlledSearchQuery,
+  onSearchChange,
+  selectedCategory: controlledCategory,
+  onSelectCategory,
+  onResetFilters,
 }) => {
-  const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [internalTag, setInternalTag] = useState<string | null>(null);
+  const [internalSearchQuery, setInternalSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+
+  const isControlledCategory = controlledCategory !== undefined;
+  const isControlledSearch = controlledSearchQuery !== undefined;
+
+  const activeTag = isControlledCategory ? controlledCategory : internalTag;
+  const searchQuery = isControlledSearch ? controlledSearchQuery : internalSearchQuery;
 
   // Garante tags canônicas, únicas e ordenadas
   const normalizedTags = useMemo(() => {
@@ -67,19 +83,35 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
 
   // Toggle do filtro de categoria: clicar na mesma tag limpa o filtro
   const handleTagClick = (tag: string) => {
-    setActiveTag((prev) =>
-      prev !== null && normalizeText(prev) === normalizeText(tag) ? null : tag
-    );
+    if (isControlledCategory) {
+      onSelectCategory?.(
+        activeTag !== null && normalizeText(activeTag) === normalizeText(tag) ? null : tag
+      );
+    } else {
+      setInternalTag((prev) =>
+        prev !== null && normalizeText(prev) === normalizeText(tag) ? null : tag
+      );
+    }
   };
 
   const handleResetFilters = () => {
-    setActiveTag(null);
-    setSearchQuery("");
+    if (onResetFilters) {
+      onResetFilters();
+    }
+    setInternalTag(null);
+    setInternalSearchQuery("");
+  };
+
+  const handleSearchChange = (query: string) => {
+    if (isControlledSearch) {
+      onSearchChange?.(query);
+    } else {
+      setInternalSearchQuery(query);
+    }
   };
 
   // Filtragem flexível por categoria e busca textual
   const filteredBatches: NewsBatch[] = useMemo(() => {
-    const queryNorm = normalizeText(searchQuery);
     return digest.batches
       .map((batch) => {
         const filteredItems = batch.items.filter((item) => {
@@ -90,17 +122,15 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
             const tagMatch =
               itemCatNorm === activeTagNorm ||
               itemCatNorm.includes(activeTagNorm) ||
-              activeTagNorm.includes(itemCatNorm);
+              activeTagNorm.includes(itemCatNorm) ||
+              normalizeText(item.title).includes(activeTagNorm);
             if (!tagMatch) return false;
           }
 
           // Filtro por texto de pesquisa (título, texto ou categoria)
-          if (queryNorm) {
-            const textMatch =
-              normalizeText(item.title).includes(queryNorm) ||
-              normalizeText(item.text).includes(queryNorm) ||
-              normalizeText(item.category).includes(queryNorm);
-            if (!textMatch) return false;
+          if (searchQuery.trim()) {
+            const textCorpus = `${item.title} ${item.text} ${item.category}`;
+            if (!matchesQuery(textCorpus, searchQuery)) return false;
           }
 
           return true;
@@ -293,7 +323,7 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
                   <input
                     type="text"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => handleSearchChange(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();
@@ -307,7 +337,7 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
                   {searchQuery ? (
                     <button
                       type="button"
-                      onClick={() => setSearchQuery("")}
+                      onClick={() => handleSearchChange("")}
                       className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
                       aria-label="Limpar texto da pesquisa"
                       title="Limpar pesquisa"

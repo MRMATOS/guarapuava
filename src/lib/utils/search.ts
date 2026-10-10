@@ -1,5 +1,5 @@
 import { JobOpening } from "@/types/job";
-import { NewsItem } from "@/types/news";
+import { NewsItem, DailyDigest } from "@/types/news";
 
 /**
  * Normaliza uma string removendo diacríticos (acentos) e convertendo para minúsculas.
@@ -280,4 +280,34 @@ export function filterNewsHighlights(
 
     return true;
   });
+}
+
+/**
+ * Retorna todos os itens de notícias de um resumo diário (incluindo lotes completos e destaques deduplicados).
+ */
+export function getAllDigestNewsItems(digest: DailyDigest): NewsItem[] {
+  const map = new Map<string, NewsItem>();
+  if (digest.batches) {
+    for (const batch of digest.batches) {
+      if (batch.items) {
+        for (const item of batch.items) {
+          if (item) {
+            const key = item.id || item.title || `${item.category}-${item.text}`;
+            map.set(key, item);
+          }
+        }
+      }
+    }
+  }
+  if (digest.highlights) {
+    for (const item of digest.highlights) {
+      if (item) {
+        const key = item.id || item.title || `${item.category}-${item.text}`;
+        if (!map.has(key)) {
+          map.set(key, item);
+        }
+      }
+    }
+  }
+  return Array.from(map.values());
 }

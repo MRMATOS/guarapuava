@@ -76,7 +76,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
     if (jobs.length === 0) return;
 
     const targetId = initialJobId || jobs[0]?.id || jobs[0]?.externalId;
-    if (!targetId || targetId === lastScrolledJobId.current) return;
+    if (!targetId) return;
 
     if (onMarkJobViewed) {
       onMarkJobViewed(targetId);
@@ -85,19 +85,35 @@ export const JobDetail: React.FC<JobDetailProps> = ({
     const isInitial = !hasInitialScrolled.current;
     lastScrolledJobId.current = targetId;
 
-    // Aguarda um pequeno tick para garantir que o DOM esteja montado
-    const timer = setTimeout(() => {
+    const performScroll = () => {
       const el =
         cardRefs.current.get(targetId) ||
-        document.getElementById(`vaga-${targetId}`);
+        (initialJobId ? cardRefs.current.get(initialJobId) : null) ||
+        document.getElementById(`vaga-${targetId}`) ||
+        (initialJobId ? document.getElementById(`vaga-${initialJobId}`) : null) ||
+        document.querySelector(`[data-job-id="${targetId}"]`);
       if (el) {
-        el.scrollIntoView({
-          behavior: isInitial ? "instant" : "smooth",
-          block: "start",
-        });
+        const desktopScroller = document.getElementById("desktop-center-scroller");
+        if (desktopScroller) {
+          const scrollerRect = desktopScroller.getBoundingClientRect();
+          const elRect = el.getBoundingClientRect();
+          const targetTop = desktopScroller.scrollTop + (elRect.top - scrollerRect.top) - 16;
+          desktopScroller.scrollTo({
+            top: Math.max(0, targetTop),
+            behavior: isInitial ? "instant" : "smooth",
+          });
+        } else {
+          el.scrollIntoView({
+            behavior: isInitial ? "instant" : "smooth",
+            block: "start",
+          });
+        }
         hasInitialScrolled.current = true;
       }
-    }, 15);
+    };
+
+    performScroll();
+    const timer = setTimeout(performScroll, 40);
 
     return () => clearTimeout(timer);
   }, [initialJobId, jobs, onMarkJobViewed]);
@@ -106,6 +122,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
   useEffect(() => {
     if (jobs.length <= 1) return;
 
+    const desktopScroller = document.getElementById("desktop-center-scroller");
     const observer = new IntersectionObserver(
       (entries) => {
         // Encontra a vaga mais visível no terço superior de leitura da tela
@@ -113,6 +130,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
         if (visibleEntry) {
           const jobId = visibleEntry.target.getAttribute("data-job-id");
           if (jobId) {
+            lastScrolledJobId.current = jobId;
             onMarkJobViewed?.(jobId);
             const nextHash = `#vaga-${jobId}`;
             if (window.location.hash !== nextHash) {
@@ -122,8 +140,8 @@ export const JobDetail: React.FC<JobDetailProps> = ({
         }
       },
       {
-        root: null,
-        rootMargin: "-20% 0px -60% 0px",
+        root: desktopScroller || null,
+        rootMargin: "-15% 0px -50% 0px",
         threshold: 0,
       }
     );
@@ -157,8 +175,12 @@ export const JobDetail: React.FC<JobDetailProps> = ({
                 ref={(el) => {
                   if (el) {
                     cardRefs.current.set(jobKey, el);
+                    if (job.id) cardRefs.current.set(job.id, el);
+                    if (job.externalId) cardRefs.current.set(job.externalId, el);
                   } else {
                     cardRefs.current.delete(jobKey);
+                    if (job.id) cardRefs.current.delete(job.id);
+                    if (job.externalId) cardRefs.current.delete(job.externalId);
                   }
                 }}
                 className="surface-card w-full p-6 sm:p-7 scroll-mt-6"

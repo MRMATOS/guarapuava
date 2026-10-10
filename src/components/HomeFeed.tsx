@@ -8,7 +8,7 @@ import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { Presence } from "@/components/ui/Presence";
 import { Key } from "@/components/ui/Key";
 import { formatRelativeUpdateText } from "@/lib/utils/date";
-import { filterNewsHighlights } from "@/lib/utils/search";
+import { filterNewsHighlights, getAllDigestNewsItems } from "@/lib/utils/search";
 import { NewsCardSkeleton } from "@/components/ui/NewsCardSkeleton";
 
 interface HomeFeedProps {
@@ -52,10 +52,11 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
 
   const hasActiveFilters = Boolean(searchQuery.trim()) || selectedCategory !== null;
 
-  // Total de tópicos encontrados somando todos os dias filtrados
+  // Total de tópicos encontrados somando todos os dias filtrados (lotes completos + destaques)
   const totalFilteredCount = useMemo(() => {
     return digests.reduce((acc, d) => {
-      return acc + filterNewsHighlights(d.highlights, searchQuery, selectedCategory).length;
+      const allItems = getAllDigestNewsItems(d);
+      return acc + filterNewsHighlights(allItems, searchQuery, selectedCategory).length;
     }, 0);
   }, [digests, searchQuery, selectedCategory]);
 
@@ -69,17 +70,33 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
             time: digest.lastUpdatedTime,
           });
 
-          // Aplica filtro de pesquisa e categoria nos destaques deste dia
-          const filteredHighlights = filterNewsHighlights(
-            digest.highlights,
+          // Busca todos os itens do dia (lotes detalhados + destaques)
+          const allDayItems = getAllDigestNewsItems(digest);
+          const matchingDayItems = filterNewsHighlights(
+            allDayItems,
             searchQuery,
             selectedCategory
           );
 
-          // Se estiver filtrando e este dia não tiver nenhum destaque correspondente, pula o dia
-          if (hasActiveFilters && filteredHighlights.length === 0) {
+          // Se estiver filtrando e este dia não tiver nenhuma notícia correspondente, pula o dia
+          if (hasActiveFilters && matchingDayItems.length === 0) {
             return null;
           }
+
+          // Destaques a exibir no cartão do dia:
+          // 1. Se os destaques originais casam com o filtro, exibe-os.
+          // 2. Senão, se há itens correspondentes nos lotes, exibe os itens dos lotes (até 4).
+          // 3. Sem filtros ativos, exibe os destaques originais do dia.
+          const matchingHighlights = filterNewsHighlights(
+            digest.highlights,
+            searchQuery,
+            selectedCategory
+          );
+          const displayHighlights = hasActiveFilters
+            ? matchingHighlights.length > 0
+              ? matchingHighlights
+              : matchingDayItems.slice(0, 4)
+            : digest.highlights;
 
           const isActive = Boolean(activeDate && digest.date === activeDate);
 
@@ -120,10 +137,10 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
               </h1>
 
               {/* Tópicos filtrados */}
-              {filteredHighlights.length > 0 && (
+              {displayHighlights.length > 0 && (
                 <ul className="space-y-4 text-[14.5px] leading-[1.48] text-ink-body">
-                  {filteredHighlights.map((item) => (
-                    <li key={item.id} className="flex items-start">
+                  {displayHighlights.map((item) => (
+                    <li key={item.id || item.title} className="flex items-start">
                       <span
                         className="mr-2 text-coral font-black text-[15px] leading-[1.1] select-none shrink-0"
                         aria-hidden="true"

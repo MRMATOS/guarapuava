@@ -13,6 +13,7 @@ export interface DesktopStageProps {
   onToggleInfo: () => void;
   onCloseInfo: () => void;
   slotLeft: React.ReactNode;
+  slotLeftHeader?: React.ReactNode;
   slotCenter: React.ReactNode;
   slotRightFilter: React.ReactNode;
   slotRightInfo: React.ReactNode;
@@ -29,6 +30,7 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
   onToggleInfo,
   onCloseInfo,
   slotLeft,
+  slotLeftHeader,
   slotCenter,
   slotRightFilter,
   slotRightInfo,
@@ -46,7 +48,7 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
 
   return (
     <div className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden flex justify-center py-6 px-4 xl:px-8 select-text">
-      <div className="flex items-start justify-center gap-7 max-w-[1340px] w-full h-full max-h-full">
+      <div className="flex items-start justify-center gap-4.5 max-w-[1300px] w-full h-full max-h-full">
         {/* ==================================================================
             1. COLUNA ESQUERDA (Feed Navegável em Perspectiva 3D)
             Mantém largura fixa de 430px mesmo antes de abrir um detalhe,
@@ -54,12 +56,25 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
            ================================================================== */}
         <aside
           aria-label="Feed anterior navegável"
-          className="w-[430px] shrink-0 desktop-perspective-container h-full max-h-full"
+          className="w-[430px] shrink-0 desktop-perspective-container h-full max-h-full pointer-events-none"
         >
           {isDetailOpen ? (
-            <div className="desktop-parked-panel w-full h-full flex flex-col group relative">
-              {/* Feed navegável completo com rolagem independente e respiro para sombras neumórficas */}
-              <div className="w-full h-full overflow-y-auto no-scrollbar overscroll-contain -mx-8 px-8 -my-4 py-4">
+            <div className="desktop-parked-panel w-full h-full flex flex-col group relative pointer-events-auto">
+              {/* Cabeçalho fixo da coluna esquerda (ex: data e atualização em vagas) */}
+              {slotLeftHeader ? (
+                <div className="w-full shrink-0 z-20 pb-2.5">
+                  {slotLeftHeader}
+                </div>
+              ) : null}
+
+              {/* Feed navegável completo com rolagem independente e dissipação suave */}
+              <div
+                className={`w-[calc(100%+48px)] -mx-6 px-6 ${
+                  slotLeftHeader
+                    ? "pt-3 [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_86%,transparent_100%)]"
+                    : "pt-4 [mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)]"
+                } flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain pb-28`}
+              >
                 {slotLeft}
               </div>
             </div>
@@ -76,10 +91,10 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
           onClick={() => {
             if (isInfoOpen) onCloseInfo();
           }}
-          className="w-[430px] shrink-0 h-full max-h-full flex flex-col"
+          className="w-[430px] shrink-0 h-full max-h-full flex flex-col relative"
         >
-          {/* Cabeçalho de 2 Botões (Notícias / Vagas) com fundo canvas sólido para isolar o scroll */}
-          <div className="w-full shrink-0 z-20 pb-4 bg-canvas">
+          {/* Cabeçalho de 2 Botões (Notícias / Vagas) com alinhamento pixel-perfect ao feed */}
+          <div className="w-full shrink-0 z-20 pb-2.5">
             <nav
               aria-label="Navegação de abas"
               className="grid grid-cols-2 gap-2 w-full h-[42px]"
@@ -110,8 +125,11 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
             </nav>
           </div>
 
-          {/* Conteúdo Central com scroll independente e respiro lateral para sombras */}
-          <div className="w-full flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain -mx-8 px-8 py-2">
+          {/* Conteúdo Central com dissipação de sombras sem corte rígido no topo ou na base */}
+          <div
+            id="desktop-center-scroller"
+            className="w-[calc(100%+48px)] -mx-6 px-6 pt-3 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
+          >
             {slotCenter}
           </div>
         </main>
@@ -123,8 +141,8 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
           aria-label="Painel lateral de filtros e opções"
           className="w-[360px] shrink-0 h-full max-h-full flex flex-col"
         >
-          {/* Linha dos 3 Botões de Opções com fundo canvas sólido */}
-          <div className="w-full shrink-0 z-20 pb-4 bg-canvas">
+          {/* Linha dos 3 Botões de Opções */}
+          <div className="w-full shrink-0 z-20 pb-2.5">
             <div
               role="toolbar"
               aria-label="Opções e preferências"
@@ -167,8 +185,8 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
             </div>
           </div>
 
-          {/* Corpo Dinâmico da Lateral: Informações ou Filtros */}
-          <div className="w-full flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain">
+          {/* Corpo Dinâmico da Lateral: Informações ou Filtros com sombra integral sem clipping */}
+          <div className="w-[calc(100%+32px)] -mx-4 px-4 py-3 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain">
             {isInfoOpen ? (
               <div
                 role="region"
@@ -178,13 +196,7 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
                 {slotRightInfo}
               </div>
             ) : (
-              <div
-                role="region"
-                aria-label="Filtros da página ativa"
-                className="desktop-sidebar-panel w-full p-2.5 sm:p-3"
-              >
-                {slotRightFilter}
-              </div>
+              slotRightFilter
             )}
           </div>
         </aside>
