@@ -497,6 +497,7 @@ export default function Page() {
                 digests={newsDigests}
                 categories={allNewsCategories}
                 isLoading={isLoadingNews}
+                activeDate={selectedDigest?.date}
                 onOpenDetails={(d) => navigateTo("details", undefined, d)}
                 onSelectVagas={() => {
                   savedVagasScrollY.current = 0;
@@ -516,9 +517,9 @@ export default function Page() {
               <JobsFeed
                 jobs={jobs}
                 isLoading={isLoadingJobs}
+                activeJobId={selectedJob?.id || selectedJob?.externalId}
                 onSelectJob={(job) => {
                   hasNavigatedInApp.current = true;
-                  savedVagasScrollY.current = window.scrollY;
                   const key = job.id || job.externalId || "";
                   if (key) handleMarkJobViewed(key);
                   navigateTo("vaga-detail", job);
@@ -548,6 +549,7 @@ export default function Page() {
             view === "details" ? (
               selectedDigest ? (
                 <DetailedFeed
+                  key={selectedDigest.date}
                   digest={selectedDigest}
                   tags={currentNewsTags}
                   onBack={() => navigateTo("home")}

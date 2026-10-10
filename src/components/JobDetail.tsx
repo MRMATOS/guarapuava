@@ -61,6 +61,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
   const cardRefs = useRef<Map<string, HTMLElement>>(new Map());
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const hasInitialScrolled = useRef(false);
+  const lastScrolledJobId = useRef<string | null>(null);
 
   const hasActiveFilters = Boolean(
     searchQuery.trim() ||
@@ -70,16 +71,19 @@ export const JobDetail: React.FC<JobDetailProps> = ({
       favoritesOnly
   );
 
-  // Scroll inicial instantâneo até a vaga clicada (permite rolar tanto para cima quanto para baixo)
+  // Scroll até a vaga selecionada (instantâneo na carga inicial e suave ao alternar vagas pelo feed lateral)
   useEffect(() => {
-    if (hasInitialScrolled.current || jobs.length === 0) return;
+    if (jobs.length === 0) return;
 
     const targetId = initialJobId || jobs[0]?.id || jobs[0]?.externalId;
-    if (!targetId) return;
+    if (!targetId || targetId === lastScrolledJobId.current) return;
 
     if (onMarkJobViewed) {
       onMarkJobViewed(targetId);
     }
+
+    const isInitial = !hasInitialScrolled.current;
+    lastScrolledJobId.current = targetId;
 
     // Aguarda um pequeno tick para garantir que o DOM esteja montado
     const timer = setTimeout(() => {
@@ -87,10 +91,13 @@ export const JobDetail: React.FC<JobDetailProps> = ({
         cardRefs.current.get(targetId) ||
         document.getElementById(`vaga-${targetId}`);
       if (el) {
-        el.scrollIntoView({ behavior: "instant", block: "start" });
+        el.scrollIntoView({
+          behavior: isInitial ? "instant" : "smooth",
+          block: "start",
+        });
         hasInitialScrolled.current = true;
       }
-    }, 10);
+    }, 15);
 
     return () => clearTimeout(timer);
   }, [initialJobId, jobs, onMarkJobViewed]);

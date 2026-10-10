@@ -45,41 +45,26 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
   const themeLabel = isDark ? "Modo claro" : "Modo escuro";
 
   return (
-    <div className="w-full min-h-[100dvh] flex justify-center py-6 px-4 xl:px-8 select-text">
-      <div className="flex items-start justify-center gap-7 max-w-[1340px] w-full">
+    <div className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden flex justify-center py-6 px-4 xl:px-8 select-text">
+      <div className="flex items-start justify-center gap-7 max-w-[1340px] w-full h-full max-h-full">
         {/* ==================================================================
-            1. COLUNA ESQUERDA (Feed Estacionado em Perspectiva 3D)
+            1. COLUNA ESQUERDA (Feed Navegável em Perspectiva 3D)
             Mantém largura fixa de 430px mesmo antes de abrir um detalhe,
-            garantindo que as colunas central e direita permaneçam perfeitamente ancoradas.
+            garantindo ancoragem estrita e scroll independente por coluna.
            ================================================================== */}
         <aside
-          aria-label="Feed anterior recolhido"
-          className="w-[430px] shrink-0 desktop-perspective-container pt-[58px]"
+          aria-label="Feed anterior navegável"
+          className="w-[430px] shrink-0 desktop-perspective-container h-full max-h-full"
         >
           {isDetailOpen ? (
-            <div
-              onClick={() => {
-                if (isInfoOpen) onCloseInfo();
-                onCloseDetail();
-              }}
-              className="desktop-parked-panel w-full group relative"
-              title="Clique para voltar a interagir com este feed"
-            >
-              {/* Selo tátil superior indicando o retorno ao centro: alinhado à direita com seta para a direita */}
-              <div className="flex items-center justify-end mb-3 pr-2 pointer-events-none">
-                <span className="badge-inset text-[12px] group-hover:border-coral/50 transition-colors">
-                  Clique para voltar ao feed
-                  <span className="text-coral font-bold ml-1.5">→</span>
-                </span>
-              </div>
-
-              {/* Pré-visualização do feed (com respiro generoso para evitar corte de sombras neumórficas) */}
-              <div className="pointer-events-none select-none max-h-[calc(100vh-140px)] -mx-8 px-8 -my-8 py-8 overflow-hidden desktop-parked-scroll-mask">
+            <div className="desktop-parked-panel w-full h-full flex flex-col group relative">
+              {/* Feed navegável completo com rolagem independente e respiro para sombras neumórficas */}
+              <div className="w-full h-full overflow-y-auto no-scrollbar overscroll-contain -mx-8 px-8 -my-4 py-4">
                 {slotLeft}
               </div>
             </div>
           ) : (
-            <div className="w-full h-1" aria-hidden="true" />
+            <div className="w-full h-full" aria-hidden="true" />
           )}
         </aside>
 
@@ -91,40 +76,42 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
           onClick={() => {
             if (isInfoOpen) onCloseInfo();
           }}
-          className="w-[430px] shrink-0 flex flex-col gap-4"
+          className="w-[430px] shrink-0 h-full max-h-full flex flex-col"
         >
-          {/* Cabeçalho de 2 Botões (Notícias / Vagas) */}
-          <nav
-            aria-label="Navegação de abas"
-            className="grid grid-cols-2 gap-2 w-full h-[42px] sticky top-6 z-20"
-          >
-            <Key
-              aria-current={activeTab === "noticias" ? "page" : undefined}
-              pressed={activeTab === "noticias"}
-              onClick={() => {
-                if (isInfoOpen) onCloseInfo();
-                onSelectTab("noticias");
-              }}
-              className="w-full text-[14.5px] justify-center text-center font-semibold"
+          {/* Cabeçalho de 2 Botões (Notícias / Vagas) com fundo canvas sólido para isolar o scroll */}
+          <div className="w-full shrink-0 z-20 pb-4 bg-canvas">
+            <nav
+              aria-label="Navegação de abas"
+              className="grid grid-cols-2 gap-2 w-full h-[42px]"
             >
-              Notícias
-            </Key>
+              <Key
+                aria-current={activeTab === "noticias" ? "page" : undefined}
+                pressed={activeTab === "noticias"}
+                onClick={() => {
+                  if (isInfoOpen) onCloseInfo();
+                  onSelectTab("noticias");
+                }}
+                className="w-full text-[14.5px] justify-center text-center font-semibold"
+              >
+                Notícias
+              </Key>
 
-            <Key
-              aria-current={activeTab === "vagas" ? "page" : undefined}
-              pressed={activeTab === "vagas"}
-              onClick={() => {
-                if (isInfoOpen) onCloseInfo();
-                onSelectTab("vagas");
-              }}
-              className="w-full text-[14.5px] justify-center text-center font-semibold"
-            >
-              Vagas
-            </Key>
-          </nav>
+              <Key
+                aria-current={activeTab === "vagas" ? "page" : undefined}
+                pressed={activeTab === "vagas"}
+                onClick={() => {
+                  if (isInfoOpen) onCloseInfo();
+                  onSelectTab("vagas");
+                }}
+                className="w-full text-[14.5px] justify-center text-center font-semibold"
+              >
+                Vagas
+              </Key>
+            </nav>
+          </div>
 
-          {/* Conteúdo Central (Feed da aba ou Detalhe) */}
-          <div className="w-full">
+          {/* Conteúdo Central com scroll independente e respiro lateral para sombras */}
+          <div className="w-full flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain -mx-8 px-8 py-2">
             {slotCenter}
           </div>
         </main>
@@ -134,57 +121,59 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
            ================================================================== */}
         <aside
           aria-label="Painel lateral de filtros e opções"
-          className="w-[360px] shrink-0 flex flex-col gap-4 sticky top-6 z-20"
+          className="w-[360px] shrink-0 h-full max-h-full flex flex-col"
         >
-          {/* Linha dos 3 Botões de Opções */}
-          <div
-            role="toolbar"
-            aria-label="Opções e preferências"
-            className="grid grid-cols-3 gap-2 w-full h-[42px]"
-          >
-            {/* 1. Botão Teste */}
-            <Key
-              type="button"
-              onClick={() => {}}
-              className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-              title="Botão de teste (reservado)"
-              aria-label="Botão de teste"
+          {/* Linha dos 3 Botões de Opções com fundo canvas sólido */}
+          <div className="w-full shrink-0 z-20 pb-4 bg-canvas">
+            <div
+              role="toolbar"
+              aria-label="Opções e preferências"
+              className="grid grid-cols-3 gap-2 w-full h-[42px]"
             >
-              Teste
-            </Key>
+              {/* 1. Botão Teste */}
+              <Key
+                type="button"
+                onClick={() => {}}
+                className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                title="Botão de teste (reservado)"
+                aria-label="Botão de teste"
+              >
+                Teste
+              </Key>
 
-            {/* 2. Botão Informações */}
-            <Key
-              type="button"
-              pressed={isInfoOpen}
-              aria-expanded={isInfoOpen}
-              onClick={onToggleInfo}
-              className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-              title="Abrir termos e diretrizes"
-              aria-label="Informações do site"
-            >
-              Informações
-            </Key>
+              {/* 2. Botão Informações */}
+              <Key
+                type="button"
+                pressed={isInfoOpen}
+                aria-expanded={isInfoOpen}
+                onClick={onToggleInfo}
+                className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                title="Abrir termos e diretrizes"
+                aria-label="Informações do site"
+              >
+                Informações
+              </Key>
 
-            {/* 3. Alternador de Modo Claro / Escuro */}
-            <Key
-              type="button"
-              onClick={toggleTheme}
-              className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-              title={`Alternar para ${themeLabel}`}
-              aria-label={`Alternar para ${themeLabel}`}
-            >
-              {themeLabel}
-            </Key>
+              {/* 3. Alternador de Modo Claro / Escuro */}
+              <Key
+                type="button"
+                onClick={toggleTheme}
+                className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                title={`Alternar para ${themeLabel}`}
+                aria-label={`Alternar para ${themeLabel}`}
+              >
+                {themeLabel}
+              </Key>
+            </div>
           </div>
 
           {/* Corpo Dinâmico da Lateral: Informações ou Filtros */}
-          <div className="w-full">
+          <div className="w-full flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain">
             {isInfoOpen ? (
               <div
                 role="region"
                 aria-label="Informações do portal"
-                className="desktop-sidebar-panel w-full p-4 max-h-[calc(100vh-100px)] overflow-y-auto no-scrollbar"
+                className="desktop-sidebar-panel w-full p-4"
               >
                 {slotRightInfo}
               </div>

@@ -408,12 +408,11 @@ body {
   .desktop-parked-panel {
     transform-origin: right center;
     transform: rotateY(-10deg) scale(0.96) translateZ(-8px);
-    opacity: 0.88;
-    cursor: pointer;
+    opacity: 0.9;
+    cursor: default;
     transition:
       transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
       opacity 320ms ease;
-    user-select: none;
   }
 
   .desktop-parked-panel:hover {

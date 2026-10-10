@@ -15,6 +15,7 @@ interface HomeFeedProps {
   digests: DailyDigest[];
   categories?: string[];
   isLoading?: boolean;
+  activeDate?: string;
   onOpenDetails: (digest: DailyDigest) => void;
   onSelectVagas: () => void;
   onSelectInfo?: () => void;
@@ -34,6 +35,7 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
   digests,
   categories,
   isLoading = false,
+  activeDate,
   onOpenDetails,
   onSelectVagas,
   onSelectInfo,
@@ -79,6 +81,8 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
             return null;
           }
 
+          const isActive = Boolean(activeDate && digest.date === activeDate);
+
           return (
             <article
               key={digest.date}
@@ -92,7 +96,9 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
                 }
               }}
               aria-label={`Abrir resumo detalhado das notícias de ${digest.date}`}
-              className="surface-card w-full pt-3.5 px-5 pb-6 sm:pt-4 sm:px-6 sm:pb-7 cursor-pointer transition-transform duration-150 active:scale-[0.992] touch-manipulation select-none"
+              className={`surface-card w-full pt-3.5 px-5 pb-6 sm:pt-4 sm:px-6 sm:pb-7 cursor-pointer transition-all duration-150 active:scale-[0.992] touch-manipulation select-none ${
+                isActive ? "ring-2 ring-coral/60 border-coral/50" : ""
+              }`}
             >
               {/* Metadados: data fixa à esquerda e horário de atualização relativo à direita */}
               <div className="flex items-center justify-between mb-5 tracking-tight tabular-time">

@@ -37,6 +37,7 @@ interface JobsFeedProps {
   onToggleFavoritesOnly?: () => void;
   favoriteJobIds?: string[];
   viewedJobIds?: string[];
+  activeJobId?: string;
   isFilterOpen: boolean;
   onToggleFilter: () => void;
   onCloseFilter: () => void;
@@ -62,6 +63,7 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
   onToggleFavoritesOnly,
   favoriteJobIds = [],
   viewedJobIds = [],
+  activeJobId,
   isFilterOpen,
   onToggleFilter,
   onCloseFilter,
@@ -103,18 +105,20 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
       {/* Título semântico para acessibilidade/SEO */}
       <h1 className="sr-only">Vagas em Guarapuava</h1>
 
-      {/* Card compacto com data de hoje e status da última atualização */}
-      <div className="surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 mb-4 flex items-center justify-between tracking-tight tabular-time">
-        <span className="font-semibold text-ink text-[15px]">
-          {todayDisplay}
-        </span>
-        <span className="badge-inset">
-          <span
-            className="w-1.5 h-1.5 rounded-full bg-coral animate-pulse"
-            aria-hidden="true"
-          />
-          {lastUpdatedDisplay}
-        </span>
+      {/* Card compacto com data de hoje e status da última atualização (fixo no topo com vagas rolando por baixo) */}
+      <div className="sticky -top-4 z-20 pt-2 pb-4 bg-canvas">
+        <div className="surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 flex items-center justify-between tracking-tight tabular-time">
+          <span className="font-semibold text-ink text-[15px]">
+            {todayDisplay}
+          </span>
+          <span className="badge-inset">
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-coral animate-pulse"
+              aria-hidden="true"
+            />
+            {lastUpdatedDisplay}
+          </span>
+        </div>
       </div>
 
       {/* Lista de cartões de vagas ou Estado Vazio */}
@@ -125,6 +129,11 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
               viewedJobIds &&
                 ((job.id && viewedJobIds.includes(job.id)) ||
                   (job.externalId && viewedJobIds.includes(job.externalId)))
+            );
+            const isActive = Boolean(
+              activeJobId &&
+                ((job.id && job.id === activeJobId) ||
+                  (job.externalId && job.externalId === activeJobId))
             );
 
             return (
@@ -140,7 +149,9 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
                   }
                 }}
                 aria-label={`Ver detalhes da vaga: ${job.title}`}
-                className="surface-card w-full p-5 sm:p-6 cursor-pointer transition-transform duration-150 active:scale-[0.99] touch-manipulation select-none"
+                className={`surface-card w-full p-5 sm:p-6 cursor-pointer transition-all duration-150 active:scale-[0.99] touch-manipulation select-none ${
+                  isActive ? "ring-2 ring-coral/60 border-coral/50" : ""
+                }`}
               >
                 {/* 1. Título da vaga */}
                 <h2 className="text-[15px] font-bold text-ink leading-[1.35] tracking-[-0.015em] mb-2 text-balance">
