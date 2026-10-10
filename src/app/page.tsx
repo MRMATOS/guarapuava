@@ -233,35 +233,38 @@ export default function Page() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, [jobs, newsDigests]);
 
-  const navigateTo = (newView: ActiveView, job?: JobOpening, digest?: DailyDigest) => {
-    setView(newView);
-    if (job) {
-      setSelectedJob(job);
-    }
-    if (digest) {
-      setSelectedDigest(digest);
-    }
-    try {
-      if (newView === "info") {
-        window.history.pushState(null, "", "#informacoes");
-      } else if (newView === "details") {
-        const targetDate = (digest || selectedDigest)?.date;
-        if (targetDate) {
-          const key = targetDate.replace(/\//g, "-");
-          window.history.pushState(null, "", `#noticia-${key}`);
-        }
-      } else if (newView === "vagas") {
-        window.history.pushState(null, "", "#vagas");
-      } else if (newView === "vaga-detail" && job) {
-        const key = job.id || job.externalId || "vaga";
-        window.history.pushState(null, "", `#vaga-${key}`);
-      } else {
-        window.history.pushState(null, "", window.location.pathname);
+  const navigateTo = useCallback(
+    (newView: ActiveView, job?: JobOpening, digest?: DailyDigest) => {
+      setView(newView);
+      if (job) {
+        setSelectedJob(job);
       }
-    } catch {
-      // Ignora erro em ambientes sem suporte
-    }
-  };
+      if (digest) {
+        setSelectedDigest(digest);
+      }
+      try {
+        if (newView === "info") {
+          window.history.pushState(null, "", "#informacoes");
+        } else if (newView === "details") {
+          const targetDate = (digest || selectedDigest)?.date;
+          if (targetDate) {
+            const key = targetDate.replace(/\//g, "-");
+            window.history.pushState(null, "", `#noticia-${key}`);
+          }
+        } else if (newView === "vagas") {
+          window.history.pushState(null, "", "#vagas");
+        } else if (newView === "vaga-detail" && job) {
+          const key = job.id || job.externalId || "vaga";
+          window.history.pushState(null, "", `#vaga-${key}`);
+        } else {
+          window.history.pushState(null, "", window.location.pathname);
+        }
+      } catch {
+        // Ignora erro em ambientes sem suporte
+      }
+    },
+    [selectedDigest]
+  );
 
   const handleBackFromJobDetail = useCallback(() => {
     setIsJobFilterOpen(false);
@@ -273,7 +276,7 @@ export default function Page() {
         window.scrollTo({ top: savedVagasScrollY.current || 0, behavior: "instant" });
       });
     }
-  }, []);
+  }, [navigateTo]);
 
   // Suporte à tecla Esc no desktop
   useEffect(() => {
@@ -311,7 +314,7 @@ export default function Page() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [view, isDesktopInfoOpen, isJobFilterOpen, isNewsFilterOpen, handleBackFromJobDetail]);
+  }, [view, isDesktopInfoOpen, isJobFilterOpen, isNewsFilterOpen, handleBackFromJobDetail, navigateTo]);
 
   const desktopActiveTab: "noticias" | "vagas" =
     view === "vagas" || view === "vaga-detail" ? "vagas" : "noticias";

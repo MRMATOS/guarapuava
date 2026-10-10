@@ -82,7 +82,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose, filterButtonRef]);
+  }, [onClose, filterButtonRef, persistent]);
 
   // Labels dinâmicos para os botões de Vagas
   const contractLabel =
