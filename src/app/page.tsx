@@ -322,15 +322,59 @@ export default function Page() {
   const isDesktopDetailOpen = view === "details" || view === "vaga-detail";
   const isDesktopInfoActive = isDesktopInfoOpen || view === "info";
 
-  const handleDesktopSelectTab = (tab: "noticias" | "vagas") => {
-    setIsDesktopInfoOpen(false);
-    if (tab === "vagas") {
-      savedVagasScrollY.current = 0;
-      navigateTo("vagas");
-    } else {
-      navigateTo("home");
-    }
-  };
+  const handleDesktopSelectTab = useCallback(
+    (tab: "noticias" | "vagas") => {
+      setIsDesktopInfoOpen(false);
+
+      const scrollToCenterTop = (smooth = true) => {
+        const centerScroller = document.getElementById("desktop-center-scroller");
+        if (centerScroller) {
+          centerScroller.scrollTo({ top: 0, behavior: smooth ? "smooth" : "instant" });
+        }
+        window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "instant" });
+      };
+
+      if (tab === "vagas") {
+        if (desktopActiveTab === "vagas") {
+          if (view === "vaga-detail") {
+            const centerScroller = document.getElementById("desktop-center-scroller");
+            if (centerScroller && centerScroller.scrollTop > 30) {
+              scrollToCenterTop(true);
+            } else {
+              savedVagasScrollY.current = 0;
+              navigateTo("vagas");
+              requestAnimationFrame(() => scrollToCenterTop(true));
+            }
+          } else {
+            savedVagasScrollY.current = 0;
+            scrollToCenterTop(true);
+          }
+        } else {
+          savedVagasScrollY.current = 0;
+          navigateTo("vagas");
+          requestAnimationFrame(() => scrollToCenterTop(false));
+        }
+      } else {
+        if (desktopActiveTab === "noticias") {
+          if (view === "details") {
+            const centerScroller = document.getElementById("desktop-center-scroller");
+            if (centerScroller && centerScroller.scrollTop > 30) {
+              scrollToCenterTop(true);
+            } else {
+              navigateTo("home");
+              requestAnimationFrame(() => scrollToCenterTop(true));
+            }
+          } else {
+            scrollToCenterTop(true);
+          }
+        } else {
+          navigateTo("home");
+          requestAnimationFrame(() => scrollToCenterTop(false));
+        }
+      }
+    },
+    [desktopActiveTab, navigateTo, view]
+  );
 
   const handleDesktopCloseDetail = () => {
     if (view === "details") {

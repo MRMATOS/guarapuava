@@ -69,6 +69,7 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
 
               {/* Feed navegável completo com rolagem independente e dissipação suave */}
               <div
+                id="desktop-left-scroller"
                 className={`w-[calc(100%+48px)] -mx-6 px-6 ${
                   slotLeftHeader
                     ? "pt-3 [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_86%,transparent_100%)]"
