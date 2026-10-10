@@ -46,26 +46,23 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
 
   return (
     <div className="w-full min-h-[100dvh] flex justify-center py-6 px-4 xl:px-8 select-text">
-      <div
-        className={`flex items-start justify-center gap-7 transition-all duration-300 ease-out ${
-          isDetailOpen ? "max-w-[1340px]" : "max-w-[880px]"
-        } w-full`}
-      >
+      <div className="flex items-start justify-center gap-7 max-w-[1340px] w-full">
         {/* ==================================================================
             1. COLUNA ESQUERDA (Feed Estacionado em Perspectiva 3D)
-            Aparece apenas quando um detalhe está aberto na coluna do meio.
+            Mantém largura fixa de 430px mesmo antes de abrir um detalhe,
+            garantindo que as colunas central e direita permaneçam perfeitamente ancoradas.
            ================================================================== */}
-        {isDetailOpen && (
-          <aside
-            aria-label="Feed anterior recolhido"
-            onClick={() => {
-              if (isInfoOpen) onCloseInfo();
-              onCloseDetail();
-            }}
-            className="w-[430px] shrink-0 desktop-perspective-container pt-[58px]"
-          >
+        <aside
+          aria-label="Feed anterior recolhido"
+          className="w-[430px] shrink-0 desktop-perspective-container pt-[58px]"
+        >
+          {isDetailOpen ? (
             <div
-              className="desktop-parked-panel w-full group relative"
+              onClick={() => {
+                if (isInfoOpen) onCloseInfo();
+                onCloseDetail();
+              }}
+              className="desktop-parked-panel w-full group relative animate-stagger-item"
               title="Clique para voltar a interagir com este feed"
             >
               {/* Selo tátil superior indicando o retorno ao centro */}
@@ -84,8 +81,10 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
                 {slotLeft}
               </div>
             </div>
-          </aside>
-        )}
+          ) : (
+            <div className="w-full h-1" aria-hidden="true" />
+          )}
+        </aside>
 
         {/* ==================================================================
             2. COLUNA CENTRAL (Feed Principal ou Detalhe Ativo)
