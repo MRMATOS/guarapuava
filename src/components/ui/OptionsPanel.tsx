@@ -70,25 +70,10 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
       aria-label="Painel de opções"
       className="filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none"
     >
-      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-        {/* 1. Botão Cidade Viva (Mapa Colaborativo) */}
-        <div className="w-full animate-stagger-item" style={{ animationDelay: "25ms" }}>
-          <Key
-            type="button"
-            onClick={() => {
-              onClose();
-              router.push("/cidade-viva");
-            }}
-            className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-            title="Abrir mapa colaborativo Cidade Viva"
-            aria-label="Abrir Cidade Viva"
-          >
-            Cidade Viva
-          </Key>
-        </div>
-
-        {/* 2. Botão Informações */}
-        <div className="w-full animate-stagger-item" style={{ animationDelay: "50ms" }}>
+      {/* Linha Superior: 1º Informações, 2º Modo claro / escuro */}
+      <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
+        {/* 1. Botão Informações */}
+        <div className="w-full animate-stagger-item" style={{ animationDelay: "20ms" }}>
           <Key
             type="button"
             onClick={() => {
@@ -103,8 +88,8 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
           </Key>
         </div>
 
-        {/* 3. Alternador de Modo Claro / Modo Escuro (sem ícone) */}
-        <div className="w-full animate-stagger-item" style={{ animationDelay: "75ms" }}>
+        {/* 2. Alternador de Modo Claro / Modo Escuro */}
+        <div className="w-full animate-stagger-item" style={{ animationDelay: "40ms" }}>
           <Key
             type="button"
             onClick={toggleTheme}
@@ -113,6 +98,55 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
             aria-label={`Alternar para ${themeLabel}`}
           >
             {themeLabel}
+          </Key>
+        </div>
+      </div>
+
+      {/* Linha Inferior: 1º Cidade Viva, 2º Utilidades, 3º Estatísticas */}
+      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+        {/* 1. Botão Cidade Viva (Mapa Colaborativo) */}
+        <div className="w-full animate-stagger-item" style={{ animationDelay: "60ms" }}>
+          <Key
+            type="button"
+            onClick={() => {
+              onClose();
+              router.push("/cidade-viva");
+            }}
+            className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+            title="Abrir mapa colaborativo Cidade Viva"
+            aria-label="Abrir Cidade Viva"
+          >
+            Cidade Viva
+          </Key>
+        </div>
+
+        {/* 2. Botão Utilidades */}
+        <div className="w-full animate-stagger-item" style={{ animationDelay: "80ms" }}>
+          <Key
+            type="button"
+            onClick={() => {
+              onClose();
+              router.push("/utilidades");
+            }}
+            className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+            title="Abrir utilidades e horários"
+            aria-label="Abrir Utilidades"
+          >
+            Utilidades
+          </Key>
+        </div>
+
+        {/* 3. Botão Estatísticas (Desabilitado) */}
+        <div className="w-full animate-stagger-item" style={{ animationDelay: "100ms" }}>
+          <Key
+            type="button"
+            disabled
+            aria-disabled="true"
+            className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-40 cursor-not-allowed"
+            title="Estatísticas (em breve)"
+            aria-label="Estatísticas indisponível"
+          >
+            Estatísticas
           </Key>
         </div>
       </div>

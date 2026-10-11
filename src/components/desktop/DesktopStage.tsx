@@ -144,11 +144,41 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
           aria-label="Painel lateral de filtros e opções"
           className="w-[360px] shrink-0 h-full max-h-full flex flex-col"
         >
-          {/* Linha dos 3 Botões de Opções */}
-          <div className="w-full shrink-0 z-20 pb-2.5">
+          {/* Linha dos Botões de Opções em Duas Linhas */}
+          <div className="w-full shrink-0 z-20 pb-2.5 flex flex-col gap-2">
             <div
               role="toolbar"
-              aria-label="Opções e preferências"
+              aria-label="Opções e preferências primárias"
+              className="grid grid-cols-2 gap-2 w-full h-[42px]"
+            >
+              {/* 1. Botão Informações */}
+              <Key
+                type="button"
+                pressed={isInfoOpen}
+                aria-expanded={isInfoOpen}
+                onClick={onToggleInfo}
+                className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                title="Abrir termos e diretrizes"
+                aria-label="Informações do site"
+              >
+                Informações
+              </Key>
+
+              {/* 2. Alternador de Modo Claro / Escuro */}
+              <Key
+                type="button"
+                onClick={toggleTheme}
+                className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                title={`Alternar para ${themeLabel}`}
+                aria-label={`Alternar para ${themeLabel}`}
+              >
+                {themeLabel}
+              </Key>
+            </div>
+
+            <div
+              role="toolbar"
+              aria-label="Ferramentas e utilidades"
               className="grid grid-cols-3 gap-2 w-full h-[42px]"
             >
               {/* 1. Botão Cidade Viva (Mapa Colaborativo) */}
@@ -164,28 +194,29 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
                 Cidade Viva
               </Key>
 
-              {/* 2. Botão Informações */}
+              {/* 2. Botão Utilidades */}
               <Key
                 type="button"
-                pressed={isInfoOpen}
-                aria-expanded={isInfoOpen}
-                onClick={onToggleInfo}
+                onClick={() => {
+                  router.push("/utilidades");
+                }}
                 className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                title="Abrir termos e diretrizes"
-                aria-label="Informações do site"
+                title="Abrir utilidades e horários"
+                aria-label="Abrir Utilidades"
               >
-                Informações
+                Utilidades
               </Key>
 
-              {/* 3. Alternador de Modo Claro / Escuro */}
+              {/* 3. Botão Estatísticas (Desabilitado) */}
               <Key
                 type="button"
-                onClick={toggleTheme}
-                className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                title={`Alternar para ${themeLabel}`}
-                aria-label={`Alternar para ${themeLabel}`}
+                disabled
+                aria-disabled="true"
+                className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-40 cursor-not-allowed"
+                title="Estatísticas (em breve)"
+                aria-label="Estatísticas indisponível"
               >
-                {themeLabel}
+                Estatísticas
               </Key>
             </div>
           </div>
