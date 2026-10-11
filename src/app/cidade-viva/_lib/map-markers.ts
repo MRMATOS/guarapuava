@@ -18,8 +18,8 @@ export function createUserMarkerElement(): HTMLDivElement {
     <div style="
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 3px 8px;
+      justify-content: center;
+      padding: 3px 9px;
       background: #0ea5e9;
       color: #ffffff;
       border-radius: 9999px;
@@ -29,7 +29,6 @@ export function createUserMarkerElement(): HTMLDivElement {
       border: 1.5px solid rgba(255,255,255,0.9);
       letter-spacing: 0.02em;
     ">
-      <span>📍</span>
       <span>Você</span>
     </div>
     <div style="

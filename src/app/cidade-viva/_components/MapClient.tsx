@@ -480,11 +480,10 @@ export function MapClient({
         {/* 1. Botão de Voltar */}
         <Link
           href="/"
-          className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-ink rounded-xl shadow-xs hover:border-coral transition-all active:scale-95"
+          className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 px-3.5 py-2 text-xs font-bold text-ink rounded-xl shadow-xs hover:border-coral transition-all active:scale-95"
           title="Voltar para a página inicial"
         >
-          <span>←</span>
-          <span>Voltar</span>
+          Voltar
         </Link>
 
         {/* 2. Informação dos Relatos Ativos */}
@@ -500,10 +499,9 @@ export function MapClient({
           type="button"
           onClick={locateUser}
           disabled={isLocating}
-          className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 px-3.5 py-2 text-xs font-bold text-ink rounded-xl shadow-sm hover:border-coral transition-all active:scale-95 flex items-center gap-1.5 cursor-pointer"
+          className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 px-3.5 py-2 text-xs font-bold text-ink rounded-xl shadow-sm hover:border-coral transition-all active:scale-95 cursor-pointer"
         >
-          <span>📍</span>
-          <span>{isLocating ? "Localizando..." : "Minha localização"}</span>
+          {isLocating ? "Localizando..." : "Minha localização"}
         </button>
 
         {/* 4. Relatar Problema */}
@@ -511,10 +509,9 @@ export function MapClient({
           type="button"
           onClick={handleOpenReportModal}
           disabled={isWaitingLocation}
-          className="px-5 py-3 sm:px-6 sm:py-3.5 bg-coral text-white font-bold text-xs sm:text-sm rounded-xl shadow-xl hover:opacity-95 transition-all active:scale-95 flex items-center gap-2 cursor-pointer"
+          className="px-5 py-3 sm:px-6 sm:py-3.5 bg-coral text-white font-bold text-xs sm:text-sm rounded-xl shadow-xl hover:opacity-95 transition-all active:scale-95 cursor-pointer"
         >
-          <span>+</span>
-          <span>{isWaitingLocation ? "Aguardando GPS..." : "Relatar Problema"}</span>
+          {isWaitingLocation ? "Aguardando GPS..." : "Relatar Problema"}
         </button>
       </div>
 
