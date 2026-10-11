@@ -184,16 +184,16 @@ export const MainNav: React.FC<MainNavProps> = ({
       aria-label="Navegação principal"
     >
       <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
-        {/* 1. Botão Opções */}
+        {/* 1. Botão Mais */}
         <Key
           ref={actualOptionsButtonRef}
           pressed={currentOptionsOpen || pendingTarget === "options"}
           onClick={handleToggleOptions}
           aria-expanded={currentOptionsOpen || pendingTarget === "options"}
-          aria-label={currentOptionsOpen ? "Fechar bloco de opções" : "Abrir bloco de opções"}
+          aria-label={currentOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
           className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
         >
-          Opções
+          Mais
         </Key>
 
         {/* 2. Botão Filtrar */}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
 import { Key } from "@/components/ui/Key";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -35,6 +36,7 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
   slotRightFilter,
   slotRightInfo,
 }) => {
+  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
 
   const mounted = useSyncExternalStore(
@@ -149,15 +151,17 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
               aria-label="Opções e preferências"
               className="grid grid-cols-3 gap-2 w-full h-[42px]"
             >
-              {/* 1. Botão Teste */}
+              {/* 1. Botão Cidade Viva (Mapa Colaborativo) */}
               <Key
                 type="button"
-                onClick={() => {}}
+                onClick={() => {
+                  router.push("/cidade-viva");
+                }}
                 className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                title="Botão de teste (reservado)"
-                aria-label="Botão de teste"
+                title="Abrir mapa colaborativo Cidade Viva"
+                aria-label="Abrir Cidade Viva"
               >
-                Teste
+                Cidade Viva
               </Key>
 
               {/* 2. Botão Informações */}

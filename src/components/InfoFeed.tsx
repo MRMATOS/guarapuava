@@ -156,13 +156,79 @@ export const InfoFeed: React.FC<InfoFeedProps> = ({
           </ul>
         </section>
 
+        {/* Bloco 3: Cidade Viva — Zeladoria Comunitária e Localização */}
+        <section aria-labelledby="heading-cidade-viva" className="space-y-3">
+          <h3
+            id="heading-cidade-viva"
+            className="font-bold text-ink text-[15px]"
+          >
+            Cidade Viva: Mapeamento colaborativo e geolocalização sob demanda
+          </h3>
+
+          <p className="text-[14.5px] sm:text-[15px] leading-[1.48] text-ink-body">
+            A ferramenta <strong>Cidade Viva</strong> permite aos moradores de
+            Guarapuava acompanhar e relatar ocorrências de zeladoria urbana
+            (asfalto danificado, iluminação apagada, vazamentos de água, semáforos,
+            mato alto e focos de dengue) de forma pública e comunitária:
+          </p>
+
+          <ul className="space-y-2 text-[14.5px] sm:text-[15px] leading-[1.48] text-ink-body">
+            <li className="flex items-start gap-2">
+              <span
+                className="text-coral font-bold select-none shrink-0"
+                aria-hidden="true"
+              >
+                •
+              </span>
+              <span>
+                <strong>Localização estritamente sob demanda:</strong> O acesso ao
+                GPS do aparelho só é solicitado caso você decida abrir o mapa do
+                Cidade Viva para centralizar na sua área ou enviar um relato.
+                Não há nenhum rastreamento em segundo plano e você pode utilizar as
+                notícias e vagas normalmente sem nunca conceder acesso à sua
+                localização.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span
+                className="text-coral font-bold select-none shrink-0"
+                aria-hidden="true"
+              >
+                •
+              </span>
+              <span>
+                <strong>Anonimização e conformidade com a LGPD:</strong> Não pedimos
+                nome, e-mail, telefone nem cadastro para submissão de relatos. O
+                endereço IP do dispositivo é transformado em um código criptográfico
+                unidirecional com salt secreto, utilizado unicamente para proteção
+                antispam (máximo de 1 relato a cada 5 minutos), nunca sendo exposto
+                publicamente nem compartilhado.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span
+                className="text-coral font-bold select-none shrink-0"
+                aria-hidden="true"
+              >
+                •
+              </span>
+              <span>
+                <strong>Interesse público e validação comunitária:</strong> Fotos e
+                descrições registradas passam a integrar o mapa coletivo de interesse
+                público para ajudar toda a população e os serviços municipais a
+                identificar demandas prioritárias em Guarapuava.
+              </span>
+            </li>
+          </ul>
+        </section>
+
         {/* Divisória Tátil Pontilhada */}
         <div
           className="my-5 sm:my-6 border-b border-dotted border-rule/90"
           aria-hidden="true"
         />
 
-        {/* Bloco 3: Termos de Uso e Contato Direto */}
+        {/* Bloco 4: Termos de Uso e Contato Direto */}
         <section aria-labelledby="heading-termos" className="space-y-3">
           <h3
             id="heading-termos"
@@ -194,7 +260,7 @@ export const InfoFeed: React.FC<InfoFeedProps> = ({
               </span>
               <span>
                 <strong>Candidatura em canais oficiais:</strong> Ao tocar em
-                "Abrir site da vaga" ou em links externos, você é encaminhado
+                &ldquo;Abrir site da vaga&rdquo; ou em links externos, você é encaminhado
                 diretamente aos canais indicados pelos contratantes (como
                 WhatsApp comercial, portais de RH ou sites oficiais), sujeitos
                 às diretrizes de cada empresa.

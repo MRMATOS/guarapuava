@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
 import { Key } from "./Key";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -12,19 +13,12 @@ export interface OptionsPanelProps {
 
 const emptySubscribe = () => () => {};
 
-/**
- * Painel de Opções flutuante:
- * Mesma geometria e elevação neumórfica do FilterPanel ("O Painel de Rádio").
- * Contém 3 teclas em uma única linha:
- * 1. Teste (sem efeito no momento)
- * 2. Informações (leva ao feed com obrigações, privacidade e termos)
- * 3. Alternador de modo claro / modo escuro (textual, sem ícones)
- */
 export const OptionsPanel: React.FC<OptionsPanelProps> = ({
   onClose,
   onSelectInfo,
   optionsButtonRef,
 }) => {
+  const router = useRouter();
   const panelRef = useRef<HTMLDivElement>(null);
   const { theme, toggleTheme } = useTheme();
 
@@ -77,16 +71,19 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
       className="filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none"
     >
       <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-        {/* 1. Botão Teste (reservado para futuras funcionalidades) */}
+        {/* 1. Botão Cidade Viva (Mapa Colaborativo) */}
         <div className="w-full animate-stagger-item" style={{ animationDelay: "25ms" }}>
           <Key
             type="button"
-            onClick={() => {}}
+            onClick={() => {
+              onClose();
+              router.push("/cidade-viva");
+            }}
             className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-            title="Botão de teste (sem ação no momento)"
-            aria-label="Botão de teste"
+            title="Abrir mapa colaborativo Cidade Viva"
+            aria-label="Abrir Cidade Viva"
           >
-            Teste
+            Cidade Viva
           </Key>
         </div>
 

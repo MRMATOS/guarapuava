@@ -57,3 +57,6 @@ next-env.d.ts
 .vscode/
 *.docx
 
+# maplibre generated worker build artifacts
+/public/maplibre/
+

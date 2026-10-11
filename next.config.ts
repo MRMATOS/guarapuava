@@ -9,6 +9,14 @@ const nextConfig: NextConfig = {
     "127.0.0.1",
     "127.0.0.1:3000",
   ],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
