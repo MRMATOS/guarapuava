@@ -17,6 +17,15 @@ export const metadata: Metadata = {
   title: "Guarapuava — Notícias e Vagas de Hoje",
   description:
     "Resumo diário e atualizado em tempo real das principais notícias e vagas de emprego de Guarapuava.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
