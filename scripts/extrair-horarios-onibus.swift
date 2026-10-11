@@ -101,6 +101,9 @@ func formatarNomePonto(_ raw: String) -> String {
     if base.lowercased().contains("fonte") && base.lowercased().contains("saída") {
         base = "Saída Fonte"
     }
+    if base.lowercased().contains("campo") && base.lowercased().contains("batel") {
+        base = "Campo do Batel"
+    }
     
     // Converte para Title Case harmonioso
     let lowercaseWords: Set<String> = ["de", "da", "do", "das", "dos", "e", "em", "via", "para", "x"]

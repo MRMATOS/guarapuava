@@ -29,7 +29,7 @@ export default function UtilidadesPage() {
               router.push("/#vagas");
             }}
           />
-          <Dock align="between" aria-label="Navegação de retorno">
+          <Dock standalone={true} align="between" aria-label="Navegação de retorno">
             <div className="grid grid-cols-1 w-full">
               <Key
                 type="button"
@@ -96,6 +96,7 @@ export default function UtilidadesPage() {
 
       {/* Dock Fixo */}
       <Dock
+        standalone={true}
         align="between"
         above={
           <div className="w-full">

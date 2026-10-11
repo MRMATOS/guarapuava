@@ -223,7 +223,7 @@ body {
       max-width: var(--shell-max);
     }
 
-    .dock-shell {
+    .dock-shell:not(.dock-standalone-shell) {
       display: none !important;
     }
   }

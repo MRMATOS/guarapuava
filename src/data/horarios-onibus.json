@@ -1,5 +1,5 @@
 {
-  "dataExtracao" : "2026-10-11T23:02:25Z",
+  "dataExtracao" : "2026-10-11T23:20:38Z",
   "linhas" : [
     {
       "bairro" : "Aeroporto",
@@ -2859,6 +2859,7 @@
             "21:57"
           ],
           "horariosUteis" : [
+            "06:52",
             "07:22",
             "07:52",
             "08:22",
@@ -2878,11 +2879,14 @@
             "15:52",
             "16:22",
             "17:22",
+            "17:52",
             "18:22",
-            "19:22"
+            "18:52",
+            "19:22",
+            "23:27"
           ],
-          "id" : "campo-do-batel-viaduto",
-          "nome" : "Campo do Batel Viaduto",
+          "id" : "campo-do-batel",
+          "nome" : "Campo do Batel",
           "ordem" : 4
         },
         {
@@ -3104,29 +3108,6 @@
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
           "ordem" : 9
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:52",
-            "07:52",
-            "08:52",
-            "10:52",
-            "11:52",
-            "12:52",
-            "13:52",
-            "17:52",
-            "18:52",
-            "23:27"
-          ],
-          "id" : "campo-do-batel",
-          "nome" : "Campo do Batel",
-          "ordem" : 10
         }
       ],
       "tipo" : "regular"
@@ -7177,277 +7158,6 @@
     },
     {
       "bairro" : "Jardim das Américas Paz e Bem",
-      "codigo" : "31",
-      "id" : "linha-31",
-      "nomeExibicao" : "Linha 31 - Jardim das Américas Paz e Bem",
-      "observacoes" : [
-
-      ],
-      "pontos" : [
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:00",
-            "08:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-            "17:00",
-            "18:00"
-          ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
-          "ordem" : 1
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:05",
-            "08:05",
-            "11:05",
-            "12:05",
-            "13:05",
-            "14:05",
-            "15:05",
-            "16:05",
-            "17:05",
-            "18:05"
-          ],
-          "id" : "gelinski",
-          "nome" : "Gelinski",
-          "ordem" : 2
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:06",
-            "08:06",
-            "11:06",
-            "12:06",
-            "13:06",
-            "14:06",
-            "15:06",
-            "16:06",
-            "17:06",
-            "18:06"
-          ],
-          "id" : "colegio-tupy",
-          "nome" : "Colégio Tupy",
-          "ordem" : 3
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:10",
-            "08:10",
-            "11:10",
-            "12:10",
-            "13:10",
-            "14:10",
-            "15:10",
-            "16:10",
-            "17:10",
-            "18:10"
-          ],
-          "id" : "viaduto-mattos-iniciando-as",
-          "nome" : "Viaduto Mattos Iniciando ÀS",
-          "ordem" : 4
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:31"
-          ],
-          "id" : "mattos-leao",
-          "nome" : "Mattos Leão",
-          "ordem" : 5
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:38",
-            "07:13",
-            "07:38",
-            "08:13",
-            "08:38",
-            "11:13",
-            "11:38",
-            "12:13",
-            "12:38",
-            "13:13",
-            "13:38",
-            "14:13",
-            "14:38",
-            "15:13",
-            "15:38",
-            "16:13",
-            "16:38",
-            "17:13",
-            "17:38",
-            "18:13",
-            "18:38"
-          ],
-          "id" : "sobre",
-          "nome" : "Sobre",
-          "ordem" : 6
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:20",
-            "08:20",
-            "11:20",
-            "12:20",
-            "13:20",
-            "14:20",
-            "15:20",
-            "16:20",
-            "17:20",
-            "18:20"
-          ],
-          "id" : "das-americas-valenga",
-          "nome" : "das Américas Valenga",
-          "ordem" : 7
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:31",
-            "07:31",
-            "08:31",
-            "11:31",
-            "12:31",
-            "13:31",
-            "14:31",
-            "15:31",
-            "16:31",
-            "17:31",
-            "18:31"
-          ],
-          "id" : "paz-e-loteamento-paz-e-bem",
-          "nome" : "PAZ e Loteamento PAZ e BEM",
-          "ordem" : 8
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:42",
-            "07:42",
-            "08:42",
-            "11:42",
-            "12:42",
-            "13:42",
-            "14:42",
-            "15:42",
-            "16:42",
-            "17:42",
-            "18:42"
-          ],
-          "id" : "viaduto-mattos",
-          "nome" : "Viaduto Mattos",
-          "ordem" : 9
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:45",
-            "07:45",
-            "08:45",
-            "11:45",
-            "12:45",
-            "13:45",
-            "14:45",
-            "15:45",
-            "16:45",
-            "17:45",
-            "18:45"
-          ],
-          "id" : "igreja-terezinha",
-          "nome" : "Igreja Terezinha",
-          "ordem" : 10
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:52",
-            "07:52",
-            "08:52",
-            "11:52",
-            "12:52",
-            "13:52",
-            "14:52",
-            "15:52",
-            "16:52",
-            "17:52",
-            "18:52"
-          ],
-          "id" : "fonte-chegada",
-          "nome" : "Fonte Chegada",
-          "ordem" : 11
-        }
-      ],
-      "tipo" : "regular"
-    },
-    {
-      "bairro" : "Jardim das Américas Paz e Bem",
       "codigo" : "22",
       "id" : "linha-22",
       "nomeExibicao" : "Linha 22 - Jardim das Américas Paz e Bem",
@@ -8055,6 +7765,277 @@
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
           "ordem" : 12
+        }
+      ],
+      "tipo" : "regular"
+    },
+    {
+      "bairro" : "Jardim das Américas Paz e Bem",
+      "codigo" : "31",
+      "id" : "linha-31",
+      "nomeExibicao" : "Linha 31 - Jardim das Américas Paz e Bem",
+      "observacoes" : [
+
+      ],
+      "pontos" : [
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:00",
+            "08:00",
+            "11:00",
+            "12:00",
+            "13:00",
+            "14:00",
+            "15:00",
+            "16:00",
+            "17:00",
+            "18:00"
+          ],
+          "id" : "saida-fonte",
+          "nome" : "Saída Fonte",
+          "ordem" : 1
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:05",
+            "08:05",
+            "11:05",
+            "12:05",
+            "13:05",
+            "14:05",
+            "15:05",
+            "16:05",
+            "17:05",
+            "18:05"
+          ],
+          "id" : "gelinski",
+          "nome" : "Gelinski",
+          "ordem" : 2
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:06",
+            "08:06",
+            "11:06",
+            "12:06",
+            "13:06",
+            "14:06",
+            "15:06",
+            "16:06",
+            "17:06",
+            "18:06"
+          ],
+          "id" : "colegio-tupy",
+          "nome" : "Colégio Tupy",
+          "ordem" : 3
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:10",
+            "08:10",
+            "11:10",
+            "12:10",
+            "13:10",
+            "14:10",
+            "15:10",
+            "16:10",
+            "17:10",
+            "18:10"
+          ],
+          "id" : "viaduto-mattos-iniciando-as",
+          "nome" : "Viaduto Mattos Iniciando ÀS",
+          "ordem" : 4
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:31"
+          ],
+          "id" : "mattos-leao",
+          "nome" : "Mattos Leão",
+          "ordem" : 5
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:38",
+            "07:13",
+            "07:38",
+            "08:13",
+            "08:38",
+            "11:13",
+            "11:38",
+            "12:13",
+            "12:38",
+            "13:13",
+            "13:38",
+            "14:13",
+            "14:38",
+            "15:13",
+            "15:38",
+            "16:13",
+            "16:38",
+            "17:13",
+            "17:38",
+            "18:13",
+            "18:38"
+          ],
+          "id" : "sobre",
+          "nome" : "Sobre",
+          "ordem" : 6
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:20",
+            "08:20",
+            "11:20",
+            "12:20",
+            "13:20",
+            "14:20",
+            "15:20",
+            "16:20",
+            "17:20",
+            "18:20"
+          ],
+          "id" : "das-americas-valenga",
+          "nome" : "das Américas Valenga",
+          "ordem" : 7
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:31",
+            "07:31",
+            "08:31",
+            "11:31",
+            "12:31",
+            "13:31",
+            "14:31",
+            "15:31",
+            "16:31",
+            "17:31",
+            "18:31"
+          ],
+          "id" : "paz-e-loteamento-paz-e-bem",
+          "nome" : "PAZ e Loteamento PAZ e BEM",
+          "ordem" : 8
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:42",
+            "07:42",
+            "08:42",
+            "11:42",
+            "12:42",
+            "13:42",
+            "14:42",
+            "15:42",
+            "16:42",
+            "17:42",
+            "18:42"
+          ],
+          "id" : "viaduto-mattos",
+          "nome" : "Viaduto Mattos",
+          "ordem" : 9
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:45",
+            "07:45",
+            "08:45",
+            "11:45",
+            "12:45",
+            "13:45",
+            "14:45",
+            "15:45",
+            "16:45",
+            "17:45",
+            "18:45"
+          ],
+          "id" : "igreja-terezinha",
+          "nome" : "Igreja Terezinha",
+          "ordem" : 10
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:52",
+            "07:52",
+            "08:52",
+            "11:52",
+            "12:52",
+            "13:52",
+            "14:52",
+            "15:52",
+            "16:52",
+            "17:52",
+            "18:52"
+          ],
+          "id" : "fonte-chegada",
+          "nome" : "Fonte Chegada",
+          "ordem" : 11
         }
       ],
       "tipo" : "regular"
