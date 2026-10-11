@@ -131,7 +131,7 @@ export function ReportDrawer({
         className={`
           z-40 bg-canvas border border-rule/70 dark:border-white/10 rounded-2xl flex flex-col overflow-hidden shadow-xl
           fixed bottom-3 left-3 right-3 max-h-[82dvh]
-          md:absolute md:left-auto md:top-auto md:right-5 md:bottom-24 md:w-[380px] md:max-h-[calc(100%-7.5rem)]
+          md:fixed md:left-6 md:bottom-6 md:right-auto md:w-[380px] md:max-h-[calc(100%-3rem)]
         `}
       >
         {/* Cabeçalho */}

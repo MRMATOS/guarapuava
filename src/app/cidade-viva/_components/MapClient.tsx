@@ -472,38 +472,30 @@ export function MapClient({
 
   return (
     <div className="relative w-full h-[100dvh] overflow-hidden bg-neutral-900 select-none">
-      {/* Barra Superior Flutuante: Retorno, Título e Contagem de Relatos */}
-      <header className="absolute top-3 left-3 right-3 z-30 pointer-events-auto flex items-center justify-between gap-2 max-w-4xl mx-auto">
-        <div className="flex items-center gap-2">
-          <Link
-            href="/"
-            className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-ink rounded-xl shadow-xs hover:border-coral transition-colors"
-            title="Voltar para a página inicial"
-          >
-            <span>←</span>
-            <span>Voltar</span>
-          </Link>
+      {/* Container Principal do Mapa */}
+      <div ref={mapContainerRef} className="w-full h-full" />
 
-          <div className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 px-3 py-2 text-xs font-bold text-ink rounded-xl hidden sm:flex items-center gap-2 shadow-xs">
-            <span>Guarapuava Digital</span>
-            <span className="text-rule">•</span>
-            <span className="text-coral">Cidade Viva</span>
-          </div>
-        </div>
+      {/* Controles Flutuantes Alinhados no Canto Inferior Direito */}
+      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 pointer-events-auto flex flex-col items-end gap-2.5">
+        {/* 1. Botão de Voltar */}
+        <Link
+          href="/"
+          className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-ink rounded-xl shadow-xs hover:border-coral transition-all active:scale-95"
+          title="Voltar para a página inicial"
+        >
+          <span>←</span>
+          <span>Voltar</span>
+        </Link>
 
+        {/* 2. Informação dos Relatos Ativos */}
         <FilterBar
           currentFilter={currentFilter}
           onFilterChange={setCurrentFilter}
           reportCount={unifiedPoints.length}
           onClick={handleShowClosestReport}
         />
-      </header>
 
-      {/* Container Principal do Mapa */}
-      <div ref={mapContainerRef} className="w-full h-full" />
-
-      {/* Ações Flutuantes Inferiores */}
-      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 pointer-events-auto flex flex-col items-end gap-2.5">
+        {/* 3. Minha Localização */}
         <button
           type="button"
           onClick={locateUser}
@@ -514,6 +506,7 @@ export function MapClient({
           <span>{isLocating ? "Localizando..." : "Minha localização"}</span>
         </button>
 
+        {/* 4. Relatar Problema */}
         <button
           type="button"
           onClick={handleOpenReportModal}
