@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://guarapuava.digital"),
   title: "Guarapuava — Notícias e Vagas de Hoje",
   description:
     "Resumo diário e atualizado em tempo real das principais notícias e vagas de emprego de Guarapuava.",
@@ -26,6 +27,31 @@ export const metadata: Metadata = {
       { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
+  openGraph: {
+    title: "Guarapuava — Notícias e Vagas de Hoje",
+    description:
+      "Resumo diário e atualizado em tempo real das principais notícias e vagas de emprego de Guarapuava.",
+    url: "https://guarapuava.digital",
+    siteName: "Guarapuava Digital",
+    locale: "pt_BR",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Guarapuava Digital — Notícias e Vagas de Hoje",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Guarapuava — Notícias e Vagas de Hoje",
+    description:
+      "Resumo diário e atualizado em tempo real das principais notícias e vagas de emprego de Guarapuava.",
+    images: ["/og-image.png"],
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export const viewport: Viewport = {
