@@ -244,18 +244,15 @@ export function ReportModal({
       {/* Overlay Principal */}
       <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
         <div
-          className={`surface-card relative w-full p-4 sm:p-6 my-auto transition-all ${
+          className={`bg-canvas border border-rule/70 dark:border-white/10 rounded-3xl shadow-none relative w-full p-4 sm:p-6 my-auto transition-all ${
             step === 1 ? "max-w-md md:max-w-xl" : "max-w-md"
           }`}
         >
           {/* Cabeçalho */}
           <div className="flex items-center justify-between pb-3.5 border-b border-rule/50 gap-2">
-            <div>
-              <span className="badge-inset text-[10.5px]">Cidade Viva</span>
-              <h2 className="text-lg font-bold text-ink tracking-tight mt-0.5">
-                {step === 1 ? "Qual é o problema?" : "Foto e Detalhes"}
-              </h2>
-            </div>
+            <h2 className="text-lg font-bold text-ink tracking-tight">
+              {step === 1 ? "Qual é o problema?" : "Foto e Detalhes"}
+            </h2>
             <div className="flex items-center gap-2 shrink-0">
               {step === 2 && (
                 <button
@@ -315,10 +312,10 @@ export function ReportModal({
                   if (selectedCategory) setStep(2);
                 }}
                 disabled={!selectedCategory}
-                className={`w-full py-3 rounded-xl font-bold text-sm transition-all cursor-pointer ${
+                className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all cursor-pointer ${
                   selectedCategory
-                    ? "bg-ink text-paper hover:opacity-95 shadow-md active:scale-[0.98]"
-                    : "bg-rule/40 text-ink-muted cursor-not-allowed"
+                    ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 hover:opacity-95 shadow-sm active:scale-[0.98]"
+                    : "bg-rule/30 text-ink-muted/50 cursor-not-allowed"
                 }`}
               >
                 Continuar
@@ -401,7 +398,7 @@ export function ReportModal({
       {/* Modal de Confirmação de Saída */}
       {showConfirmClose && (
         <div className="fixed inset-0 z-[160] bg-black/60 flex items-center justify-center p-4">
-          <div className="surface-card max-w-xs w-full p-5 flex flex-col gap-3">
+          <div className="bg-canvas border border-rule/70 dark:border-white/10 rounded-2xl shadow-none max-w-xs w-full p-5 flex flex-col gap-3">
             <h3 className="font-bold text-ink text-sm">Descartar relato?</h3>
             <p className="text-xs text-ink-body">
               As informações e foto preenchidas serão perdidas.

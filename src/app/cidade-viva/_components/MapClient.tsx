@@ -477,14 +477,14 @@ export function MapClient({
         <div className="flex items-center gap-2">
           <Link
             href="/"
-            className="surface-card flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-ink rounded-xl shadow-md hover:border-coral transition-colors"
+            className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-ink rounded-xl shadow-xs hover:border-coral transition-colors"
             title="Voltar para a página inicial"
           >
             <span>←</span>
             <span>Voltar</span>
           </Link>
 
-          <div className="surface-card px-3 py-2 text-xs font-bold text-ink rounded-xl hidden sm:flex items-center gap-2 shadow-md">
+          <div className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 px-3 py-2 text-xs font-bold text-ink rounded-xl hidden sm:flex items-center gap-2 shadow-xs">
             <span>Guarapuava Digital</span>
             <span className="text-rule">•</span>
             <span className="text-coral">Cidade Viva</span>
@@ -508,7 +508,7 @@ export function MapClient({
           type="button"
           onClick={locateUser}
           disabled={isLocating}
-          className="surface-card px-3.5 py-2 text-xs font-bold text-ink rounded-xl shadow-lg hover:border-coral transition-all active:scale-95 flex items-center gap-1.5 cursor-pointer"
+          className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 px-3.5 py-2 text-xs font-bold text-ink rounded-xl shadow-sm hover:border-coral transition-all active:scale-95 flex items-center gap-1.5 cursor-pointer"
         >
           <span>📍</span>
           <span>{isLocating ? "Localizando..." : "Minha localização"}</span>

@@ -20,7 +20,7 @@ export function FilterBar({
       <button 
         type="button"
         onClick={onClick}
-        className="surface-card flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-ink transition-transform active:scale-95 cursor-pointer select-none"
+        className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 rounded-xl shadow-xs flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-ink transition-transform active:scale-95 cursor-pointer select-none"
         title="Ocorrências ativas no mapa"
       >
         <span className="w-2 h-2 rounded-full bg-coral animate-pulse" />

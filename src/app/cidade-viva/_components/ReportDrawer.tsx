@@ -129,7 +129,7 @@ export function ReportDrawer({
       {/* Painel Tátil / Gaveta */}
       <aside
         className={`
-          z-40 surface-card flex flex-col overflow-hidden shadow-xl
+          z-40 bg-canvas border border-rule/70 dark:border-white/10 rounded-2xl flex flex-col overflow-hidden shadow-xl
           fixed bottom-3 left-3 right-3 max-h-[82dvh]
           md:absolute md:left-auto md:top-auto md:right-5 md:bottom-24 md:w-[380px] md:max-h-[calc(100%-7.5rem)]
         `}
@@ -183,7 +183,7 @@ export function ReportDrawer({
                 <div className="flex items-center justify-between text-[11px] font-semibold text-ink-muted">
                   <span>{dateStr || `Relato #${index + 1}`}</span>
                   {item.status && (
-                    <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-paper border border-rule text-ink">
+                    <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-surface border border-rule text-ink">
                       {item.status.replace(/_/g, " ")}
                     </span>
                   )}
@@ -286,7 +286,7 @@ export function ReportDrawer({
       {/* Modal de Moderação Admin */}
       {isModeratorModalOpen && (
         <div className="fixed inset-0 z-[190] bg-black/60 flex items-center justify-center p-4">
-          <div className="surface-card max-w-sm w-full p-5 flex flex-col gap-3">
+          <div className="bg-canvas border border-rule/70 dark:border-white/10 rounded-2xl shadow-none max-w-sm w-full p-5 flex flex-col gap-3">
             <h3 className="font-bold text-ink text-sm">Moderação de Relato</h3>
             <p className="text-xs text-ink-muted">
               Altere o status ou exclua permanentemente a ocorrência:
