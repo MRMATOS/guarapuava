@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Guarapuava — Notícias e Vagas de Hoje",
-    short_name: "Guarapuava",
+    name: "Guarapuava Digital — Notícias e Vagas de Hoje",
+    short_name: "Guarapuava Digital",
     description:
       "Resumo diário e atualizado em tempo real das principais notícias e vagas de emprego de Guarapuava.",
     start_url: "/",

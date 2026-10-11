@@ -74,10 +74,6 @@ export const JobsDateHeader: React.FC<JobsDateHeaderProps> = ({
         {todayDisplay}
       </span>
       <span className="badge-inset">
-        <span
-          className="w-1.5 h-1.5 rounded-full bg-coral animate-pulse"
-          aria-hidden="true"
-        />
         {lastUpdatedDisplay}
       </span>
     </div>

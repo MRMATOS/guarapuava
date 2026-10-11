@@ -123,10 +123,6 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
                   {digest.date}
                 </span>
                 <span className="badge-inset">
-                  <span
-                    className="w-1.5 h-1.5 rounded-full bg-coral animate-pulse"
-                    aria-hidden="true"
-                  />
                   {relativeUpdateDisplay}
                 </span>
               </div>
@@ -170,7 +166,7 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
         {/* Estado Vazio caso não haja notícias cadastradas ainda */}
         {!isLoading && digests.length === 0 && !hasActiveFilters && (
           <div className="surface-card w-full py-12 px-6 text-center text-ink-muted text-[14.5px]">
-            <p className="font-semibold text-ink mb-1.5 text-[16px]">
+            <p className="font-semibold text-ink mb-1.5 text-[15px]">
               Nenhuma notícia disponível
             </p>
             <p className="text-[13px] text-ink-muted mb-5 max-w-[280px] mx-auto leading-relaxed">
@@ -185,7 +181,7 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
         {/* Estado Vazio caso filtros não encontrem nada em nenhum dia */}
         {hasActiveFilters && totalFilteredCount === 0 && (
           <div className="surface-card w-full py-10 px-6 text-center text-ink-muted text-[14.5px]">
-            <p className="font-semibold text-ink mb-1 text-[16px]">
+            <p className="font-semibold text-ink mb-1 text-[15px]">
               Nenhuma notícia encontrada
             </p>
             <p className="text-[13px] text-ink-muted mb-5">

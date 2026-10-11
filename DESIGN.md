@@ -1,5 +1,5 @@
 ---
-name: Guarapuava Hoje
+name: Guarapuava Digital
 description: Notícias e vagas de Guarapuava num painel tátil de alabastro.
 colors:
   canvas: "#eff0f3"
@@ -83,7 +83,7 @@ components:
     padding: "4px 12px"
 ---
 
-# Design System: Guarapuava Hoje
+# Design System: Guarapuava Digital
 
 ## Overview
 
@@ -107,7 +107,7 @@ Rejeitado explicitamente: ícones decorativos ao lado de títulos (a "cara de IA
 Monocromático frio com um único sinal quente.
 
 ### Primary
-- **Coral Sinal** (`coral`): marcadores de tópico (•), ponto pulsante "atualizado às", anel de foco do teclado, indicador de filtro ativo e seleção de texto. **Coral Profundo** (`coral-deep`) é o hover/pressão desses mesmos elementos de texto.
+- **Coral Sinal** (`coral`): marcadores de tópico (•), anel de foco do teclado, indicador de filtro ativo e seleção de texto. **Coral Profundo** (`coral-deep`) é o hover/pressão desses mesmos elementos de texto.
 
 ### Neutral
 - **Alabastro** (`canvas`): fundo da página e de *todas* as superfícies (cartão, dock, teclas, selos). Diferenciação vem da sombra, nunca de outro tom de fundo.
@@ -203,7 +203,7 @@ Uma tecla de aparelho: firme, curta, afunda ao toque.
 ### Vagas (Feed e Detalhe)
 - **Card Compacto de Atualização (`JobsFeed`):** card pequeno e independente (`surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 mb-4`) com a mesma largura, raio e elevação neumórfica dos cartões de vagas, comportando apenas a linha de metadados:
   - **Lado esquerdo:** sempre a **data atual (hoje)** no padrão `DD/MM/AAAA` (âncora temporal fixa para o leitor se situar frente às datas de publicação das vagas).
-  - **Lado direito:** selo em baixo-relevo (`badge-inset`) com ponto coral pulsante (`bg-coral animate-pulse`) e texto relativo unificado:
+  - **Lado direito:** selo em baixo-relevo (`badge-inset`) com texto relativo unificado:
     - Atualizado no dia corrente: `atualizado hoje às HH:MM`
     - Atualizado no dia anterior: `atualizado ontem às HH:MM`
     - Atualizado há 2 ou mais dias: `atualizado em DD/MM às HH:MM`
@@ -236,7 +236,7 @@ Uma tecla de aparelho: firme, curta, afunda ao toque.
 - Um cartão por tela em telas de síntese; lista de cartões dedicados no feed de vagas.
 
 ### Badge (Selo gravado)
-- Pílula `inset-sm`, texto `caption` em `ink-muted`. Para horário/status. Pode levar o ponto coral pulsante quando indica "ao vivo".
+- Pílula `inset-sm`, texto `caption` em `ink-muted`. Para horário/status em baixo-relevo sóbrio.
 
 ## Do's and Don'ts
 

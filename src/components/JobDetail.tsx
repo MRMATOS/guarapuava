@@ -186,7 +186,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
                 className="surface-card w-full p-6 sm:p-7 scroll-mt-6"
               >
                 {/* Título da vaga */}
-                <h2 className="text-[20px] sm:text-[21px] font-bold leading-[1.3] text-ink tracking-[-0.02em] text-balance mb-5">
+                <h2 className="text-[20px] font-bold leading-[1.3] text-ink tracking-[-0.02em] text-balance mb-5">
                   {job.title}
                 </h2>
 

@@ -252,7 +252,7 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
           ))
         ) : (
           <div className="py-14 text-center text-ink-muted text-[15px]">
-            <p className="font-semibold text-ink mb-1.5 text-[16px]">
+            <p className="font-semibold text-ink mb-1.5 text-[15px]">
               Nenhuma notícia encontrada
             </p>
             <p className="text-[13px] text-ink-muted mb-5 max-w-[280px] mx-auto leading-relaxed">

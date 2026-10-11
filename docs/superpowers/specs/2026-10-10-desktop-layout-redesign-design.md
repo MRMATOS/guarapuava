@@ -2,7 +2,7 @@
 
 - **Data:** 10 de outubro de 2026
 - **Status:** Aprovado
-- **Escopo:** Interface Desktop ($\ge 1024\text{px}$) do aplicativo Guarapuava Hoje
+- **Escopo:** Interface Desktop ($\ge 1024\text{px}$) do aplicativo Guarapuava Digital
 
 ---
 

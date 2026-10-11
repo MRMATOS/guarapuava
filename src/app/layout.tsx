@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://guarapuava.digital"),
-  title: "Guarapuava — Notícias e Vagas de Hoje",
+  title: "Guarapuava Digital — Notícias e Vagas de Hoje",
   description:
     "Resumo diário e atualizado em tempo real das principais notícias e vagas de emprego de Guarapuava.",
   icons: {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Guarapuava — Notícias e Vagas de Hoje",
+    title: "Guarapuava Digital — Notícias e Vagas de Hoje",
     description:
       "Resumo diário e atualizado em tempo real das principais notícias e vagas de emprego de Guarapuava.",
     url: "https://guarapuava.digital",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Guarapuava — Notícias e Vagas de Hoje",
+    title: "Guarapuava Digital — Notícias e Vagas de Hoje",
     description:
       "Resumo diário e atualizado em tempo real das principais notícias e vagas de emprego de Guarapuava.",
     images: ["/og-image.png"],
