@@ -21,7 +21,7 @@ export function LogoutButton() {
       router.push("/");
       router.refresh();
     } catch {
-      window.location.href = "/auth/logout";
+      router.push("/auth/logout");
     }
   };
 

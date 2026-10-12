@@ -1,8 +1,7 @@
 // src/app/cidade-viva/page.tsx
 import type { Metadata } from "next";
-import { supabase } from "@/lib/supabase/client";
-import { getCategories, getReports } from "./actions";
-import { CidadeVivaContainer } from "./_components/CidadeVivaContainer";
+import { redirect } from "next/navigation";
+import { CidadeVivaApresentacaoClient } from "./_components/CidadeVivaApresentacaoClient";
 
 export const metadata: Metadata = {
   alternates: {
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
   },
   title: "Cidade Viva — Mapeamento Colaborativo | Guarapuava Digital",
   description:
-    "Plataforma geoespacial e anônima para reportar e acompanhar ocorrências de zeladoria, trânsito e infraestrutura em Guarapuava.",
+    "Plataforma colaborativa e anônima para reportar e acompanhar ocorrências de zeladoria urbana e infraestrutura em Guarapuava.",
   openGraph: {
     title: "Cidade Viva — Mapeamento Colaborativo em Guarapuava",
     description:
@@ -24,29 +23,18 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function CidadeVivaPage() {
-  const [categories, reports] = await Promise.all([
-    getCategories(),
-    getReports(),
-  ]);
+interface CidadeVivaPageProps {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
-  let isAdmin = false;
-  try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    isAdmin = Boolean(user?.email && user.email === process.env.ADMIN_EMAIL);
-  } catch {
-    isAdmin = false;
+export default async function CidadeVivaPage({ searchParams }: CidadeVivaPageProps) {
+  const resolvedParams = searchParams ? await searchParams : undefined;
+  const id = resolvedParams?.id;
+
+  // Se houver id de relato compartilhado via deep link, redireciona direto para o mapa
+  if (id && typeof id === "string") {
+    redirect(`/cidade-viva/mapa?id=${encodeURIComponent(id)}`);
   }
 
-  return (
-    <main className="w-full h-[100dvh] flex flex-col overflow-hidden">
-      <CidadeVivaContainer
-        initialCategories={categories}
-        initialReports={reports}
-        isAdmin={isAdmin}
-      />
-    </main>
-  );
+  return <CidadeVivaApresentacaoClient />;
 }

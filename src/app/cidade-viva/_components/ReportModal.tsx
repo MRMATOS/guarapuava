@@ -371,7 +371,7 @@ export function ReportModal({
                   maxLength={500}
                   rows={4}
                   placeholder="Ex: buraco grande próximo à esquina com a padaria..."
-                  className="w-full text-xs p-3 rounded-xl border border-rule/70 bg-surface text-ink placeholder:text-ink-muted/60 resize-none focus:outline-hidden focus:border-coral"
+                  className="w-full text-[16px] sm:text-xs p-3 rounded-xl border border-rule/70 bg-surface text-ink placeholder:text-ink-muted/60 resize-none focus:outline-hidden focus:border-coral"
                 />
                 <span className="text-right text-[10px] text-ink-muted">
                   {description.length}/500

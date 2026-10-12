@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Key } from "@/components/ui/Key";
 import type { Report, Category, ReportStatus } from "@/app/cidade-viva/_lib/types";
 import { clusterReportsByCategory } from "@/app/cidade-viva/_lib/clustering";
 import { ReportItemActions } from "./ReportItemActions";
