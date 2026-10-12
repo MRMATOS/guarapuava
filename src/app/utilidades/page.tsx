@@ -64,50 +64,33 @@ export default function UtilidadesPage() {
             </Dock>
           </div>
         ) : (
-          <div className="w-full max-w-[430px] flex flex-col gap-5 pb-28">
-            {/* Cabeçalho */}
-            <header className="flex flex-col gap-1.5 px-1 pt-2">
-              <div className="flex items-center justify-between">
-                <h1 className="text-[20px] font-bold text-ink tracking-tight">
-                  Utilidades
-                </h1>
-                <span className="badge-inset text-[11px] px-2.5 py-0.5">
-                  Serviços Locais
+          <div className="w-full max-w-[430px] flex flex-col gap-3.5 pb-28 pt-1">
+            {/* Começa diretamente com o cartão de Horários de Ônibus */}
+            <button
+              type="button"
+              onClick={() => router.push("/utilidades/onibus")}
+              className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
+              aria-label="Abrir Horários de Ônibus"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
+                  Horários de Ônibus
+                </h2>
+                <span className="badge-inset text-[11px] px-2 py-0.5 font-semibold text-coral">
+                  45 Linhas
                 </span>
               </div>
-              <p className="text-[14px] text-ink-muted leading-relaxed">
-                Ferramentas práticas e informações essenciais do dia a dia de Guarapuava.
+
+              <p className="text-[13.5px] text-ink-body leading-relaxed">
+                Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
               </p>
-            </header>
 
-            {/* Grade de Cartões */}
-            <div className="flex flex-col gap-3.5">
-              <button
-                type="button"
-                onClick={() => router.push("/utilidades/onibus")}
-                className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
-                aria-label="Abrir Horários de Ônibus"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-                    Horários de Ônibus
-                  </h2>
-                  <span className="badge-inset text-[11px] px-2 py-0.5 font-semibold text-coral">
-                    45 Linhas
-                  </span>
-                </div>
-
-                <p className="text-[13.5px] text-ink-body leading-relaxed">
-                  Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
-                </p>
-
-                <div className="flex items-center gap-2 pt-1 border-t border-rule/30 text-[12px] text-ink-muted font-medium">
-                  <span>Pérola do Oeste</span>
-                  <span>•</span>
-                  <span>Itinerários por parada</span>
-                </div>
-              </button>
-            </div>
+              <div className="flex items-center gap-2 pt-1 border-t border-rule/30 text-[12px] text-ink-muted font-medium">
+                <span>Pérola do Oeste</span>
+                <span>•</span>
+                <span>Itinerários por parada</span>
+              </div>
+            </button>
 
             {/* Dock Fixo Mobile */}
             <Dock
@@ -156,7 +139,7 @@ export default function UtilidadesPage() {
       </div>
 
       {/* ==================================================================
-          2. PALCO DESKTOP (>= 1024px) SEM DOCK E COM ALINHAMENTO CONSISTENTE
+          2. PALCO DESKTOP (>= 1024px) COM HEADER NOTÍCIAS/VAGAS
          ================================================================== */}
       <div className="hidden lg:flex w-full justify-center">
         <div className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden flex justify-center py-6 px-4 xl:px-8 select-text">
@@ -174,70 +157,63 @@ export default function UtilidadesPage() {
               aria-label="Central de utilidades"
               className="w-[430px] shrink-0 h-full max-h-full flex flex-col relative"
             >
-              {/* Cabeçalho de Navegação Superior */}
+              {/* Cabeçalho de Notícias e Vagas mantido estritamente */}
               <div className="w-full shrink-0 z-20 pb-2.5">
                 <nav
-                  aria-label="Navegação superior"
-                  className="grid grid-cols-1 gap-2 w-full h-[42px]"
+                  aria-label="Navegação de abas"
+                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
                 >
                   <Key
                     type="button"
                     onClick={() => router.push("/")}
                     className="w-full text-[14.5px] justify-center text-center font-semibold"
-                    title="Voltar para a página inicial"
+                    title="Ir para Notícias"
                   >
-                    ← Voltar ao Início
+                    Notícias
+                  </Key>
+
+                  <Key
+                    type="button"
+                    onClick={() => router.push("/#vagas")}
+                    className="w-full text-[14.5px] justify-center text-center font-semibold"
+                    title="Ir para Vagas"
+                  >
+                    Vagas
                   </Key>
                 </nav>
               </div>
 
-              {/* Conteúdo com Rolagem Suave */}
+              {/* Conteúdo: Começa imediatamente com o cartão de horários */}
               <div
                 id="desktop-center-scroller"
                 className="w-[calc(100%+48px)] -mx-6 px-6 pt-3 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
               >
-                <div className="flex flex-col gap-5">
-                  <header className="flex flex-col gap-1.5 px-1 pt-1">
-                    <div className="flex items-center justify-between">
-                      <h1 className="text-[20px] font-bold text-ink tracking-tight">
-                        Utilidades
-                      </h1>
-                      <span className="badge-inset text-[11px] px-2.5 py-0.5">
-                        Serviços Locais
+                <div className="flex flex-col gap-3.5">
+                  <button
+                    type="button"
+                    onClick={() => router.push("/utilidades/onibus")}
+                    className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
+                    aria-label="Abrir Horários de Ônibus"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
+                        Horários de Ônibus
+                      </h2>
+                      <span className="badge-inset text-[11px] px-2 py-0.5 font-semibold text-coral">
+                        45 Linhas
                       </span>
                     </div>
-                    <p className="text-[14px] text-ink-muted leading-relaxed">
-                      Ferramentas práticas e informações essenciais do dia a dia de Guarapuava.
+
+                    <p className="text-[13.5px] text-ink-body leading-relaxed">
+                      Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
                     </p>
-                  </header>
 
-                  <div className="flex flex-col gap-3.5">
-                    <button
-                      type="button"
-                      onClick={() => router.push("/utilidades/onibus")}
-                      className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
-                      aria-label="Abrir Horários de Ônibus"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-                          Horários de Ônibus
-                        </h2>
-                        <span className="badge-inset text-[11px] px-2 py-0.5 font-semibold text-coral">
-                          45 Linhas
-                        </span>
-                      </div>
-
-                      <p className="text-[13.5px] text-ink-body leading-relaxed">
-                        Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
-                      </p>
-
-                      <div className="flex items-center gap-2 pt-1 border-t border-rule/30 text-[12px] text-ink-muted font-medium">
-                        <span>Pérola do Oeste</span>
-                        <span>•</span>
-                        <span>Itinerários por parada</span>
-                      </div>
-                    </button>
-                  </div>
+                    <div className="flex items-center gap-2 pt-1 border-t border-rule/30 text-[12px] text-ink-muted font-medium">
+                      <span>Pérola do Oeste</span>
+                      <span>•</span>
+                      <span>Itinerários por parada</span>
+                    </div>
+                  </button>
                 </div>
               </div>
             </main>
@@ -310,9 +286,9 @@ export default function UtilidadesPage() {
                 </div>
               </div>
 
-              {/* Corpo Lateral */}
+              {/* Corpo Lateral (limpo, sem o bloco "Central de Utilidades") */}
               <div className="w-[calc(100%+32px)] -mx-4 px-4 py-3 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain">
-                {isDesktopInfoOpen ? (
+                {isDesktopInfoOpen && (
                   <div
                     role="region"
                     aria-label="Informações do portal"
@@ -323,18 +299,6 @@ export default function UtilidadesPage() {
                       onSelectNoticias={() => router.push("/")}
                       onSelectVagas={() => router.push("/#vagas")}
                     />
-                  </div>
-                ) : (
-                  <div className="desktop-sidebar-panel w-full p-5 flex flex-col gap-3">
-                    <span className="badge-inset text-[11.5px] px-2.5 py-0.5 font-semibold text-coral self-start">
-                      Serviços de Guarapuava
-                    </span>
-                    <h3 className="text-[15px] font-bold text-ink tracking-tight">
-                      Central de Utilidades
-                    </h3>
-                    <p className="text-[13px] text-ink-body leading-relaxed">
-                      Acesse horários de ônibus, itinerários e ferramentas cívicas essenciais de forma direta e sem ruído visual.
-                    </p>
                   </div>
                 )}
               </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import { ArrowLeft, Search, X } from "lucide-react";
 import { Key } from "@/components/ui/Key";
 import type { LinhaBairro, PontoItinerario } from "@/types/bus";
 
@@ -41,6 +42,11 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   });
 
   const [localSearch, setLocalSearch] = useState(searchQuery);
+
+  // Sincroniza busca externa
+  useEffect(() => {
+    setLocalSearch(searchQuery);
+  }, [searchQuery]);
 
   // Sincroniza bairro ativo caso selectedBairroId mude externamente
   useEffect(() => {
@@ -109,24 +115,6 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
     );
   }, [activeBairro, localSearch]);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSearchChange(localSearch);
-    if (!persistent) {
-      onClose();
-    }
-  };
-
-  const handleClearAll = () => {
-    setLocalSearch("");
-    onSearchChange("");
-    setActiveBairro(null);
-    onSelectBairro(null);
-    if (!persistent) {
-      onClose();
-    }
-  };
-
   return (
     <div
       ref={panelRef}
@@ -135,46 +123,43 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       className={`${persistent ? "desktop-sidebar-panel" : "filter-panel"} w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none`}
     >
       {/* ==================================================================
-          1. CABEÇALHO DO MODO / TRANSIÇÃO ENTRE BAIRROS E PONTOS
+          1. TRANSIÇÃO ENTRE BAIRROS E PONTOS (Apenas seta na 2ª camada)
          ================================================================== */}
-      {activeBairro ? (
-        <div className="flex items-center justify-between gap-2 px-0.5">
+      {activeBairro && (
+        <div className="flex items-center gap-2 px-0.5 animate-stagger-item">
           <Key
             type="button"
+            variant="icon"
             onClick={() => {
               setActiveBairro(null);
               onSelectBairro(null);
             }}
-            className="px-2.5 py-1 text-[12.5px] font-semibold"
-            title="Voltar à lista de bairros"
+            className="w-[36px] h-[36px] min-w-[36px] p-0 flex items-center justify-center shrink-0"
+            title="Voltar aos bairros"
+            aria-label="Voltar para todos os bairros"
           >
-            ← Todos os Bairros
+            <ArrowLeft className="w-4 h-4" strokeWidth={2.2} />
           </Key>
-          <span className="text-[12.5px] font-bold text-ink truncate max-w-[190px]">
+          <span className="text-[13px] font-bold text-ink truncate">
             {activeBairro.nomeExibicao}
-          </span>
-        </div>
-      ) : (
-        <div className="flex items-center justify-between gap-2 px-1">
-          <span className="text-[12px] font-bold uppercase tracking-wider text-ink-muted">
-            Selecione o Bairro ou Linha
-          </span>
-          <span className="text-[11px] font-semibold text-ink-muted">
-            {sortedBairros.length} disponíveis
           </span>
         </div>
       )}
 
       {/* ==================================================================
-          2. AS 3 LINHAS COM SCROLL VERTICAL (Bairros ou Pontos)
+          2. GRADE DE BAIRROS OU PONTOS
+          - No desktop: exibe todos sem corte de altura ou scroll interno
+          - No mobile: usa scroll interno compacto acima do dock
          ================================================================== */}
       <div
         className={`${
-          persistent ? "max-h-[300px] min-h-[220px]" : "max-h-[142px] min-h-[142px]"
-        } overflow-y-auto no-scrollbar overscroll-contain pr-0.5`}
+          persistent
+            ? "overflow-visible"
+            : "max-h-[142px] min-h-[142px] overflow-y-auto no-scrollbar overscroll-contain"
+        } pr-0.5`}
       >
         {!activeBairro ? (
-          /* Nível 1: Grade de Bairros em 3 Linhas com Scroll */
+          /* Nível 1: Grade com todos os bairros */
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
             {sortedBairros.map((linha, idx) => {
               const isSelected = selectedBairroId === linha.id;
@@ -204,7 +189,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
             })}
           </div>
         ) : (
-          /* Nível 2: Grade de Pontos de Ônibus do Bairro Ativo */
+          /* Nível 2: Grade com todos os pontos de ônibus do bairro ativo */
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
             {filteredPontos.map((ponto: PontoItinerario, idx: number) => {
               const isSelected = selectedPontoId === ponto.id;
@@ -239,51 +224,49 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       </div>
 
       {/* ==================================================================
-          3. 4ª LINHA: CAMPO DE BUSCA TEXTUAL TÁTIL E BOTÕES DE AÇÃO
+          3. CAMPO DE BUSCA TEXTUAL NO PADRÃO CANÔNICO DOS DEMAIS FILTROS
          ================================================================== */}
-      <form
-        onSubmit={handleSearchSubmit}
-        className="flex items-center gap-1.5 w-full pt-1 border-t border-rule/30"
-      >
-        <div className="relative flex-1">
-          <input
-            ref={searchInputRef}
-            type="search"
-            value={localSearch}
-            onChange={(e) => {
-              setLocalSearch(e.target.value);
-              onSearchChange(e.target.value);
-            }}
-            placeholder={
-              activeBairro
-                ? "Buscar ponto neste bairro..."
-                : "Buscar bairro, linha ou rua..."
-            }
-            className="w-full h-[40px] px-3 text-[13px] rounded-[10px] bg-canvas border border-rule/50 text-ink placeholder:text-ink-muted/70 focus:outline-none focus:border-coral transition-colors"
-          />
-        </div>
-
-        {/* Botão Buscar */}
-        <Key
-          type="submit"
-          className="px-3 h-[40px] text-[13px] font-semibold shrink-0"
-          title="Aplicar busca"
+      <div className="relative w-full pt-1 border-t border-rule/30">
+        <span
+          className="absolute left-3.5 top-[calc(50%+2px)] -translate-y-1/2 text-ink-muted pointer-events-none"
+          aria-hidden="true"
         >
-          Buscar
-        </Key>
+          <Search className="w-4 h-4" strokeWidth={2.2} />
+        </span>
 
-        {/* Botão Limpar se houver filtro ativo */}
-        {(selectedBairroId || selectedPontoId || localSearch) && (
-          <Key
+        <input
+          ref={searchInputRef}
+          type="text"
+          value={localSearch}
+          onChange={(e) => {
+            const val = e.target.value;
+            setLocalSearch(val);
+            onSearchChange(val);
+          }}
+          placeholder={
+            activeBairro
+              ? "Buscar ponto neste bairro..."
+              : "Buscar bairro ou linha..."
+          }
+          aria-label="Buscar bairro ou linha de ônibus"
+          className="filter-input w-full h-[42px] pl-10 pr-9 text-[14px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
+        />
+
+        {localSearch ? (
+          <button
             type="button"
-            onClick={handleClearAll}
-            className="px-2.5 h-[40px] text-[12.5px] text-ink-muted hover:text-coral shrink-0"
-            title="Limpar todos os filtros"
+            onClick={() => {
+              setLocalSearch("");
+              onSearchChange("");
+            }}
+            className="absolute right-2.5 top-[calc(50%+2px)] -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
+            aria-label="Limpar pesquisa"
+            title="Limpar pesquisa"
           >
-            Limpar
-          </Key>
-        )}
-      </form>
+            <X className="w-4 h-4" strokeWidth={2.2} />
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 };

@@ -176,7 +176,7 @@ export default function HorariosOnibusPage() {
 
   const hasActiveFilters = Boolean(selectedBairroId) || Boolean(selectedPontoId) || Boolean(searchQuery.trim());
 
-  // Rótulo unificado no padrão canônico do sistema (FilterIndicator)
+  // Rótulo unificado para o modo mobile
   const filterIndicatorLabel = (
     <span>
       {activeBairroObj && (
@@ -236,17 +236,12 @@ export default function HorariosOnibusPage() {
             </Dock>
           </div>
         ) : (
-          <div className="w-full max-w-[430px] flex flex-col gap-5 pb-32">
-            {/* Cabeçalho */}
-            <header className="flex flex-col gap-1.5 px-1 pt-2">
-              <div className="flex items-center justify-between">
-                <h1 className="text-[20px] font-bold text-ink tracking-tight">
-                  Horários de Ônibus
-                </h1>
-                <span className="badge-inset text-[11px] px-2.5 py-0.5 font-bold text-ink">
-                  Guarapuava
-                </span>
-              </div>
+          <div className="w-full max-w-[430px] flex flex-col gap-4 pb-32">
+            {/* Cabeçalho sem "Guarapuava" */}
+            <header className="flex flex-col gap-1 px-1 pt-1">
+              <h1 className="text-[20px] font-bold text-ink tracking-tight">
+                Horários de Ônibus
+              </h1>
 
               <p className="text-[13.5px] text-ink-muted leading-relaxed">
                 Consulte os horários por ponto de referência e itinerário completo de cada linha.
@@ -267,7 +262,7 @@ export default function HorariosOnibusPage() {
               align="between"
               above={
                 <div className="flex flex-col gap-2 w-full">
-                  {/* Indicador de Filtros Ativos (Padrão Canônico do Sistema) */}
+                  {/* Indicador de Filtros Ativos (Aparece no Mobile) */}
                   <Presence isVisible={hasActiveFilters} duration={180}>
                     <FilterIndicator
                       label={filterIndicatorLabel}
@@ -351,17 +346,49 @@ export default function HorariosOnibusPage() {
       </div>
 
       {/* ==================================================================
-          2. PALCO DESKTOP (>= 1024px) SEM DOCK E COM FILTRO LATERAL PERSISTENTE
+          2. PALCO DESKTOP (>= 1024px) COM PALCO 3D ESTACIONADO À ESQUERDA
          ================================================================== */}
       <div className="hidden lg:flex w-full justify-center">
         <div className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden flex justify-center py-6 px-4 xl:px-8 select-text">
           <div className="flex items-start justify-center gap-4.5 max-w-[1300px] w-full h-full max-h-full">
-            {/* Coluna Esquerda (Equilíbrio Espacial) */}
+            {/* Coluna Esquerda: Página de Utilidades estacionada em perspectiva 3D */}
             <aside
-              aria-label="Espaço de perspectiva"
-              className="w-[430px] shrink-0 desktop-perspective-container h-full max-h-full pointer-events-none"
+              aria-label="Página de utilidades estacionada"
+              className="w-[430px] shrink-0 desktop-perspective-container h-full max-h-full pointer-events-auto"
             >
-              <div className="w-full h-full" aria-hidden="true" />
+              <div
+                onClick={() => router.push("/utilidades")}
+                className="desktop-parked-panel w-full h-full flex flex-col group relative cursor-pointer pt-3"
+                title="Voltar para a lista de utilidades"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    router.push("/utilidades");
+                  }
+                }}
+              >
+                <div className="surface-card w-full p-5 text-left flex flex-col gap-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <h2 className="text-[17px] font-bold text-ink tracking-tight">
+                      Horários de Ônibus
+                    </h2>
+                    <span className="badge-inset text-[11px] px-2 py-0.5 font-semibold text-coral">
+                      45 Linhas
+                    </span>
+                  </div>
+
+                  <p className="text-[13.5px] text-ink-body leading-relaxed">
+                    Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
+                  </p>
+
+                  <div className="flex items-center gap-2 pt-1 border-t border-rule/30 text-[12px] text-ink-muted font-medium">
+                    <span>Pérola do Oeste</span>
+                    <span>•</span>
+                    <span>Itinerários por parada</span>
+                  </div>
+                </div>
+              </div>
             </aside>
 
             {/* Coluna Central (Feed Principal de Horários) */}
@@ -369,19 +396,28 @@ export default function HorariosOnibusPage() {
               aria-label="Conteúdo de horários"
               className="w-[430px] shrink-0 h-full max-h-full flex flex-col relative"
             >
-              {/* Cabeçalho de Navegação Superior */}
+              {/* Cabeçalho com Notícias e Vagas */}
               <div className="w-full shrink-0 z-20 pb-2.5">
                 <nav
-                  aria-label="Navegação superior"
-                  className="grid grid-cols-1 gap-2 w-full h-[42px]"
+                  aria-label="Navegação de abas"
+                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
                 >
                   <Key
                     type="button"
-                    onClick={() => router.push("/utilidades")}
+                    onClick={() => router.push("/")}
                     className="w-full text-[14.5px] justify-center text-center font-semibold"
-                    title="Voltar para a página de utilidades"
+                    title="Ir para Notícias"
                   >
-                    ← Voltar às Utilidades
+                    Notícias
+                  </Key>
+
+                  <Key
+                    type="button"
+                    onClick={() => router.push("/#vagas")}
+                    className="w-full text-[14.5px] justify-center text-center font-semibold"
+                    title="Ir para Vagas"
+                  >
+                    Vagas
                   </Key>
                 </nav>
               </div>
@@ -392,33 +428,18 @@ export default function HorariosOnibusPage() {
                 className="w-[calc(100%+48px)] -mx-6 px-6 pt-3 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
               >
                 <div className="flex flex-col gap-4">
-                  {/* Cabeçalho de Título */}
-                  <header className="flex flex-col gap-1.5 px-1 pt-1">
-                    <div className="flex items-center justify-between">
-                      <h1 className="text-[20px] font-bold text-ink tracking-tight">
-                        Horários de Ônibus
-                      </h1>
-                      <span className="badge-inset text-[11px] px-2.5 py-0.5 font-bold text-ink">
-                        Guarapuava
-                      </span>
-                    </div>
+                  {/* Cabeçalho de Título sem "Guarapuava" */}
+                  <header className="flex flex-col gap-1 px-1 pt-1">
+                    <h1 className="text-[20px] font-bold text-ink tracking-tight">
+                      Horários de Ônibus
+                    </h1>
 
                     <p className="text-[13.5px] text-ink-muted leading-relaxed">
                       Consulte os horários por ponto de referência e itinerário completo de cada linha.
                     </p>
                   </header>
 
-                  {/* Indicador de Filtros Ativos (Padrão Canônico) */}
-                  <Presence isVisible={hasActiveFilters} duration={180}>
-                    <div className="w-full">
-                      <FilterIndicator
-                        label={filterIndicatorLabel}
-                        onClear={handleClearFilters}
-                      />
-                    </div>
-                  </Presence>
-
-                  {/* Lista de Linhas e Horários */}
+                  {/* Lista de Linhas e Horários (Sem indicador laranja no Desktop) */}
                   <BusScheduleFeed
                     linhas={busData.linhas}
                     selectedBairroId={selectedBairroId}
