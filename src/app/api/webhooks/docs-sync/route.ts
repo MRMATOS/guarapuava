@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { syncJobsFromText } from '@/lib/docs/sync';
 import { safeTimingCompare } from '@/lib/security';
 
@@ -11,10 +12,14 @@ const MAX_PAYLOAD_CHARACTERS = 5 * 1024 * 1024; // 5 MB de texto
  * Validação rigorosa de segurança para o webhook de sincronização do Google Docs
  */
 function isAuthorized(request: Request): boolean {
-  const secret = process.env.DOCS_WEBHOOK_SECRET;
+  const validSecrets = [
+    process.env.DOCS_WEBHOOK_SECRET,
+    process.env.CRON_SECRET,
+    process.env.MCP_CLIENT_SECRET,
+  ].filter(Boolean) as string[];
 
-  if (!secret) {
-    console.error('CRITICAL: DOCS_WEBHOOK_SECRET não configurado. Negando acesso ao webhook.');
+  if (validSecrets.length === 0) {
+    console.error('CRITICAL: Nenhum secret de webhook configurado. Negando acesso ao webhook.');
     return false;
   }
 
@@ -22,8 +27,10 @@ function isAuthorized(request: Request): boolean {
   const token = authHeader.replace(/^Bearer\s+/i, '').trim();
   const customSecret = request.headers.get('x-webhook-secret')?.trim();
 
-  if (token && safeTimingCompare(token, secret)) return true;
-  if (customSecret && safeTimingCompare(customSecret, secret)) return true;
+  for (const secret of validSecrets) {
+    if (token && safeTimingCompare(token, secret)) return true;
+    if (customSecret && safeTimingCompare(customSecret, secret)) return true;
+  }
 
   return false;
 }
@@ -54,6 +61,12 @@ export async function POST(request: Request) {
     const docIdentifier = (documento || documentId || 'google-apps-script').slice(0, 100);
 
     const result = await syncJobsFromText(conteudo, docIdentifier);
+
+    try {
+      revalidatePath('/', 'page');
+    } catch (revalErr) {
+      console.warn('Aviso: Falha ao revalidar cache da home no webhook de vagas:', revalErr);
+    }
 
     return NextResponse.json({
       status: 'success',
