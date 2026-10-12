@@ -125,18 +125,10 @@ export function ReportItemActions({
       {isOpen && (
         <div className="w-full pt-3 border-t border-rule/40 flex flex-col gap-2.5">
           {/* Cabeçalho do Painel */}
-          <div className="flex items-center justify-between gap-2">
+          <div>
             <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted">
               Moderar Ocorrência
             </span>
-            <button
-              type="button"
-              onClick={handleClose}
-              disabled={isPending}
-              className="text-[11px] font-semibold text-ink-muted hover:text-ink cursor-pointer"
-            >
-              Fechar
-            </button>
           </div>
 
           {/* Tela de Confirmação Inline */}
