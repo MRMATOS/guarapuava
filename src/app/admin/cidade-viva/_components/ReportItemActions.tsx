@@ -3,7 +3,7 @@
 
 import React, { useState, useTransition } from "react";
 import { Key } from "@/components/ui/Key";
-import type { Report, ReportStatus } from "@/app/cidade-viva/_lib/types";
+import type { Report, ReportStatus, Category } from "@/app/cidade-viva/_lib/types";
 import {
   updateReportStatusAction,
   deleteReportAction,
@@ -11,7 +11,7 @@ import {
 
 interface ReportItemActionsProps {
   report: Report;
-  categoryName?: string;
+  category?: Category;
   onReportUpdated?: (reportId: string, newStatus: ReportStatus) => void;
   onReportDeleted?: (reportId: string) => void;
   onFocusMap?: (report: Report) => void;
@@ -26,7 +26,7 @@ type ConfirmActionType =
 
 export function ReportItemActions({
   report,
-  categoryName,
+  category,
   onReportUpdated,
   onReportDeleted,
   onFocusMap,
@@ -76,42 +76,58 @@ export function ReportItemActions({
   };
 
   return (
-    <div className="flex flex-col w-full">
-      {/* Linha dos Botões de Ação */}
-      <div className="flex items-center justify-end gap-2">
-        {/* Botão 1: No Mapa */}
-        <button
-          type="button"
-          onClick={() => onFocusMap?.(report)}
-          className="key px-3 py-1.5 text-xs font-semibold hover:border-coral transition-colors whitespace-nowrap inline-flex items-center justify-center cursor-pointer"
-          title="Focalizar ocorrência no mapa"
-        >
-          No Mapa
-        </button>
+    <div className="w-full flex flex-col gap-3 pt-2.5 border-t border-rule/40">
+      {/* Linha dos Botões e Categoria (ocupando toda a largura do rodapé do card) */}
+      <div className="flex items-center justify-between gap-2 w-full">
+        {/* Categoria na linha de baixo, à esquerda */}
+        <div className="min-w-0">
+          {category && (
+            <span
+              className="px-2.5 py-0.5 rounded-full text-[11px] font-bold inline-block truncate max-w-[150px] sm:max-w-[180px]"
+              style={{
+                backgroundColor: `${category.color}15`,
+                color: category.color,
+              }}
+            >
+              {category.name}
+            </span>
+          )}
+        </div>
 
-        {/* Botão 2: Opções de Moderação */}
-        <Key
-          type="button"
-          onClick={() => {
-            setIsOpen((prev) => !prev);
-            setConfirmAction(null);
-          }}
-          className={`px-3 py-1.5 text-xs font-semibold whitespace-nowrap ${
-            isOpen ? "border-coral font-bold" : ""
-          }`}
-          title="Abrir opções de moderação"
-        >
-          {isOpen ? "Fechar" : "Opções"}
-        </Key>
+        {/* Botões à direita */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => onFocusMap?.(report)}
+            className="key px-3 py-1.5 text-xs font-semibold hover:border-coral transition-colors whitespace-nowrap cursor-pointer"
+            title="Focalizar ocorrência no mapa"
+          >
+            No Mapa
+          </button>
+
+          <Key
+            type="button"
+            onClick={() => {
+              setIsOpen((prev) => !prev);
+              setConfirmAction(null);
+            }}
+            className={`px-3 py-1.5 text-xs font-semibold whitespace-nowrap cursor-pointer ${
+              isOpen ? "border-coral font-bold" : ""
+            }`}
+            title="Abrir opções de moderação"
+          >
+            {isOpen ? "Fechar" : "Opções"}
+          </Key>
+        </div>
       </div>
 
-      {/* Painel de Moderação — Exibido logo abaixo do card */}
+      {/* Painel de Moderação em Largura Total (w-full) abaixo de toda a linha */}
       {isOpen && (
-        <div className="w-full mt-3 pt-3 border-t border-rule/50 flex flex-col gap-3">
+        <div className="w-full pt-3 border-t border-rule/40 flex flex-col gap-2.5">
           {/* Cabeçalho do Painel */}
           <div className="flex items-center justify-between gap-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted">
-              {categoryName ? `Moderar: ${categoryName}` : "Moderar Ocorrência"}
+              Moderar Ocorrência
             </span>
             <button
               type="button"
@@ -125,7 +141,7 @@ export function ReportItemActions({
 
           {/* Tela de Confirmação Inline */}
           {confirmAction ? (
-            <div className="flex flex-col gap-2.5 p-3 rounded-xl bg-canvas border border-rule/60">
+            <div className="flex flex-col gap-2.5 p-3 rounded-xl bg-canvas border border-rule/60 w-full">
               <p className="text-xs text-ink leading-relaxed font-medium">
                 {confirmAction === "excluir" &&
                   "Tem certeza que deseja excluir esta ocorrência permanentemente? A imagem será apagada do storage e a ação não pode ser desfeita."}
@@ -162,16 +178,16 @@ export function ReportItemActions({
               </div>
             </div>
           ) : (
-            /* Lista de Opções Sem Ícones */
-            <div className="flex flex-col gap-1.5">
+            /* Lista de Opções Sem Ícones com Largura Total */
+            <div className="flex flex-col gap-1.5 w-full">
               {report.status !== "verificado_in_loco" && (
                 <button
                   type="button"
                   onClick={() => setConfirmAction("verificado")}
-                  className="w-full text-left p-2.5 rounded-xl border border-rule/60 hover:border-emerald-500 bg-canvas transition-colors text-xs font-semibold text-ink flex items-center justify-between cursor-pointer"
+                  className="w-full text-left p-2.5 rounded-xl border border-rule/60 hover:border-emerald-500 bg-canvas transition-colors text-xs font-semibold text-ink flex items-center justify-between gap-2 cursor-pointer"
                 >
-                  <span>Marcar como Verificado in loco</span>
-                  <span className="text-[10px] text-emerald-600 font-bold">
+                  <span className="truncate">Marcar como Verificado in loco</span>
+                  <span className="text-[10px] text-emerald-600 font-bold shrink-0">
                     Aprovado
                   </span>
                 </button>
@@ -181,10 +197,10 @@ export function ReportItemActions({
                 <button
                   type="button"
                   onClick={() => setConfirmAction("resolvido")}
-                  className="w-full text-left p-2.5 rounded-xl border border-rule/60 hover:border-blue-500 bg-canvas transition-colors text-xs font-semibold text-ink flex items-center justify-between cursor-pointer"
+                  className="w-full text-left p-2.5 rounded-xl border border-rule/60 hover:border-blue-500 bg-canvas transition-colors text-xs font-semibold text-ink flex items-center justify-between gap-2 cursor-pointer"
                 >
-                  <span>Marcar como Resolvido</span>
-                  <span className="text-[10px] text-blue-600 font-bold">
+                  <span className="truncate">Marcar como Resolvido</span>
+                  <span className="text-[10px] text-blue-600 font-bold shrink-0">
                     Concluído
                   </span>
                 </button>
@@ -194,23 +210,23 @@ export function ReportItemActions({
                 <button
                   type="button"
                   onClick={() => setConfirmAction("sugestivo")}
-                  className="w-full text-left p-2.5 rounded-xl border border-rule/60 hover:border-yellow-500 bg-canvas transition-colors text-xs font-semibold text-ink flex items-center justify-between cursor-pointer"
+                  className="w-full text-left p-2.5 rounded-xl border border-rule/60 hover:border-yellow-500 bg-canvas transition-colors text-xs font-semibold text-ink flex items-center justify-between gap-2 cursor-pointer"
                 >
-                  <span>Manter como Sugestivo</span>
-                  <span className="text-[10px] text-yellow-600 font-bold">
+                  <span className="truncate">Manter como Sugestivo</span>
+                  <span className="text-[10px] text-yellow-600 font-bold shrink-0">
                     Pendente
                   </span>
                 </button>
               )}
 
-              <div className="pt-1 border-t border-rule/40">
+              <div className="pt-1.5 border-t border-rule/40 mt-0.5">
                 <button
                   type="button"
                   onClick={() => setConfirmAction("excluir")}
-                  className="w-full text-left p-2.5 rounded-xl border border-red-500/30 hover:border-red-500 hover:bg-red-500/10 transition-colors text-xs font-bold text-red-600 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left p-2.5 rounded-xl border border-red-500/30 hover:border-red-500 hover:bg-red-500/10 transition-colors text-xs font-bold text-red-600 flex items-center justify-between gap-2 cursor-pointer"
                 >
-                  <span>Excluir Ocorrência</span>
-                  <span className="text-[10px] uppercase font-bold">
+                  <span className="truncate">Excluir Ocorrência</span>
+                  <span className="text-[10px] uppercase font-bold shrink-0">
                     Irreversível
                   </span>
                 </button>

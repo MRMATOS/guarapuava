@@ -536,36 +536,14 @@ export function AdminCidadeVivaView({
                       )}
                     </div>
 
-                    {/* Linha de Baixo: Categoria à esquerda (depois do divisor) e Ações à direita. IP REMOVIDO! */}
-                    <div className="pt-2 border-t border-rule/40 flex flex-col gap-2">
-                      <div className="flex items-center justify-between gap-2">
-                        {/* Categoria na linha de baixo, à esquerda */}
-                        <div>
-                          {cat && (
-                            <span
-                              className="px-2.5 py-0.5 rounded-full text-[11px] font-bold inline-block truncate max-w-[150px] sm:max-w-[180px]"
-                              style={{
-                                backgroundColor: `${cat.color}15`,
-                                color: cat.color,
-                              }}
-                            >
-                              {cat.name}
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Ações e Painel de Moderação Inline */}
-                        <div className="shrink-0">
-                          <ReportItemActions
-                            report={report}
-                            categoryName={cat?.name}
-                            onReportUpdated={handleReportUpdated}
-                            onReportDeleted={handleReportDeleted}
-                            onFocusMap={handleFocusMap}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    {/* Rodapé do Card: Categoria (esquerda), Botões (direita) e Moderação (largura total) */}
+                    <ReportItemActions
+                      report={report}
+                      category={cat}
+                      onReportUpdated={handleReportUpdated}
+                      onReportDeleted={handleReportDeleted}
+                      onFocusMap={handleFocusMap}
+                    />
                   </article>
                 );
               })
