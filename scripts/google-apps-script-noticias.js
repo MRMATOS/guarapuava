@@ -59,8 +59,9 @@ function sincronizarNoticiasComServidor() {
   }
 
   const conteudoCompleto = linhas.join("\n");
-  const endpoint = "https://guarapuava-chi.vercel.app/api/webhooks/news-docs-sync";
-  const tokenSecreto = "spk_sec_guarapuava_2026_mcp"; 
+  const endpoint = "https://guarapuava.digital/api/webhooks/news-docs-sync";
+  // Obtenha o token configurado nas Propriedades do Script (Configurações do Projeto > Propriedades do script)
+  const tokenSecreto = PropertiesService.getScriptProperties().getProperty("DOCS_WEBHOOK_SECRET") || "SEU_DOCS_WEBHOOK_SECRET_AQUI"; 
 
   const payload = {
     documento: doc.getName(),

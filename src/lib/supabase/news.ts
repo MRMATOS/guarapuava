@@ -1,4 +1,5 @@
-import { supabase, supabaseAdmin } from './client';
+import { supabase } from './client';
+import { supabaseAdmin } from './admin';
 import { DailyDigest, DatabaseNewsDigestRow } from '@/types/news';
 import { parseDateToIso } from '../docs/news-parser';
 

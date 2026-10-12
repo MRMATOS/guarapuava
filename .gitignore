@@ -60,3 +60,7 @@ next-env.d.ts
 # maplibre generated worker build artifacts
 /public/maplibre/
 
+# supabase cli temporary state and connection caches
+supabase/.temp/
+
+

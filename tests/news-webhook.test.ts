@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 
+const TEST_SECRET = 'test_suite_webhook_secret_secure_987';
+process.env.DOCS_WEBHOOK_SECRET = TEST_SECRET;
+
 async function runWebhookTest() {
   const payload = {
     conteudo: `
@@ -14,23 +17,21 @@ Saúde e Gestão: Teste ativo no portal.
     documento: 'Radar Guarapuava Teste',
   };
 
-  // Importa a rota dinamicamente
   const { POST } = await import('../src/app/api/webhooks/news-docs-sync/route');
 
   // Teste 1: Não autorizado (token errado)
   const unauthorizedReq = new Request('http://localhost:3000/api/webhooks/news-docs-sync', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer token-invalido-xyz' },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer token-invalido-xyz' },
     body: JSON.stringify(payload),
   });
   const unauthRes = await POST(unauthorizedReq);
   assert.equal(unauthRes.status, 401, 'Deve retornar 401 para token inválido');
 
   // Teste 2: Autorizado com token secreto válido
-  const validSecret = process.env.DOCS_WEBHOOK_SECRET || 'spk_sec_guarapuava_2026_mcp';
   const authorizedReq = new Request('http://localhost:3000/api/webhooks/news-docs-sync', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${validSecret}` },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TEST_SECRET}` },
     body: JSON.stringify(payload),
   });
   const authRes = await POST(authorizedReq);

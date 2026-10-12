@@ -44,7 +44,7 @@ async function runTests() {
   assert.ok(result1.total >= 2);
 
   console.log('--- Test 2: listActiveJobs ---');
-  const activeJobs = await listActiveJobs();
+  const activeJobs = await listActiveJobs(1500);
   console.log(`Vagas ativas encontradas: ${activeJobs.length}`);
   const found1 = activeJobs.find((j) => j.externalId === testJob1.externalId);
   assert.ok(found1, 'testJob1 deve estar presente nas vagas ativas');
@@ -55,8 +55,9 @@ async function runTests() {
   const updatedJob1 = { ...testJob1, compensation: 'R$ 7.500,00' };
   const result2 = await syncJobs([updatedJob1], false);
   console.log('Resultado 2 (atualização):', result2);
-  const activeJobsAfterUpdate = await listActiveJobs();
+  const activeJobsAfterUpdate = await listActiveJobs(1500);
   const updatedFound1 = activeJobsAfterUpdate.find((j) => j.externalId === testJob1.externalId);
+
   assert.equal(updatedFound1?.compensation, 'R$ 7.500,00');
 
   console.log('--- Test 4: deactivateJob ---');

@@ -1,33 +1,32 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { downloadAndSyncGoogleDocsNews } from '@/lib/docs/news-sync';
+import { safeTimingCompare } from '@/lib/security';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 /**
- * Validação de segurança para a rota de Cron de notícias
+ * Validação rigorosa de segurança para a rota de Cron de notícias:
+ * - A Vercel Cron envia Authorization: Bearer <CRON_SECRET> automaticamente
+ * - Compara token usando algoritmo seguro de tempo constante
  */
 function isAuthorized(request: Request): boolean {
-  if (process.env.NODE_ENV === 'development') {
-    return true;
+  const cronSecret = process.env.CRON_SECRET;
+
+  if (!cronSecret) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('⚠️ CRON_SECRET não configurado. Permitindo apenas em desenvolvimento.');
+      return true;
+    }
+    console.error('CRITICAL: CRON_SECRET não configurado em produção. Negando disparo de cron.');
+    return false;
   }
 
   const authHeader = request.headers.get('authorization') || '';
   const token = authHeader.replace(/^Bearer\s+/i, '').trim();
 
-  const cronSecret = process.env.CRON_SECRET;
-  const mcpSecret = process.env.MCP_CLIENT_SECRET;
-
-  if (cronSecret && token === cronSecret) return true;
-  if (mcpSecret && token === mcpSecret) return true;
-
-  // Validação nativa do Vercel Cron
-  if (request.headers.get('x-vercel-cron')) {
-    return true;
-  }
-
-  return false;
+  return safeTimingCompare(token, cronSecret);
 }
 
 export async function GET(request: Request) {
@@ -54,7 +53,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         status: 'error',
-        message: err?.message || 'Falha na sincronização do documento de notícias',
+        message: 'Falha na sincronização do documento de notícias.',
       },
       { status: 500 }
     );

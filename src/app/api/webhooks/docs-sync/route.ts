@@ -1,34 +1,29 @@
 import { NextResponse } from 'next/server';
 import { syncJobsFromText } from '@/lib/docs/sync';
+import { safeTimingCompare } from '@/lib/security';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
+const MAX_PAYLOAD_CHARACTERS = 5 * 1024 * 1024; // 5 MB de texto
+
 /**
- * Validação de segurança para o webhook de sincronização do Google Docs
+ * Validação rigorosa de segurança para o webhook de sincronização do Google Docs
  */
 function isAuthorized(request: Request): boolean {
-  if (process.env.NODE_ENV === 'development') {
-    return true;
+  const secret = process.env.DOCS_WEBHOOK_SECRET;
+
+  if (!secret) {
+    console.error('CRITICAL: DOCS_WEBHOOK_SECRET não configurado. Negando acesso ao webhook.');
+    return false;
   }
 
   const authHeader = request.headers.get('authorization') || '';
   const token = authHeader.replace(/^Bearer\s+/i, '').trim();
   const customSecret = request.headers.get('x-webhook-secret')?.trim();
 
-  const validSecrets = [
-    process.env.CRON_SECRET,
-    process.env.MCP_CLIENT_SECRET,
-    process.env.DOCS_WEBHOOK_SECRET,
-  ].filter(Boolean);
-
-  if (validSecrets.length === 0) {
-    console.warn('⚠️ Nenhum secret configurado para o webhook do Docs. Negando acesso em produção.');
-    return false;
-  }
-
-  if (token && validSecrets.includes(token)) return true;
-  if (customSecret && validSecrets.includes(customSecret)) return true;
+  if (token && safeTimingCompare(token, secret)) return true;
+  if (customSecret && safeTimingCompare(customSecret, secret)) return true;
 
   return false;
 }
@@ -49,10 +44,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const docIdentifier = documento || documentId || 'google-apps-script';
+    if (conteudo.length > MAX_PAYLOAD_CHARACTERS) {
+      return NextResponse.json(
+        { error: 'Payload excede o limite máximo permitido de 5 MB.' },
+        { status: 413 }
+      );
+    }
 
-    const linesSample = conteudo.split(/\r?\n/).slice(0, 10).filter(Boolean);
-    console.log(`📥 Webhook [${docIdentifier}]: Recebeu ${conteudo.length} caracteres. Exemplo:`, linesSample);
+    const docIdentifier = (documento || documentId || 'google-apps-script').slice(0, 100);
 
     const result = await syncJobsFromText(conteudo, docIdentifier);
 
@@ -66,7 +65,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         status: 'error',
-        message: err?.message || 'Falha ao processar conteúdo do documento',
+        message: 'Falha ao processar conteúdo do documento de vagas.',
       },
       { status: 500 }
     );
@@ -76,7 +75,7 @@ export async function POST(request: Request) {
 export async function GET() {
   return NextResponse.json({
     status: 'online',
-    description: 'Endpoint de webhook para Google Apps Script sincronizar vagas do Google Docs',
+    description: 'Endpoint de webhook para sincronização de vagas.',
     method: 'POST',
   });
 }

@@ -1,66 +1,60 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { registeredTools, executeMcpTool } from '@/lib/mcp/server';
+import { safeTimingCompare, isValidHttpsUrl } from '@/lib/security';
 
-const EXPECTED_SECRET = process.env.MCP_CLIENT_SECRET || 'spk_sec_guarapuava_2026_mcp';
-const EXPECTED_CLIENT_ID = process.env.MCP_CLIENT_ID || 'guarapuava-spark-agent';
-
-/**
- * Validação de segurança para requisições do Gemini Spark
- * - Permite conexão direta transparente para Gemini Connected Apps
- * - Valida Bearer token, Basic Auth ou query param (?secret=...) quando fornecidos
- * - Permite modo estrito via MCP_REQUIRE_AUTH=true
- */
 function isAuthorized(request: Request): boolean {
-  const url = new URL(request.url);
+  const expectedSecret = process.env.MCP_CLIENT_SECRET;
+  const expectedClientId = process.env.MCP_CLIENT_ID || 'guarapuava-spark-agent';
+
+  if (!expectedSecret) {
+    console.error('CRITICAL: MCP_CLIENT_SECRET não configurado. Rejeitando todas as conexões MCP.');
+    return false;
+  }
+
+
   const authHeader = request.headers.get('authorization') || '';
   const token = authHeader.replace(/^Bearer\s+/i, '').trim();
-  const queryToken = url.searchParams.get('token') || url.searchParams.get('secret') || '';
 
-  // Se enviou credencial incorreta, sempre rejeita
-  if (token && token !== EXPECTED_SECRET) {
-    return false;
+  // Validação Bearer Token
+  if (token && safeTimingCompare(token, expectedSecret)) {
+    return true;
   }
-  if (queryToken && queryToken !== EXPECTED_SECRET) {
-    return false;
-  }
+
+  // Validação Basic Auth
   if (authHeader.startsWith('Basic ')) {
-    const creds = Buffer.from(authHeader.replace('Basic ', ''), 'base64').toString().split(':');
-    if (creds[0] !== EXPECTED_CLIENT_ID || creds[1] !== EXPECTED_SECRET) {
+    try {
+      const creds = Buffer.from(authHeader.replace('Basic ', ''), 'base64').toString().split(':');
+      const clientId = creds[0];
+      const clientSecret = creds.slice(1).join(':');
+
+      if (
+        safeTimingCompare(clientId, expectedClientId) &&
+        safeTimingCompare(clientSecret, expectedSecret)
+      ) {
+        return true;
+      }
+    } catch {
       return false;
     }
-    return true;
   }
 
-  // Se enviou a credencial esperada
-  if (token === EXPECTED_SECRET || queryToken === EXPECTED_SECRET) {
-    return true;
-  }
-
-  // Se nenhuma credencial foi enviada:
-  // Se MCP_REQUIRE_AUTH=true estiver ativado, exige credenciais
-  if (process.env.MCP_REQUIRE_AUTH === 'true') {
-    return false;
-  }
-
-  // Por padrão, permite handshake e conexão para Gemini Connected Apps
-  return true;
+  return false;
 }
 
 /**
- * GET: Conexão SSE / Handshake do Cloud MCP
+ * GET: Conexão SSE / Handshake do Cloud MCP (Requer Autenticação)
  */
 export async function GET(request: Request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
   }
+
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     start(controller) {
-      // Envia evento de endpoint MCP
       const endpointEvent = `event: endpoint\ndata: /api/mcp\n\n`;
       controller.enqueue(encoder.encode(endpointEvent));
 
-      // Mantém heartbeat inicial
       const keepAlive = `event: ping\ndata: {}\n\n`;
       controller.enqueue(encoder.encode(keepAlive));
     },
@@ -77,15 +71,24 @@ export async function GET(request: Request) {
 }
 
 /**
- * POST: Troca de mensagens JSON-RPC 2.0 (tools/list, tools/call, etc.)
+ * POST: Troca de mensagens JSON-RPC 2.0 (tools/list, tools/call, etc.) (Requer Autenticação)
  */
 export async function POST(request: Request) {
+  if (!isAuthorized(request)) {
+    return NextResponse.json(
+      {
+        jsonrpc: '2.0',
+        id: null,
+        error: { code: -32000, message: 'Não autorizado. Forneça token Bearer válido.' },
+      },
+      { status: 401 }
+    );
+  }
 
   try {
     const body = await request.json();
     const { id, method, params } = body;
 
-    // Resposta padrão JSON-RPC
     const rpcResponse = (result: any) =>
       NextResponse.json({
         jsonrpc: '2.0',
@@ -128,15 +131,25 @@ export async function POST(request: Request) {
           return rpcError(-32602, 'Nome da ferramenta não informado');
         }
 
+        // Validação de segurança dos argumentos da ferramenta
+        if (toolArgs?.vagas && Array.isArray(toolArgs.vagas)) {
+          for (const vaga of toolArgs.vagas) {
+            if (vaga.sourceUrl && !isValidHttpsUrl(vaga.sourceUrl)) {
+              return rpcError(-32602, `URL inválida ou insegura para vaga: ${vaga.title}. Apenas HTTPS é permitido.`);
+            }
+          }
+        }
+
         try {
           const result = await executeMcpTool(name, toolArgs);
           return rpcResponse(result);
         } catch (toolError: any) {
+          console.error(`Erro ao executar ferramenta MCP ${name}:`, toolError);
           return rpcResponse({
             content: [
               {
                 type: 'text',
-                text: `Erro ao executar ${name}: ${toolError?.message || String(toolError)}`,
+                text: `Erro ao processar operação da ferramenta ${name}. Verifique os parâmetros informados.`,
               },
             ],
             isError: true,
@@ -152,7 +165,7 @@ export async function POST(request: Request) {
       {
         jsonrpc: '2.0',
         id: null,
-        error: { code: -32700, message: `Erro ao processar JSON: ${err?.message}` },
+        error: { code: -32700, message: 'Erro ao processar JSON da requisição.' },
       },
       { status: 400 }
     );

@@ -1,4 +1,5 @@
-import { supabase, supabaseAdmin } from './client';
+import { supabase } from './client';
+import { supabaseAdmin } from './admin';
 import { JobOpening } from '@/types/job';
 import { JobOpeningInput } from '../mcp/schema';
 import { sortJobsByPublishedDate } from '../utils/date';

@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { syncNewsDigests, listActiveNewsDigests, getNewsDigestByDate } from '../src/lib/supabase/news';
 import { DailyDigest } from '../src/types/news';
-import { supabaseAdmin } from '../src/lib/supabase/client';
+import { supabaseAdmin } from '../src/lib/supabase/admin';
+
 
 const testDate = '31/12/2099';
 const testDateIso = '2099-12-31';

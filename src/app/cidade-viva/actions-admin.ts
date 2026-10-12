@@ -2,8 +2,17 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createSupabaseServer, createSupabaseAdmin } from "@/lib/supabase/server";
+import { createSupabaseServer } from "@/lib/supabase/server";
+import { createSupabaseAdmin } from "@/lib/supabase/admin";
 import type { ReportStatus, Report } from "./_lib/types";
+
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const VALID_STATUSES: readonly ReportStatus[] = [
+  "sugestivo",
+  "confirmado_comunidade",
+  "verificado_in_loco",
+  "resolvido",
+];
 
 /**
  * Garante que a requisição partiu do administrador autorizado (ADMIN_EMAIL).
@@ -34,6 +43,14 @@ export async function updateReportStatusAction(
   newStatus: ReportStatus
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    if (!reportId || !UUID_REGEX.test(reportId)) {
+      return { success: false, error: "Identificador de relato inválido." };
+    }
+
+    if (!VALID_STATUSES.includes(newStatus)) {
+      return { success: false, error: "Status de moderação inválido." };
+    }
+
     await requireAdmin();
 
     const admin = createSupabaseAdmin();
@@ -44,7 +61,7 @@ export async function updateReportStatusAction(
 
     if (error) {
       console.error("Erro ao atualizar status do relato:", error);
-      return { success: false, error: error.message };
+      return { success: false, error: "Falha ao atualizar status do relato no banco de dados." };
     }
 
     revalidatePath("/admin/cidade-viva");
@@ -64,6 +81,10 @@ export async function deleteReportAction(
   reportId: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    if (!reportId || !UUID_REGEX.test(reportId)) {
+      return { success: false, error: "Identificador de relato inválido." };
+    }
+
     await requireAdmin();
 
     const admin = createSupabaseAdmin();
@@ -100,7 +121,7 @@ export async function deleteReportAction(
 
     if (deleteError) {
       console.error("Erro ao excluir relato do banco:", deleteError);
-      return { success: false, error: deleteError.message };
+      return { success: false, error: "Falha ao remover o relato do banco de dados." };
     }
 
     revalidatePath("/admin/cidade-viva");
@@ -128,7 +149,7 @@ export async function getAdminReports(
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (statusFilter && statusFilter !== "todos") {
+    if (statusFilter && statusFilter !== "todos" && VALID_STATUSES.includes(statusFilter as ReportStatus)) {
       query = query.eq("status", statusFilter);
     }
 
@@ -141,7 +162,7 @@ export async function getAdminReports(
     return (data as Report[]) || [];
   } catch (error) {
     console.error(
-      "Falha de autorização ou erro desconhecido em getAdminReports:",
+      "Falha de autorização ou erro em getAdminReports:",
       error
     );
     return [];

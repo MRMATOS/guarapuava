@@ -4,7 +4,10 @@
 import crypto from "node:crypto";
 import { headers, cookies } from "next/headers";
 import { unstable_cache } from "next/cache";
-import { supabase, supabaseAdmin } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
+import { supabaseAdmin } from "@/lib/supabase/admin";
+import { createSupabaseServer } from "@/lib/supabase/server";
+import { validateImageMagicBytes } from "@/lib/security";
 import { reverseGeocode } from "./_lib/geocoding";
 import type { Category, Report, CreateReportResult } from "./_lib/types";
 
@@ -73,14 +76,15 @@ export async function createReport(formData: FormData): Promise<CreateReportResu
     const realIp = headerStore.get("x-real-ip");
     const clientIp = (forwarded ? forwarded.split(",")[0].trim() : realIp) || "127.0.0.1";
 
-    // 2. Verificação de admin (bypassa o rate limit se autenticado)
+    // 2. Verificação de admin com cliente de servidor seguro
     let isAdmin = false;
     const cookieStore = await cookies();
     const hasAuthCookie = cookieStore.getAll().some((c) => c.name.includes("-auth-token"));
 
     if (hasAuthCookie) {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const serverClient = await createSupabaseServer();
+        const { data: { user } } = await serverClient.auth.getUser();
         if (user && user.email === process.env.ADMIN_EMAIL) {
           isAdmin = true;
         }
@@ -145,14 +149,20 @@ export async function createReport(formData: FormData): Promise<CreateReportResu
       return { success: false, error: "Categoria de problema não encontrada ou inativa." };
     }
 
-    // 5. Validação da imagem (limite de 2MB)
+    // 5. Validação rigorosa do arquivo de imagem (limite de 2MB + Magic Bytes)
     if (photo.size > 2 * 1024 * 1024) {
       return { success: false, error: "A imagem excede o tamanho máximo permitido de 2 MB." };
     }
 
-    const allowedTypes = ["image/webp", "image/jpeg", "image/png"];
-    if (!allowedTypes.includes(photo.type)) {
-      return { success: false, error: "Formato de imagem não suportado. Use WebP ou JPEG." };
+    const arrayBuffer = await photo.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const { valid: isValidImage, detectedMime } = validateImageMagicBytes(buffer);
+    if (!isValidImage || !detectedMime) {
+      return {
+        success: false,
+        error: "Arquivo de imagem inválido ou corrompido. Envie uma foto válida em formato JPEG, PNG ou WebP.",
+      };
     }
 
     // 6. Upload para o Supabase Storage via service role
@@ -160,22 +170,19 @@ export async function createReport(formData: FormData): Promise<CreateReportResu
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const fileId = crypto.randomUUID();
-    const ext = photo.type === "image/jpeg" ? "jpg" : photo.type === "image/png" ? "png" : "webp";
+    const ext = detectedMime === "image/jpeg" ? "jpg" : detectedMime === "image/png" ? "png" : "webp";
     const filePath = `reports/${year}/${month}/${fileId}.${ext}`;
-
-    const arrayBuffer = await photo.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
 
     const { error: uploadError } = await supabaseAdmin.storage
       .from("cidade-viva-reports")
       .upload(filePath, buffer, {
-        contentType: photo.type,
+        contentType: detectedMime,
         cacheControl: "31536000",
         upsert: false,
       });
 
     if (uploadError) {
-      console.error("Erro no upload da foto:", uploadError.message, uploadError);
+      console.error("Erro no upload da foto:", uploadError.message);
       return { success: false, error: "Não foi possível enviar a foto comprobatória." };
     }
 
@@ -183,11 +190,17 @@ export async function createReport(formData: FormData): Promise<CreateReportResu
       data: { publicUrl },
     } = supabaseAdmin.storage.from("cidade-viva-reports").getPublicUrl(filePath);
 
-    // 7. Anonimização do IP (LGPD)
-    const secret = process.env.HASH_SALT || "cidade_viva_guarapuava_salt_secure_2026";
+    // 7. Anonimização do IP (LGPD) com salt criptográfico seguro
+    const saltSecret =
+      process.env.HASH_SALT ||
+      crypto
+        .createHash("sha256")
+        .update(process.env.SUPABASE_SERVICE_ROLE_KEY || "guarapuava-default-salt-fallback")
+        .digest("hex");
+
     const ipHash = crypto
       .createHash("sha256")
-      .update(clientIp + secret)
+      .update(clientIp + saltSecret)
       .digest("hex");
 
     // 8. Geocodificação reversa silenciosa
@@ -230,14 +243,18 @@ export async function createReport(formData: FormData): Promise<CreateReportResu
       }
     }
 
-    // 10. Persistência da ocorrência no banco
+    // 10. Persistência da ocorrência no banco com sanitização de campos
+    const sanitizedDescription = description
+      ? description.slice(0, 500).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
+      : null;
+
     const { data: newReport, error: insertError } = await supabaseAdmin
       .from("cidade_viva_reports")
       .insert({
         category_id: categoryId,
         latitude: lat,
         longitude: lng,
-        description: description ? description.slice(0, 500) : null,
+        description: sanitizedDescription,
         photo_url: publicUrl,
         address: geo.address || null,
         city: geo.city || "Guarapuava",
@@ -249,7 +266,7 @@ export async function createReport(formData: FormData): Promise<CreateReportResu
       .single();
 
     if (insertError) {
-      console.error("Erro ao registrar ocorrência:", insertError);
+      console.error("Erro ao registrar ocorrência no banco.");
       return { success: false, error: "Falha ao gravar ocorrência no banco de dados." };
     }
 

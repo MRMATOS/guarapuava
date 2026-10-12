@@ -2,14 +2,18 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createSupabaseServer } from "@/lib/supabase/server";
 
-function getCleanOrigin(request: NextRequest): string {
-  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
-  const proto =
-    request.headers.get("x-forwarded-proto") ||
-    (host && !host.startsWith("localhost") && !host.startsWith("127.0.0.1") ? "https" : "http");
+function getSafeOrigin(request: NextRequest): string {
+  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (configuredUrl) {
+    return configuredUrl.replace(/\/$/, "");
+  }
 
-  if (host) {
-    const cleanHost = host.replace("0.0.0.0", "localhost");
+  const host = request.headers.get("host") || "";
+  const isLocal = host.startsWith("localhost") || host.startsWith("127.0.0.1");
+  const proto = isLocal ? "http" : "https";
+  const cleanHost = host.replace("0.0.0.0", "localhost");
+
+  if (cleanHost) {
     return `${proto}://${cleanHost}`;
   }
 
@@ -18,7 +22,7 @@ function getCleanOrigin(request: NextRequest): string {
 }
 
 export async function GET(request: NextRequest) {
-  const origin = getCleanOrigin(request);
+  const origin = getSafeOrigin(request);
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
 
@@ -27,18 +31,12 @@ export async function GET(request: NextRequest) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
-      console.error("[AUTH CALLBACK] Erro na troca de código:", error.message);
+      console.error("[AUTH CALLBACK] Erro na troca de código OAuth.");
       return NextResponse.redirect(`${origin}/admin/login?error=auth`);
     }
 
     const authorizedEmail = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
     const userEmail = data?.user?.email?.trim().toLowerCase();
-
-    console.log("[AUTH CALLBACK] Validação de acesso:", {
-      userEmail,
-      authorizedEmail,
-      authorized: Boolean(userEmail && authorizedEmail && userEmail === authorizedEmail),
-    });
 
     if (userEmail && authorizedEmail && userEmail === authorizedEmail) {
       return NextResponse.redirect(`${origin}/admin/cidade-viva`);

@@ -74,9 +74,10 @@ async function simulateGeminiSpark() {
   const req = new Request('http://localhost:3000/api/mcp', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.MCP_CLIENT_SECRET || 'spk_sec_guarapuava_2026_mcp'}`,
+      Authorization: `Bearer ${process.env.MCP_CLIENT_SECRET || ''}`,
       'Content-Type': 'application/json',
     },
+
     body: JSON.stringify(sparkPayload),
   });
 
