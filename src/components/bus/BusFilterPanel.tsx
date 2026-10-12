@@ -115,6 +115,50 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
     );
   }, [activeBairro, localSearch]);
 
+  const searchInputNode = (
+    <div className={`relative w-full ${persistent ? "pb-0.5" : "pt-1 border-t border-rule/30"}`}>
+      <span
+        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
+        aria-hidden="true"
+      >
+        <Search className="w-4 h-4" strokeWidth={2.2} />
+      </span>
+
+      <input
+        ref={searchInputRef}
+        type="text"
+        value={localSearch}
+        onChange={(e) => {
+          const val = e.target.value;
+          setLocalSearch(val);
+          onSearchChange(val);
+        }}
+        placeholder={
+          activeBairro
+            ? "Buscar ponto neste bairro..."
+            : "Buscar bairro ou linha..."
+        }
+        aria-label="Buscar bairro ou linha de ônibus"
+        className="filter-input w-full h-[42px] pl-10 pr-9 text-[14px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
+      />
+
+      {localSearch ? (
+        <button
+          type="button"
+          onClick={() => {
+            setLocalSearch("");
+            onSearchChange("");
+          }}
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
+          aria-label="Limpar pesquisa"
+          title="Limpar pesquisa"
+        >
+          <X className="w-4 h-4" strokeWidth={2.2} />
+        </button>
+      ) : null}
+    </div>
+  );
+
   return (
     <div
       ref={panelRef}
@@ -147,7 +191,12 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       )}
 
       {/* ==================================================================
-          2. GRADE DE BAIRROS OU PONTOS
+          2. NO MODO DESKTOP: Campo de busca fica ACIMA dos botões
+         ================================================================== */}
+      {persistent && searchInputNode}
+
+      {/* ==================================================================
+          3. GRADE DE BAIRROS OU PONTOS
           - No desktop: exibe todos sem corte de altura ou scroll interno
           - No mobile: usa scroll interno compacto acima do dock
          ================================================================== */}
@@ -224,49 +273,9 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       </div>
 
       {/* ==================================================================
-          3. CAMPO DE BUSCA TEXTUAL NO PADRÃO CANÔNICO DOS DEMAIS FILTROS
+          4. NO MODO MOBILE: Campo de busca fica na base
          ================================================================== */}
-      <div className="relative w-full pt-1 border-t border-rule/30">
-        <span
-          className="absolute left-3.5 top-[calc(50%+2px)] -translate-y-1/2 text-ink-muted pointer-events-none"
-          aria-hidden="true"
-        >
-          <Search className="w-4 h-4" strokeWidth={2.2} />
-        </span>
-
-        <input
-          ref={searchInputRef}
-          type="text"
-          value={localSearch}
-          onChange={(e) => {
-            const val = e.target.value;
-            setLocalSearch(val);
-            onSearchChange(val);
-          }}
-          placeholder={
-            activeBairro
-              ? "Buscar ponto neste bairro..."
-              : "Buscar bairro ou linha..."
-          }
-          aria-label="Buscar bairro ou linha de ônibus"
-          className="filter-input w-full h-[42px] pl-10 pr-9 text-[14px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
-        />
-
-        {localSearch ? (
-          <button
-            type="button"
-            onClick={() => {
-              setLocalSearch("");
-              onSearchChange("");
-            }}
-            className="absolute right-2.5 top-[calc(50%+2px)] -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
-            aria-label="Limpar pesquisa"
-            title="Limpar pesquisa"
-          >
-            <X className="w-4 h-4" strokeWidth={2.2} />
-          </button>
-        ) : null}
-      </div>
+      {!persistent && searchInputNode}
     </div>
   );
 };

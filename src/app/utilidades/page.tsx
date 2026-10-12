@@ -35,7 +35,7 @@ export default function UtilidadesPage() {
   return (
     <div className="min-h-[100dvh] bg-canvas text-ink flex justify-center">
       {/* ==================================================================
-          1. CASCA MOBILE (< 1024px) COM DOCK INFERIOR
+          1. CASCA MOBILE (< 1024px) COM DOCK NO PADRÃO CANÔNICO
          ================================================================== */}
       <div className="lg:hidden w-full flex justify-center py-6 px-4 select-text">
         {isMobileInfoOpen ? (
@@ -65,34 +65,23 @@ export default function UtilidadesPage() {
           </div>
         ) : (
           <div className="w-full max-w-[430px] flex flex-col gap-3.5 pb-28 pt-1">
-            {/* Começa diretamente com o cartão de Horários de Ônibus */}
+            {/* Card limpo: sem 45 Linhas e sem texto de rodapé da Pérola do Oeste */}
             <button
               type="button"
               onClick={() => router.push("/utilidades/onibus")}
               className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
               aria-label="Abrir Horários de Ônibus"
             >
-              <div className="flex items-center justify-between gap-2">
-                <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-                  Horários de Ônibus
-                </h2>
-                <span className="badge-inset text-[11px] px-2 py-0.5 font-semibold text-coral">
-                  45 Linhas
-                </span>
-              </div>
+              <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
+                Horários de Ônibus
+              </h2>
 
               <p className="text-[13.5px] text-ink-body leading-relaxed">
                 Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
               </p>
-
-              <div className="flex items-center gap-2 pt-1 border-t border-rule/30 text-[12px] text-ink-muted font-medium">
-                <span>Pérola do Oeste</span>
-                <span>•</span>
-                <span>Itinerários por parada</span>
-              </div>
             </button>
 
-            {/* Dock Fixo Mobile */}
+            {/* Dock Fixo Mobile no Padrão Canônico: Mais - Filtrar - Notícias - Vagas */}
             <Dock
               align="between"
               above={
@@ -109,28 +98,46 @@ export default function UtilidadesPage() {
                   </Presence>
                 </div>
               }
-              aria-label="Navegação de utilidades"
+              aria-label="Navegação principal de utilidades"
             >
-              <div className="grid grid-cols-2 w-full gap-2">
-                <Key
-                  type="button"
-                  onClick={() => router.push("/")}
-                  className="w-full px-2 text-[14px] justify-center text-center font-medium"
-                  aria-label="Voltar para a página inicial"
-                >
-                  Voltar
-                </Key>
-
+              <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
                 <Key
                   ref={optionsButtonRef}
                   type="button"
                   pressed={isOptionsOpen}
                   onClick={() => setIsOptionsOpen((prev) => !prev)}
                   aria-expanded={isOptionsOpen}
-                  className="w-full px-2 text-[14px] justify-center text-center font-medium"
+                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
                   aria-label={isOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
                 >
                   Mais
+                </Key>
+
+                <Key
+                  type="button"
+                  disabled
+                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-35 cursor-not-allowed pointer-events-none"
+                  aria-label="Filtros indisponíveis nesta página"
+                >
+                  Filtrar
+                </Key>
+
+                <Key
+                  type="button"
+                  onClick={() => router.push("/")}
+                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                  aria-label="Ir para Notícias"
+                >
+                  Notícias
+                </Key>
+
+                <Key
+                  type="button"
+                  onClick={() => router.push("/#vagas")}
+                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                  aria-label="Ir para Vagas"
+                >
+                  Vagas
                 </Key>
               </div>
             </Dock>
@@ -183,7 +190,7 @@ export default function UtilidadesPage() {
                 </nav>
               </div>
 
-              {/* Conteúdo: Começa imediatamente com o cartão de horários */}
+              {/* Conteúdo: Cartão limpo de Horários de Ônibus */}
               <div
                 id="desktop-center-scroller"
                 className="w-[calc(100%+48px)] -mx-6 px-6 pt-3 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
@@ -195,24 +202,13 @@ export default function UtilidadesPage() {
                     className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
                     aria-label="Abrir Horários de Ônibus"
                   >
-                    <div className="flex items-center justify-between gap-2">
-                      <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-                        Horários de Ônibus
-                      </h2>
-                      <span className="badge-inset text-[11px] px-2 py-0.5 font-semibold text-coral">
-                        45 Linhas
-                      </span>
-                    </div>
+                    <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
+                      Horários de Ônibus
+                    </h2>
 
                     <p className="text-[13.5px] text-ink-body leading-relaxed">
                       Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
                     </p>
-
-                    <div className="flex items-center gap-2 pt-1 border-t border-rule/30 text-[12px] text-ink-muted font-medium">
-                      <span>Pérola do Oeste</span>
-                      <span>•</span>
-                      <span>Itinerários por parada</span>
-                    </div>
                   </button>
                 </div>
               </div>
@@ -286,7 +282,7 @@ export default function UtilidadesPage() {
                 </div>
               </div>
 
-              {/* Corpo Lateral (limpo, sem o bloco "Central de Utilidades") */}
+              {/* Corpo Lateral */}
               <div className="w-[calc(100%+32px)] -mx-4 px-4 py-3 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain">
                 {isDesktopInfoOpen && (
                   <div

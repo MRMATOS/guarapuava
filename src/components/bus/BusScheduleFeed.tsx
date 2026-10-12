@@ -149,11 +149,11 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                         <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted">
                           Dias Úteis
                         </span>
-                        <div className="flex flex-wrap gap-1.5">
+                        <div className="grid grid-cols-5 min-[370px]:grid-cols-6 gap-1.5 w-full">
                           {ponto.horariosUteis.map((hora, hIdx) => (
                             <span
                               key={`u-${hIdx}`}
-                              className="badge-inset text-[12px] font-mono font-medium px-2 py-0.5 text-ink-body"
+                              className="badge-inset w-full text-[12px] font-mono font-medium py-1 px-0.5 justify-center text-center text-ink-body"
                             >
                               {hora}
                             </span>
@@ -168,11 +168,11 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                         <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted">
                           Sábados
                         </span>
-                        <div className="flex flex-wrap gap-1.5">
+                        <div className="grid grid-cols-5 min-[370px]:grid-cols-6 gap-1.5 w-full">
                           {ponto.horariosSabado.map((hora, hIdx) => (
                             <span
                               key={`s-${hIdx}`}
-                              className="badge-inset text-[12px] font-mono font-medium px-2 py-0.5 text-ink-body"
+                              className="badge-inset w-full text-[12px] font-mono font-medium py-1 px-0.5 justify-center text-center text-ink-body"
                             >
                               {hora}
                             </span>
@@ -187,11 +187,11 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                         <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted">
                           Domingos e Feriados
                         </span>
-                        <div className="flex flex-wrap gap-1.5">
+                        <div className="grid grid-cols-5 min-[370px]:grid-cols-6 gap-1.5 w-full">
                           {ponto.horariosDomingo.map((hora, hIdx) => (
                             <span
                               key={`d-${hIdx}`}
-                              className="badge-inset text-[12px] font-mono font-medium px-2 py-0.5 text-ink-body"
+                              className="badge-inset w-full text-[12px] font-mono font-medium py-1 px-0.5 justify-center text-center text-ink-body"
                             >
                               {hora}
                             </span>

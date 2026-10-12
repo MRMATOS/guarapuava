@@ -237,15 +237,11 @@ export default function HorariosOnibusPage() {
           </div>
         ) : (
           <div className="w-full max-w-[430px] flex flex-col gap-4 pb-32">
-            {/* Cabeçalho sem "Guarapuava" */}
+            {/* Cabeçalho limpo */}
             <header className="flex flex-col gap-1 px-1 pt-1">
               <h1 className="text-[20px] font-bold text-ink tracking-tight">
                 Horários de Ônibus
               </h1>
-
-              <p className="text-[13.5px] text-ink-muted leading-relaxed">
-                Consulte os horários por ponto de referência e itinerário completo de cada linha.
-              </p>
             </header>
 
             {/* Feed de Rolagem Contínua dos Horários */}
@@ -257,7 +253,7 @@ export default function HorariosOnibusPage() {
               onClearFilter={handleClearFilters}
             />
 
-            {/* Dock Inferior Mobile com Filtro e Opções */}
+            {/* Dock Inferior Mobile: Mais - Filtrar - Voltar */}
             <Dock
               align="between"
               above={
@@ -307,15 +303,20 @@ export default function HorariosOnibusPage() {
               aria-label="Navegação da tela de horários"
             >
               <div className="grid grid-cols-3 w-full gap-2">
+                {/* 1. Mais */}
                 <Key
+                  ref={optionsButtonRef}
                   type="button"
-                  onClick={() => router.push("/utilidades")}
+                  pressed={isOptionsOpen}
+                  onClick={handleToggleOptions}
+                  aria-expanded={isOptionsOpen}
                   className="w-full px-2 text-[14px] justify-center text-center font-medium"
-                  aria-label="Voltar para a página de utilidades"
+                  aria-label={isOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
                 >
-                  Voltar
+                  Mais
                 </Key>
 
+                {/* 2. Filtrar */}
                 <Key
                   ref={filterButtonRef}
                   type="button"
@@ -328,16 +329,14 @@ export default function HorariosOnibusPage() {
                   Filtrar
                 </Key>
 
+                {/* 3. Voltar */}
                 <Key
-                  ref={optionsButtonRef}
                   type="button"
-                  pressed={isOptionsOpen}
-                  onClick={handleToggleOptions}
-                  aria-expanded={isOptionsOpen}
+                  onClick={() => router.push("/utilidades")}
                   className="w-full px-2 text-[14px] justify-center text-center font-medium"
-                  aria-label={isOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
+                  aria-label="Voltar para a página de utilidades"
                 >
-                  Mais
+                  Voltar
                 </Key>
               </div>
             </Dock>
@@ -369,24 +368,13 @@ export default function HorariosOnibusPage() {
                 }}
               >
                 <div className="surface-card w-full p-5 text-left flex flex-col gap-2.5">
-                  <div className="flex items-center justify-between gap-2">
-                    <h2 className="text-[17px] font-bold text-ink tracking-tight">
-                      Horários de Ônibus
-                    </h2>
-                    <span className="badge-inset text-[11px] px-2 py-0.5 font-semibold text-coral">
-                      45 Linhas
-                    </span>
-                  </div>
+                  <h2 className="text-[17px] font-bold text-ink tracking-tight">
+                    Horários de Ônibus
+                  </h2>
 
                   <p className="text-[13.5px] text-ink-body leading-relaxed">
                     Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
                   </p>
-
-                  <div className="flex items-center gap-2 pt-1 border-t border-rule/30 text-[12px] text-ink-muted font-medium">
-                    <span>Pérola do Oeste</span>
-                    <span>•</span>
-                    <span>Itinerários por parada</span>
-                  </div>
                 </div>
               </div>
             </aside>
@@ -428,15 +416,11 @@ export default function HorariosOnibusPage() {
                 className="w-[calc(100%+48px)] -mx-6 px-6 pt-3 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
               >
                 <div className="flex flex-col gap-4">
-                  {/* Cabeçalho de Título sem "Guarapuava" */}
+                  {/* Cabeçalho de Título limpo */}
                   <header className="flex flex-col gap-1 px-1 pt-1">
                     <h1 className="text-[20px] font-bold text-ink tracking-tight">
                       Horários de Ônibus
                     </h1>
-
-                    <p className="text-[13.5px] text-ink-muted leading-relaxed">
-                      Consulte os horários por ponto de referência e itinerário completo de cada linha.
-                    </p>
                   </header>
 
                   {/* Lista de Linhas e Horários (Sem indicador laranja no Desktop) */}
