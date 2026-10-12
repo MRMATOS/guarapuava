@@ -71,16 +71,23 @@ func extrairPalavrasVisuais(page: PDFPage) -> [VisualWord] {
 // MARK: - Limpeza de Cabeçalho do Ponto
 
 let palavrasIgnoradas: Set<String> = [
-    "HORÁRIO", "DE", "LINHA", "PONTOS", "ÚTEIS", "SÁBADOS", "DOMINGOS", "FERIADOS",
-    "DIAS", "TABELA", "SUJEITA", "Á", "A", "MODIFICAÇÕES", "DÚVIDAS,", "LIGUE:",
+    "HORÁRIO", "LINHA", "PONTOS", "ÚTEIS", "SÁBADOS", "DOMINGOS", "FERIADOS",
+    "DIAS", "TABELA", "SUJEITA", "MODIFICAÇÕES", "DÚVIDAS,", "LIGUE:",
     "3035", "3388", "(42)", "REVISÃO", "DEPARTAMENTO", "TRÁFEGO", "GUARAPUAVA,",
     "RODADA,", "INÍCIO:", "VIADUTO,", "EXECUTADO", "PELA", "ATENDIMENTO", "REALIZADO",
-    "CARRO", "EXTRA,", "GARAGEM", "RECOLHE", "PRIMEIRA", "RODADA", "INÍCIO", "NO"
+    "CARRO", "EXTRA,", "GARAGEM", "RECOLHE", "PRIMEIRA", "RODADA", "INÍCIO"
 ]
 
 func formatarNomePonto(_ raw: String) -> String {
-    var cleanedRaw = raw
-    cleanedRaw = cleanedRaw.replacingOccurrences(of: #"^[-–\s\d]+[a-zA-Z\s]*Fonte"#, with: "Fonte", options: .regularExpression)
+    var cleanedRaw = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+    cleanedRaw = cleanedRaw.replacingOccurrences(of: #"^[-–—\s]+|^\d+-\s*"#, with: "", options: .regularExpression)
+    
+    // Remove notas de rodapé / observações que se misturaram no cabeçalho
+    if cleanedRaw.contains("PRIMEIRA RODADA") || cleanedRaw.contains("RODADA,") || cleanedRaw.contains("INÍCIO:") {
+        cleanedRaw = cleanedRaw.replacingOccurrences(of: #"PRIMEIRA RODADA.*"#, with: "", options: .regularExpression)
+        cleanedRaw = cleanedRaw.replacingOccurrences(of: #"RODADA,.*"#, with: "", options: .regularExpression)
+        cleanedRaw = cleanedRaw.replacingOccurrences(of: #"INÍCIO:.*"#, with: "", options: .regularExpression)
+    }
     
     let tokens = cleanedRaw.components(separatedBy: CharacterSet.whitespacesAndNewlines)
         .map { $0.trimmingCharacters(in: CharacterSet.punctuationCharacters.subtracting(CharacterSet(charactersIn: "-/."))) }
@@ -91,29 +98,45 @@ func formatarNomePonto(_ raw: String) -> String {
             return true
         }
     
-    var base = tokens.joined(separator: " ").trimmingCharacters(in: .whitespaces)
+    let base = tokens.joined(separator: " ").trimmingCharacters(in: .whitespaces)
     if base.isEmpty { return "Ponto de Parada" }
     
-    // Normaliza pontos de chegada e saída comuns
-    if base.lowercased().contains("fonte") && base.lowercased().contains("chegada") {
-        base = "Fonte Chegada"
-    }
+    // Normalizações de Saída/Chegada
     if base.lowercased().contains("fonte") && base.lowercased().contains("saída") {
-        base = "Saída Fonte"
+        return "Fonte Saída"
     }
-    if base.lowercased().contains("campo") && base.lowercased().contains("batel") {
-        base = "Campo do Batel"
+    if base.lowercased().contains("fonte") && base.lowercased().contains("chegada") {
+        return "Fonte Chegada"
     }
+    if base.uppercased() == "SAÍDA FONTE" || base.uppercased() == "FONTE SAÍDA" { return "Fonte Saída" }
+    if base.uppercased() == "CHEGADA FONTE" || base.uppercased() == "FONTE CHEGADA" { return "Fonte Chegada" }
     
-    // Converte para Title Case harmonioso
-    let lowercaseWords: Set<String> = ["de", "da", "do", "das", "dos", "e", "em", "via", "para", "x"]
+    // Casos específicos solicitados
+    if base.lowercased().contains("bar do fumaça") { return "Bar do Fumaça" }
+    if base.lowercased().contains("hiper") { return "Hiper (Super Muffato)" }
+    if base.lowercased().contains("campo do grêmio") || base.lowercased() == "do grêmio" { return "Campo do Grêmio" }
+    if base.lowercased().contains("campo do batel") { return "Campo do Batel" }
+    if base.lowercased().contains("pe. chagas") || base.lowercased().contains("padre chagas") { return "Núcleo Padre Chagas" }
+    if base.lowercased().contains("praça da prefeitura") || base.lowercased().contains("praça prefeitura") { return "Praça da Prefeitura" }
+    if base.lowercased().contains("cerejeiras") { return "Bairru das Cerejeiras" }
+    if base.lowercased().contains("crianças") { return "Parque das Crianças" }
+    if base == "Trevo PR PR" { return "Trevo PR" }
+    
+    let lowercaseWords: Set<String> = ["de", "da", "do", "das", "dos", "e", "em", "via", "para", "x", "na", "ao", "ida"]
+    let notAcronyms: Set<String> = ["rua", "av", "pqa", "são", "sao", "dal", "dom", "ruy", "rui", "ana", "paz", "bem", "bar", "bom", "mãe", "mae", "ter", "rei", "cia", "mix", "boa", "fé", "fe", "san", "gra", "sol", "box", "big", "spa", "med"]
+    
     let formatted = base.lowercased().components(separatedBy: " ").map { w in
         if lowercaseWords.contains(w) { return w }
-        if w.count <= 3 && !["rua", "av", "pqa"].contains(w) { return w.uppercased() } // Siglas como UPA, SESC, UTFPR
+        if w.count <= 3 && !notAcronyms.contains(w) { return w.uppercased() }
         return w.prefix(1).uppercased() + w.dropFirst()
     }.joined(separator: " ")
     
-    return formatted
+    var finalResult = formatted
+    finalResult = finalResult.replacingOccurrences(of: #"\bTrevo PR PR\b"#, with: "Trevo PR", options: .regularExpression)
+    finalResult = finalResult.replacingOccurrences(of: #"\bSaída Fonte\b"#, with: "Fonte Saída")
+    finalResult = finalResult.replacingOccurrences(of: #"^[-–—\s]+"#, with: "", options: .regularExpression)
+    
+    return finalResult
 }
 
 func gerarPontoId(_ nome: String) -> String {
@@ -140,31 +163,73 @@ func extrairColunas(page: PDFPage, categoriaPrincipal: String) -> [ColunaDetecta
     let timeWords = words.filter { timeRegex.firstMatch(in: $0.text, range: NSRange(location: 0, length: $0.text.count)) != nil }
     if timeWords.isEmpty { return [] }
     
+    // Topmost row of times
+    let topTimeY = timeWords.map { $0.vy }.max() ?? 0
+    let topTimes = timeWords.filter { topTimeY - $0.vy < 80 }
+    
     // Verifica se há separador interno para SÁBADOS
     let sabadoMarker = words.first { $0.text.uppercased().contains("SÁBADO") || $0.text.uppercased().contains("SABADO") }
     let splitY: CGFloat? = sabadoMarker?.vy
     
     // Agrupa colunas por X
     var colClusters: [CGFloat] = []
-    for tw in timeWords.sorted(by: { $0.vx < $1.vx }) {
+    for tw in topTimes.sorted(by: { $0.vx < $1.vx }) {
         if !colClusters.contains(where: { abs($0 - tw.vx) < 14 }) {
             colClusters.append(tw.vx)
         }
     }
     colClusters.sort()
+    if colClusters.isEmpty { return [] }
+    
+    // Identifica linhas horizontais de texto acima dos tempos
+    var linesAbove: [(y: CGFloat, words: [VisualWord])] = []
+    let aboveWords = words.filter { $0.vy > topTimeY }.sorted(by: { $0.vy < $1.vy })
+    for w in aboveWords {
+        if let idx = linesAbove.firstIndex(where: { abs($0.y - w.vy) < 3.5 }) {
+            linesAbove[idx].words.append(w)
+        } else {
+            linesAbove.append((y: w.vy, words: [w]))
+        }
+    }
+    
+    // Filtra linhas de cabeçalho evitando títulos da linha e cabeçalhos gerais
+    var headerWordsList: [VisualWord] = []
+    for line in linesAbove {
+        let textJoined = line.words.map { $0.text.uppercased() }.joined(separator: " ")
+        let isTitleLine = textJoined.contains("HORÁRIO") ||
+            textJoined.contains("LINHA ") ||
+            textJoined.contains("LIVRO") ||
+            textJoined.contains("TABELA") ||
+            textJoined.contains("REVISÃO") ||
+            textJoined.contains("INTERBAIRROS") ||
+            (line.words.first?.text.range(of: #"^\d{1,2}\b"#, options: .regularExpression) != nil && textJoined.contains("-"))
+        
+        let dist = line.y - topTimeY
+        if !isTitleLine && dist <= 28.5 {
+            headerWordsList.append(contentsOf: line.words.filter { !$0.text.uppercased().contains("PONTOS") })
+        }
+    }
     
     var colunas: [ColunaDetectada] = []
     
-    for cx in colClusters {
+    for (i, cx) in colClusters.enumerated() {
         let timesInCol = timeWords.filter { abs($0.vx - cx) < 16 }
-        let maxY = timesInCol.map { $0.vy }.max() ?? 0
         
-        // Cabeçalho da coluna: palavras logo acima do maxY dos tempos
-        let hWords = words.filter { abs($0.vx - cx) < 22 && $0.vy > maxY && $0.vy < maxY + 110 }
-            .sorted(by: { $0.vy > $1.vy })
-            .map { $0.text }
-            .joined(separator: " ")
+        let leftBound = i == 0 ? (colClusters[0] - 25) : (colClusters[i-1] + cx) / 2
+        let rightBound = i == colClusters.count - 1 ? (cx + 25) : (cx + colClusters[i+1]) / 2
         
+        let cellWords = headerWordsList.filter { w in
+            let midX = w.vx + w.vw / 2
+            return midX >= leftBound && midX < rightBound
+        }
+        
+        let sortedCellWords = cellWords.sorted {
+            if abs($0.vy - $1.vy) > 3 {
+                return $0.vy > $1.vy
+            }
+            return $0.vx < $1.vx
+        }
+        let hWords = sortedCellWords.map { $0.text }.joined(separator: " ")
         let nomeLimpo = formatarNomePonto(hWords)
         
         var uteis: [String] = []

@@ -139,7 +139,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
             : "Buscar bairro ou linha..."
         }
         aria-label="Buscar bairro ou linha de ônibus"
-        className="filter-input w-full h-[42px] pl-10 pr-9 text-[14px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
+        className="filter-input w-full h-[42px] pl-10 pr-9 text-[16px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
       />
 
       {localSearch ? (
@@ -170,7 +170,10 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
           1. TRANSIÇÃO ENTRE BAIRROS E PONTOS (Apenas seta na 2ª camada)
          ================================================================== */}
       {activeBairro && (
-        <div className="flex items-center gap-2 px-0.5 animate-stagger-item">
+        <div className="flex items-center justify-between gap-2 px-0.5 animate-stagger-item">
+          <span className="text-[13px] font-bold text-ink truncate min-w-0 pl-1">
+            {activeBairro.nomeExibicao}
+          </span>
           <Key
             type="button"
             variant="icon"
@@ -184,9 +187,6 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
           >
             <ArrowLeft className="w-4 h-4" strokeWidth={2.2} />
           </Key>
-          <span className="text-[13px] font-bold text-ink truncate">
-            {activeBairro.nomeExibicao}
-          </span>
         </div>
       )}
 

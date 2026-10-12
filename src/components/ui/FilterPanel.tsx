@@ -212,7 +212,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               }}
               placeholder="Pesquisar..."
               aria-label="Pesquisar por vaga, empresa, salário, requisitos ou palavras-chave"
-              className="filter-input w-full h-[42px] pl-10 pr-9 text-[14.5px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
+              className="filter-input w-full h-[42px] pl-10 pr-9 text-[16px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
             />
 
             {searchQuery ? (
@@ -272,7 +272,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             }}
             placeholder="Pesquisar..."
             aria-label="Pesquisar notícias por manchete, assunto ou palavra-chave"
-            className="filter-input w-full h-[42px] pl-10 pr-9 text-[14.5px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
+            className="filter-input w-full h-[42px] pl-10 pr-9 text-[16px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
           />
 
           {searchQuery ? (

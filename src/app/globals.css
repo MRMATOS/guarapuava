@@ -380,12 +380,13 @@ body {
     box-shadow: var(--shadow-raised-md);
   }
 
-  /* Campo de busca no painel de filtros */
+  /* Campo de busca no painel de filtros (font-size >= 16px previne auto-zoom indesejado no iOS Safari) */
   .filter-input {
     background: var(--color-canvas);
     border-radius: var(--radius-key);
     box-shadow: var(--shadow-inset);
     color: var(--color-ink);
+    font-size: 16px;
   }
 
   /* Indicador de filtros ativos (estilo glass em baixo-relevo) */

@@ -1,5 +1,5 @@
 {
-  "dataExtracao" : "2026-10-11T23:20:38Z",
+  "dataExtracao" : "2026-10-12T09:24:22Z",
   "linhas" : [
     {
       "bairro" : "Aeroporto",
@@ -43,8 +43,8 @@
             "22:00",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -117,8 +117,8 @@
             "22:07",
             "23:27"
           ],
-          "id" : "colegio-tupy-extra",
-          "nome" : "Colégio Tupy Extra",
+          "id" : "colegio-tupy",
+          "nome" : "Colégio Tupy",
           "ordem" : 3
         },
         {
@@ -155,8 +155,8 @@
             "22:15",
             "23:35"
           ],
-          "id" : "cmei-vila-bela",
-          "nome" : "Cmei Vila Bela",
+          "id" : "cmei-vila",
+          "nome" : "Cmei Vila",
           "ordem" : 4
         },
         {
@@ -192,8 +192,8 @@
             "22:22",
             "23:42"
           ],
-          "id" : "trevo-pr-pr",
-          "nome" : "Trevo PR PR",
+          "id" : "trevo-bela-pr",
+          "nome" : "Trevo Bela PR",
           "ordem" : 5
         },
         {
@@ -230,8 +230,8 @@
             "22:28",
             "23:48"
           ],
-          "id" : "aeroporto-alto-cascavel",
-          "nome" : "- Aeroporto Alto Cascavel",
+          "id" : "alto-cascavel",
+          "nome" : "Alto Cascavel",
           "ordem" : 6
         },
         {
@@ -346,7 +346,7 @@
             "22:39"
           ],
           "id" : "fundos-dal-pozzo",
-          "nome" : "Fundos DAL Pozzo",
+          "nome" : "Fundos Dal Pozzo",
           "ordem" : 9
         },
         {
@@ -420,8 +420,8 @@
             "21:50",
             "22:50"
           ],
-          "id" : "igreja-terezinha",
-          "nome" : "Igreja Terezinha",
+          "id" : "igreja-santa-terezinha",
+          "nome" : "Igreja Santa Terezinha",
           "ordem" : 11
         },
         {
@@ -485,8 +485,8 @@
             "07:28",
             "16:50"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -515,8 +515,8 @@
             "07:35",
             "16:54"
           ],
-          "id" : "parque-criancas",
-          "nome" : "Parque Crianças",
+          "id" : "parque-das-criancas",
+          "nome" : "Parque das Crianças",
           "ordem" : 3
         },
         {
@@ -548,7 +548,7 @@
             "17:07"
           ],
           "id" : "feroz-ii-ida",
-          "nome" : "Feroz II IDA",
+          "nome" : "Feroz II ida",
           "ordem" : 5
         },
         {
@@ -563,7 +563,7 @@
             "17:09"
           ],
           "id" : "braspress",
-          "nome" : "- Braspress",
+          "nome" : "Braspress",
           "ordem" : 6
         },
         {
@@ -577,8 +577,8 @@
             "07:53",
             "17:14"
           ],
-          "id" : "via-distrito-atalaia",
-          "nome" : "via Distrito Atalaia",
+          "id" : "distrito-atalaia",
+          "nome" : "Distrito Atalaia",
           "ordem" : 7
         },
         {
@@ -591,8 +591,8 @@
           "horariosUteis" : [
             "17:20"
           ],
-          "id" : "bairru-cerejeiras",
-          "nome" : "Bairru Cerejeiras",
+          "id" : "bairru-das-cerejeiras",
+          "nome" : "Bairru das Cerejeiras",
           "ordem" : 8
         },
         {
@@ -635,8 +635,8 @@
             "08:10",
             "17:36"
           ],
-          "id" : "hiper",
-          "nome" : "Hiper",
+          "id" : "hiper-super-muffato",
+          "nome" : "Hiper (Super Muffato)",
           "ordem" : 11
         },
         {
@@ -685,8 +685,8 @@
             "19:15",
             "22:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -730,8 +730,8 @@
             "19:29",
             "22:34"
           ],
-          "id" : "ayrton-nucleo-senna-senna",
-          "nome" : "- Ayrton Núcleo Senna Senna",
+          "id" : "nucleo-ayrton-senna-nucleo-airton-senna",
+          "nome" : "Núcleo Ayrton Senna Núcleo Airton Senna",
           "ordem" : 3
         },
         {
@@ -776,8 +776,8 @@
             "19:35",
             "22:40"
           ],
-          "id" : "do-gremio",
-          "nome" : "do Grêmio",
+          "id" : "campo-do-gremio",
+          "nome" : "Campo do Grêmio",
           "ordem" : 5
         },
         {
@@ -856,8 +856,8 @@
             "19:40",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -1032,7 +1032,7 @@
             "23:28"
           ],
           "id" : "mix-supermercado",
-          "nome" : "MIX Supermercado",
+          "nome" : "Mix Supermercado",
           "ordem" : 4
         },
         {
@@ -1314,8 +1314,8 @@
             "20:04",
             "23:44"
           ],
-          "id" : "bandeirantes-avenida-bandeirantes",
-          "nome" : "Bandeirantes Avenida Bandeirantes",
+          "id" : "avenida-bandeirantes",
+          "nome" : "Avenida Bandeirantes",
           "ordem" : 9
         },
         {
@@ -1361,8 +1361,8 @@
             "19:06",
             "20:06"
           ],
-          "id" : "via-bar-do-fumaca",
-          "nome" : "via BAR do Fumaça",
+          "id" : "bar-do-fumaca",
+          "nome" : "Bar do Fumaça",
           "ordem" : 10
         },
         {
@@ -1417,8 +1417,8 @@
             "19:09",
             "20:09"
           ],
-          "id" : "rodoviaria-igreja-primavera",
-          "nome" : "Rodoviária Igreja Primavera",
+          "id" : "igreja-primavera",
+          "nome" : "Igreja Primavera",
           "ordem" : 11
         },
         {
@@ -1474,7 +1474,7 @@
             "20:11"
           ],
           "id" : "libra",
-          "nome" : "- Libra",
+          "nome" : "Libra",
           "ordem" : 12
         },
         {
@@ -1584,8 +1584,8 @@
             "19:17",
             "20:17"
           ],
-          "id" : "nucleo-pe-chagas",
-          "nome" : "Núcleo PE. Chagas",
+          "id" : "nucleo-padre-chagas",
+          "nome" : "Núcleo Padre Chagas",
           "ordem" : 14
         },
         {
@@ -1594,39 +1594,22 @@
           ],
           "horariosSabado" : [
             "07:17",
-            "07:24",
             "08:17",
-            "08:24",
             "09:17",
-            "09:24",
             "10:17",
-            "10:24",
             "11:17",
-            "11:24",
             "12:17",
-            "12:24",
             "13:17",
-            "13:24",
             "14:17",
-            "14:24",
             "15:17",
-            "15:24",
             "16:17",
-            "16:24",
             "17:17",
-            "17:24",
             "18:17",
-            "18:24",
             "19:17",
-            "19:24",
             "20:17",
-            "20:24",
             "21:17",
-            "21:24",
             "21:27",
-            "21:34",
-            "22:17",
-            "22:24"
+            "22:17"
           ],
           "horariosUteis" : [
             "06:17",
@@ -1656,8 +1639,8 @@
             "19:24",
             "20:24"
           ],
-          "id" : "praca-prefeitura",
-          "nome" : "Praça Prefeitura",
+          "id" : "praca-da-prefeitura",
+          "nome" : "Praça da Prefeitura",
           "ordem" : 15
         },
         {
@@ -1666,39 +1649,22 @@
           ],
           "horariosSabado" : [
             "07:19",
-            "07:27",
             "08:19",
-            "08:27",
             "09:19",
-            "09:27",
             "10:19",
-            "10:27",
             "11:19",
-            "11:27",
             "12:19",
-            "12:27",
             "13:19",
-            "13:27",
             "14:19",
-            "14:27",
             "15:19",
-            "15:27",
             "16:19",
-            "16:27",
             "17:19",
-            "17:27",
             "18:19",
-            "18:27",
             "19:19",
-            "19:27",
             "20:19",
-            "20:27",
             "21:19",
-            "21:27",
             "21:29",
-            "21:37",
-            "22:19",
-            "22:27"
+            "22:19"
           ],
           "horariosUteis" : [
             "06:19",
@@ -1760,8 +1726,8 @@
             "17:40",
             "18:40"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -1780,8 +1746,8 @@
             "17:44",
             "18:44"
           ],
-          "id" : "hiper-supermercado",
-          "nome" : "Hiper Supermercado",
+          "id" : "hiper-super-muffato",
+          "nome" : "Hiper (Super Muffato)",
           "ordem" : 2
         },
         {
@@ -1801,7 +1767,7 @@
             "18:48"
           ],
           "id" : "armazem-sao-paulo",
-          "nome" : "Armazém SÃO Paulo",
+          "nome" : "Armazém São Paulo",
           "ordem" : 3
         },
         {
@@ -1827,7 +1793,7 @@
             "18:51"
           ],
           "id" : "maria-mae-da-igreja",
-          "nome" : "Maria MÃE da Igreja",
+          "nome" : "Maria Mãe da Igreja",
           "ordem" : 4
         },
         {
@@ -1866,8 +1832,8 @@
             "17:55",
             "18:55"
           ],
-          "id" : "distribuicao-superpao-ida",
-          "nome" : "Distribuição Superpão IDA",
+          "id" : "centro-de-distribuicao-superpao-ida",
+          "nome" : "Centro de Distribuição Superpão ida",
           "ordem" : 6
         },
         {
@@ -1886,8 +1852,8 @@
             "18:00",
             "19:00"
           ],
-          "id" : "boa-vista-afufape",
-          "nome" : "BOA Vista Afufape",
+          "id" : "afufape",
+          "nome" : "Afufape",
           "ordem" : 7
         },
         {
@@ -1906,8 +1872,8 @@
             "18:05",
             "19:05"
           ],
-          "id" : "via-karpinski-do-cidadao-xarquinho",
-          "nome" : "via Karpinski do Cidadão Xarquinho",
+          "id" : "espaco-do-cidadao-xarquinho",
+          "nome" : "Espaço do Cidadão Xarquinho",
           "ordem" : 8
         },
         {
@@ -1927,7 +1893,7 @@
             "19:07"
           ],
           "id" : "igreja-sao-pedro",
-          "nome" : "Igreja SÃO Pedro",
+          "nome" : "Igreja São Pedro",
           "ordem" : 9
         },
         {
@@ -1946,7 +1912,7 @@
             "18:12"
           ],
           "id" : "bar-azul",
-          "nome" : "BAR Azul",
+          "nome" : "Bar Azul",
           "ordem" : 10
         },
         {
@@ -2046,15 +2012,23 @@
           ],
           "horariosUteis" : [
             "06:35",
+            "07:10",
             "07:15",
+            "07:50",
             "08:15",
+            "08:50",
             "12:15",
+            "12:50",
             "13:15",
+            "13:50",
             "17:35",
-            "18:15"
+            "18:10",
+            "18:12",
+            "18:15",
+            "18:50"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte",
+          "nome" : "Fonte",
           "ordem" : 1
         },
         {
@@ -2073,8 +2047,8 @@
             "17:40",
             "18:20"
           ],
-          "id" : "campo-real",
-          "nome" : "Campo Real",
+          "id" : "real",
+          "nome" : "Real",
           "ordem" : 2
         },
         {
@@ -2100,8 +2074,8 @@
             "18:24",
             "18:40"
           ],
-          "id" : "posto-guapo",
-          "nome" : "Posto Guapo",
+          "id" : "guapo",
+          "nome" : "Guapo",
           "ordem" : 3
         },
         {
@@ -2140,8 +2114,8 @@
             "17:50",
             "18:30"
           ],
-          "id" : "operaria",
-          "nome" : "- Operária",
+          "id" : "vila-operaria",
+          "nome" : "Vila Operária",
           "ordem" : 5
         },
         {
@@ -2154,8 +2128,8 @@
           "horariosUteis" : [
             "17:50"
           ],
-          "id" : "x-boqueirao-polijuta",
-          "nome" : "x Boqueirão Polijuta",
+          "id" : "polijuta",
+          "nome" : "Polijuta",
           "ordem" : 6
         },
         {
@@ -2174,8 +2148,8 @@
             "17:54",
             "18:34"
           ],
-          "id" : "mansueto",
-          "nome" : "Mansueto",
+          "id" : "jd-mansueto",
+          "nome" : "JD. Mansueto",
           "ordem" : 7
         },
         {
@@ -2190,8 +2164,8 @@
             "13:38",
             "18:38"
           ],
-          "id" : "condominio-do-idoso",
-          "nome" : "Condomínio do Idoso",
+          "id" : "do-idoso",
+          "nome" : "do Idoso",
           "ordem" : 8
         },
         {
@@ -2210,30 +2184,9 @@
             "18:02",
             "18:42"
           ],
-          "id" : "igreja-santa-cruz",
-          "nome" : "Igreja Santa Cruz",
+          "id" : "santa-cruz",
+          "nome" : "Santa Cruz",
           "ordem" : 9
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:10",
-            "07:50",
-            "08:50",
-            "12:50",
-            "13:50",
-            "18:10",
-            "18:12",
-            "18:50"
-          ],
-          "id" : "fonte-chegada",
-          "nome" : "Fonte Chegada",
-          "ordem" : 10
         }
       ],
       "tipo" : "regular"
@@ -2280,8 +2233,8 @@
             "22:45",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -2354,8 +2307,8 @@
             "22:54",
             "23:29"
           ],
-          "id" : "aabb-posto",
-          "nome" : "Aabb Posto",
+          "id" : "aabb",
+          "nome" : "Aabb",
           "ordem" : 3
         },
         {
@@ -2467,42 +2420,9 @@
             "23:05",
             "23:40"
           ],
-          "id" : "fonte-x-concretex",
-          "nome" : "Fonte x Concretex",
+          "id" : "concretex",
+          "nome" : "Concretex",
           "ordem" : 6
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-            "17:02",
-            "18:02",
-            "19:02",
-            "20:02",
-            "21:02",
-            "22:02"
-          ],
-          "horariosUteis" : [
-            "07:02",
-            "08:02",
-            "09:02",
-            "10:02",
-            "11:02",
-            "12:02",
-            "13:02",
-            "14:02",
-            "15:02",
-            "16:02",
-            "20:02",
-            "21:02",
-            "21:45",
-            "22:02",
-            "23:14"
-          ],
-          "id" : "ponto-de-parada",
-          "nome" : "Ponto de Parada",
-          "ordem" : 7
         },
         {
           "horariosDomingo" : [
@@ -2548,9 +2468,9 @@
             "23:10",
             "23:45"
           ],
-          "id" : "via-guaira-bar-do-alceu",
-          "nome" : "via Guaíra BAR do Alceu",
-          "ordem" : 8
+          "id" : "bar-polijuta-do-alceu",
+          "nome" : "Bar Polijuta do Alceu",
+          "ordem" : 7
         },
         {
           "horariosDomingo" : [
@@ -2588,7 +2508,7 @@
           ],
           "id" : "jd-mansueto",
           "nome" : "JD. Mansueto",
-          "ordem" : 9
+          "ordem" : 8
         },
         {
           "horariosDomingo" : [
@@ -2622,9 +2542,9 @@
             "22:07",
             "23:15"
           ],
-          "id" : "posto-guapo",
-          "nome" : "Posto Guapo",
-          "ordem" : 10
+          "id" : "lagoa-posto-dourada-guapo",
+          "nome" : "Lagoa Posto Dourada Guapo",
+          "ordem" : 9
         },
         {
           "horariosDomingo" : [
@@ -2660,7 +2580,7 @@
           ],
           "id" : "igreja-santa-cruz",
           "nome" : "Igreja Santa Cruz",
-          "ordem" : 11
+          "ordem" : 10
         },
         {
           "horariosDomingo" : [
@@ -2697,7 +2617,7 @@
           ],
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
-          "ordem" : 12
+          "ordem" : 11
         }
       ],
       "tipo" : "regular"
@@ -2754,8 +2674,8 @@
             "21:10",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -3129,10 +3049,12 @@
 
           ],
           "horariosUteis" : [
-            "21:40"
+            "21:40",
+            "22:20",
+            "22:45"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte",
+          "nome" : "Fonte",
           "ordem" : 1
         },
         {
@@ -3146,24 +3068,9 @@
             "22:05",
             "22:30"
           ],
-          "id" : "cedeteg",
-          "nome" : "Cedeteg",
+          "id" : "ponto-de-parada",
+          "nome" : "Ponto de Parada",
           "ordem" : 2
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "22:20",
-            "22:45"
-          ],
-          "id" : "fonte-chegada",
-          "nome" : "Fonte Chegada",
-          "ordem" : 3
         }
       ],
       "tipo" : "regular"
@@ -3194,8 +3101,8 @@
             "16:30",
             "17:30"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -3278,8 +3185,8 @@
             "16:52",
             "17:52"
           ],
-          "id" : "coamo-ida",
-          "nome" : "Coamo IDA",
+          "id" : "coamo-ida-ida",
+          "nome" : "Coamo ida ida",
           "ordem" : 5
         },
         {
@@ -3312,8 +3219,8 @@
             "13:56",
             "17:56"
           ],
-          "id" : "fazenda-santa-fe",
-          "nome" : "Fazenda Santa FÉ",
+          "id" : "fazenda-santa",
+          "nome" : "Fazenda Santa",
           "ordem" : 7
         },
         {
@@ -3333,8 +3240,8 @@
             "17:00",
             "18:00"
           ],
-          "id" : "coamo-coamo-volta",
-          "nome" : "- Coamo Coamo Volta",
+          "id" : "coamo-fe-volta",
+          "nome" : "Coamo Fé Volta",
           "ordem" : 8
         },
         {
@@ -3354,8 +3261,8 @@
             "17:07",
             "18:07"
           ],
-          "id" : "colegio-itarare-volta",
-          "nome" : "Colégio Itararé Volta",
+          "id" : "colegio-p-itarare-volta",
+          "nome" : "Colégio P. Itararé Volta",
           "ordem" : 9
         },
         {
@@ -3396,8 +3303,8 @@
             "17:19",
             "18:19"
           ],
-          "id" : "saude-vila-bela",
-          "nome" : "Saúde Vila Bela",
+          "id" : "posto-de-saude-vila-bela",
+          "nome" : "Posto de Saúde Vila Bela",
           "ordem" : 11
         },
         {
@@ -3417,8 +3324,8 @@
             "17:23",
             "18:24"
           ],
-          "id" : "livro-igreja-sta-terezinha",
-          "nome" : "Livro Igreja Sta. Terezinha",
+          "id" : "igreja-sta-terezinha",
+          "nome" : "Igreja Sta. Terezinha",
           "ordem" : 12
         },
         {
@@ -3498,8 +3405,8 @@
             "22:10",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -3544,8 +3451,8 @@
             "21:15",
             "23:25"
           ],
-          "id" : "prefeitura-municipal-inicia-bairro",
-          "nome" : "Prefeitura Municipal Inicia Bairro",
+          "id" : "prefeitura-municipal",
+          "nome" : "Prefeitura Municipal",
           "ordem" : 2
         },
         {
@@ -3554,43 +3461,78 @@
           ],
           "horariosSabado" : [
             "07:20",
+            "07:56",
             "08:20",
+            "08:56",
             "09:20",
+            "09:56",
             "10:20",
+            "10:56",
             "11:20",
+            "11:56",
             "12:20",
+            "12:56",
             "13:20",
+            "13:56",
             "14:20",
+            "14:56",
             "15:20",
+            "15:56",
             "16:20",
+            "16:56",
             "17:20",
+            "17:56",
             "18:20",
+            "18:56",
             "19:20",
+            "19:56",
             "20:20",
+            "20:56",
             "21:20",
+            "21:56",
+            "22:53",
             "23:10"
           ],
           "horariosUteis" : [
+            "06:27",
+            "06:56",
             "07:20",
+            "07:56",
             "08:20",
+            "08:56",
             "09:20",
+            "09:56",
             "10:20",
+            "10:56",
             "11:20",
+            "11:56",
             "12:20",
+            "12:56",
             "13:20",
+            "13:56",
             "14:20",
+            "14:56",
             "15:20",
+            "15:56",
             "16:20",
+            "16:56",
             "17:20",
+            "17:41",
+            "17:56",
             "18:17",
             "18:20",
+            "18:56",
             "19:20",
+            "19:56",
             "20:20",
+            "20:56",
             "21:20",
+            "21:56",
+            "22:56",
             "23:30"
           ],
-          "id" : "estacao-rodoviaria-bairro",
-          "nome" : "Estação Rodoviária Bairro",
+          "id" : "estacao-rodoviaria",
+          "nome" : "Estação Rodoviária",
           "ordem" : 3
         },
         {
@@ -3772,7 +3714,7 @@
             "23:38"
           ],
           "id" : "morro-divina-ter",
-          "nome" : "Morro Divina TER",
+          "nome" : "Morro Divina Ter",
           "ordem" : 6
         },
         {
@@ -3821,8 +3763,8 @@
             "22:30",
             "23:40"
           ],
-          "id" : "colegio-colegio-ter-agricola",
-          "nome" : "Colégio Colégio TER Agrícola",
+          "id" : "colegio-agricola",
+          "nome" : "Colégio Agrícola",
           "ordem" : 7
         },
         {
@@ -3870,8 +3812,8 @@
             "22:36",
             "23:46"
           ],
-          "id" : "agricola-via-acesso-rua-waldemar-moss",
-          "nome" : "Agrícola via Acesso Rua Waldemar Moss",
+          "id" : "acesso-a-rua-waldemar",
+          "nome" : "Acesso Á Rua Waldemar",
           "ordem" : 8
         },
         {
@@ -3919,8 +3861,8 @@
             "22:40",
             "23:50"
           ],
-          "id" : "via-rodoviaria-afufape",
-          "nome" : "via Rodoviária Afufape",
+          "id" : "afufape-moss",
+          "nome" : "Afufape Moss",
           "ordem" : 9
         },
         {
@@ -3967,8 +3909,8 @@
             "22:45",
             "23:53"
           ],
-          "id" : "centro-distribuicao-superpao",
-          "nome" : "Centro Distribuição Superpão",
+          "id" : "centro-de-distribuicao-superpao",
+          "nome" : "Centro de Distribuição Superpão",
           "ordem" : 10
         },
         {
@@ -4022,53 +3964,6 @@
 
           ],
           "horariosSabado" : [
-            "07:56",
-            "08:56",
-            "09:56",
-            "10:56",
-            "11:56",
-            "12:56",
-            "13:56",
-            "14:56",
-            "15:56",
-            "16:56",
-            "17:56",
-            "18:56",
-            "19:56",
-            "20:56",
-            "21:56",
-            "22:53"
-          ],
-          "horariosUteis" : [
-            "06:27",
-            "06:56",
-            "07:56",
-            "08:56",
-            "09:56",
-            "10:56",
-            "11:56",
-            "12:56",
-            "13:56",
-            "14:56",
-            "15:56",
-            "16:56",
-            "17:41",
-            "17:56",
-            "18:56",
-            "19:56",
-            "20:56",
-            "21:56",
-            "22:56"
-          ],
-          "id" : "estacao-rodoviaria",
-          "nome" : "Estação Rodoviária",
-          "ordem" : 12
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
             "08:01",
             "09:01",
             "10:01",
@@ -4106,9 +4001,9 @@
             "22:01",
             "23:01"
           ],
-          "id" : "praca-prefeitura",
-          "nome" : "Praça Prefeitura",
-          "ordem" : 13
+          "id" : "praca-da-prefeitura",
+          "nome" : "Praça da Prefeitura",
+          "ordem" : 12
         },
         {
           "horariosDomingo" : [
@@ -4155,7 +4050,7 @@
           ],
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
-          "ordem" : 14
+          "ordem" : 13
         }
       ],
       "tipo" : "regular"
@@ -4203,8 +4098,8 @@
             "22:20",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -4241,8 +4136,8 @@
             "22:23",
             "23:23"
           ],
-          "id" : "hiper-supermercado",
-          "nome" : "Hiper Supermercado",
+          "id" : "hiper-super-muffato",
+          "nome" : "Hiper (Super Muffato)",
           "ordem" : 2
         },
         {
@@ -4559,8 +4454,8 @@
             "22:36",
             "23:36"
           ],
-          "id" : "via-condominio-minha-casa",
-          "nome" : "via Condomínio Minha Casa",
+          "id" : "condominio-minha-casa",
+          "nome" : "Condomínio Minha Casa",
           "ordem" : 9
         },
         {
@@ -4576,8 +4471,8 @@
             "11:34",
             "17:34"
           ],
-          "id" : "guaira-pig",
-          "nome" : "Guaíra PIG",
+          "id" : "pig",
+          "nome" : "PIG",
           "ordem" : 10
         },
         {
@@ -4630,8 +4525,8 @@
             "21:34",
             "22:39"
           ],
-          "id" : "dos-campos",
-          "nome" : "dos Campos",
+          "id" : "princesa-dos-campos",
+          "nome" : "Princesa dos Campos",
           "ordem" : 12
         },
         {
@@ -4753,8 +4648,8 @@
             "22:05",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -4790,8 +4685,8 @@
             "22:09",
             "23:24"
           ],
-          "id" : "hiper-supermercado",
-          "nome" : "Hiper Supermercado",
+          "id" : "hiper-super-muffato",
+          "nome" : "Hiper (Super Muffato)",
           "ordem" : 2
         },
         {
@@ -4828,7 +4723,7 @@
             "23:27"
           ],
           "id" : "armazem-sao-paulo",
-          "nome" : "Armazém SÃO Paulo",
+          "nome" : "Armazém São Paulo",
           "ordem" : 3
         },
         {
@@ -4866,7 +4761,7 @@
             "23:30"
           ],
           "id" : "hotel-san-marino",
-          "nome" : "Hotel SAN Marino",
+          "nome" : "Hotel San Marino",
           "ordem" : 4
         },
         {
@@ -4902,8 +4797,8 @@
             "22:19",
             "23:34"
           ],
-          "id" : "posto-saude-bonsucesso-ida-das-maquinas",
-          "nome" : "Posto Saúde Bonsucesso IDA das Máquinas.",
+          "id" : "posto-de-saude-bonsucesso-ida",
+          "nome" : "Posto de Saúde Bonsucesso ida",
           "ordem" : 5
         },
         {
@@ -4939,8 +4834,8 @@
             "22:22",
             "23:37"
           ],
-          "id" : "parque-maquinas",
-          "nome" : "Parque Máquinas",
+          "id" : "parque-das-maquinas",
+          "nome" : "Parque das Máquinas",
           "ordem" : 6
         },
         {
@@ -4977,8 +4872,8 @@
             "22:30",
             "23:45"
           ],
-          "id" : "cristo-vila-karen-ruy",
-          "nome" : "- Cristo Vila Karen RUY",
+          "id" : "vila-ida-karen",
+          "nome" : "Vila ida Karen",
           "ordem" : 7
         },
         {
@@ -5014,8 +4909,8 @@
             "21:33",
             "22:33"
           ],
-          "id" : "rei-escola-ruy-marques",
-          "nome" : "REI Escola RUY Marques",
+          "id" : "escola-ruy-marques",
+          "nome" : "Escola Ruy Marques",
           "ordem" : 8
         },
         {
@@ -5087,8 +4982,8 @@
             "21:36",
             "22:36"
           ],
-          "id" : "parque-maquinas-volta",
-          "nome" : "Parque Máquinas Volta",
+          "id" : "parque-das-maquinas-volta",
+          "nome" : "Parque das Máquinas Volta",
           "ordem" : 10
         },
         {
@@ -5123,8 +5018,8 @@
             "21:39",
             "22:39"
           ],
-          "id" : "posto-saude-volta",
-          "nome" : "Posto Saúde Volta",
+          "id" : "posto-de-saude-bonsucesso-volta",
+          "nome" : "Posto de Saúde Bonsucesso Volta",
           "ordem" : 11
         },
         {
@@ -5160,7 +5055,7 @@
             "22:43"
           ],
           "id" : "panificadora-bom-bocado",
-          "nome" : "Panificadora BOM Bocado",
+          "nome" : "Panificadora Bom Bocado",
           "ordem" : 12
         },
         {
@@ -5268,8 +5163,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -5293,8 +5188,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "hiper-supermercado",
-          "nome" : "Hiper Supermercado",
+          "id" : "hiper-super-muffato",
+          "nome" : "Hiper (Super Muffato)",
           "ordem" : 2
         },
         {
@@ -5319,7 +5214,7 @@
 
           ],
           "id" : "armazem-sao-paulo",
-          "nome" : "Armazem SÃO Paulo",
+          "nome" : "Armazem São Paulo",
           "ordem" : 3
         },
         {
@@ -5368,8 +5263,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "parque-maquinas",
-          "nome" : "Parque Máquinas",
+          "id" : "parque-de-maquinas",
+          "nome" : "Parque de Máquinas",
           "ordem" : 5
         },
         {
@@ -5394,7 +5289,7 @@
 
           ],
           "id" : "escola-ruy-marques",
-          "nome" : "Escola RUY Marques",
+          "nome" : "Escola Ruy Marques",
           "ordem" : 6
         },
         {
@@ -5443,8 +5338,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "interbairros-condominios-minha-casa",
-          "nome" : "Interbairros Condominios Minha Casa",
+          "id" : "condominios-minha-casa",
+          "nome" : "Condominios Minha Casa",
           "ordem" : 8
         },
         {
@@ -5542,7 +5437,7 @@
 
           ],
           "id" : "panificadora-bom-bocado",
-          "nome" : "Panificadora BOM Bocado",
+          "nome" : "Panificadora Bom Bocado",
           "ordem" : 12
         },
         {
@@ -5566,7 +5461,7 @@
 
           ],
           "id" : "rotula-dom-bosco",
-          "nome" : "Rótula DOM Bosco",
+          "nome" : "Rótula Dom Bosco",
           "ordem" : 13
         },
         {
@@ -5674,8 +5569,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -5750,7 +5645,7 @@
 
           ],
           "id" : "lojao-da-gra",
-          "nome" : "Lojão da GRA",
+          "nome" : "Lojão da Gra",
           "ordem" : 4
         },
         {
@@ -5774,8 +5669,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "interbairros-16-bpm",
-          "nome" : "Interbairros 16º BPM",
+          "id" : "16-bpm",
+          "nome" : "16º BPM",
           "ordem" : 5
         },
         {
@@ -5799,8 +5694,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "nucleo-kamisnki",
-          "nome" : "Núcleo Kamisnki",
+          "id" : "nucleo-adao-kamisnki",
+          "nome" : "Núcleo Adão Kamisnki",
           "ordem" : 6
         },
         {
@@ -5850,7 +5745,7 @@
 
           ],
           "id" : "colegio-rui-barbosa",
-          "nome" : "Colégio RUI Barbosa",
+          "nome" : "Colégio Rui Barbosa",
           "ordem" : 8
         },
         {
@@ -5900,7 +5795,7 @@
 
           ],
           "id" : "colegio-ana-vanda",
-          "nome" : "Colégio ANA Vanda",
+          "nome" : "Colégio Ana Vanda",
           "ordem" : 10
         },
         {
@@ -5959,8 +5854,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -6033,7 +5928,7 @@
 
           ],
           "id" : "caic-ida",
-          "nome" : "Caic IDA",
+          "nome" : "Caic ida",
           "ordem" : 4
         },
         {
@@ -6082,8 +5977,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "interbairros-jardim-patricia",
-          "nome" : "Interbairros Jardim Patricia",
+          "id" : "jardim-patricia",
+          "nome" : "Jardim Patricia",
           "ordem" : 6
         },
         {
@@ -6206,8 +6101,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "igreja-terezinha",
-          "nome" : "Igreja Terezinha",
+          "id" : "igreja-santa-terezinha",
+          "nome" : "Igreja Santa Terezinha",
           "ordem" : 11
         },
         {
@@ -6267,8 +6162,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -6442,8 +6337,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "interbairros-posto-b-v",
-          "nome" : "Interbairros Posto B.V",
+          "id" : "posto-b-v",
+          "nome" : "Posto B.V",
           "ordem" : 8
         },
         {
@@ -6543,7 +6438,7 @@
 
           ],
           "id" : "igreja-sao-paulo",
-          "nome" : "Igreja SÃO Paulo",
+          "nome" : "Igreja São Paulo",
           "ordem" : 12
         },
         {
@@ -6676,8 +6571,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -6851,8 +6746,8 @@
           "horariosUteis" : [
 
           ],
-          "id" : "interbairros-nucleo-sao-joao",
-          "nome" : "Interbairros Nucleo SÃO João",
+          "id" : "nucleo-sao-joao",
+          "nome" : "Nucleo São João",
           "ordem" : 8
         },
         {
@@ -6877,7 +6772,7 @@
 
           ],
           "id" : "spa-med",
-          "nome" : "SPA MED",
+          "nome" : "Spa Med",
           "ordem" : 9
         },
         {
@@ -7094,11 +6989,10 @@
             "06:35",
             "12:12",
             "12:38",
-            "17:55",
-            "18:46"
+            "17:55"
           ],
-          "id" : "chacara-antonio",
-          "nome" : "Chácara Antonio",
+          "id" : "chacara-santo-antonio",
+          "nome" : "Chácara Santo Antonio",
           "ordem" : 1
         },
         {
@@ -7112,11 +7006,10 @@
             "06:43",
             "12:20",
             "12:45",
-            "18:07",
-            "18:34"
+            "18:07"
           ],
-          "id" : "paz-e-bem",
-          "nome" : "PAZ e BEM",
+          "id" : "loteamento-paz-e-bem",
+          "nome" : "Loteamento Paz e Bem",
           "ordem" : 2
         },
         {
@@ -7132,8 +7025,8 @@
             "12:50",
             "18:20"
           ],
-          "id" : "usina-leite",
-          "nome" : "Usina Leite",
+          "id" : "usina-de-leite",
+          "nome" : "Usina de Leite",
           "ordem" : 3
         },
         {
@@ -7149,12 +7042,296 @@
             "13:10",
             "18:30"
           ],
-          "id" : "colegio-itarare",
-          "nome" : "Colégio Itararé",
+          "id" : "colegio-pedro",
+          "nome" : "Colégio Pedro",
           "ordem" : 4
         }
       ],
       "tipo" : "interbairros"
+    },
+    {
+      "bairro" : "Jardim das Américas Paz e Bem",
+      "codigo" : "31",
+      "id" : "linha-31",
+      "nomeExibicao" : "Linha 31 - Jardim das Américas Paz e Bem",
+      "observacoes" : [
+
+      ],
+      "pontos" : [
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:00",
+            "08:00",
+            "11:00",
+            "12:00",
+            "13:00",
+            "14:00",
+            "15:00",
+            "16:00",
+            "17:00",
+            "18:00"
+          ],
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
+          "ordem" : 1
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:05",
+            "08:05",
+            "11:05",
+            "12:05",
+            "13:05",
+            "14:05",
+            "15:05",
+            "16:05",
+            "17:05",
+            "18:05"
+          ],
+          "id" : "gelinski",
+          "nome" : "Gelinski",
+          "ordem" : 2
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:06",
+            "08:06",
+            "11:06",
+            "12:06",
+            "13:06",
+            "14:06",
+            "15:06",
+            "16:06",
+            "17:06",
+            "18:06"
+          ],
+          "id" : "colegio-tupy",
+          "nome" : "Colégio Tupy",
+          "ordem" : 3
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:10",
+            "08:10",
+            "11:10",
+            "12:10",
+            "13:10",
+            "14:10",
+            "15:10",
+            "16:10",
+            "17:10",
+            "18:10"
+          ],
+          "id" : "viaduto-aragao-de",
+          "nome" : "Viaduto Aragão de",
+          "ordem" : 4
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:31"
+          ],
+          "id" : "mattos-leao",
+          "nome" : "Mattos Leão",
+          "ordem" : 5
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:13",
+            "08:13",
+            "11:13",
+            "12:13",
+            "13:13",
+            "14:13",
+            "15:13",
+            "16:13",
+            "17:13",
+            "18:13"
+          ],
+          "id" : "ponte-sobre-o-cascavelzinho",
+          "nome" : "Ponte Sobre O Cascavelzinho",
+          "ordem" : 6
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:20",
+            "08:20",
+            "11:20",
+            "12:20",
+            "13:20",
+            "14:20",
+            "15:20",
+            "16:20",
+            "17:20",
+            "18:20"
+          ],
+          "id" : "rio-valenga-ida",
+          "nome" : "RIO Valenga ida",
+          "ordem" : 7
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:31",
+            "07:31",
+            "08:31",
+            "11:31",
+            "12:31",
+            "13:31",
+            "14:31",
+            "15:31",
+            "16:31",
+            "17:31",
+            "18:31"
+          ],
+          "id" : "loteamento-paz-e-bem",
+          "nome" : "Loteamento Paz e Bem",
+          "ordem" : 8
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:38",
+            "07:38",
+            "08:38",
+            "11:38",
+            "12:38",
+            "13:38",
+            "14:38",
+            "15:38",
+            "16:38",
+            "17:38",
+            "18:38"
+          ],
+          "id" : "ponte-sobre-o-rio-cascavelzinho-volta",
+          "nome" : "Ponte Sobre O RIO Cascavelzinho Volta",
+          "ordem" : 9
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:42",
+            "07:42",
+            "08:42",
+            "11:42",
+            "12:42",
+            "13:42",
+            "14:42",
+            "15:42",
+            "16:42",
+            "17:42",
+            "18:42"
+          ],
+          "id" : "viaduto-aragao-de-mattos",
+          "nome" : "Viaduto Aragão de Mattos",
+          "ordem" : 10
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:45",
+            "07:45",
+            "08:45",
+            "11:45",
+            "12:45",
+            "13:45",
+            "14:45",
+            "15:45",
+            "16:45",
+            "17:45",
+            "18:45"
+          ],
+          "id" : "igreja-leao-santa-terezinha",
+          "nome" : "Igreja Leão Santa Terezinha",
+          "ordem" : 11
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "06:52",
+            "07:52",
+            "08:52",
+            "11:52",
+            "12:52",
+            "13:52",
+            "14:52",
+            "15:52",
+            "16:52",
+            "17:52",
+            "18:52"
+          ],
+          "id" : "fonte-chegada",
+          "nome" : "Fonte Chegada",
+          "ordem" : 12
+        }
+      ],
+      "tipo" : "regular"
     },
     {
       "bairro" : "Jardim das Américas Paz e Bem",
@@ -7206,8 +7383,8 @@
             "21:30",
             "22:45"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -7344,7 +7521,7 @@
             "22:57"
           ],
           "id" : "caic-ida",
-          "nome" : "Caic IDA",
+          "nome" : "Caic ida",
           "ordem" : 4
         },
         {
@@ -7400,8 +7577,8 @@
             "21:47",
             "23:02"
           ],
-          "id" : "s-m-ida",
-          "nome" : "S M. IDA",
+          "id" : "a-a-s-m-ida",
+          "nome" : "A A S M. ida",
           "ordem" : 5
         },
         {
@@ -7447,8 +7624,8 @@
             "21:52",
             "23:07"
           ],
-          "id" : "jardim-m-valenga",
-          "nome" : "- Jardim M. Valenga",
+          "id" : "valenga",
+          "nome" : "Valenga",
           "ordem" : 6
         },
         {
@@ -7494,8 +7671,8 @@
             "22:00",
             "23:15"
           ],
-          "id" : "das-americas-loteamento-paz-e-bem",
-          "nome" : "das Américas Loteamento PAZ e BEM",
+          "id" : "loteamento-paz-e-bem",
+          "nome" : "Loteamento Paz e Bem",
           "ordem" : 7
         },
         {
@@ -7549,8 +7726,8 @@
             "21:06",
             "22:06"
           ],
-          "id" : "s-m-volta",
-          "nome" : "S M. Volta",
+          "id" : "a-a-s-m-volta",
+          "nome" : "A A S M. Volta",
           "ordem" : 8
         },
         {
@@ -7604,7 +7781,7 @@
             "22:10"
           ],
           "id" : "fundos-dal-pozzo",
-          "nome" : "Fundos DAL Pozzo",
+          "nome" : "Fundos Dal Pozzo",
           "ordem" : 9
         },
         {
@@ -7717,8 +7894,8 @@
             "21:20",
             "22:20"
           ],
-          "id" : "igreja-terezinha",
-          "nome" : "Igreja Terezinha",
+          "id" : "igreja-santa-terezinha",
+          "nome" : "Igreja Santa Terezinha",
           "ordem" : 11
         },
         {
@@ -7770,277 +7947,6 @@
       "tipo" : "regular"
     },
     {
-      "bairro" : "Jardim das Américas Paz e Bem",
-      "codigo" : "31",
-      "id" : "linha-31",
-      "nomeExibicao" : "Linha 31 - Jardim das Américas Paz e Bem",
-      "observacoes" : [
-
-      ],
-      "pontos" : [
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:00",
-            "08:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-            "17:00",
-            "18:00"
-          ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
-          "ordem" : 1
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:05",
-            "08:05",
-            "11:05",
-            "12:05",
-            "13:05",
-            "14:05",
-            "15:05",
-            "16:05",
-            "17:05",
-            "18:05"
-          ],
-          "id" : "gelinski",
-          "nome" : "Gelinski",
-          "ordem" : 2
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:06",
-            "08:06",
-            "11:06",
-            "12:06",
-            "13:06",
-            "14:06",
-            "15:06",
-            "16:06",
-            "17:06",
-            "18:06"
-          ],
-          "id" : "colegio-tupy",
-          "nome" : "Colégio Tupy",
-          "ordem" : 3
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:10",
-            "08:10",
-            "11:10",
-            "12:10",
-            "13:10",
-            "14:10",
-            "15:10",
-            "16:10",
-            "17:10",
-            "18:10"
-          ],
-          "id" : "viaduto-mattos-iniciando-as",
-          "nome" : "Viaduto Mattos Iniciando ÀS",
-          "ordem" : 4
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:31"
-          ],
-          "id" : "mattos-leao",
-          "nome" : "Mattos Leão",
-          "ordem" : 5
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:38",
-            "07:13",
-            "07:38",
-            "08:13",
-            "08:38",
-            "11:13",
-            "11:38",
-            "12:13",
-            "12:38",
-            "13:13",
-            "13:38",
-            "14:13",
-            "14:38",
-            "15:13",
-            "15:38",
-            "16:13",
-            "16:38",
-            "17:13",
-            "17:38",
-            "18:13",
-            "18:38"
-          ],
-          "id" : "sobre",
-          "nome" : "Sobre",
-          "ordem" : 6
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:20",
-            "08:20",
-            "11:20",
-            "12:20",
-            "13:20",
-            "14:20",
-            "15:20",
-            "16:20",
-            "17:20",
-            "18:20"
-          ],
-          "id" : "das-americas-valenga",
-          "nome" : "das Américas Valenga",
-          "ordem" : 7
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:31",
-            "07:31",
-            "08:31",
-            "11:31",
-            "12:31",
-            "13:31",
-            "14:31",
-            "15:31",
-            "16:31",
-            "17:31",
-            "18:31"
-          ],
-          "id" : "paz-e-loteamento-paz-e-bem",
-          "nome" : "PAZ e Loteamento PAZ e BEM",
-          "ordem" : 8
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:42",
-            "07:42",
-            "08:42",
-            "11:42",
-            "12:42",
-            "13:42",
-            "14:42",
-            "15:42",
-            "16:42",
-            "17:42",
-            "18:42"
-          ],
-          "id" : "viaduto-mattos",
-          "nome" : "Viaduto Mattos",
-          "ordem" : 9
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:45",
-            "07:45",
-            "08:45",
-            "11:45",
-            "12:45",
-            "13:45",
-            "14:45",
-            "15:45",
-            "16:45",
-            "17:45",
-            "18:45"
-          ],
-          "id" : "igreja-terezinha",
-          "nome" : "Igreja Terezinha",
-          "ordem" : 10
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:52",
-            "07:52",
-            "08:52",
-            "11:52",
-            "12:52",
-            "13:52",
-            "14:52",
-            "15:52",
-            "16:52",
-            "17:52",
-            "18:52"
-          ],
-          "id" : "fonte-chegada",
-          "nome" : "Fonte Chegada",
-          "ordem" : 11
-        }
-      ],
-      "tipo" : "regular"
-    },
-    {
       "bairro" : "Jardim Dona Angela",
       "codigo" : "40",
       "id" : "linha-40",
@@ -8068,8 +7974,8 @@
             "18:00",
             "18:40"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -8129,8 +8035,8 @@
             "18:08",
             "18:48"
           ],
-          "id" : "rotula-dom-bosco-rotula-dom-bosco-rotula-dom-bosco",
-          "nome" : "Rótula DOM Bosco Rótula DOM Bosco Rótula DOM Bosco",
+          "id" : "rotula-dom-bosco",
+          "nome" : "Rótula Dom Bosco",
           "ordem" : 4
         },
         {
@@ -8194,8 +8100,8 @@
             "06:57",
             "08:57"
           ],
-          "id" : "jardim-dona-loteamento-e-bem",
-          "nome" : "- Jardim Dona Loteamento e BEM",
+          "id" : "loteamento-paz-e-bem",
+          "nome" : "Loteamento Paz e Bem",
           "ordem" : 7
         },
         {
@@ -8219,8 +8125,8 @@
             "18:18",
             "18:58"
           ],
-          "id" : "acesso-julio-castilho",
-          "nome" : "Acesso Júlio Castilho",
+          "id" : "acesso-a-rua-julio-de-castilho",
+          "nome" : "Acesso Á Rua Júlio de Castilho",
           "ordem" : 8
         },
         {
@@ -8311,8 +8217,8 @@
             "18:33",
             "19:13"
           ],
-          "id" : "hiper-supermercado",
-          "nome" : "Hiper Supermercado",
+          "id" : "hiper-super-muffato",
+          "nome" : "Hiper (Super Muffato)",
           "ordem" : 12
         },
         {
@@ -8369,8 +8275,8 @@
             "18:05",
             "18:40"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -8412,7 +8318,7 @@
             "18:45"
           ],
           "id" : "vila-buck-ida",
-          "nome" : "Vila Buck IDA",
+          "nome" : "Vila Buck ida",
           "ordem" : 3
         },
         {
@@ -8432,8 +8338,8 @@
             "18:13",
             "18:48"
           ],
-          "id" : "antigo-patio-maquinas",
-          "nome" : "Antigo Pátio Máquinas",
+          "id" : "antigo-patio-de-maquinas",
+          "nome" : "Antigo Pátio de Máquinas",
           "ordem" : 4
         },
         {
@@ -8445,27 +8351,18 @@
           ],
           "horariosUteis" : [
             "06:43",
-            "06:52",
             "07:15",
-            "07:24",
             "07:42",
-            "07:58",
             "08:27",
-            "08:43",
             "11:25",
-            "11:34",
             "12:15",
-            "12:24",
             "13:10",
-            "13:19",
             "17:27",
-            "17:43",
             "18:15",
-            "18:24",
             "18:50"
           ],
-          "id" : "detran",
-          "nome" : "Detran",
+          "id" : "detran-ida",
+          "nome" : "Detran ida",
           "ordem" : 5
         },
         {
@@ -8526,8 +8423,8 @@
             "08:36",
             "17:36"
           ],
-          "id" : "jardim-moria-complexo-tramonto",
-          "nome" : "Jardim Moriá Complexo Tramonto",
+          "id" : "complexo-tramonto",
+          "nome" : "Complexo Tramonto",
           "ordem" : 8
         },
         {
@@ -8561,6 +8458,28 @@
 
           ],
           "horariosUteis" : [
+            "06:52",
+            "07:24",
+            "07:58",
+            "08:43",
+            "11:34",
+            "12:24",
+            "13:19",
+            "17:43",
+            "18:24"
+          ],
+          "id" : "detran",
+          "nome" : "Detran",
+          "ordem" : 10
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
             "06:54",
             "07:26",
             "08:01",
@@ -8571,9 +8490,9 @@
             "17:46",
             "18:26"
           ],
-          "id" : "antigo-patio-maquinas-volta",
-          "nome" : "Antigo Pátio Máquinas Volta",
-          "ordem" : 10
+          "id" : "antigo-patio-de-maquinas-volta",
+          "nome" : "Antigo Pátio de Máquinas Volta",
+          "ordem" : 11
         },
         {
           "horariosDomingo" : [
@@ -8593,9 +8512,9 @@
             "17:52",
             "18:32"
           ],
-          "id" : "cresol-do-indio",
-          "nome" : "Cresol do Índio",
-          "ordem" : 11
+          "id" : "cresol-trevo-do-indio",
+          "nome" : "Cresol Trevo do Índio",
+          "ordem" : 12
         },
         {
           "horariosDomingo" : [
@@ -8617,7 +8536,7 @@
           ],
           "id" : "energisa",
           "nome" : "Energisa",
-          "ordem" : 12
+          "ordem" : 13
         },
         {
           "horariosDomingo" : [
@@ -8639,7 +8558,7 @@
           ],
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
-          "ordem" : 13
+          "ordem" : 14
         }
       ],
       "tipo" : "regular"
@@ -8665,8 +8584,8 @@
             "17:35",
             "18:35"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -8730,8 +8649,8 @@
             "17:50",
             "18:50"
           ],
-          "id" : "colegio-itarare",
-          "nome" : "Colégio Itararé",
+          "id" : "colegio-pedro-itarare",
+          "nome" : "Colégio Pedro Itararé",
           "ordem" : 5
         },
         {
@@ -8747,8 +8666,8 @@
             "17:57",
             "18:57"
           ],
-          "id" : "jardim-campo",
-          "nome" : "- Jardim Campo",
+          "id" : "campo",
+          "nome" : "Campo",
           "ordem" : 6
         },
         {
@@ -8833,7 +8752,7 @@
             "19:12"
           ],
           "id" : "cia-vila-bela",
-          "nome" : "CIA Vila Bela",
+          "nome" : "Cia Vila Bela",
           "ordem" : 11
         },
         {
@@ -8877,8 +8796,8 @@
             "12:15",
             "18:30"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -8926,7 +8845,7 @@
             "18:41"
           ],
           "id" : "ubs-vila-bela",
-          "nome" : "- UBS Vila Bela",
+          "nome" : "UBS Vila Bela",
           "ordem" : 4
         },
         {
@@ -8943,8 +8862,8 @@
             "12:29",
             "18:44"
           ],
-          "id" : "pinheirinho-fundos-dal-pozzo",
-          "nome" : "Pinheirinho Fundos DAL Pozzo",
+          "id" : "fundos-dal-pozzo",
+          "nome" : "Fundos Dal Pozzo",
           "ordem" : 5
         },
         {
@@ -8997,8 +8916,8 @@
             "12:40",
             "18:55"
           ],
-          "id" : "igreja-terezinha",
-          "nome" : "Igreja Terezinha",
+          "id" : "igreja-santa-terezinha",
+          "nome" : "Igreja Santa Terezinha",
           "ordem" : 8
         },
         {
@@ -9043,18 +8962,28 @@
           ],
           "horariosUteis" : [
             "06:30",
+            "07:25",
             "07:30",
+            "08:25",
             "09:30",
+            "10:25",
             "10:30",
+            "11:25",
             "12:00",
+            "12:55",
             "13:00",
+            "13:55",
             "14:30",
+            "15:25",
             "16:30",
+            "17:25",
             "18:00",
-            "19:00"
+            "18:55",
+            "19:00",
+            "19:55"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte",
+          "nome" : "Fonte",
           "ordem" : 1
         },
         {
@@ -9081,8 +9010,8 @@
             "18:08",
             "19:08"
           ],
-          "id" : "apae-ida",
-          "nome" : "Apae IDA",
+          "id" : "ida",
+          "nome" : "ida",
           "ordem" : 2
         },
         {
@@ -9107,8 +9036,8 @@
             "18:12",
             "19:12"
           ],
-          "id" : "faculdade",
-          "nome" : "Faculdade",
+          "id" : "guarapuava-ida",
+          "nome" : "Guarapuava ida",
           "ordem" : 3
         },
         {
@@ -9138,8 +9067,8 @@
             "18:22",
             "19:22"
           ],
-          "id" : "parque",
-          "nome" : "Parque",
+          "id" : "jordao-ida",
+          "nome" : "Jordão ida",
           "ordem" : 4
         },
         {
@@ -9169,8 +9098,8 @@
             "18:25",
             "19:25"
           ],
-          "id" : "camargo",
-          "nome" : "Camargo",
+          "id" : "ponto-de-parada",
+          "nome" : "Ponto de Parada",
           "ordem" : 5
         },
         {
@@ -9200,8 +9129,8 @@
             "18:30",
             "19:30"
           ],
-          "id" : "parque-volta",
-          "nome" : "Parque Volta",
+          "id" : "jordao-volta",
+          "nome" : "Jordão Volta",
           "ordem" : 6
         },
         {
@@ -9231,32 +9160,9 @@
             "18:43",
             "19:43"
           ],
-          "id" : "apae-volta",
-          "nome" : "Apae Volta",
+          "id" : "volta",
+          "nome" : "Volta",
           "ordem" : 7
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:25",
-            "08:25",
-            "10:25",
-            "11:25",
-            "12:55",
-            "13:55",
-            "15:25",
-            "17:25",
-            "18:55",
-            "19:55"
-          ],
-          "id" : "fonte-chegada",
-          "nome" : "Fonte Chegada",
-          "ordem" : 8
         }
       ],
       "tipo" : "regular"
@@ -9279,13 +9185,18 @@
           ],
           "horariosUteis" : [
             "06:40",
+            "07:10",
             "07:40",
+            "08:10",
             "12:40",
+            "13:10",
             "17:40",
-            "18:40"
+            "18:10",
+            "18:40",
+            "19:10"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte",
+          "nome" : "Fonte",
           "ordem" : 1
         },
         {
@@ -9320,8 +9231,8 @@
             "17:52",
             "18:52"
           ],
-          "id" : "vila-kennedy",
-          "nome" : "Vila Kennedy",
+          "id" : "kennedy",
+          "nome" : "Kennedy",
           "ordem" : 3
         },
         {
@@ -9338,8 +9249,8 @@
             "17:55",
             "18:55"
           ],
-          "id" : "colegio-mahatma",
-          "nome" : "Colégio Mahatma",
+          "id" : "mahatma",
+          "nome" : "Mahatma",
           "ordem" : 4
         },
         {
@@ -9356,8 +9267,8 @@
             "18:00",
             "19:00"
           ],
-          "id" : "alto",
-          "nome" : "Alto",
+          "id" : "morro-alto",
+          "nome" : "Morro Alto",
           "ordem" : 5
         },
         {
@@ -9374,27 +9285,9 @@
             "18:08",
             "19:08"
           ],
-          "id" : "praca-cleve",
-          "nome" : "Praça Cleve",
+          "id" : "cleve",
+          "nome" : "Cleve",
           "ordem" : 6
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:10",
-            "08:10",
-            "13:10",
-            "18:10",
-            "19:10"
-          ],
-          "id" : "fonte-chegada",
-          "nome" : "Fonte Chegada",
-          "ordem" : 7
         }
       ],
       "tipo" : "regular"
@@ -9458,8 +9351,8 @@
             "22:50",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -9580,8 +9473,8 @@
             "23:02",
             "23:32"
           ],
-          "id" : "mattos-leao-nucleo-adao-kaminski",
-          "nome" : "- Mattos Leão Núcleo Adão Kaminski",
+          "id" : "nucleo-alto-adao-kaminski",
+          "nome" : "Núcleo Alto Adão Kaminski",
           "ordem" : 3
         },
         {
@@ -9812,8 +9705,8 @@
             "22:50",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -9834,8 +9727,8 @@
             "18:20",
             "19:20"
           ],
-          "id" : "perola-do-lagoa",
-          "nome" : "Pérola do Lagoa",
+          "id" : "lagoa",
+          "nome" : "Lagoa",
           "ordem" : 2
         },
         {
@@ -9843,20 +9736,45 @@
 
           ],
           "horariosSabado" : [
-
+            "15:53",
+            "16:53",
+            "17:53",
+            "18:53",
+            "19:53",
+            "20:58",
+            "21:58",
+            "22:58"
           ],
           "horariosUteis" : [
+            "06:53",
             "07:24",
+            "07:53",
             "08:24",
+            "08:53",
+            "09:53",
+            "10:53",
             "11:24",
+            "11:53",
             "12:24",
+            "12:53",
             "13:24",
+            "13:53",
+            "14:53",
+            "15:53",
+            "16:53",
             "17:24",
+            "17:53",
             "18:24",
-            "19:24"
+            "18:53",
+            "19:24",
+            "19:53",
+            "20:58",
+            "21:58",
+            "22:58",
+            "23:27"
           ],
-          "id" : "oeste-via-lagoa-colegio-ana-vanda-ana-vanda",
-          "nome" : "Oeste via Lagoa Colégio ANA Vanda ANA Vanda",
+          "id" : "colegio-ana-vanda",
+          "nome" : "Colégio Ana Vanda",
           "ordem" : 3
         },
         {
@@ -9864,21 +9782,46 @@
 
           ],
           "horariosSabado" : [
-
+            "16:02",
+            "17:02",
+            "18:02",
+            "19:02",
+            "20:02",
+            "21:07",
+            "22:07",
+            "23:07"
           ],
           "horariosUteis" : [
             "06:33",
+            "07:02",
             "07:33",
+            "08:02",
             "08:33",
+            "09:02",
+            "10:02",
+            "11:02",
             "11:33",
+            "12:02",
             "12:33",
+            "13:02",
             "13:33",
+            "14:02",
+            "15:02",
+            "16:02",
+            "17:02",
             "17:33",
+            "18:02",
             "18:33",
-            "19:33"
+            "19:02",
+            "19:33",
+            "20:02",
+            "21:07",
+            "22:07",
+            "23:07",
+            "23:32"
           ],
-          "id" : "lagoa-forum",
-          "nome" : "Lagoa Fórum",
+          "id" : "forum",
+          "nome" : "Fórum",
           "ordem" : 4
         },
         {
@@ -9982,85 +9925,9 @@
             "22:55",
             "23:25"
           ],
-          "id" : "jd-perola-hospital-sao-vicente",
-          "nome" : "- JD. Pérola Hospital SÃO Vicente",
+          "id" : "hospital-sao-vicente",
+          "nome" : "Hospital São Vicente",
           "ordem" : 7
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-            "15:53",
-            "16:53",
-            "17:53",
-            "18:53",
-            "19:53",
-            "20:58",
-            "21:58",
-            "22:58"
-          ],
-          "horariosUteis" : [
-            "06:53",
-            "07:53",
-            "08:53",
-            "09:53",
-            "10:53",
-            "11:53",
-            "12:53",
-            "13:53",
-            "14:53",
-            "15:53",
-            "16:53",
-            "17:53",
-            "18:53",
-            "19:53",
-            "20:58",
-            "21:58",
-            "22:58",
-            "23:27"
-          ],
-          "id" : "do-oeste-via-colegio-ana-vanda",
-          "nome" : "do Oeste via Colégio ANA Vanda",
-          "ordem" : 8
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-            "16:02",
-            "17:02",
-            "18:02",
-            "19:02",
-            "20:02",
-            "21:07",
-            "22:07",
-            "23:07"
-          ],
-          "horariosUteis" : [
-            "07:02",
-            "08:02",
-            "09:02",
-            "10:02",
-            "11:02",
-            "12:02",
-            "13:02",
-            "14:02",
-            "15:02",
-            "16:02",
-            "17:02",
-            "18:02",
-            "19:02",
-            "20:02",
-            "21:07",
-            "22:07",
-            "23:07",
-            "23:32"
-          ],
-          "id" : "via-sao-vicente-forum",
-          "nome" : "via SÃO Vicente Fórum",
-          "ordem" : 9
         },
         {
           "horariosDomingo" : [
@@ -10094,9 +9961,9 @@
             "22:10",
             "23:10"
           ],
-          "id" : "vicente-surg",
-          "nome" : "Vicente Surg",
-          "ordem" : 10
+          "id" : "surg",
+          "nome" : "Surg",
+          "ordem" : 8
         }
       ],
       "tipo" : "regular"
@@ -10123,8 +9990,8 @@
             "11:30",
             "12:30"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -10140,8 +10007,8 @@
             "11:33",
             "12:33"
           ],
-          "id" : "hiper-supermercado",
-          "nome" : "Hiper Supermercado",
+          "id" : "hiper-super-muffato",
+          "nome" : "Hiper (Super Muffato)",
           "ordem" : 2
         },
         {
@@ -10158,7 +10025,7 @@
             "12:36"
           ],
           "id" : "armazem-sao-paulo",
-          "nome" : "Armazém SÃO Paulo",
+          "nome" : "Armazém São Paulo",
           "ordem" : 3
         },
         {
@@ -10180,7 +10047,7 @@
             "13:04"
           ],
           "id" : "maria-mae-da-igreja",
-          "nome" : "Maria MÃE da Igreja",
+          "nome" : "Maria Mãe da Igreja",
           "ordem" : 4
         },
         {
@@ -10197,8 +10064,8 @@
             "11:44",
             "12:44"
           ],
-          "id" : "parque-perola-do-oeste",
-          "nome" : "Parque Pérola do Oeste",
+          "id" : "perola-do-oeste",
+          "nome" : "Pérola do Oeste",
           "ordem" : 5
         },
         {
@@ -10215,8 +10082,8 @@
             "11:47",
             "12:47"
           ],
-          "id" : "das-ubs-pq-arvores",
-          "nome" : "das UBS PQ. Árvores",
+          "id" : "ubs-pq-arvores",
+          "nome" : "UBS PQ. Árvores",
           "ordem" : 6
         },
         {
@@ -10233,8 +10100,8 @@
             "11:50",
             "12:50"
           ],
-          "id" : "arvores-planalto-verde",
-          "nome" : "Árvores Planalto Verde",
+          "id" : "planalto-verde",
+          "nome" : "Planalto Verde",
           "ordem" : 7
         },
         {
@@ -10251,8 +10118,8 @@
             "11:53",
             "12:53"
           ],
-          "id" : "via-karpinski-escola-ruy-marques",
-          "nome" : "via Karpinski Escola RUY Marques",
+          "id" : "escola-ruy-marques",
+          "nome" : "Escola Ruy Marques",
           "ordem" : 8
         },
         {
@@ -10287,8 +10154,8 @@
             "11:58",
             "12:58"
           ],
-          "id" : "dos-campos",
-          "nome" : "dos Campos",
+          "id" : "princesa-dos-campos",
+          "nome" : "Princesa dos Campos",
           "ordem" : 10
         },
         {
@@ -10371,8 +10238,8 @@
             "17:15",
             "18:15"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -10463,8 +10330,8 @@
             "17:33",
             "18:33"
           ],
-          "id" : "04-primavera-avenida-bandeirantes",
-          "nome" : "04- Primavera Avenida Bandeirantes",
+          "id" : "avenida-bandeirantes",
+          "nome" : "Avenida Bandeirantes",
           "ordem" : 6
         },
         {
@@ -10501,8 +10368,8 @@
             "17:38",
             "18:38"
           ],
-          "id" : "supermercado-brasao-volta",
-          "nome" : "Supermercado Brasão Volta",
+          "id" : "brasao-supermercado-volta",
+          "nome" : "Brasão Supermercado Volta",
           "ordem" : 8
         },
         {
@@ -10558,8 +10425,8 @@
             "17:50",
             "18:50"
           ],
-          "id" : "supermercado",
-          "nome" : "Supermercado",
+          "id" : "hiper-super-muffato",
+          "nome" : "Hiper (Super Muffato)",
           "ordem" : 11
         },
         {
@@ -10644,8 +10511,8 @@
             "22:00",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -10699,8 +10566,8 @@
             "22:09",
             "23:29"
           ],
-          "id" : "psf-morro-alto-ida-as-06h00-as-06h18-as-06h52",
-          "nome" : "PSF Morro Alto IDA ÀS 06h00 ÀS 06h18 ÀS 06h52",
+          "id" : "psf-morro-alto-ida",
+          "nome" : "PSF Morro Alto ida",
           "ordem" : 2
         },
         {
@@ -10756,8 +10623,8 @@
             "22:12",
             "23:32"
           ],
-          "id" : "igreja-sao-luiz-ida-rpc-rpc-06h25-rotula-rpc",
-          "nome" : "Igreja SÃO Luiz IDA RPC RPC 06h25 Rótula RPC",
+          "id" : "igreja-sao-luiz-ida",
+          "nome" : "Igreja São Luiz ida",
           "ordem" : 3
         },
         {
@@ -10815,7 +10682,7 @@
             "23:38"
           ],
           "id" : "antenas-rpc-ida",
-          "nome" : "Antenas RPC IDA",
+          "nome" : "Antenas RPC ida",
           "ordem" : 4
         },
         {
@@ -10934,8 +10801,8 @@
             "22:22",
             "23:47"
           ],
-          "id" : "residencial-rua-administradores",
-          "nome" : "- Residencial Rua Administradores",
+          "id" : "rua-administradores",
+          "nome" : "Rua Administradores",
           "ordem" : 6
         },
         {
@@ -10990,8 +10857,8 @@
             "22:30",
             "23:54"
           ],
-          "id" : "2000-morar-porto-morar-real-melhor",
-          "nome" : "2000\/morar Porto Morar Real Melhor",
+          "id" : "porto-real",
+          "nome" : "Porto Real",
           "ordem" : 7
         },
         {
@@ -11046,8 +10913,8 @@
             "22:33",
             "23:57"
           ],
-          "id" : "melhor-morar-melhor",
-          "nome" : "Melhor Morar Melhor",
+          "id" : "morar-melhor",
+          "nome" : "Morar Melhor",
           "ordem" : 8
         },
         {
@@ -11157,7 +11024,7 @@
             "19:48"
           ],
           "id" : "igreja-sao-luiz-volta",
-          "nome" : "Igreja SÃO Luiz Volta",
+          "nome" : "Igreja São Luiz Volta",
           "ordem" : 11
         },
         {
@@ -11328,8 +11195,8 @@
             "14:00",
             "15:00"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -11440,20 +11307,15 @@
             "15:11",
             "15:41",
             "16:11",
-            "16:13",
             "16:41",
             "17:11",
-            "17:13",
             "17:44",
             "18:11",
-            "18:13",
             "18:41",
             "19:11",
             "20:11",
             "21:11",
             "22:10",
-            "22:11",
-            "23:11",
             "23:31"
           ],
           "horariosUteis" : [
@@ -11461,55 +11323,17 @@
             "07:11",
             "07:41",
             "08:11",
-            "08:13",
             "08:41",
             "09:11",
-            "09:13",
             "09:41",
             "10:11",
-            "10:13",
             "10:41",
             "11:11",
-            "11:13",
-            "11:41",
-            "12:13",
-            "13:13",
-            "14:13",
-            "15:13"
+            "11:41"
           ],
-          "id" : "nucleo-santa-cruz",
-          "nome" : "Núcleo Santa Cruz",
+          "id" : "nucleo-nucleo-santa-cruz-sao-joao",
+          "nome" : "Núcleo Núcleo Santa Cruz São João",
           "ordem" : 4
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-            "13:19",
-            "14:19",
-            "15:19",
-            "16:19",
-            "17:19",
-            "19:19",
-            "19:33",
-            "20:14",
-            "20:30",
-            "20:33",
-            "22:14",
-            "22:30",
-            "22:33",
-            "22:34",
-            "23:33",
-            "23:34",
-            "23:50"
-          ],
-          "horariosUteis" : [
-
-          ],
-          "id" : "ponto-de-parada",
-          "nome" : "Ponto de Parada",
-          "ordem" : 5
         },
         {
           "horariosDomingo" : [
@@ -11548,9 +11372,9 @@
             "11:15",
             "11:45"
           ],
-          "id" : "apae-sesc",
-          "nome" : "Apae Sesc",
-          "ordem" : 6
+          "id" : "faculdade-jordao-apae-guarapuava",
+          "nome" : "Faculdade Jordão Apae Guarapuava",
+          "ordem" : 5
         },
         {
           "horariosDomingo" : [
@@ -11565,33 +11389,48 @@
             "14:51",
             "15:28",
             "15:51",
+            "16:24",
             "16:28",
             "16:51",
+            "17:24",
             "17:28",
             "17:54",
             "18:21",
+            "18:24",
             "18:51",
             "19:28",
+            "19:46",
             "20:45",
+            "20:46",
             "21:21",
-            "22:42"
+            "21:24",
+            "22:42",
+            "22:46"
           ],
           "horariosUteis" : [
             "06:51",
             "07:21",
             "07:51",
             "08:21",
+            "08:24",
             "08:51",
             "09:21",
+            "09:24",
             "09:51",
             "10:21",
+            "10:24",
             "10:51",
             "11:21",
-            "11:51"
+            "11:24",
+            "11:51",
+            "12:24",
+            "13:24",
+            "14:24",
+            "15:24"
           ],
-          "id" : "santa-sesc",
-          "nome" : "- Santa Sesc",
-          "ordem" : 7
+          "id" : "sesc",
+          "nome" : "Sesc",
+          "ordem" : 6
         },
         {
           "horariosDomingo" : [
@@ -11647,6 +11486,37 @@
           ],
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
+          "ordem" : 7
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+            "16:13",
+            "17:13",
+            "18:13",
+            "19:11",
+            "20:11",
+            "21:11",
+            "22:11",
+            "23:11"
+          ],
+          "horariosUteis" : [
+            "06:41",
+            "07:11",
+            "07:41",
+            "08:13",
+            "09:13",
+            "10:13",
+            "11:13",
+            "12:13",
+            "13:13",
+            "14:13",
+            "15:13"
+          ],
+          "id" : "nucleo-santa-cruz",
+          "nome" : "Núcleo Santa Cruz",
           "ordem" : 8
         },
         {
@@ -11674,7 +11544,7 @@
             "15:16"
           ],
           "id" : "nucleo-sao-joao",
-          "nome" : "Núcleo SÃO João",
+          "nome" : "Núcleo São João",
           "ordem" : 9
         },
         {
@@ -11703,39 +11573,9 @@
             "14:21",
             "15:21"
           ],
-          "id" : "apae",
-          "nome" : "Apae",
+          "id" : "jordao-apae",
+          "nome" : "Jordão Apae",
           "ordem" : 10
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-            "16:24",
-            "17:24",
-            "18:24",
-            "19:46",
-            "20:46",
-            "21:24",
-            "22:46"
-          ],
-          "horariosUteis" : [
-            "06:51",
-            "07:21",
-            "07:51",
-            "08:24",
-            "09:24",
-            "10:24",
-            "11:24",
-            "12:24",
-            "13:24",
-            "14:24",
-            "15:24"
-          ],
-          "id" : "sesc",
-          "nome" : "Sesc",
-          "ordem" : 11
         }
       ],
       "tipo" : "regular"
@@ -11789,8 +11629,8 @@
             "22:20",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -11897,33 +11737,25 @@
           ],
           "horariosUteis" : [
             "06:30",
-            "07:00",
             "07:30",
-            "08:00",
             "08:30",
             "09:30",
             "10:30",
             "11:30",
-            "12:00",
             "12:30",
-            "13:00",
             "13:30",
-            "14:00",
             "14:30",
             "15:30",
             "16:30",
-            "17:00",
             "17:30",
-            "18:00",
             "18:30",
-            "19:00",
             "19:30",
             "20:35",
             "21:35",
             "22:31"
           ],
-          "id" : "colegio-mahatma",
-          "nome" : "Colégio Mahatma",
+          "id" : "colegio-caixa-d-agua-mahatma-sanepar",
+          "nome" : "Colégio Caixa D Água Mahatma Sanepar",
           "ordem" : 4
         },
         {
@@ -11931,83 +11763,29 @@
 
           ],
           "horariosSabado" : [
-            "16:36",
-            "16:43",
-            "17:36",
-            "17:43",
-            "18:36",
-            "18:43",
-            "19:36",
-            "19:43",
-            "20:41",
-            "20:48",
-            "21:41",
-            "21:48"
-          ],
-          "horariosUteis" : [
-            "06:36",
-            "06:43",
-            "07:36",
-            "07:43",
-            "08:36",
-            "08:43",
-            "09:36",
-            "09:43",
-            "10:36",
-            "10:43",
-            "11:36",
-            "11:43",
-            "12:36",
-            "12:43",
-            "13:36",
-            "13:43",
-            "14:36",
-            "14:43",
-            "15:36",
-            "15:43",
-            "22:35",
-            "22:40"
-          ],
-          "id" : "ponto-de-parada",
-          "nome" : "Ponto de Parada",
-          "ordem" : 5
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
 
           ],
           "horariosUteis" : [
             "06:36",
-            "07:06",
             "07:36",
-            "08:06",
             "08:36",
             "09:36",
             "10:36",
             "11:36",
-            "12:06",
             "12:36",
-            "13:06",
             "13:36",
-            "14:06",
             "14:36",
             "15:36",
             "16:36",
-            "17:06",
             "17:36",
-            "18:06",
             "18:36",
-            "19:06",
             "19:36",
             "20:41",
             "21:41"
           ],
-          "id" : "praca-cleve",
-          "nome" : "Praça Cleve",
-          "ordem" : 6
+          "id" : "colegio-praca-ana-vanda-cleve",
+          "nome" : "Colégio Praça Ana Vanda Cleve",
+          "ordem" : 5
         },
         {
           "horariosDomingo" : [
@@ -12045,7 +11823,49 @@
           ],
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
+          "ordem" : 6
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:00",
+            "08:00",
+            "12:00",
+            "13:00",
+            "14:00",
+            "17:00",
+            "18:00",
+            "19:00"
+          ],
+          "id" : "colegio-mahatma",
+          "nome" : "Colégio Mahatma",
           "ordem" : 7
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
+            "07:06",
+            "08:06",
+            "12:06",
+            "13:06",
+            "14:06",
+            "17:06",
+            "18:06",
+            "19:06"
+          ],
+          "id" : "praca-cleve",
+          "nome" : "Praça Cleve",
+          "ordem" : 8
         }
       ],
       "tipo" : "regular"
@@ -12072,8 +11892,8 @@
             "12:30",
             "17:30"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -12089,8 +11909,8 @@
             "12:37",
             "17:37"
           ],
-          "id" : "mercado-muztaki-col-cristo",
-          "nome" : "Mercado Muztaki Col. Cristo",
+          "id" : "mercado-muztaki-no-col-cristo",
+          "nome" : "Mercado Muztaki NO Col. Cristo",
           "ordem" : 2
         },
         {
@@ -12107,8 +11927,8 @@
             "12:40",
             "17:40"
           ],
-          "id" : "cristo-rei",
-          "nome" : "Cristo REI",
+          "id" : "colegio-cristo-rei-rei",
+          "nome" : "Colégio Cristo Rei Rei",
           "ordem" : 3
         },
         {
@@ -12125,8 +11945,8 @@
             "12:42",
             "17:42"
           ],
-          "id" : "sao-escola-ruy-marques",
-          "nome" : "- SÃO Escola RUY Marques",
+          "id" : "escola-ruy-marques",
+          "nome" : "Escola Ruy Marques",
           "ordem" : 4
         },
         {
@@ -12179,8 +11999,8 @@
             "12:49",
             "17:49"
           ],
-          "id" : "mercado-volta",
-          "nome" : "Mercado Volta",
+          "id" : "mercado-muztaki-volta",
+          "nome" : "Mercado Muztaki Volta",
           "ordem" : 7
         },
         {
@@ -12197,8 +12017,8 @@
             "12:53",
             "17:53"
           ],
-          "id" : "sorveteria-zero-grau",
-          "nome" : "Sorveteria Zero Grau",
+          "id" : "antiga-sorveteria-zero-grau",
+          "nome" : "Antiga Sorveteria Zero Grau",
           "ordem" : 8
         },
         {
@@ -12247,8 +12067,8 @@
             "12:10",
             "18:15"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -12281,8 +12101,8 @@
             "12:11",
             "18:16"
           ],
-          "id" : "colegio-belem-colegio",
-          "nome" : "Colégio Belém Colégio",
+          "id" : "colegio-belem",
+          "nome" : "Colégio Belém",
           "ordem" : 3
         },
         {
@@ -12302,8 +12122,8 @@
             "12:15",
             "18:20"
           ],
-          "id" : "construcao-unifort",
-          "nome" : "Construção Unifort",
+          "id" : "material-de-construcao-unifort",
+          "nome" : "Material de Construção Unifort",
           "ordem" : 4
         },
         {
@@ -12344,8 +12164,8 @@
             "12:21",
             "18:30"
           ],
-          "id" : "sao-joao-sao-joao",
-          "nome" : "- SÃO João SÃO João",
+          "id" : "sao-joao",
+          "nome" : "São João",
           "ordem" : 6
         },
         {
@@ -12365,8 +12185,8 @@
             "12:25",
             "18:34"
           ],
-          "id" : "associacao-economica",
-          "nome" : "Associação Econômica",
+          "id" : "associacao-da-caixa-economica",
+          "nome" : "Associação da Caixa Econômica",
           "ordem" : 7
         },
         {
@@ -12385,8 +12205,8 @@
             "12:26",
             "18:35"
           ],
-          "id" : "da-serra",
-          "nome" : "da Serra",
+          "id" : "mirante-da-serra",
+          "nome" : "Mirante da Serra",
           "ordem" : 8
         },
         {
@@ -12538,8 +12358,8 @@
             "21:40",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -12687,26 +12507,45 @@
           ],
           "horariosUteis" : [
             "06:03",
+            "06:19",
+            "06:48",
             "07:03",
             "07:13",
+            "07:40",
+            "07:45",
             "08:03",
             "08:14",
+            "08:42",
             "09:03",
             "09:14",
+            "09:42",
             "10:03",
             "10:14",
+            "10:42",
             "11:03",
             "11:14",
+            "11:42",
             "12:03",
             "12:13",
+            "12:42",
             "13:03",
+            "13:23",
             "14:03",
+            "14:23",
             "15:03",
+            "15:23",
+            "16:23",
+            "17:23",
+            "18:26",
+            "19:26",
+            "20:23",
             "20:56",
-            "21:56"
+            "21:26",
+            "21:56",
+            "22:30"
           ],
-          "id" : "atacadao-trevo-extra",
-          "nome" : "Atacadão Trevo Extra",
+          "id" : "atacadao-trevo",
+          "nome" : "Atacadão Trevo",
           "ordem" : 5
         },
         {
@@ -12743,8 +12582,8 @@
             "20:59",
             "21:59"
           ],
-          "id" : "trevo-mat-construcao-inicia-bairro",
-          "nome" : "Trevo Mat. Construção Inicia Bairro",
+          "id" : "trevo-mat-construcao",
+          "nome" : "Trevo Mat. Construção",
           "ordem" : 6
         },
         {
@@ -12903,8 +12742,8 @@
             "22:17",
             "23:52"
           ],
-          "id" : "fonte-x-sol-poente-espaco-do-cidadao-xarquinho-ida",
-          "nome" : "- Fonte x SOL Poente Espaço do Cidadão Xarquinho IDA",
+          "id" : "espaco-do-cidadao-xarquinho-ida",
+          "nome" : "Espaço do Cidadão Xarquinho ida",
           "ordem" : 10
         },
         {
@@ -12953,7 +12792,7 @@
             "23:54"
           ],
           "id" : "igreja-sao-pedro",
-          "nome" : "Igreja SÃO Pedro",
+          "nome" : "Igreja São Pedro",
           "ordem" : 11
         },
         {
@@ -13106,38 +12945,6 @@
 
           ],
           "horariosUteis" : [
-            "06:19",
-            "06:48",
-            "07:40",
-            "07:45",
-            "08:42",
-            "09:42",
-            "10:42",
-            "11:42",
-            "12:42",
-            "13:23",
-            "14:23",
-            "15:23",
-            "16:23",
-            "17:23",
-            "18:26",
-            "19:26",
-            "20:23",
-            "21:26",
-            "22:30"
-          ],
-          "id" : "atacadao-trevo",
-          "nome" : "Atacadão Trevo",
-          "ordem" : 15
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
             "06:23",
             "06:51",
             "07:44",
@@ -13160,7 +12967,7 @@
           ],
           "id" : "espaco-fiori",
           "nome" : "Espaço Fiori",
-          "ordem" : 16
+          "ordem" : 15
         },
         {
           "horariosDomingo" : [
@@ -13190,9 +12997,9 @@
             "21:31",
             "22:36"
           ],
-          "id" : "hiper-supermercado",
-          "nome" : "Hiper Supermercado",
-          "ordem" : 17
+          "id" : "hiper-super-muffato",
+          "nome" : "Hiper (Super Muffato)",
+          "ordem" : 16
         },
         {
           "horariosDomingo" : [
@@ -13224,7 +13031,7 @@
           ],
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
-          "ordem" : 18
+          "ordem" : 17
         }
       ],
       "tipo" : "regular"
@@ -13287,8 +13094,8 @@
             "22:50",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -13296,30 +13103,10 @@
 
           ],
           "horariosSabado" : [
-            "16:00",
-            "17:00",
-            "18:00",
-            "19:00",
-            "20:00",
-            "21:05",
-            "22:05"
+
           ],
           "horariosUteis" : [
-            "06:16",
-            "07:00",
-            "07:30",
-            "08:00",
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "21:06",
-            "22:06",
-            "22:36",
-            "23:06"
+            "06:16"
           ],
           "id" : "ponto-de-parada",
           "nome" : "Ponto de Parada",
@@ -13374,8 +13161,8 @@
             "22:51",
             "23:21"
           ],
-          "id" : "colegio-belem-colegio-belem",
-          "nome" : "Colégio Belém Colégio Belém.",
+          "id" : "colegio-belem",
+          "nome" : "Colégio Belém",
           "ordem" : 3
         },
         {
@@ -13428,8 +13215,8 @@
             "22:55",
             "23:25"
           ],
-          "id" : "tancredo-colegio-newton",
-          "nome" : "- Tancredo Colégio Newton",
+          "id" : "colegio-newton",
+          "nome" : "Colégio Newton",
           "ordem" : 4
         },
         {
@@ -13482,8 +13269,8 @@
             "22:58",
             "23:28"
           ],
-          "id" : "neves-via-ferrea-concordia",
-          "nome" : "Neves via Férrea Concórdia",
+          "id" : "via-ferrea-concordia",
+          "nome" : "via Férrea Concórdia",
           "ordem" : 5
         },
         {
@@ -13692,8 +13479,8 @@
             "15:00",
             "16:00"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -13728,8 +13515,8 @@
             "15:10",
             "16:10"
           ],
-          "id" : "tancredo-aabb",
-          "nome" : "Tancredo Aabb",
+          "id" : "aabb",
+          "nome" : "Aabb",
           "ordem" : 3
         },
         {
@@ -13746,8 +13533,8 @@
             "15:15",
             "16:15"
           ],
-          "id" : "neves-via-nucleo-senna",
-          "nome" : "Neves via Núcleo Senna",
+          "id" : "nucleo-ayrton-senna",
+          "nome" : "Núcleo Ayrton Senna",
           "ordem" : 4
         },
         {
@@ -13764,8 +13551,8 @@
             "15:20",
             "16:20"
           ],
-          "id" : "senna-instituto-cabreira",
-          "nome" : "Senna Instituto Cabreira",
+          "id" : "instituto-cabreira",
+          "nome" : "Instituto Cabreira",
           "ordem" : 5
         },
         {
@@ -13806,21 +13593,34 @@
 
           ],
           "horariosUteis" : [
+            "06:25",
             "06:30",
+            "06:55",
             "07:00",
+            "07:25",
             "07:30",
+            "07:55",
             "08:00",
+            "08:25",
             "08:30",
+            "08:55",
             "09:00",
+            "09:25",
             "11:30",
+            "11:55",
             "12:00",
+            "12:25",
             "13:00",
+            "13:25",
             "17:00",
+            "17:25",
             "18:00",
-            "19:00"
+            "18:25",
+            "19:00",
+            "19:25"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte",
+          "nome" : "Fonte",
           "ordem" : 1
         },
         {
@@ -13831,10 +13631,23 @@
 
           ],
           "horariosUteis" : [
-            "06:06"
+            "06:06",
+            "06:10",
+            "06:40",
+            "07:10",
+            "07:40",
+            "08:10",
+            "08:40",
+            "09:10",
+            "11:40",
+            "12:10",
+            "13:10",
+            "17:10",
+            "18:10",
+            "19:10"
           ],
-          "id" : "via-rua",
-          "nome" : "via Rua",
+          "id" : "ponto-de-parada",
+          "nome" : "Ponto de Parada",
           "ordem" : 2
         },
         {
@@ -13858,35 +13671,9 @@
             "18:06",
             "19:06"
           ],
-          "id" : "ferrea-guaira-na-via",
-          "nome" : "- Férrea Guaíra NA via",
+          "id" : "rua-guaira",
+          "nome" : "Rua Guaíra",
           "ordem" : 3
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:10",
-            "06:40",
-            "07:10",
-            "07:40",
-            "08:10",
-            "08:40",
-            "09:10",
-            "11:40",
-            "12:10",
-            "13:10",
-            "17:10",
-            "18:10",
-            "19:10"
-          ],
-          "id" : "neves-aabb",
-          "nome" : "Neves Aabb",
-          "ordem" : 4
         },
         {
           "horariosDomingo" : [
@@ -13910,9 +13697,9 @@
             "18:15",
             "19:15"
           ],
-          "id" : "jardim",
-          "nome" : "Jardim",
-          "ordem" : 5
+          "id" : "carvalho",
+          "nome" : "Carvalho",
+          "ordem" : 4
         },
         {
           "horariosDomingo" : [
@@ -13936,35 +13723,9 @@
             "18:21",
             "19:21"
           ],
-          "id" : "parque-do-lago",
-          "nome" : "Parque do Lago",
-          "ordem" : 6
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:25",
-            "06:55",
-            "07:25",
-            "07:55",
-            "08:25",
-            "08:55",
-            "09:25",
-            "11:55",
-            "12:25",
-            "13:25",
-            "17:25",
-            "18:25",
-            "19:25"
-          ],
-          "id" : "fonte-chegada",
-          "nome" : "Fonte Chegada",
-          "ordem" : 7
+          "id" : "do-lago",
+          "nome" : "do Lago",
+          "ordem" : 5
         }
       ],
       "tipo" : "regular"
@@ -13988,8 +13749,8 @@
           "horariosUteis" : [
             "18:26"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte",
+          "nome" : "Fonte",
           "ordem" : 1
         },
         {
@@ -14004,8 +13765,8 @@
             "22:02",
             "22:35"
           ],
-          "id" : "real",
-          "nome" : "Real",
+          "id" : "campo-real",
+          "nome" : "Campo Real",
           "ordem" : 2
         },
         {
@@ -14020,8 +13781,8 @@
             "22:03",
             "22:36"
           ],
-          "id" : "unicentro-unicentro-chegada",
-          "nome" : "- Unicentro Unicentro Chegada",
+          "id" : "chegada",
+          "nome" : "Chegada",
           "ordem" : 3
         },
         {
@@ -14034,8 +13795,8 @@
           "horariosUteis" : [
             "18:35"
           ],
-          "id" : "unicentro-saida",
-          "nome" : "Unicentro Saída",
+          "id" : "saida-ouro-branco",
+          "nome" : "Saída Ouro Branco",
           "ordem" : 4
         },
         {
@@ -14050,8 +13811,8 @@
             "22:10",
             "22:50"
           ],
-          "id" : "fonte-chegada",
-          "nome" : "Fonte Chegada",
+          "id" : "sesc-fonte",
+          "nome" : "Sesc Fonte",
           "ordem" : 5
         }
       ],
@@ -14095,8 +13856,8 @@
             "22:05",
             "22:50"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -14194,8 +13955,8 @@
             "22:15",
             "22:55"
           ],
-          "id" : "posto-baitala",
-          "nome" : "Posto Baitala",
+          "id" : "das-posto-baitala",
+          "nome" : "das Posto Baitala",
           "ordem" : 4
         },
         {
@@ -14260,8 +14021,8 @@
             "22:19",
             "22:58"
           ],
-          "id" : "ubs-das-arvores",
-          "nome" : "UBS das Árvores",
+          "id" : "ubs-parque-das-arvores",
+          "nome" : "UBS Parque das Árvores",
           "ordem" : 6
         },
         {
@@ -14516,8 +14277,8 @@
             "21:37",
             "22:37"
           ],
-          "id" : "igreja-nossa-sr-fatima",
-          "nome" : "Igreja Nossa SRª Fatima",
+          "id" : "igreja-nossa-sr-de-fatima",
+          "nome" : "Igreja Nossa SRª de Fatima",
           "ordem" : 14
         },
         {
@@ -14674,8 +14435,8 @@
             "17:01",
             "18:01"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -14696,7 +14457,7 @@
             "18:10"
           ],
           "id" : "posto-box",
-          "nome" : "Posto BOX",
+          "nome" : "Posto Box",
           "ordem" : 2
         },
         {
@@ -14707,26 +14468,17 @@
 
           ],
           "horariosUteis" : [
-            "06:30",
             "07:18",
-            "07:36",
             "08:18",
-            "08:36",
             "11:18",
-            "11:36",
             "12:18",
-            "12:36",
             "13:18",
-            "13:36",
             "16:18",
-            "16:36",
             "17:18",
-            "17:36",
-            "18:18",
-            "18:36"
+            "18:18"
           ],
-          "id" : "nucleo",
-          "nome" : "Núcleo",
+          "id" : "nucleo-tancredo",
+          "nome" : "Núcleo Tancredo",
           "ordem" : 3
         },
         {
@@ -14746,8 +14498,8 @@
             "17:20",
             "18:20"
           ],
-          "id" : "patio-baitala-em-frente",
-          "nome" : "Pátio Baitala em Frente",
+          "id" : "patio-neves-baitala-em",
+          "nome" : "Pátio Neves Baitala em",
           "ordem" : 4
         },
         {
@@ -14767,8 +14519,8 @@
             "17:23",
             "18:23"
           ],
-          "id" : "caic-ao-dal",
-          "nome" : "Caic AO DAL",
+          "id" : "caic-frente-ao-dal",
+          "nome" : "Caic Frente ao Dal",
           "ordem" : 5
         },
         {
@@ -14788,8 +14540,8 @@
             "17:25",
             "18:25"
           ],
-          "id" : "veneza-dal-pozzo-pozzo",
-          "nome" : "- Veneza DAL Pozzo Pozzo",
+          "id" : "supermercado-dal-pozzo-pozzo",
+          "nome" : "Supermercado Dal Pozzo Pozzo",
           "ordem" : 6
         },
         {
@@ -14822,6 +14574,28 @@
 
           ],
           "horariosUteis" : [
+            "06:30",
+            "07:36",
+            "08:36",
+            "11:36",
+            "12:36",
+            "13:36",
+            "16:36",
+            "17:36",
+            "18:36"
+          ],
+          "id" : "nucleo-continental",
+          "nome" : "Núcleo Continental",
+          "ordem" : 8
+        },
+        {
+          "horariosDomingo" : [
+
+          ],
+          "horariosSabado" : [
+
+          ],
+          "horariosUteis" : [
             "06:32",
             "07:37",
             "08:37",
@@ -14832,9 +14606,9 @@
             "17:37",
             "18:37"
           ],
-          "id" : "placa-madeirit",
-          "nome" : "Placa Madeirit",
-          "ordem" : 8
+          "id" : "placa-da-madeirit",
+          "nome" : "Placa da Madeirit",
+          "ordem" : 9
         },
         {
           "horariosDomingo" : [
@@ -14856,7 +14630,7 @@
           ],
           "id" : "igreja-santa-cruz",
           "nome" : "Igreja Santa Cruz",
-          "ordem" : 9
+          "ordem" : 10
         },
         {
           "horariosDomingo" : [
@@ -14878,7 +14652,7 @@
           ],
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
-          "ordem" : 10
+          "ordem" : 11
         }
       ],
       "tipo" : "regular"
@@ -14923,8 +14697,8 @@
             "21:10",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -14973,8 +14747,8 @@
             "06:10",
             "06:15"
           ],
-          "id" : "colegio",
-          "nome" : "Colégio",
+          "id" : "ponto-de-parada",
+          "nome" : "Ponto de Parada",
           "ordem" : 3
         },
         {
@@ -15008,25 +14782,9 @@
             "21:15",
             "23:25"
           ],
-          "id" : "colegio-tupy-tupy",
-          "nome" : "Colégio Tupy Tupy.",
+          "id" : "colegio-tupy",
+          "nome" : "Colégio Tupy",
           "ordem" : 4
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-            "23:09"
-          ],
-          "horariosUteis" : [
-            "20:19",
-            "21:19",
-            "23:29"
-          ],
-          "id" : "ponto-de-parada",
-          "nome" : "Ponto de Parada",
-          "ordem" : 5
         },
         {
           "horariosDomingo" : [
@@ -15057,9 +14815,9 @@
             "18:19",
             "19:19"
           ],
-          "id" : "vila-cia-vila-bela",
-          "nome" : "- Vila CIA Vila Bela",
-          "ordem" : 6
+          "id" : "bairro-cia-cascavel-vila-bela",
+          "nome" : "Bairro Cia Cascavel Vila Bela",
+          "ordem" : 5
         },
         {
           "horariosDomingo" : [
@@ -15094,9 +14852,9 @@
             "21:20",
             "23:30"
           ],
-          "id" : "bela-aasm",
-          "nome" : "Bela Aasm",
-          "ordem" : 7
+          "id" : "aasm",
+          "nome" : "Aasm",
+          "ordem" : 6
         },
         {
           "horariosDomingo" : [
@@ -15133,7 +14891,7 @@
           ],
           "id" : "mercado-padroeira",
           "nome" : "Mercado Padroeira",
-          "ordem" : 8
+          "ordem" : 7
         },
         {
           "horariosDomingo" : [
@@ -15170,7 +14928,7 @@
           ],
           "id" : "gabriel-hugo-rios",
           "nome" : "Gabriel Hugo Rios",
-          "ordem" : 9
+          "ordem" : 8
         },
         {
           "horariosDomingo" : [
@@ -15203,9 +14961,9 @@
             "20:34",
             "21:34"
           ],
-          "id" : "a-a-b-b-centro",
-          "nome" : "A.a.b.b. Centro",
-          "ordem" : 10
+          "id" : "a-a-b-b-sentido-centro",
+          "nome" : "A.a.b.b. Sentido Centro",
+          "ordem" : 9
         },
         {
           "horariosDomingo" : [
@@ -15240,7 +14998,7 @@
           ],
           "id" : "upa-batel",
           "nome" : "UPA Batel",
-          "ordem" : 11
+          "ordem" : 10
         },
         {
           "horariosDomingo" : [
@@ -15275,7 +15033,7 @@
           ],
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
-          "ordem" : 12
+          "ordem" : 11
         }
       ],
       "tipo" : "regular"
@@ -15335,8 +15093,8 @@
             "22:20",
             "23:20"
           ],
-          "id" : "saida-fonte",
-          "nome" : "Saída Fonte",
+          "id" : "fonte-saida",
+          "nome" : "Fonte Saída",
           "ordem" : 1
         },
         {
@@ -15385,8 +15143,8 @@
             "22:24",
             "23:24"
           ],
-          "id" : "hiper-supermercado",
-          "nome" : "Hiper Supermercado",
+          "id" : "hiper-super-muffato",
+          "nome" : "Hiper (Super Muffato)",
           "ordem" : 2
         },
         {
@@ -15404,26 +15162,39 @@
             "22:26"
           ],
           "horariosUteis" : [
+            "06:51",
             "07:21",
+            "07:51",
             "08:21",
+            "08:51",
             "09:21",
+            "09:51",
             "10:21",
+            "10:51",
             "11:21",
+            "11:51",
             "12:21",
+            "12:51",
             "13:21",
+            "13:51",
             "14:21",
+            "14:51",
             "15:21",
+            "15:51",
             "16:21",
+            "16:51",
             "17:21",
+            "17:51",
             "18:21",
+            "18:51",
             "19:21",
             "20:27",
             "21:27",
             "22:27",
             "23:27"
           ],
-          "id" : "armazem-sao-paulo-na-rotula-dom",
-          "nome" : "Armazém SÃO Paulo NA Rótula DOM",
+          "id" : "armazem-sao-paulo",
+          "nome" : "Armazém São Paulo",
           "ordem" : 3
         },
         {
@@ -15441,26 +15212,39 @@
             "22:27"
           ],
           "horariosUteis" : [
+            "06:52",
             "07:22",
+            "07:52",
             "08:22",
+            "08:52",
             "09:22",
+            "09:52",
             "10:22",
+            "10:52",
             "11:22",
+            "11:52",
             "12:22",
+            "12:52",
             "13:22",
+            "13:52",
             "14:22",
+            "14:52",
             "15:22",
+            "15:52",
             "16:22",
+            "16:52",
             "17:22",
+            "17:52",
             "18:22",
+            "18:52",
             "19:22",
             "20:28",
             "21:28",
             "22:28",
             "23:28"
           ],
-          "id" : "rotula-dom-bosco-bosco",
-          "nome" : "Rótula DOM Bosco Bosco",
+          "id" : "rotula-dom-bosco",
+          "nome" : "Rótula Dom Bosco",
           "ordem" : 4
         },
         {
@@ -15528,35 +15312,6 @@
 
           ],
           "horariosSabado" : [
-            "15:30",
-            "16:30",
-            "17:30",
-            "18:30",
-            "19:30",
-            "20:35",
-            "21:35",
-            "22:35"
-          ],
-          "horariosUteis" : [
-            "06:30",
-            "07:30",
-            "08:30",
-            "09:30",
-            "10:30",
-            "11:30",
-            "12:30",
-            "13:30",
-            "14:30"
-          ],
-          "id" : "mercado-big-bom",
-          "nome" : "Mercado BIG BOM",
-          "ordem" : 6
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
             "15:36",
             "16:36",
             "17:36",
@@ -15568,26 +15323,39 @@
           ],
           "horariosUteis" : [
             "06:36",
+            "07:06",
             "07:36",
+            "08:06",
             "08:36",
+            "09:06",
             "09:36",
+            "10:06",
             "10:36",
+            "11:06",
             "11:36",
+            "12:06",
             "12:36",
+            "13:06",
             "13:36",
+            "14:06",
             "14:36",
+            "15:06",
             "15:36",
+            "16:06",
             "16:36",
+            "17:06",
             "17:36",
+            "18:06",
             "18:36",
+            "19:06",
             "19:36",
             "20:37",
             "21:37",
             "22:37"
           ],
-          "id" : "vila-antiga-perdigao",
-          "nome" : "- Vila Antiga Perdigão",
-          "ordem" : 7
+          "id" : "antiga-perdigao",
+          "nome" : "Antiga Perdigão",
+          "ordem" : 6
         },
         {
           "horariosDomingo" : [
@@ -15637,85 +15405,7 @@
           ],
           "id" : "fonte-chegada",
           "nome" : "Fonte Chegada",
-          "ordem" : 8
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:51",
-            "07:51",
-            "08:51",
-            "09:51",
-            "10:51",
-            "11:51",
-            "12:51",
-            "13:51",
-            "14:51",
-            "15:51",
-            "16:51",
-            "17:51",
-            "18:51"
-          ],
-          "id" : "armazem-sao-paulo",
-          "nome" : "Armazém SÃO Paulo",
-          "ordem" : 9
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "06:52",
-            "07:52",
-            "08:52",
-            "09:52",
-            "10:52",
-            "11:52",
-            "12:52",
-            "13:52",
-            "14:52",
-            "15:52",
-            "16:52",
-            "17:52",
-            "18:52"
-          ],
-          "id" : "rotula-dom-bosco",
-          "nome" : "Rótula DOM Bosco",
-          "ordem" : 10
-        },
-        {
-          "horariosDomingo" : [
-
-          ],
-          "horariosSabado" : [
-
-          ],
-          "horariosUteis" : [
-            "07:06",
-            "08:06",
-            "09:06",
-            "10:06",
-            "11:06",
-            "12:06",
-            "13:06",
-            "14:06",
-            "15:06",
-            "16:06",
-            "17:06",
-            "18:06",
-            "19:06"
-          ],
-          "id" : "antiga-perdigao",
-          "nome" : "Antiga Perdigão",
-          "ordem" : 11
+          "ordem" : 7
         }
       ],
       "tipo" : "regular"

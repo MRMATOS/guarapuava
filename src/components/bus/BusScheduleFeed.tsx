@@ -127,20 +127,13 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                     }`}
                   >
                     {/* Cabeçalho do Ponto */}
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-rule/30 text-[10px] font-bold text-ink-muted flex items-center justify-center shrink-0">
-                          {String(ponto.ordem).padStart(2, "0")}
-                        </span>
-                        <h3 className="text-[15px] font-semibold text-ink tracking-tight">
-                          {ponto.nome}
-                        </h3>
-                      </div>
-                      {isSelected && (
-                        <span className="badge-inset text-[10.5px] font-semibold text-coral px-2 py-0.5">
-                          Selecionado
-                        </span>
-                      )}
+                    <div className="flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-full bg-rule/30 text-[10px] font-bold text-ink-muted flex items-center justify-center shrink-0">
+                        {String(ponto.ordem).padStart(2, "0")}
+                      </span>
+                      <h3 className="text-[15px] font-semibold text-ink tracking-tight">
+                        {ponto.nome}
+                      </h3>
                     </div>
 
                     {/* Horários: Dias Úteis */}
