@@ -10,6 +10,12 @@ export default function AdminLoginPage() {
   const errorParam = searchParams.get("error");
   const [loading, setLoading] = useState(false);
 
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hostname === "0.0.0.0") {
+      window.location.replace(window.location.href.replace("0.0.0.0", "localhost"));
+    }
+  }, []);
+
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
@@ -19,10 +25,12 @@ export default function AdminLoginPage() {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
       );
 
+      const origin = window.location.origin.replace("0.0.0.0", "localhost");
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${origin}/auth/callback`,
         },
       });
 
