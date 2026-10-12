@@ -504,6 +504,21 @@ export function AdminCidadeVivaView({
                       </div>
                     </div>
 
+                    {/* Categoria: abaixo da linha divisória e acima do endereço */}
+                    {cat && (
+                      <div>
+                        <span
+                          className="px-2.5 py-0.5 rounded-full text-[11px] font-bold inline-block truncate max-w-[220px]"
+                          style={{
+                            backgroundColor: `${cat.color}15`,
+                            color: cat.color,
+                          }}
+                        >
+                          {cat.name}
+                        </span>
+                      </div>
+                    )}
+
                     {/* Localização e Descrição */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex flex-col gap-1 flex-1 min-w-0">
@@ -536,10 +551,9 @@ export function AdminCidadeVivaView({
                       )}
                     </div>
 
-                    {/* Rodapé do Card: Categoria (esquerda), Botões (direita) e Moderação (largura total) */}
+                    {/* Rodapé do Card: Botões de Ação ocupando a linha inteira e Moderação */}
                     <ReportItemActions
                       report={report}
-                      category={cat}
                       onReportUpdated={handleReportUpdated}
                       onReportDeleted={handleReportDeleted}
                       onFocusMap={handleFocusMap}

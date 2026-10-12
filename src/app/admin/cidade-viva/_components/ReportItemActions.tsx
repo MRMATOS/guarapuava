@@ -3,7 +3,7 @@
 
 import React, { useState, useTransition } from "react";
 import { Key } from "@/components/ui/Key";
-import type { Report, ReportStatus, Category } from "@/app/cidade-viva/_lib/types";
+import type { Report, ReportStatus } from "@/app/cidade-viva/_lib/types";
 import {
   updateReportStatusAction,
   deleteReportAction,
@@ -11,7 +11,6 @@ import {
 
 interface ReportItemActionsProps {
   report: Report;
-  category?: Category;
   onReportUpdated?: (reportId: string, newStatus: ReportStatus) => void;
   onReportDeleted?: (reportId: string) => void;
   onFocusMap?: (report: Report) => void;
@@ -26,7 +25,6 @@ type ConfirmActionType =
 
 export function ReportItemActions({
   report,
-  category,
   onReportUpdated,
   onReportDeleted,
   onFocusMap,
@@ -77,48 +75,32 @@ export function ReportItemActions({
 
   return (
     <div className="w-full flex flex-col gap-3 pt-2.5 border-t border-rule/40">
-      {/* Linha dos Botões e Categoria (ocupando toda a largura do rodapé do card) */}
-      <div className="flex items-center justify-between gap-2 w-full">
-        {/* Categoria na linha de baixo, à esquerda */}
-        <div className="min-w-0">
-          {category && (
-            <span
-              className="px-2.5 py-0.5 rounded-full text-[11px] font-bold inline-block truncate max-w-[150px] sm:max-w-[180px]"
-              style={{
-                backgroundColor: `${category.color}15`,
-                color: category.color,
-              }}
-            >
-              {category.name}
-            </span>
-          )}
-        </div>
+      {/* Linha dos Botões de Ação ocupando o espaço inteiro da linha com o mesmo tamanho */}
+      <div className="grid grid-cols-2 gap-2 w-full">
+        {/* Botão 1: Ver no mapa */}
+        <button
+          type="button"
+          onClick={() => onFocusMap?.(report)}
+          className="key w-full py-2 px-2 text-xs font-semibold hover:border-coral transition-colors inline-flex items-center justify-center cursor-pointer truncate"
+          title="Focalizar ocorrência no mapa"
+        >
+          Ver no mapa
+        </button>
 
-        {/* Botões à direita */}
-        <div className="flex items-center gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={() => onFocusMap?.(report)}
-            className="key px-3 py-1.5 text-xs font-semibold hover:border-coral transition-colors whitespace-nowrap cursor-pointer"
-            title="Focalizar ocorrência no mapa"
-          >
-            No Mapa
-          </button>
-
-          <Key
-            type="button"
-            onClick={() => {
-              setIsOpen((prev) => !prev);
-              setConfirmAction(null);
-            }}
-            className={`px-3 py-1.5 text-xs font-semibold whitespace-nowrap cursor-pointer ${
-              isOpen ? "border-coral font-bold" : ""
-            }`}
-            title="Abrir opções de moderação"
-          >
-            {isOpen ? "Fechar" : "Opções"}
-          </Key>
-        </div>
+        {/* Botão 2: Opções */}
+        <Key
+          type="button"
+          onClick={() => {
+            setIsOpen((prev) => !prev);
+            setConfirmAction(null);
+          }}
+          className={`w-full py-2 px-2 text-xs font-semibold inline-flex items-center justify-center cursor-pointer truncate ${
+            isOpen ? "border-coral font-bold" : ""
+          }`}
+          title="Abrir opções de moderação"
+        >
+          {isOpen ? "Fechar" : "Opções"}
+        </Key>
       </div>
 
       {/* Painel de Moderação em Largura Total (w-full) abaixo de toda a linha */}
