@@ -1,11 +1,34 @@
+// src/app/admin/cidade-viva/_components/AdminCidadeVivaView.tsx
 "use client";
 
 import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
-import type { Report, Category, ReportStatus } from "@/app/cidade-viva/_lib/types";
+import nextDynamic from "next/dynamic";
+import type {
+  Report,
+  Category,
+  ReportStatus,
+  UnifiedReportPoint,
+} from "@/app/cidade-viva/_lib/types";
 import { clusterReportsByCategory } from "@/app/cidade-viva/_lib/clustering";
 import { ReportItemActions } from "./ReportItemActions";
 import { PhotoLightboxModal } from "./PhotoLightboxModal";
+
+// Importação dinâmica do mapa para evitar erros de SSR no MapLibre GL
+const AdminMap = nextDynamic(
+  () => import("./AdminMap").then((mod) => mod.AdminMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full min-h-[360px] flex flex-col items-center justify-center bg-canvas gap-2">
+        <div className="w-6 h-6 rounded-full border-2 border-coral border-t-transparent animate-spin" />
+        <span className="text-xs font-semibold text-ink-muted">
+          Carregando mapa...
+        </span>
+      </div>
+    ),
+  }
+);
 
 interface AdminCidadeVivaViewProps {
   initialReports: Report[];
@@ -34,16 +57,6 @@ function formatDate(iso: string) {
   } catch {
     return iso;
   }
-}
-
-function maskIp(hashOrIp?: string | null): string {
-  if (!hashOrIp) return "Não registrado";
-  // Se for IP direto ou hash, mascara para preservar LGPD
-  const parts = hashOrIp.split(".");
-  if (parts.length === 4) {
-    return `${parts[0]}.${parts[1]}.***.***`;
-  }
-  return hashOrIp.length > 8 ? `${hashOrIp.slice(0, 8)}...` : hashOrIp;
 }
 
 interface CustomSelectOption {
@@ -136,6 +149,12 @@ export function AdminCidadeVivaView({
   const [cityFilter, setCityFilter] = useState<string>("todas");
   const [lightboxPhotoUrl, setLightboxPhotoUrl] = useState<string | null>(null);
 
+  // Ponto selecionado no mapa para filtrar a lista da direita
+  const [selectedPoint, setSelectedPoint] = useState<UnifiedReportPoint | null>(null);
+
+  // Relato focalizado a partir do botão "No Mapa" de um card
+  const [focusedReport, setFocusedReport] = useState<Report | null>(null);
+
   const categoryMap = useMemo(() => {
     const map = new Map<string, Category>();
     categories.forEach((c) => map.set(c.id, c));
@@ -225,7 +244,7 @@ export function AdminCidadeVivaView({
     return { iniciais, baixa, media, alta };
   }, [reports, reportRiskMap]);
 
-  // Filtragem
+  // Filtragem geral pelos selects
   const filteredReports = useMemo(() => {
     return reports.filter((r) => {
       if (statusFilter === "sugestivos" && r.status !== "sugestivo") return false;
@@ -248,6 +267,15 @@ export function AdminCidadeVivaView({
     });
   }, [reports, statusFilter, riskFilter, cityFilter, reportRiskMap]);
 
+  // Se houver um ponto selecionado no mapa, exibe apenas os relatos desse ponto
+  const displayedReports = useMemo(() => {
+    if (!selectedPoint) {
+      return filteredReports;
+    }
+    const pointReportIds = new Set(selectedPoint.reports.map((r) => r.id));
+    return filteredReports.filter((r) => pointReportIds.has(r.id));
+  }, [filteredReports, selectedPoint]);
+
   const handleReportUpdated = useCallback((reportId: string, newStatus: ReportStatus) => {
     setReports((prev) =>
       prev.map((r) => (r.id === reportId ? { ...r, status: newStatus } : r))
@@ -256,17 +284,44 @@ export function AdminCidadeVivaView({
 
   const handleReportDeleted = useCallback((reportId: string) => {
     setReports((prev) => prev.filter((r) => r.id !== reportId));
-  }, []);
+    if (selectedPoint && selectedPoint.reports.some((r) => r.id === reportId)) {
+      setSelectedPoint((prev) =>
+        prev
+          ? {
+              ...prev,
+              reports: prev.reports.filter((r) => r.id !== reportId),
+              report_count: prev.report_count - 1,
+            }
+          : null
+      );
+    }
+  }, [selectedPoint]);
+
+  const handleFocusMap = useCallback((report: Report) => {
+    setFocusedReport(report);
+    // Também seleciona o ponto correspondente
+    setSelectedPoint({
+      id: report.id,
+      category_id: report.category_id,
+      category_name: categoryMap.get(report.category_id)?.name || "",
+      latitude: report.latitude,
+      longitude: report.longitude,
+      report_count: 1,
+      color: categoryMap.get(report.category_id)?.color || "#ff4742",
+      reports: [report],
+      latest_report: report,
+    });
+  }, [categoryMap]);
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col gap-4 sm:gap-5 w-full h-full">
       {/* Cabeçalho da Visão */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-ink">
             Cidade Viva — Gestão e Moderação
           </h1>
-          <p className="text-xs sm:text-sm text-ink-muted mt-1">
+          <p className="text-xs sm:text-sm text-ink-muted mt-0.5">
             Auditoria, confirmação in loco e resolução de ocorrências comunitárias.
           </p>
         </div>
@@ -281,181 +336,245 @@ export function AdminCidadeVivaView({
         </Link>
       </div>
 
-      {/* Barra de Filtros */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 w-full">
-        {/* 1. Status */}
-        <CustomSelect
-          value={statusFilter}
-          onChange={(val) => setStatusFilter(val as StatusFilter)}
-          defaultLabel={`Todos os Status (${statusCounts.todos})`}
-          options={[
-            { value: "todos", label: `Todos os Status (${statusCounts.todos})` },
-            { value: "sugestivos", label: `Sugestivos (${statusCounts.sugestivos})` },
-            { value: "verificados", label: `Verificados (${statusCounts.verificados})` },
-            { value: "nao_verificados", label: `Não Verificados (${statusCounts.nao_verificados})` },
-            { value: "resolvidos", label: `Resolvidos (${statusCounts.resolvidos})` },
-            { value: "nao_resolvidos", label: `Não Resolvidos (${statusCounts.nao_resolvidos})` },
-          ]}
-        />
+      {/* Barra de Filtros — Alinhada com a largura do mapa (2 selects) e dos cards (1 select) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2.5 sm:gap-3 w-full shrink-0">
+        {/* Esquerda: 2 Selects com a mesma largura do mapa */}
+        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+          {/* 1. Status */}
+          <CustomSelect
+            value={statusFilter}
+            onChange={(val) => {
+              setStatusFilter(val as StatusFilter);
+              setSelectedPoint(null);
+            }}
+            defaultLabel={`Todos os Status (${statusCounts.todos})`}
+            options={[
+              { value: "todos", label: `Todos os Status (${statusCounts.todos})` },
+              { value: "sugestivos", label: `Sugestivos (${statusCounts.sugestivos})` },
+              { value: "verificados", label: `Verificados (${statusCounts.verificados})` },
+              { value: "nao_verificados", label: `Não Verificados (${statusCounts.nao_verificados})` },
+              { value: "resolvidos", label: `Resolvidos (${statusCounts.resolvidos})` },
+              { value: "nao_resolvidos", label: `Não Resolvidos (${statusCounts.nao_resolvidos})` },
+            ]}
+          />
 
-        {/* 2. Risco */}
-        <CustomSelect
-          value={riskFilter}
-          onChange={(val) => setRiskFilter(val as RiskFilter)}
-          defaultLabel="Todos os Riscos"
-          options={[
-            { value: "todos", label: "Todos os Riscos" },
-            { value: "iniciais", label: `Iniciais (${riskCounts.iniciais})` },
-            { value: "baixa", label: `Baixa (${riskCounts.baixa})` },
-            { value: "media", label: `Média (${riskCounts.media})` },
-            { value: "alta", label: `Alta (${riskCounts.alta})` },
-          ]}
-        />
+          {/* 2. Risco */}
+          <CustomSelect
+            value={riskFilter}
+            onChange={(val) => {
+              setRiskFilter(val as RiskFilter);
+              setSelectedPoint(null);
+            }}
+            defaultLabel="Todos os Riscos"
+            options={[
+              { value: "todos", label: "Todos os Riscos" },
+              { value: "iniciais", label: `Iniciais (${riskCounts.iniciais})` },
+              { value: "baixa", label: `Baixa (${riskCounts.baixa})` },
+              { value: "media", label: `Média (${riskCounts.media})` },
+              { value: "alta", label: `Alta (${riskCounts.alta})` },
+            ]}
+          />
+        </div>
 
-        {/* 3. Cidade */}
-        <CustomSelect
-          value={cityFilter}
-          onChange={(val) => setCityFilter(val)}
-          defaultLabel="Todas as Cidades"
-          options={[
-            { value: "todas", label: "Todas as Cidades" },
-            ...cities.map((city) => ({
-              value: city,
-              label: `${city} (${reports.filter((r) => r.city?.trim().toLowerCase() === city.toLowerCase()).length})`,
-            })),
-          ]}
-        />
+        {/* Direita: 1 Select com a mesma largura da coluna de cards */}
+        <div className="lg:col-span-1">
+          {/* 3. Cidade */}
+          <CustomSelect
+            value={cityFilter}
+            onChange={(val) => {
+              setCityFilter(val);
+              setSelectedPoint(null);
+            }}
+            defaultLabel="Todas as Cidades"
+            options={[
+              { value: "todas", label: "Todas as Cidades" },
+              ...cities.map((city) => ({
+                value: city,
+                label: `${city} (${reports.filter((r) => r.city?.trim().toLowerCase() === city.toLowerCase()).length})`,
+              })),
+            ]}
+          />
+        </div>
       </div>
 
-      {/* Lista de Relatos */}
-      {filteredReports.length === 0 ? (
-        <div className="surface-card p-10 text-center flex flex-col items-center justify-center gap-2">
-          <p className="text-sm font-semibold text-ink">
-            Nenhuma ocorrência encontrada com os filtros selecionados.
-          </p>
-          <p className="text-xs text-ink-muted">
-            Tente redefinir os filtros acima para visualizar outros relatos.
-          </p>
+      {/* Conteúdo Principal: Mapa à esquerda (2 colunas) e Cards à direita (1 coluna com scroll próprio) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-5 w-full flex-1 min-h-0">
+        {/* Lado Esquerdo: Mapa Interativo do Admin */}
+        <div className="lg:col-span-2 h-[340px] sm:h-[420px] lg:h-[calc(100vh-230px)] min-h-[360px] rounded-2xl overflow-hidden surface-card border border-rule/70 relative">
+          <AdminMap
+            reports={filteredReports}
+            categories={categories}
+            selectedPointId={selectedPoint?.id || null}
+            onSelectPoint={setSelectedPoint}
+            focusedReport={focusedReport}
+          />
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredReports.map((report) => {
-            const cat = categoryMap.get(report.category_id);
-            const riskInfo = reportRiskMap.get(report.id);
 
-            return (
-              <article
-                key={report.id}
-                className="surface-card p-5 flex flex-col justify-between gap-4 transition-all hover:border-coral/40"
+        {/* Lado Direito: Coluna de Reports com Scroll Independente */}
+        <div className="lg:col-span-1 flex flex-col h-[480px] lg:h-[calc(100vh-230px)] min-h-0 overflow-hidden">
+          {/* Barra de Status da Seleção */}
+          <div className="flex items-center justify-between gap-2 pb-2.5 shrink-0 border-b border-rule/40 mb-3">
+            <span className="text-xs font-bold text-ink">
+              {selectedPoint
+                ? `Ponto no Mapa (${displayedReports.length} ${displayedReports.length === 1 ? "ocorrência" : "ocorrências"})`
+                : `Ocorrências (${displayedReports.length})`}
+            </span>
+
+            {selectedPoint && (
+              <button
+                type="button"
+                onClick={() => setSelectedPoint(null)}
+                className="text-[11px] font-bold text-coral hover:underline cursor-pointer"
               >
-                <div className="flex flex-col gap-3">
-                  {/* Linha Superior: Data, Categoria, Status e Risco */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-rule/40 pb-2.5">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[11.5px] font-semibold text-ink-muted tabular-time">
+                Ver todas
+              </button>
+            )}
+          </div>
+
+          {/* Lista com scroll independente apenas nesta coluna */}
+          <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-3.5">
+            {displayedReports.length === 0 ? (
+              <div className="surface-card p-8 text-center flex flex-col items-center justify-center gap-2">
+                <p className="text-xs font-semibold text-ink">
+                  Nenhuma ocorrência encontrada.
+                </p>
+                <p className="text-[11px] text-ink-muted">
+                  Tente alterar os filtros ou clique no mapa para ver outros locais.
+                </p>
+                {selectedPoint && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedPoint(null)}
+                    className="key px-3 py-1 text-xs font-semibold mt-2 cursor-pointer"
+                  >
+                    Limpar seleção do mapa
+                  </button>
+                )}
+              </div>
+            ) : (
+              displayedReports.map((report) => {
+                const cat = categoryMap.get(report.category_id);
+                const riskInfo = reportRiskMap.get(report.id);
+                const isPointSelected = selectedPoint?.id === report.id || selectedPoint?.reports.some((r) => r.id === report.id);
+
+                return (
+                  <article
+                    key={report.id}
+                    className={`surface-card p-4 sm:p-4.5 flex flex-col gap-3 transition-all hover:border-coral/50 ${
+                      isPointSelected ? "border-coral ring-1 ring-coral/40" : ""
+                    }`}
+                  >
+                    {/* Linha Superior: Data (esquerda) | Status e Risco (direita) */}
+                    <div className="flex items-center justify-between gap-2 border-b border-rule/30 pb-2">
+                      <span className="text-[11px] font-semibold text-ink-muted tabular-time">
                         {formatDate(report.created_at)}
                       </span>
 
-                      {cat && (
+                      <div className="flex items-center gap-1.5">
+                        {/* Badge de Status */}
                         <span
-                          className="px-2 py-0.5 rounded-full text-[11px] font-bold"
-                          style={{
-                            backgroundColor: `${cat.color}15`,
-                            color: cat.color,
-                          }}
+                          className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
+                            report.status === "verificado_in_loco"
+                              ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+                              : report.status === "resolvido"
+                              ? "bg-blue-500/15 text-blue-600 dark:text-blue-400"
+                              : "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400"
+                          }`}
                         >
-                          {cat.name}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-1.5">
-                      {/* Badge de Status */}
-                      <span
-                        className={`px-2 py-0.5 rounded-md text-[10.5px] font-bold ${
-                          report.status === "verificado_in_loco"
-                            ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+                          {report.status === "verificado_in_loco"
+                            ? "Verificado"
                             : report.status === "resolvido"
-                            ? "bg-blue-500/15 text-blue-600 dark:text-blue-400"
-                            : "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400"
-                        }`}
-                      >
-                        {report.status === "verificado_in_loco"
-                          ? "Verificado"
-                          : report.status === "resolvido"
-                          ? "Resolvido"
-                          : "Sugestivo"}
-                      </span>
-
-                      {/* Badge de Risco */}
-                      {riskInfo && (
-                        <span
-                          className="px-2 py-0.5 rounded-md text-[10.5px] font-bold"
-                          style={{
-                            backgroundColor: `${riskInfo.color}15`,
-                            color: riskInfo.color,
-                          }}
-                          title={`Concentração: ${riskInfo.count} relato(s) nesta área`}
-                        >
-                          Risco: {riskInfo.label}
+                            ? "Resolvido"
+                            : "Sugestivo"}
                         </span>
+
+                        {/* Badge de Risco */}
+                        {riskInfo && (
+                          <span
+                            className="px-2 py-0.5 rounded-md text-[10px] font-bold"
+                            style={{
+                              backgroundColor: `${riskInfo.color}15`,
+                              color: riskInfo.color,
+                            }}
+                            title={`Concentração: ${riskInfo.count} relato(s) nesta área`}
+                          >
+                            Risco: {riskInfo.label}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Localização e Descrição */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex flex-col gap-1 flex-1 min-w-0">
+                        <p className="text-xs font-bold text-ink truncate">
+                          {report.address || "Endereço não identificado"}
+                          {report.city ? ` — ${report.city}` : ""}
+                        </p>
+
+                        <p className="text-xs text-ink-body leading-relaxed whitespace-pre-wrap">
+                          {report.description || "Sem descrição adicional informada."}
+                        </p>
+                      </div>
+
+                      {/* Miniatura da Foto com Lightbox */}
+                      {report.photo_url && (
+                        <button
+                          type="button"
+                          onClick={() => setLightboxPhotoUrl(report.photo_url)}
+                          className="shrink-0 w-14 h-14 rounded-xl overflow-hidden cursor-pointer relative group border border-rule/60 hover:scale-105 transition-transform"
+                          title="Clique para ampliar a fotografia"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={report.photo_url}
+                            alt="Foto da ocorrência"
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        </button>
                       )}
                     </div>
-                  </div>
 
-                  {/* Localização e Descrição */}
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex flex-col gap-1.5 flex-1 min-w-0">
-                      <p className="text-xs font-bold text-ink truncate">
-                        {report.address || "Endereço não identificado"}
-                        {report.city ? ` — ${report.city}` : ""}
-                      </p>
+                    {/* Linha de Baixo: Categoria à esquerda (depois do divisor) e Ações à direita. IP REMOVIDO! */}
+                    <div className="pt-2 border-t border-rule/40 flex flex-col gap-2">
+                      <div className="flex items-center justify-between gap-2">
+                        {/* Categoria na linha de baixo, à esquerda */}
+                        <div>
+                          {cat && (
+                            <span
+                              className="px-2.5 py-0.5 rounded-full text-[11px] font-bold inline-block truncate max-w-[150px] sm:max-w-[180px]"
+                              style={{
+                                backgroundColor: `${cat.color}15`,
+                                color: cat.color,
+                              }}
+                            >
+                              {cat.name}
+                            </span>
+                          )}
+                        </div>
 
-                      <p className="text-xs text-ink-body leading-relaxed whitespace-pre-wrap">
-                        {report.description || "Sem descrição adicional informada."}
-                      </p>
+                        {/* Ações e Painel de Moderação Inline */}
+                        <div className="shrink-0">
+                          <ReportItemActions
+                            report={report}
+                            categoryName={cat?.name}
+                            onReportUpdated={handleReportUpdated}
+                            onReportDeleted={handleReportDeleted}
+                            onFocusMap={handleFocusMap}
+                          />
+                        </div>
+                      </div>
                     </div>
-
-                    {/* Miniatura da Foto com Lightbox */}
-                    {report.photo_url && (
-                      <button
-                        type="button"
-                        onClick={() => setLightboxPhotoUrl(report.photo_url)}
-                        className="shrink-0 w-16 h-16 rounded-xl overflow-hidden cursor-pointer relative group border border-rule/60 hover:scale-105 transition-transform"
-                        title="Clique para ampliar a fotografia"
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={report.photo_url}
-                          alt="Foto da ocorrência"
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {/* Rodapé do Card: IP do autor e Ações */}
-                <div className="flex items-center justify-between gap-2 pt-2 border-t border-rule/40">
-                  <span className="text-[11px] text-ink-muted">
-                    IP: {maskIp(report.ip_hash)}
-                  </span>
-
-                  <ReportItemActions
-                    report={report}
-                    categoryName={cat?.name}
-                    onReportUpdated={handleReportUpdated}
-                    onReportDeleted={handleReportDeleted}
-                  />
-                </div>
-              </article>
-            );
-          })}
+                  </article>
+                );
+              })
+            )}
+          </div>
         </div>
-      )}
+      </div>
 
-      {/* Modal Lightbox */}
+      {/* Modal Lightbox de Fotografias */}
       <PhotoLightboxModal
         photoUrl={lightboxPhotoUrl}
         onClose={() => setLightboxPhotoUrl(null)}

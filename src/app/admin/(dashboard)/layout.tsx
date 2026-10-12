@@ -55,7 +55,7 @@ export default async function AdminDashboardLayout({
         </div>
       </header>
 
-      <main className="w-full flex-1 max-w-[1300px] mx-auto p-4 sm:p-6 lg:p-8">
+      <main className="w-full flex-1 max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-7">
         {children}
       </main>
     </div>
