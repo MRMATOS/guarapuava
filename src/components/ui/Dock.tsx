@@ -6,8 +6,6 @@ interface DockProps {
   above?: React.ReactNode;
   /** Alinhamento das teclas dentro do dock. */
   align?: "end" | "between";
-  /** Se true, mantém o dock visível mesmo em viewports desktop. */
-  standalone?: boolean;
   "aria-label"?: string;
 }
 
@@ -20,10 +18,9 @@ export const Dock: React.FC<DockProps> = ({
   children,
   above,
   align = "end",
-  standalone = false,
   "aria-label": ariaLabel,
 }) => (
-  <div className={`dock-shell ${standalone ? "dock-standalone-shell" : ""}`}>
+  <div className="dock-shell">
     <div className="dock-stack">
       {above}
       <nav

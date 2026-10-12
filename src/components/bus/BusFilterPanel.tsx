@@ -14,6 +14,7 @@ export interface BusFilterPanelProps {
   onSearchChange: (query: string) => void;
   onClose: () => void;
   filterButtonRef?: React.RefObject<HTMLButtonElement | null>;
+  persistent?: boolean;
 }
 
 export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
@@ -26,6 +27,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   onSearchChange,
   onClose,
   filterButtonRef,
+  persistent = false,
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -48,8 +50,10 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
     }
   }, [selectedBairroId, linhas]);
 
-  // Fecha o bloco se clicar fora (exceto no botão Filtrar do rodapé)
+  // Fecha o bloco se clicar fora (exceto no botão Filtrar do rodapé ou modo persistente)
   useEffect(() => {
+    if (persistent) return;
+
     const handlePointerDown = (event: MouseEvent | TouchEvent) => {
       const target = event.target as HTMLElement;
       if (
@@ -75,7 +79,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose, filterButtonRef]);
+  }, [onClose, filterButtonRef, persistent]);
 
   // Bairros ordenados alfabeticamente
   const sortedBairros = useMemo(() => {
@@ -108,7 +112,9 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearchChange(localSearch);
-    onClose();
+    if (!persistent) {
+      onClose();
+    }
   };
 
   const handleClearAll = () => {
@@ -116,7 +122,9 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
     onSearchChange("");
     setActiveBairro(null);
     onSelectBairro(null);
-    onClose();
+    if (!persistent) {
+      onClose();
+    }
   };
 
   return (
@@ -124,7 +132,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       ref={panelRef}
       role="region"
       aria-label="Painel de filtros de horários e bairros"
-      className="filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none"
+      className={`${persistent ? "desktop-sidebar-panel" : "filter-panel"} w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none`}
     >
       {/* ==================================================================
           1. CABEÇALHO DO MODO / TRANSIÇÃO ENTRE BAIRROS E PONTOS
@@ -160,7 +168,11 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       {/* ==================================================================
           2. AS 3 LINHAS COM SCROLL VERTICAL (Bairros ou Pontos)
          ================================================================== */}
-      <div className="max-h-[142px] min-h-[142px] overflow-y-auto no-scrollbar overscroll-contain pr-0.5">
+      <div
+        className={`${
+          persistent ? "max-h-[300px] min-h-[220px]" : "max-h-[142px] min-h-[142px]"
+        } overflow-y-auto no-scrollbar overscroll-contain pr-0.5`}
+      >
         {!activeBairro ? (
           /* Nível 1: Grade de Bairros em 3 Linhas com Scroll */
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
@@ -207,7 +219,9 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
                     pressed={isSelected}
                     onClick={() => {
                       onSelectPonto(activeBairro.id, ponto.id);
-                      onClose();
+                      if (!persistent) {
+                        onClose();
+                      }
                     }}
                     className="w-full px-2 text-[12.5px] sm:text-[13px] justify-start text-left truncate font-medium"
                     title={ponto.nome}
