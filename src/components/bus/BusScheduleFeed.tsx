@@ -1,7 +1,16 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import { MapPin } from "lucide-react";
 import type { LinhaBairro, PontoItinerario } from "@/types/bus";
+
+function getGoogleMapsUrl(ponto: PontoItinerario): string {
+  if (ponto.latitude && ponto.longitude) {
+    return `https://www.google.com/maps/search/?api=1&query=${ponto.latitude},${ponto.longitude}`;
+  }
+  const cleanName = ponto.nome.replace(/\(.*?\)/g, "").trim();
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${cleanName}, Guarapuava - PR`)}`;
+}
 
 interface BusScheduleFeedProps {
   linhas: LinhaBairro[];
@@ -127,13 +136,27 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                     }`}
                   >
                     {/* Cabeçalho do Ponto */}
-                    <div className="flex items-center gap-2">
-                      <span className="w-5 h-5 rounded-full bg-rule/30 text-[10px] font-bold text-ink-muted flex items-center justify-center shrink-0">
-                        {String(ponto.ordem).padStart(2, "0")}
-                      </span>
-                      <h3 className="text-[15px] font-semibold text-ink tracking-tight">
-                        {ponto.nome}
-                      </h3>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="w-5 h-5 rounded-full bg-rule/30 text-[10px] font-bold text-ink-muted flex items-center justify-center shrink-0">
+                          {String(ponto.ordem).padStart(2, "0")}
+                        </span>
+                        <h3 className="text-[15px] font-semibold text-ink tracking-tight truncate" title={ponto.nome}>
+                          {ponto.nome}
+                        </h3>
+                      </div>
+
+                      <a
+                        href={getGoogleMapsUrl(ponto)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Ver localização de ${ponto.nome} no Google Maps`}
+                        title="Ver localização no Google Maps"
+                        className="px-2 py-1 rounded-md border border-rule/30 hover:border-coral/50 bg-canvas/40 hover:bg-coral/10 text-ink-muted hover:text-coral transition-all duration-150 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs active:scale-95 text-[11px] font-medium"
+                      >
+                        <MapPin className="w-3.5 h-3.5 text-coral" />
+                        <span>Mapa</span>
+                      </a>
                     </div>
 
                     {/* Horários: Dias Úteis */}
@@ -190,6 +213,16 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                             </span>
                           ))}
                         </div>
+                      </div>
+                    )}
+
+                    {/* Caso sem horários específicos (parada de passagem/desembarque) */}
+                    {ponto.horariosUteis.length === 0 &&
+                     ponto.horariosSabado.length === 0 &&
+                     ponto.horariosDomingo.length === 0 && (
+                      <div className="pt-0.5 text-[12px] text-ink-muted/80 italic flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-ink-muted/40 shrink-0" />
+                        <span>Ponto de passagem do itinerário</span>
                       </div>
                     )}
                   </div>
