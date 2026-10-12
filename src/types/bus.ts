@@ -2,6 +2,8 @@ export interface PontoItinerario {
   id: string;              // ex: "campo-do-batel"
   nome: string;            // ex: "Campo do Batel"
   ordem: number;           // 1, 2, 3...
+  latitude?: number;       // ex: -25.392566
+  longitude?: number;      // ex: -51.468079
   horariosUteis: string[]; // ["06:52", "07:22", "07:52", ...]
   horariosSabado: string[];// ["07:52", "08:52", "09:52", ...]
   horariosDomingo: string[]; // [...]

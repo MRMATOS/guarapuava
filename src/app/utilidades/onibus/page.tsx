@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useMemo, useSyncExternalStore } from "react";
+import React, { useState, useRef, useEffect, useMemo, useCallback, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
@@ -54,6 +54,12 @@ export default function HorariosOnibusPage() {
         clearTimeout(transitionTimerRef.current);
       }
     };
+  }, []);
+
+  const handleClearFilters = useCallback(() => {
+    setSelectedBairroId(null);
+    setSelectedPontoId(null);
+    setSearchQuery("");
   }, []);
 
   // Suporte à tecla Esc
@@ -140,12 +146,6 @@ export default function HorariosOnibusPage() {
     setSelectedBairroId(bairroId);
     setSelectedPontoId(pontoId);
     setIsFilterOpen(false);
-  };
-
-  const handleClearFilters = () => {
-    setSelectedBairroId(null);
-    setSelectedPontoId(null);
-    setSearchQuery("");
   };
 
   // Cálculo de dados para exibição do filtro ativo
