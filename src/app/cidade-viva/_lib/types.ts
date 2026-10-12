@@ -30,6 +30,7 @@ export interface Report {
   state: string | null;
   status: ReportStatus;
   created_at: string;
+  ip_hash?: string | null;
 }
 
 export type SeverityFilter =
