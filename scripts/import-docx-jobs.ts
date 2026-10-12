@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { jobOpeningInputSchema } from '../src/lib/mcp/schema';
-import { syncJobs, listActiveJobs } from '../src/lib/supabase/jobs';
+import { listActiveJobs } from '../src/lib/supabase/jobs';
+import { syncJobs } from '../src/lib/supabase/jobs-admin';
 
 async function importDocxJobs() {
   console.log('🚀 Iniciando importação das vagas do documento "Vagas de Emprego - Guarapuava PR.docx"...');

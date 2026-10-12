@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { syncNewsDigests, listActiveNewsDigests, getNewsDigestByDate } from '../src/lib/supabase/news';
+import { listActiveNewsDigests, getNewsDigestByDate } from '../src/lib/supabase/news';
+import { syncNewsDigests } from '../src/lib/supabase/news-admin';
 import { DailyDigest } from '../src/types/news';
 import { supabaseAdmin } from '../src/lib/supabase/admin';
 

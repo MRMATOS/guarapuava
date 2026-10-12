@@ -1,5 +1,6 @@
 import { parseDocxBuffer, parseDocText } from './parser';
-import { syncJobs, listActiveJobs } from '@/lib/supabase/jobs';
+import { listActiveJobs } from '@/lib/supabase/jobs';
+import { syncJobs } from '@/lib/supabase/jobs-admin';
 
 export const DEFAULT_GOOGLE_DOCS_ID = '1IgkVpsOkQ-wCwk3YANQuvMINsmgj93g1VrxGz9ZhGFE';
 

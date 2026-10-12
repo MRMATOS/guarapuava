@@ -1,4 +1,5 @@
-import { listActiveJobs, syncJobs, deactivateJob } from '../supabase/jobs';
+import { listActiveJobs } from '../supabase/jobs';
+import { syncJobs, deactivateJob } from '../supabase/jobs-admin';
 import { syncJobsInputSchema } from './schema';
 
 export interface McpToolDefinition {

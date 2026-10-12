@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { listActiveJobs, syncJobs, deactivateJob } from '../src/lib/supabase/jobs';
+import { listActiveJobs } from '../src/lib/supabase/jobs';
+import { syncJobs, deactivateJob } from '../src/lib/supabase/jobs-admin';
 import { JobOpeningInput } from '../src/lib/mcp/schema';
 
 // Test against the actual live Supabase instance or mock

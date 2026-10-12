@@ -1,6 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { jobOpeningInputSchema, JobOpeningInput } from '@/lib/mcp/schema';
-import { syncJobs } from '@/lib/supabase/jobs';
+import { syncJobs } from '@/lib/supabase/jobs-admin';
 
 export interface CrawlerResult {
   success: boolean;
