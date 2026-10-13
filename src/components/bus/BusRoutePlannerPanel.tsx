@@ -277,7 +277,7 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={inputPlaceholder}
               aria-label={inputPlaceholder}
-              className="filter-input w-full h-[42px] pl-10 pr-9 text-[15px] sm:text-[16px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow truncate"
+              className="filter-input w-full h-[42px] pl-10 pr-9 text-[16px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow truncate"
             />
 
             {searchQuery ? (
