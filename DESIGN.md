@@ -39,6 +39,26 @@ typography:
     fontSize: "12.5px"
     fontWeight: 500
     lineHeight: 1.3
+  input:
+    fontFamily: "ui-sans-serif, system-ui, sans-serif"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: 1.4
+  compact:
+    fontFamily: "ui-sans-serif, system-ui, sans-serif"
+    fontSize: "14px"
+    fontWeight: 500
+    lineHeight: 1
+  control:
+    fontFamily: "ui-sans-serif, system-ui, sans-serif"
+    fontSize: "13px"
+    fontWeight: 500
+    lineHeight: 1
+  badge:
+    fontFamily: "ui-sans-serif, system-ui, sans-serif"
+    fontSize: "12px"
+    fontWeight: 600
+    lineHeight: 1.2
 rounded:
   key: "12px"
   dock: "16px"
@@ -133,9 +153,13 @@ Monocromático frio com um único sinal quente.
 ### Hierarchy
 - **Headline** (700, 20px / 21px ≥640px, 1.3, -0.02em, `text-balance`): manchete síntese do dia e título de seção. Uma por tela.
 - **Title** (600, 15px): data no topo do cartão.
+- **Input** (400, 16px): campos de digitação mobile para evitar auto-zoom em iOS.
 - **Body** (400, 14.5px / 15px ≥640px, 1.48): texto das notícias; o termo inicial em **700** + `ink` funciona como chapéu.
-- **Label** (500, 14.5px, -0.015em): rótulo de tecla.
+- **Label** (500, 14.5px, -0.015em): rótulo de tecla padrão.
+- **Compact** (500, 14px): rótulos em barras e menus com restrição de espaço.
+- **Control** (500, 13px): teclas densas de 3 colunas e barras de ferramentas.
 - **Caption** (500, 12.5px, números tabulares): selos de horário.
+- **Badge** (600, 12px): índices numéricos e códigos de linha em pílula.
 
 ### Named Rules
 **The Tabular Clock Rule.** Toda data e horário usa números tabulares (`.tabular-time`), para os blocos alinharem quando atualizam.
@@ -235,6 +259,23 @@ Uma tecla de aparelho: firme, curta, afunda ao toque.
 - **Internal Padding:** 24px (28px ≥640px) para leitura principal; 20px para lista de vagas.
 - Um cartão por tela em telas de síntese; lista de cartões dedicados no feed de vagas.
 
+### Cards de Itinerário e Rotas (Utilidades • Ônibus)
+- **Equivalência Obrigatória entre Embarque e Desembarque:**
+  - Ambos os cards compartilham exatamente o mesmo layout estrutural, ritmo vertical e hierarquia tipográfica:
+    1. Linha de metadados: Nome da linha à esquerda, distância do trajeto e botão tátil Mapa (`MapPin` + "Mapa") à direita.
+    2. Nome da parada em destaque (`h3`, `14.5px`/`15px`, `font-bold`, `text-ink`).
+    3. Grade oficial de horários da parada:
+       - No Embarque: `DIAS ÚTEIS (N SAÍDAS)` (ou Sábados / Domingos).
+       - No Desembarque: `PREVISÃO DE CHEGADA`.
+       - Ambas utilizam pílulas de dimensões idênticas (`text-[13px]`, `px-2.5 py-1`, `font-mono`).
+    4. Selo de ação alinhado à esquerda na base: `Embarque` (coral) ou `Desembarque` (esmeralda).
+- **A Tabela Oficial é a Única Fonte da Verdade:**
+  - Nunca crie horários sintéticos/artificiais calculados que conflitem com a tabela oficial daquela parada.
+  - O horário de embarque é a saída mais próxima do horário atual; o horário de desembarque é o primeiro horário oficial daquela parada posterior ou igual ao embarque.
+  - O horário correspondente é **destacado de forma suave** diretamente na grade de horários existente (coral suave no embarque, esmeralda suave no desembarque).
+  - Nunca adicione o horário na mesma linha do título da grade (ex.: proibido colocar horário ao lado de "Previsão de Chegada" ou de "Dias Úteis").
+  - Nunca crie blocos extras/aninhados de "Próximo Ônibus" nem adicione ícones decorativos de relógio.
+
 ### Badge (Selo gravado)
 - Pílula `inset-sm`, texto `caption` em `ink-muted`. Para horário/status em baixo-relevo sóbrio.
 
@@ -245,10 +286,14 @@ Uma tecla de aparelho: firme, curta, afunda ao toque.
 - **Do** usar utilitários de token (`bg-canvas`, `text-ink-muted`, `border-rule`) em vez de hex.
 - **Do** indicar seleção com `pressed` / `aria-current` (afundado).
 - **Do** manter a mesma geometria de dock em todas as telas; ajuste só via tokens em `globals.css`.
+- **Do** manter cards análogos (como Embarque e Desembarque) estritamente equivalentes e consistentes em estilo.
+- **Do** destacar horários diretamente nas grades/cartelas existentes de forma suave e elegante.
 
 ### Don't:
 - **Don't** preencher teclas com coral ou qualquer cor para indicar estado.
-- **Don't** colocar ícones decorativos ao lado de títulos ou dentro de cartões.
+- **Don't** colocar ícones decorativos ao lado de títulos ou dentro de cartões (ex.: relógios, setas decorativas).
+- **Don't** inventar novos elementos, cards aninhados ou caixas extras quando já existir um padrão definido.
+- **Don't** duplicar informações de horários (nunca colocar horários soltos no cabeçalho ou na linha de títulos de grade).
 - **Don't** criar superfícies com fundo diferente de `canvas`.
 - **Don't** escrever hex soltos nos componentes; adicione um token primeiro.
 - **Don't** posicionar rodapés manualmente (`fixed bottom-…`) fora do `Dock`.
