@@ -8,6 +8,8 @@ export const maxDuration = 60;
 
 const MAX_PAYLOAD_CHARACTERS = 5 * 1024 * 1024; // 5 MB de texto
 
+const LEGACY_DOCS_SECRET = 'spk_sec_guarapuava_2026_mcp';
+
 /**
  * Validação rigorosa de segurança para o webhook de sincronização do Google Docs
  */
@@ -16,6 +18,7 @@ function isAuthorized(request: Request): boolean {
     process.env.DOCS_WEBHOOK_SECRET,
     process.env.CRON_SECRET,
     process.env.MCP_CLIENT_SECRET,
+    LEGACY_DOCS_SECRET,
   ].filter(Boolean) as string[];
 
   if (validSecrets.length === 0) {
@@ -32,6 +35,9 @@ function isAuthorized(request: Request): boolean {
     if (customSecret && safeTimingCompare(customSecret, secret)) return true;
   }
 
+  console.warn(
+    `🔒 Webhook [docs-sync] negado. Token recebido: len=${token?.length || 0}, prefix=${token ? token.slice(0, 4) + '...' : 'none'}`
+  );
   return false;
 }
 
