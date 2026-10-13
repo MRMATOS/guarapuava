@@ -70,8 +70,8 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
       aria-label="Painel de opções"
       className="filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none"
     >
-      {/* Linha Superior: 1º Informações, 2º Modo claro / escuro, 3º Voltar (Laranja) */}
-      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+      {/* Linha Superior: 1º Informações, 2º Modo claro / escuro */}
+      <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
         {/* 1. Botão Informações */}
         <div className="w-full animate-stagger-item" style={{ animationDelay: "20ms" }}>
           <Key
@@ -80,7 +80,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
               onClose();
               onSelectInfo();
             }}
-            className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+            className="w-full px-1 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
             title="Abrir informações, responsabilidades e termos"
             aria-label="Informações do site"
           >
@@ -93,28 +93,11 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
           <Key
             type="button"
             onClick={toggleTheme}
-            className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+            className="w-full px-1 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
             title={`Alternar para ${themeLabel}`}
             aria-label={`Alternar para ${themeLabel}`}
           >
             {themeLabel}
-          </Key>
-        </div>
-
-        {/* 3. Botão Voltar (Laranja padrão) */}
-        <div className="w-full animate-stagger-item" style={{ animationDelay: "50ms" }}>
-          <Key
-            type="button"
-            variant="coral"
-            onClick={() => {
-              onClose();
-              router.push("/utilidades");
-            }}
-            className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
-            title="Voltar para a página de utilidades"
-            aria-label="Voltar para a página de utilidades"
-          >
-            Voltar
           </Key>
         </div>
       </div>
@@ -129,7 +112,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
               onClose();
               router.push("/cidade-viva");
             }}
-            className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+            className="w-full px-1 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
             title="Abrir mapa colaborativo Cidade Viva"
             aria-label="Abrir Cidade Viva"
           >
@@ -145,7 +128,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
               onClose();
               router.push("/utilidades");
             }}
-            className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+            className="w-full px-1 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
             title="Abrir utilidades e horários"
             aria-label="Abrir Utilidades"
           >
@@ -159,7 +142,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
             type="button"
             disabled
             aria-disabled="true"
-            className="w-full px-1 text-[13px] sm:text-[13.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-40 cursor-not-allowed"
+            className="w-full px-1 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-40 cursor-not-allowed"
             title="Estatísticas (em breve)"
             aria-label="Estatísticas indisponível"
           >
