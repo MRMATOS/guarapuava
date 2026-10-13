@@ -3,7 +3,7 @@
  * Utiliza a fórmula de Haversine para precisão métrica.
  */
 
-import type { PontoItinerario } from "@/types/bus";
+import type { LinhaBairro, PontoItinerario } from "@/types/bus";
 
 /**
  * Calcula a distância em metros entre dois pontos geográficos (Haversine).
@@ -98,4 +98,59 @@ export function findNearestStops(
   results.sort((a, b) => a.distanciaMetros - b.distanciaMetros);
 
   return results.slice(0, maxResults);
+}
+
+/**
+ * Encontra a melhor parada para coordenadas de um POI ou endereço.
+ * Se originInfo for fornecido (passo de destino), prioriza paradas na mesma linha da origem se estiver a uma distância razoável (< 1000m).
+ */
+export function findNearestDestinationStop(
+  destLat: number,
+  destLon: number,
+  linhas: LinhaBairro[],
+  originInfo?: { ponto: PontoItinerario; linha: { id: string } } | null,
+  maxSameLineDistanceMeters: number = 1000
+): { ponto: PontoItinerario; linha: LinhaBairro; distanceMeters: number } | null {
+  // 1. Se tivermos linha de origem, verifica se essa linha passa perto do destino
+  if (originInfo?.linha?.id) {
+    const originLinha = linhas.find((l) => l.id === originInfo.linha.id);
+    if (originLinha) {
+      let closestSameLinePonto: PontoItinerario | null = null;
+      let minSameLineDist = Infinity;
+
+      for (const p of originLinha.pontos) {
+        if (typeof p.latitude === "number" && typeof p.longitude === "number") {
+          const d = calculateDistanceMeters(destLat, destLon, p.latitude, p.longitude);
+          if (d < minSameLineDist) {
+            minSameLineDist = d;
+            closestSameLinePonto = p;
+          }
+        }
+      }
+
+      if (closestSameLinePonto && minSameLineDist <= maxSameLineDistanceMeters) {
+        return {
+          ponto: closestSameLinePonto,
+          linha: originLinha,
+          distanceMeters: minSameLineDist,
+        };
+      }
+    }
+  }
+
+  // 2. Busca a parada mais próxima globalmente em todas as linhas
+  const nearest = findNearestStops(destLat, destLon, linhas, 1);
+  if (nearest.length > 0) {
+    const match = nearest[0];
+    const linha = linhas.find((l) => l.id === match.linhaId);
+    if (linha) {
+      return {
+        ponto: match.ponto,
+        linha,
+        distanceMeters: match.distanciaMetros,
+      };
+    }
+  }
+
+  return null;
 }
