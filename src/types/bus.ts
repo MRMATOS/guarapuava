@@ -2,6 +2,11 @@ export interface PontoItinerario {
   id: string;              // ex: "campo-do-batel"
   nome: string;            // ex: "Campo do Batel"
   ordem: number;           // 1, 2, 3...
+  rua?: string;            // ex: "Avenida Manoel Ribas"
+  numero?: string;         // ex: "4112"
+  referencia?: string;     // ex: "Posto Baitala"
+  bairro?: string;         // ex: "Conradinho" ou "Boqueirão"
+  cep?: string;            // ex: "85010-190"
   latitude?: number;       // ex: -25.392566
   longitude?: number;      // ex: -51.468079
   horariosUteis: string[]; // ["06:52", "07:22", "07:52", ...]

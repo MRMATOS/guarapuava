@@ -3,8 +3,8 @@ import React from "react";
 type KeyProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   /** Tecla travada/afundada (filtro ativo). Use `aria-current="page"` para navegação. */
   pressed?: boolean;
-  /** `icon` reduz o respiro lateral para teclas só com ícone. */
-  variant?: "label" | "icon";
+  /** `icon` reduz o respiro lateral para teclas só com ícone. `coral` aplica a cor laranja/coral do sistema. */
+  variant?: "label" | "icon" | "coral";
 };
 
 /**
@@ -27,7 +27,7 @@ export const Key = React.forwardRef<HTMLButtonElement, KeyProps>(
       ref={ref}
       type={type}
       aria-pressed={pressed}
-      className={`key ${variant === "icon" ? "key--icon" : ""} ${className}`.trim()}
+      className={`key ${variant === "icon" ? "key--icon" : ""} ${variant === "coral" ? "key--coral" : ""} ${className}`.trim()}
       {...rest}
     />
   )

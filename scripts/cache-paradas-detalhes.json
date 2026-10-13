@@ -1,0 +1,3705 @@
+{
+  "Estação Da Fonte - Embarque": {
+    "lon": -51.4680791,
+    "lat": -25.3925663,
+    "cep": null,
+    "bairro": "Centro",
+    "osm_name": "Estação da Fonte"
+  },
+  "R. Vicente Machado (Colégio Belém)": {
+    "lon": -51.4678459,
+    "lat": -25.3931857,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Vicente Machado"
+  },
+  "R. Vicente Machado, 1126 (Gastrocentro)": {
+    "lon": -51.4678459,
+    "lat": -25.3931857,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Vicente Machado"
+  },
+  "R. Professor Becker, 2850 (Cemitério Municipal)": {
+    "lon": -51.4577213,
+    "lat": -25.3921316,
+    "cep": "85070-175",
+    "bairro": null,
+    "osm_name": "Rua Professor Becker"
+  },
+  "R. Prof. Becker (Faculdade Campo Real)": {
+    "lon": -51.4577213,
+    "lat": -25.3921316,
+    "cep": "85070-175",
+    "bairro": null,
+    "osm_name": "Rua Professor Becker"
+  },
+  "Av. Ver. Serafim Ribas (Guaíra Campestre)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Av. Ver. Serafim Ribas, 1214-1276 (Posto Guapo)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Avenida Vereador Serafim Ribas, 2635 (Besha Store)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Avenida Vereador Serafim Ribas, 2989 (Marmoraria União)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Av. Ver. Serafim Ribas, 3350 (Açougue Padilha)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Av. Ver. Serafim Ribas, 2752-2860 (Marmoraria Jmw)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Avenida Vereador Serafim Ribas 4747(Codapar - Silos)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Rua Monteiro Lobato, 105": {
+    "lon": -51.491651,
+    "lat": -25.4294469,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Monteiro Lobato"
+  },
+  "Rod. Eng. Tancredo Benghi, 425": {
+    "lon": -51.4923733,
+    "lat": -25.4132697,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rodovia Engenheiro Tancredo Benghi"
+  },
+  "Pr170 (Mercearia Lima)": {
+    "lon": -51.4622016,
+    "lat": -25.3950986,
+    "cep": null,
+    "bairro": null,
+    "osm_name": "Guarapuava"
+  },
+  "Pr170 (Borracharia Do Sebastião)": {
+    "lon": -51.4622016,
+    "lat": -25.3950986,
+    "cep": null,
+    "bairro": null,
+    "osm_name": "Guarapuava"
+  },
+  "Rod. Eng. Tancredo Benghi, 2664": {
+    "lon": -51.4923733,
+    "lat": -25.4132697,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rodovia Engenheiro Tancredo Benghi"
+  },
+  "Rod. Eng. Tancredo Benghi": {
+    "lon": -51.4923733,
+    "lat": -25.4132697,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rodovia Engenheiro Tancredo Benghi"
+  },
+  "R. Altair Ciro Gubert, 2-344 (Polijuta)": {
+    "lon": -51.5042512,
+    "lat": -25.4088215,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Altair Cyro Gubert"
+  },
+  "Rod. Eng. Tancredo Benghi (Esc. Aldeia Do Sol)": {
+    "lon": -51.4923733,
+    "lat": -25.4132697,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rodovia Engenheiro Tancredo Benghi"
+  },
+  "Rod. Eng. Tancredo Benghi, 425 (Bar Do Alceu)": {
+    "lon": -51.4923733,
+    "lat": -25.4132697,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rodovia Engenheiro Tancredo Benghi"
+  },
+  "Pr-170 (Santuário Schoenstatt)": {
+    "lon": -51.4605455,
+    "lat": -25.3955947,
+    "cep": null,
+    "bairro": null,
+    "osm_name": "85010-170"
+  },
+  "R. Mansueto Maito, 95": {
+    "lon": -51.493708,
+    "lat": -25.4305861,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Avenida Mansueto Maito"
+  },
+  "R. Costa Rica, 42-122": {
+    "lon": -51.4943531,
+    "lat": -25.4313655,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Costa Rica"
+  },
+  "R. Gonçalves Dias, 1-83": {
+    "lon": -51.4919856,
+    "lat": -25.4308034,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Gonçalves Dias"
+  },
+  "R. Monteiro Lobato, 94-226": {
+    "lon": -51.491651,
+    "lat": -25.4294469,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Monteiro Lobato"
+  },
+  "Av. Ver. Serafim Ribas, 3445 (Torre De Celular)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Av. Ver.Serafim Ribas, 3597-3679 (Marmoraria Jmw)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Av. Ver. Serafim Ribas, 3357 (Açougue Padilha)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Avenida Vereador Serafim Ribas, 2635  (Besha Store)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Estação Da Fonte - Desembarque": {
+    "lon": -51.4680791,
+    "lat": -25.3925663,
+    "cep": null,
+    "bairro": "Centro",
+    "osm_name": "Estação da Fonte"
+  },
+  "R. Com. Norberto, 361-459 (Baratão)": {
+    "lon": -51.4637893,
+    "lat": -25.3963756,
+    "cep": "85010-280",
+    "bairro": null,
+    "osm_name": "Rua Comendador Norberto"
+  },
+  "R. Comendador Norberto, 1290 (Paróquia Santa Cruz)": {
+    "lon": -51.4637893,
+    "lat": -25.3963756,
+    "cep": "85010-280",
+    "bairro": null,
+    "osm_name": "Rua Comendador Norberto"
+  },
+  "R. Capitão Rocha, 1290-1386 (Colégio Belém)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Capitão Rocha, 1132 (Sesc)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Comendador Norberto, 889 (Casa De Carne Boi Verde)": {
+    "lon": -51.4637893,
+    "lat": -25.3963756,
+    "cep": "85010-280",
+    "bairro": null,
+    "osm_name": "Rua Comendador Norberto"
+  },
+  "R. Guaíra, 3442 (Alfana)": {
+    "lon": -51.4694418,
+    "lat": -25.3935622,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "R. Guaíra, 3442 (Alfana)"
+  },
+  "Av. Ver. Serafim Ribas, 1213-1275 (Posto Guapo)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Av. Ver. Serafim Ribas, 376-474 (Guaíra Campestre)": {
+    "lon": -51.477246,
+    "lat": -25.4103223,
+    "cep": "85015-430",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Rua Dona Anastácia, 351": {
+    "lon": -51.4990595,
+    "lat": -25.4191624,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Dona Anastácia"
+  },
+  "R. Leonardo Coblinki, 2097 (Mercado Realeza)": {
+    "lon": -51.4663172,
+    "lat": -25.4164145,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "Rua David Alves De Góes, 829 (Condomínio Do Idoso)": {
+    "lon": -51.4827261,
+    "lat": -25.4212488,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua David Alves de Goes"
+  },
+  "Rua Dona Anastácia, 425": {
+    "lon": -51.4990595,
+    "lat": -25.4191624,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Dona Anastácia"
+  },
+  "R. Eng. Beltrão, 2-158": {
+    "lon": -51.4850617,
+    "lat": -25.4186074,
+    "cep": "85027-250",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Engenheiro Beltrão"
+  },
+  "R. Quintino Bocaiuva, 1840 (Loja São Pedro)": {
+    "lon": -51.4723127,
+    "lat": -25.3939493,
+    "cep": "85010-300",
+    "bairro": null,
+    "osm_name": "R. Quintino Bocaiuva, 1840 (Loja São Pedro)"
+  },
+  "R. Quintino Bocaiúva, 2179 (Colégio Lobo)": {
+    "lon": -51.4744997,
+    "lat": -25.3919,
+    "cep": "85010-300",
+    "bairro": null,
+    "osm_name": "R. Quintino Bocaiúva, 2179 (Colégio Lobo)"
+  },
+  "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "Rua São Paulo, 2464 (A.A.Batel Escola De Futebol)": {
+    "lon": -51.4838781,
+    "lat": -25.3889181,
+    "cep": "85025-500",
+    "bairro": null,
+    "osm_name": "Rua São Paulo, 2464 (Estádio Valdomiro Gelinski)"
+  },
+  "R. Rio De Janeiro, 2559 (Lcit+ Licitações)": {
+    "lon": -51.4792414,
+    "lat": -25.3910264,
+    "cep": "85025-500",
+    "bairro": null,
+    "osm_name": "Rua Rio de Janeiro"
+  },
+  "R. Rio De Janeiro, 2376 (Condomínio Vovó Dounia)": {
+    "lon": -51.4792414,
+    "lat": -25.3910264,
+    "cep": "85025-500",
+    "bairro": null,
+    "osm_name": "Rua Rio de Janeiro"
+  },
+  "Av. Dr. Aragão De Matos Leão, 1296 (Guara Box)": {
+    "lon": -51.4927358,
+    "lat": -25.392173,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Av. Dr. Aragão de Matos Leão, 1296 (GUARÁ BOX)"
+  },
+  "R. Amaporã, 232 (Kactu's Bar)": {
+    "lon": -51.4857032,
+    "lat": -25.3932127,
+    "cep": "85025-500",
+    "bairro": null,
+    "osm_name": "Rua Amaporã"
+  },
+  "Av. Dr. Aragão De Mattos Leão,1490 (Panific. Prestígio)": {
+    "lon": -51.4953735,
+    "lat": -25.392098,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Av. Dr. Aragão de Mattos Leão,1490 (Panific. Prestígio)"
+  },
+  "R. Rocha Pombo, 635-753 (Cris Cabeleireira)": {
+    "lon": -51.498296,
+    "lat": -25.3910193,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "R. Rocha Pombo, 635-753 (Cris Cabeleireira)"
+  },
+  "Av. Dr. Aragão De M. Leão, 1682 (Atitude Eventos)": {
+    "lon": -51.4973971,
+    "lat": -25.3920215,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Av. Dr. Aragão de M. Leão, 1682 (Atitude Eventos)"
+  },
+  "R. Aragão De Matos Leão, 900 (Mecânica V8 Motors)": {
+    "lon": -51.4892409,
+    "lat": -25.3922898,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "R. Aragão de Matos Leão, 900 (BK Treinamentos)"
+  },
+  "Rua Rocha Pombo, 681 (Paróquia Verbo Divíno)": {
+    "lon": -51.4947832,
+    "lat": -25.3911399,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Rocha Pombo, 681 (Paróquia Verbo Divíno)"
+  },
+  "Rua Miguel Provoznik, 445 (Santa Regina)": {
+    "lon": -51.4936079,
+    "lat": -25.3892015,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Miguel Provoznik, 445 (Santa Regina)"
+  },
+  "Rua Miguel Provoznik, 109 (Mercado Do Fernando)": {
+    "lon": -51.4911001,
+    "lat": -25.3893786,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Miguel Provoznik, 109 (Mercado do Fernando)"
+  },
+  "Rua Eduardo Pawlina, 314": {
+    "lon": -51.4920639,
+    "lat": -25.3903428,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Eduardo Pawlina, 314"
+  },
+  "R. Rocha Pombo, 253": {
+    "lon": -51.4915487,
+    "lat": -25.3912216,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "R. Rocha Pombo, 253"
+  },
+  "Av. Aragão De Matos Leão, 827-907 (Mecânica V8 Motors)": {
+    "lon": -51.4891202,
+    "lat": -25.3923807,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Av. Aragão de Matos Leão, 827-907 (Panificadora Ki Festa)"
+  },
+  "Av. Doutor Aragão De Mattos Leão Filho, 293 (Atacadão)": {
+    "lon": -51.4833222,
+    "lat": -25.3927685,
+    "cep": "85025-500",
+    "bairro": "Batel",
+    "osm_name": "Atacadão Guarapuava"
+  },
+  "Av. Aragão De Matos. Leão, 475 (Bar Do Argentino)": {
+    "lon": -51.4853762,
+    "lat": -25.3924903,
+    "cep": "85025-500",
+    "bairro": null,
+    "osm_name": "Av. Aragão de Matos. Leão, 377 (Bar do Argentino)"
+  },
+  "R. Vicente Machado (Superpão Hiper)": {
+    "lon": -51.4678459,
+    "lat": -25.3931857,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Vicente Machado"
+  },
+  "R. Vicente Machado, 2183 (Futura Educação Profissional)": {
+    "lon": -51.4711342,
+    "lat": -25.3902467,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Vicente Machado, 2183 (Futura Educação Profissional)"
+  },
+  "Avenida Prefeito Moacyr Júlio Silvestri, 1633 (Havan)": {
+    "lon": -51.4805643,
+    "lat": -25.3930448,
+    "cep": "85025-500",
+    "bairro": null,
+    "osm_name": "Avenida Prefeito Moacir Júlio Silvestre"
+  },
+  "Av. Prefeito Moacyr Júlio Silvestri, 1301 (Ig. Sta Terezinha)": {
+    "lon": -51.4779678,
+    "lat": -25.3907786,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1301 (Ig. Sta Terezinha)"
+  },
+  "R. XV De Novembro, 2267 (Superpão P. Extra)": {
+    "lon": -51.4636176,
+    "lat": -25.391071,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua XV de Novembro"
+  },
+  "R. Pedro Siqueira, 1426 (Copel)": {
+    "lon": -51.4592369,
+    "lat": -25.3873478,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Rua Pedro Siqueira"
+  },
+  "R. Pedro Siqueira, 1187 (Supermercado Mil)": {
+    "lon": -51.4592369,
+    "lat": -25.3873478,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Rua Pedro Siqueira"
+  },
+  "R. Pedro Siqueira, 727 (Estação Do Cachorro Quente)": {
+    "lon": -51.4592369,
+    "lat": -25.3873478,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Rua Pedro Siqueira"
+  },
+  "Av. Rosa Lustosa De Siqueira, 939 (Barbearia Camargo)": {
+    "lon": -51.4527864,
+    "lat": -25.3928898,
+    "cep": "85070-100",
+    "bairro": null,
+    "osm_name": "Rua Rosa Lustosa de Siqueira"
+  },
+  "R. Pe. Chagas, 2957 (Facul. Guairacá)": {
+    "lon": -51.464444,
+    "lat": -25.3906525,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua Padre Chagas"
+  },
+  "R. Wilsom Luís Silvério Martins, 577 (Caixa D'Água Sanepar)": {
+    "lon": -51.4474313,
+    "lat": -25.3945719,
+    "cep": "85070-100",
+    "bairro": null,
+    "osm_name": "Rua Wilson Luiz Silveiro MArtins"
+  },
+  "R. Wilsom Luís Silvério Martins, 282 (Casa De Betânia)": {
+    "lon": -51.4474313,
+    "lat": -25.3945719,
+    "cep": "85070-100",
+    "bairro": null,
+    "osm_name": "Rua Wilson Luiz Silveiro MArtins"
+  },
+  "R. Wilsom Luís Silvério Martins, 27 (Col. Rui Barbosa)": {
+    "lon": -51.4474313,
+    "lat": -25.3945719,
+    "cep": "85070-100",
+    "bairro": null,
+    "osm_name": "Rua Wilson Luiz Silveiro MArtins"
+  },
+  "Av. Antônio Faráh,Av. Antônio Faráh, 778 (Califórnia Motel)": {
+    "lon": -51.443979,
+    "lat": -25.3835614,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Avenida Antonio Farah"
+  },
+  "Av. Antônio Faráh, 591 (R. Damasco)": {
+    "lon": -51.4417863,
+    "lat": -25.3879465,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Avenida Antonio Farah"
+  },
+  "Av. Antônio Faráh, 976 (Casa Box)": {
+    "lon": -51.4417863,
+    "lat": -25.3879465,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Avenida Antonio Farah"
+  },
+  "R. Deputado Lauro Sodré Lopes, 30 (Escola Mahatma Gandhi)": {
+    "lon": -51.4475805,
+    "lat": -25.3851847,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Deputado Lauro Sodre Lopes"
+  },
+  "R. Deputado Lauro Sodré Lopes, 759 (Panificadora Pão Da Hora)": {
+    "lon": -51.4475805,
+    "lat": -25.3851847,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Deputado Lauro Sodre Lopes"
+  },
+  "R. Deputado Lauro Sodré Lopes, 530 (Igreja Nosso Senhor Jesus Cristo)": {
+    "lon": -51.4475805,
+    "lat": -25.3851847,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Deputado Lauro Sodre Lopes"
+  },
+  "R. Deputado Lauro Sodré Lopes, 994 (R. Rotary)": {
+    "lon": -51.4475805,
+    "lat": -25.3851847,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Deputado Lauro Sodre Lopes"
+  },
+  "R. Deputado Lauro Sodré Lopes, 1259 (Abramoski Som)": {
+    "lon": -51.4475805,
+    "lat": -25.3851847,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Deputado Lauro Sodre Lopes"
+  },
+  "R. Domingos Marcondes, 52 (Santana)": {
+    "lon": -51.4517316,
+    "lat": -25.4007923,
+    "cep": "85070-180",
+    "bairro": null,
+    "osm_name": "Rua Domingos Marcondes"
+  },
+  "R. Domingos Marcondes, 412 (Be Happy Festas)": {
+    "lon": -51.4517316,
+    "lat": -25.4007923,
+    "cep": "85070-180",
+    "bairro": null,
+    "osm_name": "Rua Domingos Marcondes"
+  },
+  "R. Domingos Marcondes, 687 (Oficina Parati)": {
+    "lon": -51.4517316,
+    "lat": -25.4007923,
+    "cep": "85070-180",
+    "bairro": null,
+    "osm_name": "Rua Domingos Marcondes"
+  },
+  "R. Brigadeiro Rocha, 26 (Parque Pedro Senna)": {
+    "lon": -51.4661172,
+    "lat": -25.3889702,
+    "cep": "85010-040",
+    "bairro": null,
+    "osm_name": "Rua Brigadeiro Rocha"
+  },
+  "R. Brigadeiro Rocha, 664 (Ginásio Municipal Joaquim Prestes)": {
+    "lon": -51.4661172,
+    "lat": -25.3889702,
+    "cep": "85010-040",
+    "bairro": null,
+    "osm_name": "Rua Brigadeiro Rocha"
+  },
+  "R. Brig. Rocha, 1218 (Panif. Pão De Mel)": {
+    "lon": -51.4608547,
+    "lat": -25.3934339,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Rua Brigadeiro Rocha"
+  },
+  "R. Brigadeiro Rocha, 990 (Surg–Comp. De Serv. De Urb. De Guarapuava)": {
+    "lon": -51.4661172,
+    "lat": -25.3889702,
+    "cep": "85010-040",
+    "bairro": null,
+    "osm_name": "Rua Brigadeiro Rocha"
+  },
+  "R. Brig. Rocha, 1544-1600 (Lavacar Copanski)": {
+    "lon": -51.4608547,
+    "lat": -25.3934339,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Rua Brigadeiro Rocha"
+  },
+  "R. Pedro Siqueira, 780 (Panificadora Doce Mel)": {
+    "lon": -51.4592369,
+    "lat": -25.3873478,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Rua Pedro Siqueira"
+  },
+  "R. Pedro Siqueira, 1246 (Supermercado Mil)": {
+    "lon": -51.4592369,
+    "lat": -25.3873478,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Rua Pedro Siqueira"
+  },
+  "R. Sen. Pinheiro Machado, 1414 (Praça Cleve)": {
+    "lon": -51.464209,
+    "lat": -25.3927986,
+    "cep": "85010-130",
+    "bairro": null,
+    "osm_name": "Rua Senador Pinheiro Machado"
+  },
+  "Av. Manoel Ribas, 2286 (26º Gac)": {
+    "lon": -51.4598122,
+    "lat": -25.3901323,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Avenida Manoel Ribas"
+  },
+  "Av. Manoel Ribas, 3850 (Hotel San Marino)": {
+    "lon": -51.4598122,
+    "lat": -25.3901323,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Avenida Manoel Ribas"
+  },
+  "Av. Manoel Ribas, 922 (Parque Das Crianças)": {
+    "lon": -51.4598122,
+    "lat": -25.3901323,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Avenida Manoel Ribas"
+  },
+  "Av. Manoel Ribas, 2848 (Honda Lobo Motos)": {
+    "lon": -51.4598122,
+    "lat": -25.3901323,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Avenida Manoel Ribas"
+  },
+  "Av. Manoel Ribas, 4112 (Posto Baitala)": {
+    "lon": -51.4598122,
+    "lat": -25.3901323,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Avenida Manoel Ribas"
+  },
+  "Av. Manoel Ribas, 4588 (Rocha's Hotel)": {
+    "lon": -51.4598122,
+    "lat": -25.3901323,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Avenida Manoel Ribas"
+  },
+  "Av. Manoel Ribas, 4892 (Max Atacado)": {
+    "lon": -51.4598122,
+    "lat": -25.3901323,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Avenida Manoel Ribas"
+  },
+  "R. Leonardo Valente Hicz, 527 (Katieli Carniel Beleza E Bem Estar)": {
+    "lon": -51.4759161,
+    "lat": -25.3593065,
+    "cep": "85045-302",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Valente Hiczi"
+  },
+  "Av. Bandeirantes, 695 (Igreja Evangélica Nação De Cristo)": {
+    "lon": -51.4758139,
+    "lat": -25.3558785,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Avenida Bandeirantes"
+  },
+  "R. Lino Queirós, 700 (Fundos Posto B2 Primavera)": {
+    "lon": -51.471052,
+    "lat": -25.3561283,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Rua Lino Queiroz"
+  },
+  "R. Lino Queirós, 444 (Serraria Do Carneiro)": {
+    "lon": -51.471052,
+    "lat": -25.3561283,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Rua Lino Queiroz"
+  },
+  "Av. Bandeirantes, 221 (Walteman Auto Center)": {
+    "lon": -51.4758139,
+    "lat": -25.3558785,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Avenida Bandeirantes"
+  },
+  "R. Lino Queirós, 91 (Igreja Adventista)": {
+    "lon": -51.471052,
+    "lat": -25.3561283,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Rua Lino Queiroz"
+  },
+  "R. Flávio Franco, 2 (Colégio Abílio)": {
+    "lon": -51.4715217,
+    "lat": -25.3602316,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Rua Flávio Franco"
+  },
+  "R. Miguel Kick & R. Juvelina Cunha (Libra Kirchibaner)": {
+    "lon": -51.4753943,
+    "lat": -25.3566022,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Rua Juvelina Cunha"
+  },
+  "R. Maria Auxiliadora Marcondes, 208 (Ubs Primavera)": {
+    "lon": -51.4467369,
+    "lat": -25.3935302,
+    "cep": "85070-100",
+    "bairro": null,
+    "osm_name": "Rua Maria Marcondes Ribas"
+  },
+  "R. Leonardo Valente Hicz, 472 (Sharan Contabilidade)": {
+    "lon": -51.4759161,
+    "lat": -25.3593065,
+    "cep": "85045-302",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Valente Hiczi"
+  },
+  "Av. Bento Munhoz Da Rocha Neto, 916 (10 Marchas)": {
+    "lon": -51.4829027,
+    "lat": -25.356593,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Avenida Bento Munhoz da Rocha Neto"
+  },
+  "Av. Bento Munhoz Da Rocha Neto, 438 (Guaratruk)": {
+    "lon": -51.4829027,
+    "lat": -25.356593,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Avenida Bento Munhoz da Rocha Neto"
+  },
+  "R. Alcindo Matos, 539 (Carrocerias Carga Pesada)": {
+    "lon": -51.4934759,
+    "lat": -25.3676087,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Rua Alcindo de Matos"
+  },
+  "Av. Manoel Ribas, 4645 (Rei Da Mangueiras)": {
+    "lon": -51.4598122,
+    "lat": -25.3901323,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Avenida Manoel Ribas"
+  },
+  "R. Alcindo De Matos, 539 (Passarela Home Center)": {
+    "lon": -51.4934759,
+    "lat": -25.3676087,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Rua Alcindo de Matos"
+  },
+  "Av. Manoel Ribas, 4167 (Sicoob)": {
+    "lon": -51.4598122,
+    "lat": -25.3901323,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Avenida Manoel Ribas"
+  },
+  "Av. Manoel Ribas, 3949 (Chaveiro Avenida)": {
+    "lon": -51.4598122,
+    "lat": -25.3901323,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Avenida Manoel Ribas"
+  },
+  "R. Rua Senador Nereu Ramos, 2353 (Espaço Fiori)": {
+    "lon": -51.4729048,
+    "lat": -25.380218,
+    "cep": "85055-250",
+    "bairro": null,
+    "osm_name": "Rua Senador Nereu Ramos"
+  },
+  "R. Brig. Rocha, 2020 (Arty Madeira)": {
+    "lon": -51.4652195,
+    "lat": -25.3896472,
+    "cep": "85010-210",
+    "bairro": "Centro",
+    "osm_name": "Arty Madeira - Móveis Planejados"
+  },
+  "R. Senador Nereu Ramos, 1888 (Secretaria De Inovação)": {
+    "lon": -51.4729048,
+    "lat": -25.380218,
+    "cep": "85055-250",
+    "bairro": null,
+    "osm_name": "Rua Senador Nereu Ramos"
+  },
+  "Av. Prefeito Moacyr Júlio Silvestri, 324 (Quiero Café)": {
+    "lon": -51.4805643,
+    "lat": -25.3930448,
+    "cep": "85025-500",
+    "bairro": null,
+    "osm_name": "Avenida Prefeito Moacir Júlio Silvestre"
+  },
+  "R. Brig. Rocha, 2220 (Cafeteria Cheirin Bão)": {
+    "lon": -51.4608547,
+    "lat": -25.3934339,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Rua Brigadeiro Rocha"
+  },
+  "R. Brig. Rocha, 2777 (Prefeitura Municipal)": {
+    "lon": -51.4608547,
+    "lat": -25.3934339,
+    "cep": "85010-200",
+    "bairro": null,
+    "osm_name": "Rua Brigadeiro Rocha"
+  },
+  "R. Brigadeiro Rocha, 3148 (Garagem Zenitur)": {
+    "lon": -51.4661172,
+    "lat": -25.3889702,
+    "cep": "85010-040",
+    "bairro": null,
+    "osm_name": "Rua Brigadeiro Rocha"
+  },
+  "R. Romeu Karpinski Rocha, 3414 (Glass Center)": {
+    "lon": -51.4757774,
+    "lat": -25.3795507,
+    "cep": "85035-270",
+    "bairro": null,
+    "osm_name": "Rua Romeu Karpinski Rocha"
+  },
+  "Av. Paraná, 274 (Mix Supermercado)": {
+    "lon": -51.4860681,
+    "lat": -25.3865411,
+    "cep": "85040-167",
+    "bairro": null,
+    "osm_name": "Guarapuava"
+  },
+  "R. Londrina, 248": {
+    "lon": -51.4795699,
+    "lat": -25.3718926,
+    "cep": "85055-010",
+    "bairro": null,
+    "osm_name": "Rua Londrina"
+  },
+  "R. Romeu K. Rocha & R. Dalmo Mendes Cleve (Rodoviária)": {
+    "lon": -51.4779354,
+    "lat": -25.3778455,
+    "cep": "85055-010",
+    "bairro": null,
+    "osm_name": "Rodoviária"
+  },
+  "Av. Bandeirantes, 212 (Walteman Auto Center)": {
+    "lon": -51.4758139,
+    "lat": -25.3558785,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Avenida Bandeirantes"
+  },
+  "R. João Dias Sollis, 192 (Jd. Bandeirantes)": {
+    "lon": -51.4742103,
+    "lat": -25.3526977,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Rua João Dias Sollis"
+  },
+  "R. Bartolomeu Bueno Da Silva, 332 (Jd. Bandeirantes)": {
+    "lon": -51.478532,
+    "lat": -25.3541043,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Bartolomeu Bueno da Silva"
+  },
+  "R. Bartolomeu Bueno Da Silva, 604 (Capitão Mercado E Conveniência)": {
+    "lon": -51.478532,
+    "lat": -25.3541043,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Bartolomeu Bueno da Silva"
+  },
+  "R. Antônio Siqueira Ribas, 301 (Mercearia Nossa Senhora De Fátima)": {
+    "lon": -51.4805096,
+    "lat": -25.3566642,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Antonio Siqueira Ribas"
+  },
+  "R. Cristiano F. Dal Passo, 173": {
+    "lat": -25.3887,
+    "lon": -51.4722,
+    "cep": "85010-000",
+    "bairro": "Bandeirantes Via Rodoviária",
+    "osm_name": "Rua Cristiano F. Dal Passo"
+  },
+  "Av. Bandeirantes, 283 (Paróquia Nossa Senhora De Fátima)": {
+    "lon": -51.4758139,
+    "lat": -25.3558785,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Avenida Bandeirantes"
+  },
+  "Rua Juvelina Cunha, 387": {
+    "lon": -51.4753943,
+    "lat": -25.3566022,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Rua Juvelina Cunha"
+  },
+  "R. Iguaçu, 191": {
+    "lon": -51.4749716,
+    "lat": -25.3680393,
+    "cep": "85055-010",
+    "bairro": null,
+    "osm_name": "Rua Iguaçu"
+  },
+  "R. Londrina, 148 (Ponto Fix Ferragens)": {
+    "lon": -51.4795699,
+    "lat": -25.3718926,
+    "cep": "85055-010",
+    "bairro": null,
+    "osm_name": "Rua Londrina"
+  },
+  "R. Antônieta L. Rocha, 324": {
+    "lon": -51.4795849,
+    "lat": -25.3771003,
+    "cep": "85055-010",
+    "bairro": null,
+    "osm_name": "Rua Antonieta Lima Rocha"
+  },
+  "R. Cristiano F. Dal Passo, 110": {
+    "lat": -25.4107,
+    "lon": -51.4702,
+    "cep": "85010-000",
+    "bairro": "Bandeirantes Via Rodoviária",
+    "osm_name": "Rua Cristiano F. Dal Passo"
+  },
+  "Av. Sebastião De Camargo Ribas, 2314 (Rodoviária)": {
+    "lon": -51.4764918,
+    "lat": -25.3767344,
+    "cep": "85055-010",
+    "bairro": null,
+    "osm_name": "Avenida Sebastião de Camargo Ribas"
+  },
+  "R. Azevedo Portugal, 1474 (Praça Cândido Xavier)": {
+    "lon": -51.4646755,
+    "lat": -25.3885734,
+    "cep": "85010-190",
+    "bairro": null,
+    "osm_name": "Rua Azevedo Portugal"
+  },
+  "R. Azevedo Portugal, 1021 (Sanepar)": {
+    "lon": -51.4646755,
+    "lat": -25.3885734,
+    "cep": "85010-190",
+    "bairro": null,
+    "osm_name": "Rua Azevedo Portugal"
+  },
+  "R. Guaíra, 2936 (Chuveirão Das Tintas)": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "R. Capitão Rocha, 1781 (Hotel Harbor)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Capitão Rocha, 2112 (Ciee)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Capitão Rocha, 2394 (Superpão Hiper)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Capitão Rocha, 2698 (Posto Delta)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Capitão Rocha, 2880 (Lombada Eletrônica)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Capitão Rocha, 3134 (Edifício Bruce Leuroy)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Capitão Rocha, 3700 (Mercado São Paulo)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "Av. Professor Pedro Carli, 4478  (Mudas Home Garden)": {
+    "lon": -51.485599,
+    "lat": -25.3783069,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Avenida Professor Pedro Carli"
+  },
+  "R. Capitão Rocha, 3468 (Motel Classic)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Tamôios, 195 (Vitória Presentes)": {
+    "lon": -51.4912731,
+    "lat": -25.3720074,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Rua Tamoios"
+  },
+  "Av. Professor Pedro Carli, 4326 (Bar Da Tia Sol)": {
+    "lon": -51.485599,
+    "lat": -25.3783069,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Avenida Professor Pedro Carli"
+  },
+  "R. Humaitá & R. Almirante Barroso (Praça Triangular Quadra Sintético)": {
+    "lon": -51.4856249,
+    "lat": -25.3688152,
+    "cep": "85040-364",
+    "bairro": null,
+    "osm_name": "Rua Almirante Barroso"
+  },
+  "Av. Professor Pedro Carli, 4730 (Cmei Vila Carli)": {
+    "lon": -51.485599,
+    "lat": -25.3783069,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Avenida Professor Pedro Carli"
+  },
+  "R. Riachuelo, 495": {
+    "lon": -51.4833638,
+    "lat": -25.3698806,
+    "cep": "85040-364",
+    "bairro": null,
+    "osm_name": "Rua Riachuelo"
+  },
+  "R. Coroados, 38 (Dona Vilma)": {
+    "lon": -51.4885174,
+    "lat": -25.3757165,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Rua Coroados"
+  },
+  "R. Coroados, 184 (Vila Carli)": {
+    "lon": -51.4885174,
+    "lat": -25.3757165,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Rua Coroados"
+  },
+  "R. Condé Deu, 273 (Vila Carli)": {
+    "lon": -51.4841932,
+    "lat": -25.3680413,
+    "cep": "85040-364",
+    "bairro": null,
+    "osm_name": "Rua Conde Deu"
+  },
+  "Av. Professor Pedro Carli, 4237 (Maravilha Sorvetes)": {
+    "lon": -51.485599,
+    "lat": -25.3783069,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Avenida Professor Pedro Carli"
+  },
+  "R. Saldanha Marinho, 4187 (Vila Carli)": {
+    "lon": -51.4740661,
+    "lat": -25.3907254,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Saldanha Marinho"
+  },
+  "R. Condé Deu & R. Riachuelo (Mercado Big Bom)": {
+    "lon": -51.468335,
+    "lat": -25.4096572,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Mercado Bem Bom"
+  },
+  "R. Saldanha Marinho, 3824 (Entrada Campus Cedeteg)": {
+    "lon": -51.4740661,
+    "lat": -25.3907254,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Saldanha Marinho"
+  },
+  "R. Saldanha Marinho, 3310 (Bar Do Luiz)": {
+    "lon": -51.4740661,
+    "lat": -25.3907254,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Saldanha Marinho"
+  },
+  "R. Saldanha Marinho, 3081 (Fl Equipamentos)": {
+    "lon": -51.4740661,
+    "lat": -25.3907254,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Saldanha Marinho"
+  },
+  "R. Vicente Machado, 763 (Supermercado Edinara)": {
+    "lon": -51.4678459,
+    "lat": -25.3931857,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Vicente Machado"
+  },
+  "R. Saldanha Marinho, 2693 (Posto Guairacá I)": {
+    "lon": -51.4740661,
+    "lat": -25.3907254,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Saldanha Marinho"
+  },
+  "R. Dezessete De Julho, 1069 (Panificadora Caseira)": {
+    "lon": -51.4566051,
+    "lat": -25.3978522,
+    "cep": "85070-175",
+    "bairro": null,
+    "osm_name": "Rua 17 de Julho"
+  },
+  "R. Dezessete De Julho, 19 (Okami Sushi House)": {
+    "lon": -51.4566051,
+    "lat": -25.3978522,
+    "cep": "85070-175",
+    "bairro": null,
+    "osm_name": "Rua 17 de Julho"
+  },
+  "R. Das Orquídeas, 51 (Úrgência 24h Trianon)": {
+    "lon": -51.4532337,
+    "lat": -25.4017714,
+    "cep": "85070-180",
+    "bairro": null,
+    "osm_name": "Rua das Orquídeas"
+  },
+  "R. Brigadeiro Rocha, 650 (Colégio Anna Vanda Bassara)": {
+    "lon": -51.4661172,
+    "lat": -25.3889702,
+    "cep": "85010-040",
+    "bairro": null,
+    "osm_name": "Rua Brigadeiro Rocha"
+  },
+  "R. Xavier Da Silva (Col. Visc. De Guarapuava)": {
+    "lon": -51.4643105,
+    "lat": -25.3916501,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua Doutor Xavier da Silva"
+  },
+  "R. Afonso Alves De Camargo, 346 (São Miguel)": {
+    "lon": -51.4609523,
+    "lat": -25.3871531,
+    "cep": "85010-190",
+    "bairro": null,
+    "osm_name": "Rua Afonso Alves de Camargo"
+  },
+  "R. Xavier Da Silva, 466 (Polícia Federal)": {
+    "lon": -51.4643105,
+    "lat": -25.3916501,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua Doutor Xavier da Silva"
+  },
+  "R. Das Rosas, S/N (Fórum)": {
+    "lon": -51.4546236,
+    "lat": -25.39684,
+    "cep": "85070-180",
+    "bairro": null,
+    "osm_name": "Rua das Rosas"
+  },
+  "R. Cel. Lustosa, 1174-1294 (Colégio Lobo)": {
+    "lon": -51.474706,
+    "lat": -25.3925488,
+    "cep": "85010-300",
+    "bairro": null,
+    "osm_name": "R. Cel. Lustosa, 1174-1294 (Colégio Lobo)"
+  },
+  "R. Capitão Rocha, 514 (Trianon)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Capitão Rocha, 892 (Inviolável)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Coronel Lustosa, 1490 (Potencial Vigia E Limpeza)": {
+    "lon": -51.474459,
+    "lat": -25.3923118,
+    "cep": "85010-300",
+    "bairro": null,
+    "osm_name": "Rua Coronel Lustosa"
+  },
+  "R. Xavier Da Silva, 72 (Gtg Fogo De Chão)": {
+    "lon": -51.4643105,
+    "lat": -25.3916501,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua Doutor Xavier da Silva"
+  },
+  "R. Coronel Lustosa, 1712 (Sesi/Senai)": {
+    "lon": -51.474459,
+    "lat": -25.3923118,
+    "cep": "85010-300",
+    "bairro": null,
+    "osm_name": "Rua Coronel Lustosa"
+  },
+  "R. Coronel Lustosa, 2048 (Escola Professor Amarílio)": {
+    "lon": -51.474459,
+    "lat": -25.3923118,
+    "cep": "85010-300",
+    "bairro": null,
+    "osm_name": "Rua Coronel Lustosa"
+  },
+  "R. Dezessete De Julho, 814 (Okami Sushi House)": {
+    "lon": -51.4566051,
+    "lat": -25.3978522,
+    "cep": "85070-175",
+    "bairro": null,
+    "osm_name": "Rua 17 de Julho"
+  },
+  "R. Coronel Lustosa, 2296 (Unimax Supermercado)": {
+    "lon": -51.474459,
+    "lat": -25.3923118,
+    "cep": "85010-300",
+    "bairro": null,
+    "osm_name": "Rua Coronel Lustosa"
+  },
+  "R. Eduardo Chaia, 2293 (Vista Batel)": {
+    "lon": -51.4866951,
+    "lat": -25.4022608,
+    "cep": "85015-550",
+    "bairro": null,
+    "osm_name": "Rua Eduardo Chaia"
+  },
+  "R. Eduardo Chaia, 258 (Cruzamento Ferroviário)": {
+    "lon": -51.4866951,
+    "lat": -25.4022608,
+    "cep": "85015-550",
+    "bairro": null,
+    "osm_name": "Rua Eduardo Chaia"
+  },
+  "R. Gonçalves De Magalhães (Cmei Ayrton Senna)": {
+    "lon": -51.4899192,
+    "lat": -25.4026206,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Gonçalves de Magalhães"
+  },
+  "Rua Salvador Scheneider 2570": {
+    "lon": -51.4885036,
+    "lat": -25.4043104,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Salvador Scheneider"
+  },
+  "Rua Eduardo Chaia, 715": {
+    "lon": -51.4866951,
+    "lat": -25.4022608,
+    "cep": "85015-550",
+    "bairro": null,
+    "osm_name": "Rua Eduardo Chaia"
+  },
+  "R. Coronel Lustosa, 2499 (R. Resende)": {
+    "lon": -51.474459,
+    "lat": -25.3923118,
+    "cep": "85010-300",
+    "bairro": null,
+    "osm_name": "Rua Coronel Lustosa"
+  },
+  "R. Celmira Garcia Costa, 1792 (Instituto Cabreira)": {
+    "lon": -51.4817298,
+    "lat": -25.4010901,
+    "cep": "85015-550",
+    "bairro": null,
+    "osm_name": "Rua Celmira Garcia Costa"
+  },
+  "R. Barão Do Rio Branco, 1816 (Upa Batel)": {
+    "lon": -51.4769878,
+    "lat": -25.3982868,
+    "cep": "85015-430",
+    "bairro": "Batel",
+    "osm_name": "Rua Barão do Rio Branco"
+  },
+  "R. Dr. Laranjeiras, 1139 (Restaurante Cheiro Verde)": {
+    "lon": -51.4716285,
+    "lat": -25.3939773,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "R. Dr. Laranjeiras, 1139 (Restaurante Cheiro Verde)"
+  },
+  "R. Barão Do Rio Branco, 2209 (Jv Equipamentos)": {
+    "lon": -51.4695024,
+    "lat": -25.3904907,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Barão do Rio Branco"
+  },
+  "Rua Doutor Laranjeiras 1338 (Antiga Fundação Proteger)": {
+    "lon": -51.4692137,
+    "lat": -25.3917142,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Doutor Laranjeiras"
+  },
+  "Av. Prefeito Moacyr Júlio Silvestri, 1660 (Havan)": {
+    "lon": -51.4805643,
+    "lat": -25.3930448,
+    "cep": "85025-500",
+    "bairro": null,
+    "osm_name": "Avenida Prefeito Moacir Júlio Silvestre"
+  },
+  "Av. Pref. Moacir J. Silvestre (Associação Atlética Santa Maria)": {
+    "lon": -51.4779678,
+    "lat": -25.3907786,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1301 (Ig. Sta Terezinha)"
+  },
+  "Av. Pref. Moacir J. Silvestre, 4029 (Sest Senat)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "Av. Prefeito Moacyr Júlio Silvestri, 2228 (Atacadão)": {
+    "lon": -51.4805643,
+    "lat": -25.3930448,
+    "cep": "85025-500",
+    "bairro": null,
+    "osm_name": "Avenida Prefeito Moacir Júlio Silvestre"
+  },
+  "Av. Pref. Moacir J. Silvestre, 4462 (Tijolão Vila Bela)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "Av. Pref. Moacir J. Silvestre, 2668 (Cmei Vila Bela)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "R. Luís Cúnico, 164 (Master Serviços)": {
+    "lon": -51.4977917,
+    "lat": -25.4013301,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Luis Cunico"
+  },
+  "Rua Luís Cúnico, 748 (Supermercado Dalpozzo)": {
+    "lon": -51.4977917,
+    "lat": -25.4013301,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Luis Cunico"
+  },
+  "R. Luís Cúnico,1056 (Gil Siqueira Barber Shop)": {
+    "lon": -51.4977917,
+    "lat": -25.4013301,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Luis Cunico"
+  },
+  "R. Luís Cúnico, 1138-1250": {
+    "lon": -51.4977917,
+    "lat": -25.4013301,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Luis Cunico"
+  },
+  "R. Salgado Filho, 2-96": {
+    "lon": -51.5019637,
+    "lat": -25.4061521,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Salgado Filho"
+  },
+  "R. Luís Cúnico, 1362-1470": {
+    "lon": -51.4977917,
+    "lat": -25.4013301,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Luis Cunico"
+  },
+  "R. Carlos Gomes, 118-238": {
+    "lon": -51.5028234,
+    "lat": -25.4045359,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Carlos Gomes"
+  },
+  "R. Flores Da Cunha, 162-260": {
+    "lon": -51.5055005,
+    "lat": -25.4049236,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Flores da Cunha"
+  },
+  "Av. Salvador Gomes, 1407": {
+    "lon": -51.501004,
+    "lat": -25.4077844,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Avenida Salvador Gomes"
+  },
+  "Av. Salvador Gomes, 1137-1207": {
+    "lon": -51.501004,
+    "lat": -25.4077844,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Avenida Salvador Gomes"
+  },
+  "Av. Salvador Gomes, 811-925 (P. Saúde Planalto)": {
+    "lon": -51.501004,
+    "lat": -25.4077844,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Avenida Salvador Gomes"
+  },
+  "Av. Manoel Antônio, 559 (Posto Bv)": {
+    "lon": -51.4877067,
+    "lat": -25.4120166,
+    "cep": "85035-240",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Manoel Antonio"
+  },
+  "Av. Manoel Antônio, 267 (Emanna Eletromóveis)": {
+    "lon": -51.4877067,
+    "lat": -25.4120166,
+    "cep": "85035-240",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Manoel Antonio"
+  },
+  "R. Guaíra, 5457 (Superpão Compre Mais)": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "R. Salvatore Renna, 875 (Unicentro)": {
+    "lon": -51.470279,
+    "lat": -25.406469,
+    "cep": "85015-430",
+    "bairro": "Santa Cruz",
+    "osm_name": "Universidade Estadual do Centro-Oeste - Câmpus Santa Cruz"
+  },
+  "R. Doutor Aragão De Mattos Leão Filho, 440 (Academia Usina)": {
+    "lon": -51.4806232,
+    "lat": -25.3927889,
+    "cep": "85025-500",
+    "bairro": null,
+    "osm_name": "Avenida Doutor Aragão de Mattos Leão Filho"
+  },
+  "R. Guaíra, 4849-4931 (Aabb)": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "R. Turíbio Gomes, 1886-1982": {
+    "lon": -51.4932342,
+    "lat": -25.3961422,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Avenida Turibio Gomes"
+  },
+  "R. Salvatore Renna, 557 (Sintrapav)": {
+    "lon": -51.4760075,
+    "lat": -25.4011021,
+    "cep": "85015-430",
+    "bairro": null,
+    "osm_name": "Rua Salvatore Renna"
+  },
+  "R. Cinco De Outubro, 2568 (Mercado Bem Bom)": {
+    "lon": -51.4584999,
+    "lat": -25.4009908,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Rua 5 de Outubro"
+  },
+  "R. Guaíra, 5105-5207": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "R. 5 De Outubro, 1752-1880": {
+    "lon": -51.4584999,
+    "lat": -25.4009908,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Rua 5 de Outubro"
+  },
+  "R. Leonardo Coblinski, 829-889": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Leonardo Coblinski, 429-503": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Cristina Zimmer, 169": {
+    "lon": -51.4684755,
+    "lat": -25.4178607,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Cristina Zimmer"
+  },
+  "R. Cristina Zimmer, 417": {
+    "lon": -51.4684755,
+    "lat": -25.4178607,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Cristina Zimmer"
+  },
+  "R. Cassiano Ricardo, 125-235": {
+    "lon": -51.4728957,
+    "lat": -25.4210036,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Cassiano Ricardo"
+  },
+  "R. Blumenau, 270-340": {
+    "lon": -51.4705158,
+    "lat": -25.4196032,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Blumenau"
+  },
+  "R. Santo Alberti, 488-614": {
+    "lon": -51.466371,
+    "lat": -25.4153877,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Santo Alberti"
+  },
+  "R. Santo Alberti, 48 (Revenda Ultragas)": {
+    "lon": -51.466371,
+    "lat": -25.4153877,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Santo Alberti"
+  },
+  "R. Santo Alberti, 295": {
+    "lon": -51.466371,
+    "lat": -25.4153877,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Santo Alberti"
+  },
+  "Av. Vereador Rubéns Siqueira Ribas, 3136 (Estrada Colonial)": {
+    "lon": -51.4545868,
+    "lat": -25.4029809,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "R. Xingu, 120-232": {
+    "lon": -51.4716027,
+    "lat": -25.4203939,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Xingu"
+  },
+  "R. Blumenau, 341-411": {
+    "lon": -51.4705158,
+    "lat": -25.4196032,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Blumenau"
+  },
+  "Av. Ver. Rubens S. Ribas, 256": {
+    "lon": -51.4877699,
+    "lat": -25.4243669,
+    "cep": "85027-250",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Governador Serafim Ribas"
+  },
+  "Av. Ver. Rubéns S. Ribas, 3681-3705": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubéns S. Ribas, 3024-3158": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubéns S. Ribas, 2498-2558": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubéns S. Ribas, 4836-4958": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubéns S. Ribas, 3160-3610": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubens S. Ribas, 5094-5134(Igreja São João Batista)": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubens S. Ribas, 5708-5780": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubéns S. Ribas, 3160 (Serra Do Jordão)": {
+    "lon": -51.4681492,
+    "lat": -25.4247575,
+    "cep": "85023-330",
+    "bairro": "Jordão",
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "Av. Ver. Rubens S. Ribas, 75-237 (Pq. Jordão)": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubns S. Ribas, 5707-5779": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubens S. Ribas, 5330-5416(Ubs Jordão)": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubens S. Ribas, 6801-6845": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubéns S. Ribas, 5695-5793": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubens S. Ribas, 6521-6653": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubens S. Ribas, 4709-5199": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av.Vereador Rubéns Siqueira Ribas,2855 (Apae)": {
+    "lon": -51.4545868,
+    "lat": -25.4029809,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "R. Engenheiro Antônio Rebouças, 201 (Escola Santa Cruz)": {
+    "lon": -51.4757739,
+    "lat": -25.3972469,
+    "cep": "85010-300",
+    "bairro": null,
+    "osm_name": "Rua Engenheiro Antonio Rebouças"
+  },
+  "R. Generoso De Paula Bastos, 1675 (Soccer Five)": {
+    "lon": -51.4612697,
+    "lat": -25.4049977,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Rua Generoso de Paula Bastos"
+  },
+  "R. Generoso De Paula Bastos, 1420 (Jély Modas)": {
+    "lon": -51.4612697,
+    "lat": -25.4049977,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Rua Generoso de Paula Bastos"
+  },
+  "R. Capitão Rocha, 323 (Benvenutti Corretora De Seguros)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "Av. Ver. Rubéns S. Ribas, 4117-4345": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubens S. Ribas, 3999-4059": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubéns Siqueira Ribas, 3511-3679": {
+    "lon": -51.4545868,
+    "lat": -25.4029809,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "R. Santo Alberti, 250-338": {
+    "lon": -51.466371,
+    "lat": -25.4153877,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Santo Alberti"
+  },
+  "R. Santo Alberti, 52 (Revenda Ultragas)": {
+    "lon": -51.466371,
+    "lat": -25.4153877,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Santo Alberti"
+  },
+  "R. João Keller, 35 (Espaço Do Cidadão Profa. Abadia Terezinha Jacob)": {
+    "lon": -51.489438,
+    "lat": -25.3517681,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua João Keller"
+  },
+  "R. João Keller, 425 (Renova Odontologia)": {
+    "lon": -51.489438,
+    "lat": -25.3517681,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua João Keller"
+  },
+  "R. Visconde De Taunay, 646 (Paróquia São Pedro E São Paulo)": {
+    "lon": -51.4961714,
+    "lat": -25.3537746,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Visconde de Taunay"
+  },
+  "R. Blumenau, 124-254": {
+    "lon": -51.4705158,
+    "lat": -25.4196032,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Blumenau"
+  },
+  "R. Francisco Contini, 177 (Mercado Eskinão)": {
+    "lon": -51.4956871,
+    "lat": -25.3537047,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Francisco Contini"
+  },
+  "R. Visconde De Taunay, 868 (Col. Est. Dulce Maschio)": {
+    "lon": -51.4961714,
+    "lat": -25.3537746,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Visconde de Taunay"
+  },
+  "R. Ipê, 195 (Industrial)": {
+    "lon": -51.493494,
+    "lat": -25.3522204,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Ipê"
+  },
+  "R. João Keller, 433 (Restaurante La Casa)": {
+    "lon": -51.489438,
+    "lat": -25.3517681,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua João Keller"
+  },
+  "R. João Keller, 370 (Casa Do Vidraceiro)": {
+    "lon": -51.489438,
+    "lat": -25.3517681,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua João Keller"
+  },
+  "R. João Pitner, 99 (Escola Mun. Robeto C. E Silva)": {
+    "lon": -51.4885882,
+    "lat": -25.3956674,
+    "cep": "85015-550",
+    "bairro": null,
+    "osm_name": "Rua João Pitner"
+  },
+  "R. Fredolin Worn, 422 (Érico Maq. Agricolas)": {
+    "lon": -51.4903414,
+    "lat": -25.3959519,
+    "cep": "85015-550",
+    "bairro": null,
+    "osm_name": "Rua Fredolin Worn"
+  },
+  "R. Turíbio Gomes, 442-556 (Ginásio Vila Bela)": {
+    "lon": -51.4889584,
+    "lat": -25.3984112,
+    "cep": "85015-550",
+    "bairro": null,
+    "osm_name": "Rua Hipólito Gomes"
+  },
+  "Av. Pref. Moacir J. Silvestre (Viaduto Ferroeste)": {
+    "lon": -51.4779678,
+    "lat": -25.3907786,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1301 (Ig. Sta Terezinha)"
+  },
+  "R. Luís Cúnico, 1047-1121": {
+    "lon": -51.4977917,
+    "lat": -25.4013301,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Luis Cunico"
+  },
+  "R. Luís Cúnico, 748": {
+    "lon": -51.4977917,
+    "lat": -25.4013301,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Luis Cunico"
+  },
+  "R. Luís Cúnico, 164": {
+    "lon": -51.4977917,
+    "lat": -25.4013301,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Luis Cunico"
+  },
+  "Av. Pref. Moacir J. Silvestre, 3288 (Associação Força E Luz)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "Av. Pref. Moacir J. Silvestre, 6745-6915": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "R. Turíbio Gomes, 810-926 (Paróquia Divino Espirito Santo)": {
+    "lon": -51.4932342,
+    "lat": -25.3961422,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Avenida Turibio Gomes"
+  },
+  "R. Cel. Antônio Vilaça, 228-292": {
+    "lat": -25.3727,
+    "lon": -51.4582,
+    "cep": "85010-000",
+    "bairro": "Aeroporto",
+    "osm_name": "Rua Cel. Antônio Vilaça"
+  },
+  "Av. Pref. Moacir J. Silvestre, 7114 (Condomínio Villagio Firenze)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "Av. Pref. Moacir J. Silvestre, 7414-7458": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "R. Luís Pletz Cleve (Col. Est. Ver. Heitor Rocha Kramer)": {
+    "lon": -51.5150895,
+    "lat": -25.4039241,
+    "cep": "85031-141",
+    "bairro": null,
+    "osm_name": "Rua Luis Pletz Cleve"
+  },
+  "R. Antônio Baraúna (Campo De Futebol)": {
+    "lon": -51.5200678,
+    "lat": -25.4036073,
+    "cep": "85031-141",
+    "bairro": null,
+    "osm_name": "Rua Antônio Barauna"
+  },
+  "Av. Thomé De Souza, 448 (Mercado Ponto Barateiro)": {
+    "lon": -51.5204915,
+    "lat": -25.3986404,
+    "cep": "85031-141",
+    "bairro": null,
+    "osm_name": "Rua Thomé de Souza"
+  },
+  "Rua Antônio Baraúna 499": {
+    "lon": -51.5200678,
+    "lat": -25.4036073,
+    "cep": "85031-141",
+    "bairro": null,
+    "osm_name": "Rua Antônio Barauna"
+  },
+  "Rua Pedro Américo, 389 (Gula Sorveteria)": {
+    "lon": -51.5194019,
+    "lat": -25.4032297,
+    "cep": "85031-141",
+    "bairro": null,
+    "osm_name": "Rua Pedro Américo"
+  },
+  "R. Governador Valadares, 2-56": {
+    "lon": -51.5202669,
+    "lat": -25.3977615,
+    "cep": "85031-141",
+    "bairro": null,
+    "osm_name": "Rua Governador Valadares"
+  },
+  "R. Luís Pletz Cleve, 397-457": {
+    "lon": -51.5150895,
+    "lat": -25.4039241,
+    "cep": "85031-141",
+    "bairro": null,
+    "osm_name": "Rua Luis Pletz Cleve"
+  },
+  "R. Paulo Kohler 45 (Condomínio Jd. Patrícia)": {
+    "lon": -51.5151384,
+    "lat": -25.4043971,
+    "cep": "85031-141",
+    "bairro": null,
+    "osm_name": "Rua Paulo Kohler"
+  },
+  "R. D, 78-118 (Vila Mariana)": {
+    "lon": -49.306457,
+    "lat": -25.4808394,
+    "cep": "81070-110",
+    "bairro": "Portão",
+    "osm_name": "Rua Domingos Batista Vizoli"
+  },
+  "Rod. Eng. Tancredo Benghi, 755": {
+    "lon": -51.4923733,
+    "lat": -25.4132697,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rodovia Engenheiro Tancredo Benghi"
+  },
+  "Av. Pref. Moacir J. Silvestre, 7413": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "Av. Pref. Moacir J. Silvestre, 4865 (Condomínio Villagio Firenze)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "Av. Pref. Moacir J. Silvestre, 6917-7015 (Condomínio Villagio Firenze)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "Av. Pref. Moacir J. Silvestre, 6045 (Loteamento João Gelinski)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "Av. Pref. Moacir J. Silvestre, 3305 (Agroferter)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "R. Fredolin Worn, 363-503 (Érico Maq. Agricolas)": {
+    "lon": -51.4903414,
+    "lat": -25.3959519,
+    "cep": "85015-550",
+    "bairro": null,
+    "osm_name": "Rua Fredolin Worn"
+  },
+  "R. João Pitner, 255 (Depósito Sucata Automotiva)": {
+    "lon": -51.4885882,
+    "lat": -25.3956674,
+    "cep": "85015-550",
+    "bairro": null,
+    "osm_name": "Rua João Pitner"
+  },
+  "Av. Pref. Moacir J. Silvestre, 1977 (Sest Senat)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "R. Luís Pletz Cleve, 184": {
+    "lon": -51.5150895,
+    "lat": -25.4039241,
+    "cep": "85031-141",
+    "bairro": null,
+    "osm_name": "Rua Luis Pletz Cleve"
+  },
+  "Rua Luís Cúnico, 1184": {
+    "lon": -51.4977917,
+    "lat": -25.4013301,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Luis Cunico"
+  },
+  "R. Cel. Antônio Vilaça, 445-553": {
+    "lat": -25.4047,
+    "lon": -51.4542,
+    "cep": "85010-000",
+    "bairro": "Aeroporto",
+    "osm_name": "Rua Cel. Antônio Vilaça"
+  },
+  "R. Turíbio Gomes, 695-817 (Caic)": {
+    "lon": -51.4932342,
+    "lat": -25.3961422,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Avenida Turibio Gomes"
+  },
+  "R. Turíbio Gomes, 385-419 (Condomínio Cúnico)": {
+    "lon": -51.4932342,
+    "lat": -25.3961422,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Avenida Turibio Gomes"
+  },
+  "Av. Pref. Moacir J. Silvestre, 84-1617 (Cmei Vila Bela)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "Av. Pref. Moacir J. Silvestre, 3005 (Eurolimp)": {
+    "lon": -51.4776485,
+    "lat": -25.3902985,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Av. Pref. Moacir J. Silvestre, 1297 (Col. Tupy Pinheiro)"
+  },
+  "R. Francisco De Assis, 230-326": {
+    "lon": -51.4757391,
+    "lat": -25.4129176,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Francisco de Assis"
+  },
+  "R. Francisco De Assis, 402-464 (Acre Associação Unicentro)": {
+    "lon": -51.4757391,
+    "lat": -25.4129176,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Francisco de Assis"
+  },
+  "R. Leonardo Coblinski, 780-880": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Leonardo Coblinski, 478-550 (Condomínio Piemonte)": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Leonardo Coblinski, 180-342": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Leonardo Coblinski, 882-980.": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Miguel Gelinski, 75-149": {
+    "lon": -51.487835,
+    "lat": -25.4151816,
+    "cep": "85027-250",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Miguel Gelinski"
+  },
+  "R. Romeu L. C. Bastos, 91": {
+    "lon": -51.4871576,
+    "lat": -25.4134952,
+    "cep": "85035-240",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Romeu Luis Ciscato Bastos"
+  },
+  "R. Cândido Xavier, 606 (Igreja Quadrangular)": {
+    "lon": -51.4875519,
+    "lat": -25.41126,
+    "cep": "85035-240",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Cândido Xavier"
+  },
+  "R. Salvador Scheneider  (Tancredão)": {
+    "lon": -51.4885036,
+    "lat": -25.4043104,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Salvador Scheneider"
+  },
+  "Rua Doutor Péricles Silva Costa, 168 (Condomínio Don Vitor)": {
+    "lon": -51.490682,
+    "lat": -25.4054915,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Doutor Pericles Silva da Costa"
+  },
+  "R. Dr. João Ferreira Neves, 200": {
+    "lon": -51.4977231,
+    "lat": -25.3980334,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Doutor João Ferreira Neves"
+  },
+  "R. Profa. Leni M Jacobe, 2-140": {
+    "lon": -51.4880132,
+    "lat": -25.416177,
+    "cep": "85027-250",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Professora Leni Jacob"
+  },
+  "R. Dr. João F. Neves, 445": {
+    "lon": -51.4977231,
+    "lat": -25.3980334,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Doutor João Ferreira Neves"
+  },
+  "R. Salvador Scheneider (Viga Forte)": {
+    "lon": -51.4885036,
+    "lat": -25.4043104,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Salvador Scheneider"
+  },
+  "R. Roberto Teixeira Marcondes, 330": {
+    "lon": -51.4965306,
+    "lat": -25.4055534,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Roberto Teixeira Marcondes"
+  },
+  "R. Roberto T. Marcondes, 1-91 (Comercial Brasília)": {
+    "lon": -51.4965306,
+    "lat": -25.4055534,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Roberto Teixeira Marcondes"
+  },
+  "R. Turíbio Gomes, 1041-1155 (Mercado Bertoni)": {
+    "lon": -51.4932342,
+    "lat": -25.3961422,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Avenida Turibio Gomes"
+  },
+  "R. Cândido Xavier, 578-636  (Igreja Quadrangular)": {
+    "lon": -51.4875519,
+    "lat": -25.41126,
+    "cep": "85035-240",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Cândido Xavier"
+  },
+  "R. Romeu L. C. Bastos, 26-110": {
+    "lon": -51.4871576,
+    "lat": -25.4134952,
+    "cep": "85035-240",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Romeu Luis Ciscato Bastos"
+  },
+  "R. Miguel Gelinski, 76-150": {
+    "lon": -51.487835,
+    "lat": -25.4151816,
+    "cep": "85027-250",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Miguel Gelinski"
+  },
+  "R. Leonardo Coblinski, 2017 (Mercado Realeza)": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Profa. Leni M. Jacobe, 17": {
+    "lon": -51.4710333,
+    "lat": -25.3507923,
+    "cep": "85055-040",
+    "bairro": null,
+    "osm_name": "Colégio Estadual Professora Leni Marlene Jacob"
+  },
+  "Rua Leonardo Coblinski, 2051": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Leonardo Coblinski, 881-979": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Leonardo Coblinski, 779-879": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Leonardo Coblinski, 477-549 (Condomínio Piemonte)": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Leonardo Coblinski,180-342": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. Francisco De Assis, 401-463 (Acre Associação Unicentro)": {
+    "lon": -51.4757391,
+    "lat": -25.4129176,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Francisco de Assis"
+  },
+  "R. Roberto Teixeira Marcondes, 325": {
+    "lon": -51.4965306,
+    "lat": -25.4055534,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Roberto Teixeira Marcondes"
+  },
+  "R. Francisco De Assis, 229-325": {
+    "lon": -51.4757391,
+    "lat": -25.4129176,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Francisco de Assis"
+  },
+  "R. Coronel Saldanha, 2757 (Colégio Newton Felipe Albach)": {
+    "lon": -51.4652166,
+    "lat": -25.3960813,
+    "cep": "85010-280",
+    "bairro": null,
+    "osm_name": "Rua Coronel Saldanha"
+  },
+  "R. Coronel Saldanha, 3393 (Edifício Morar Bem)": {
+    "lon": -51.4652166,
+    "lat": -25.3960813,
+    "cep": "85010-280",
+    "bairro": null,
+    "osm_name": "Rua Coronel Saldanha"
+  },
+  "R. Coronel Saldanha, 3627 (Passagem De Nível)": {
+    "lon": -51.4652166,
+    "lat": -25.3960813,
+    "cep": "85010-280",
+    "bairro": null,
+    "osm_name": "Rua Coronel Saldanha"
+  },
+  "R. Coronel Saldanha, 81 (Mercearia Bom Jesus)": {
+    "lon": -51.4652166,
+    "lat": -25.3960813,
+    "cep": "85010-280",
+    "bairro": null,
+    "osm_name": "Rua Coronel Saldanha"
+  },
+  "R. Teixeira Soares, 128-178": {
+    "lon": -51.4778636,
+    "lat": -25.4059525,
+    "cep": "85015-430",
+    "bairro": null,
+    "osm_name": "Rua Teixeira Soares"
+  },
+  "R. Pedro Virtuoso, 117-169": {
+    "lon": -49.2086684,
+    "lat": -25.4127278,
+    "cep": "82820-110",
+    "bairro": "Bairro Alto",
+    "osm_name": "Rua Pedro Eloy de Souza"
+  },
+  "R. XV De Novembro, 5747 (Escola Hipolita Nunes Oliveira)": {
+    "lon": -51.4636176,
+    "lat": -25.391071,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua XV de Novembro"
+  },
+  "R. Cel. Saldanha, 2387-2475": {
+    "lon": -51.4652166,
+    "lat": -25.3960813,
+    "cep": "85010-280",
+    "bairro": null,
+    "osm_name": "Rua Coronel Saldanha"
+  },
+  "R. Guaíra, 5588 (Superpão Compre Mais)": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "R. Salvador Scheneider, 215-325": {
+    "lon": -51.4885036,
+    "lat": -25.4043104,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Salvador Scheneider"
+  },
+  "R. Barão Do Rio Branco, 2873-2917": {
+    "lon": -51.4695024,
+    "lat": -25.3904907,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Barão do Rio Branco"
+  },
+  "R. Barão Do Rio Branco, 2740": {
+    "lon": -51.4695024,
+    "lat": -25.3904907,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Barão do Rio Branco"
+  },
+  "R. Padre Chagas, 4533 (Barragem Pq. Lago)": {
+    "lon": -51.464444,
+    "lat": -25.3906525,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua Padre Chagas"
+  },
+  "R. Padre Chagas, 4120 (Ponte Pênsil Pq. Lago)": {
+    "lon": -51.464444,
+    "lat": -25.3906525,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua Padre Chagas"
+  },
+  "Br-277 351": {
+    "lon": -49.7254987,
+    "lat": -25.4693943,
+    "cep": "83600-970",
+    "bairro": "São Luiz do Purunã",
+    "osm_name": "Saída BR277 >>> Guarapuava > Foz do Iguaçú"
+  },
+  "Rua Marechal Deodoro, 126-158": {
+    "lon": -51.4879696,
+    "lat": -25.4070521,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Marechal Deodoro"
+  },
+  "R. Mal. Deodoro, 524": {
+    "lon": -51.4879696,
+    "lat": -25.4070521,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Marechal Deodoro"
+  },
+  "R. Sergipe, 1200 (Madeireira Flor Da Serra)": {
+    "lon": -51.4775853,
+    "lat": -25.3642606,
+    "cep": "85045-302",
+    "bairro": null,
+    "osm_name": "Rua Sergipe"
+  },
+  "R. Mário Virmond, 111 (Santuario Da Divina E Trina Ternura)": {
+    "lon": -51.4988427,
+    "lat": -25.3618821,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Mário Virmond"
+  },
+  "R. Mário Virmond, 546 (Colégio Agrícola)": {
+    "lon": -51.4988427,
+    "lat": -25.3618821,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Mário Virmond"
+  },
+  "R. Mário Virmond, 959 (Chácara São José)": {
+    "lon": -51.4988427,
+    "lat": -25.3618821,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Mário Virmond"
+  },
+  "R. Mário Virmond, 996 (Jr Cavacos)": {
+    "lon": -51.4988427,
+    "lat": -25.3618821,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Mário Virmond"
+  },
+  "R. Mário Virmond, 1912 (Laminado Joia)": {
+    "lon": -51.4988427,
+    "lat": -25.3618821,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Mário Virmond"
+  },
+  "R. Mário Virmond, 325 (Loteamento Dona Ivone)": {
+    "lon": -51.4988427,
+    "lat": -25.3618821,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Mário Virmond"
+  },
+  "R. Mário Virmond, 695 (Chácara Recanto Feliz)": {
+    "lon": -51.4988427,
+    "lat": -25.3618821,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Mário Virmond"
+  },
+  "R. Diadema, 443 (Industrial)": {
+    "lon": -51.4952636,
+    "lat": -25.3500755,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Diadema"
+  },
+  "R. Ipê, 29 (Adonai Barbershop & Salão)": {
+    "lon": -51.493494,
+    "lat": -25.3522204,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Ipê"
+  },
+  "R. João Hurmanski, 122 (Panificadora Almeida)": {
+    "lon": -51.4916698,
+    "lat": -25.3485272,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua João Humansk"
+  },
+  "R. Waldemar Moss, 565 (Cruzamento Com R. Ilha Do Marajó)": {
+    "lon": -51.4951342,
+    "lat": -25.3516775,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Waldemar Moss"
+  },
+  "R. Miguel Losso, 1017 (Dss Terraplenagem)": {
+    "lon": -51.4953171,
+    "lat": -25.3431606,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Miguel Losso"
+  },
+  "R. Miguel Losso, 1221 (Wx Serviços Lataria)": {
+    "lon": -51.4953171,
+    "lat": -25.3431606,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Miguel Losso"
+  },
+  "R. Miguel Losso, 431 (Linknet)": {
+    "lon": -51.4953171,
+    "lat": -25.3431606,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Miguel Losso"
+  },
+  "R. Juarez Martins Lustosa, 332 (Associação Perola Do Oeste)": {
+    "lon": -51.4902465,
+    "lat": -25.3565601,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Juarez Martins Lustosa"
+  },
+  "R. Juarez Martins Lustosa, 614 (Xarquinho)": {
+    "lon": -51.4902465,
+    "lat": -25.3565601,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Juarez Martins Lustosa"
+  },
+  "R. Corumbá, 45 (Cras 1 Xarquinho)": {
+    "lon": -49.1989659,
+    "lat": -25.3834896,
+    "cep": "82630-305",
+    "bairro": "Atuba",
+    "osm_name": "Rua Guarapuava"
+  },
+  "R. José Zampiere Filho, 265 (Repinho Reflorestadora Compensados)": {
+    "lon": -51.4893584,
+    "lat": -25.362637,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua José Zampier Filho"
+  },
+  "R. Professora Laura Pacheco Bastos, 2882 (Cd Mufato)": {
+    "lon": -51.4859094,
+    "lat": -25.3605034,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Professora Laura Pacheco Bastos"
+  },
+  "R. Professora Laura Pacheco Bastos, 201 (Retipaula)": {
+    "lon": -51.4859094,
+    "lat": -25.3605034,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Professora Laura Pacheco Bastos"
+  },
+  "R. Ver. Sebastião De C. Ribas, 201 (Móveis Arúna)": {
+    "lon": -51.4850685,
+    "lat": -25.3610524,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Centro de Distribuição Superpão"
+  },
+  "R. Saldanha Marinho, 861 (Unifort Materiais De Construção)": {
+    "lon": -51.4740661,
+    "lat": -25.3907254,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Saldanha Marinho"
+  },
+  "R. Wycaro Elias Domingues De Deus, 22 (Rotatória Arlindo Antoneli)": {
+    "lon": -51.492235,
+    "lat": -25.3583853,
+    "cep": "85045-500",
+    "bairro": null,
+    "osm_name": "Rua Wycaro Elias Domingues de Deus"
+  },
+  "R. Saldanha Marinho, 354 (Praça Da Ucrânia)": {
+    "lon": -51.461103,
+    "lat": -25.4027115,
+    "cep": "85012-280",
+    "bairro": "Trianon",
+    "osm_name": "Rua Saldanha Marinho"
+  },
+  "Av. Vereador Rubéns Siqueira Ribas, 2804 (Cmei Santa Cruz)": {
+    "lon": -51.4545868,
+    "lat": -25.4029809,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "R. Saldanha Marinho, 561 (Hospital Unimed)": {
+    "lon": -51.4699484,
+    "lat": -25.3945238,
+    "cep": "85010-300",
+    "bairro": null,
+    "osm_name": "Rua Saldanha Marinho"
+  },
+  "R. Rinaldo Saciloto, 290-408": {
+    "lon": -51.4680127,
+    "lat": -25.4184957,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Rinaldo Saciloto"
+  },
+  "R. Arthur Menarim, 73-135": {
+    "lon": -51.4686117,
+    "lat": -25.4220381,
+    "cep": "85023-330",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Arthur Menarim"
+  },
+  "R. Leonardo Coblinski, 490a": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "Av. Vereador Rubéns Siqueira Ribas, 491 (Condomínio Vale Do Jordão)": {
+    "lon": -51.4545868,
+    "lat": -25.4029809,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "Av. Vereador Rubéns Siqueira Ribas, 2436 (Supermercado Parteka)": {
+    "lon": -51.4545868,
+    "lat": -25.4029809,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "R. Leonardo Coblinski, 854": {
+    "lon": -51.4665494,
+    "lat": -25.415406,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Leonardo Coblinski"
+  },
+  "R. 5 De Outubro, 2855": {
+    "lon": -51.4584999,
+    "lat": -25.4009908,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Rua 5 de Outubro"
+  },
+  "R. Cinco De Outubro, 2622 (Mercado Bem Bom)": {
+    "lon": -51.4584999,
+    "lat": -25.4009908,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Rua 5 de Outubro"
+  },
+  "R. Basilio C. Sobrinho, 63-131": {
+    "lon": -51.4694284,
+    "lat": -25.4219391,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Rua Basílio Sobrinho"
+  },
+  "R. Dezessete De Julho, 1927 (Supermercado Santa Cruz)": {
+    "lon": -51.4566051,
+    "lat": -25.3978522,
+    "cep": "85070-175",
+    "bairro": null,
+    "osm_name": "Rua 17 de Julho"
+  },
+  "R. Dezessete De Julho, 2171 (Panificadora E Confeitaria Surpresa)": {
+    "lon": -51.4566051,
+    "lat": -25.3978522,
+    "cep": "85070-175",
+    "bairro": null,
+    "osm_name": "Rua 17 de Julho"
+  },
+  "R. Dezessete De Julho 159 (Academia Korpus)": {
+    "lon": -51.4566051,
+    "lat": -25.3978522,
+    "cep": "85070-175",
+    "bairro": null,
+    "osm_name": "Rua 17 de Julho"
+  },
+  "R. Joaquim M. De Souza, 447 (Associação Atlética Santa Maria)": {
+    "lon": -51.4977192,
+    "lat": -25.3920209,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Joaquim Manoel de Souza"
+  },
+  "R. Aragão De M. Leão, 2568-2630": {
+    "lon": -51.4533744,
+    "lat": -25.3642824,
+    "cep": "85063-000",
+    "bairro": null,
+    "osm_name": "Rua Aragão de Mattos Leão"
+  },
+  "R. Denise Ribas De Campos (Direita)": {
+    "lon": -51.4524594,
+    "lat": -25.3869502,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Francisco de Camargo Ribas"
+  },
+  "Av. Aragão De M. Leão, 2960-3042": {
+    "lon": -51.4973925,
+    "lat": -25.3921328,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "R. Aragão de M. Leão, 1703 (Atitude Eventos)"
+  },
+  "Av. Aragão De M. Leão, 3376": {
+    "lon": -51.4973925,
+    "lat": -25.3921328,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "R. Aragão de M. Leão, 1703 (Atitude Eventos)"
+  },
+  "Av. Aragão De M. Leão, 3600-3694": {
+    "lon": -51.4973925,
+    "lat": -25.3921328,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "R. Aragão de M. Leão, 1703 (Atitude Eventos)"
+  },
+  "Av. Pedro Pereira, 168-284": {
+    "lon": -51.518324,
+    "lat": -25.3915664,
+    "cep": "85030-000",
+    "bairro": null,
+    "osm_name": "Avenida Pedro Pereira"
+  },
+  "Rua Assis Chateaubriand, 527": {
+    "lon": -51.5176235,
+    "lat": -25.3905121,
+    "cep": "85030-000",
+    "bairro": null,
+    "osm_name": "Rua Assis Chateaubriand"
+  },
+  "R. Clevelândia, 102": {
+    "lon": -51.5061324,
+    "lat": -25.3848557,
+    "cep": "85030-230",
+    "bairro": null,
+    "osm_name": "Rua Clevelândia"
+  },
+  "R. Matelândia, 85-147": {
+    "lon": -51.5038039,
+    "lat": -25.3855913,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Matelândia"
+  },
+  "R. Augusto Kremer, 165-221": {
+    "lon": -51.5021859,
+    "lat": -25.3796624,
+    "cep": "85040-167",
+    "bairro": null,
+    "osm_name": "Rua Augusto Kremer"
+  },
+  "365-R. Judite Bastos De Oliveira, 531-557 - Jardim Das Americas": {
+    "lon": -51.5027378,
+    "lat": -25.3852769,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Judite Bastos de Oliveira"
+  },
+  "Avenida Mary Thompson Milazzo, 1151": {
+    "lat": -25.3947,
+    "lon": -51.4842,
+    "cep": "85010-000",
+    "bairro": "Jd Das Americas",
+    "osm_name": "Avenida Mary Thompson Milazzo"
+  },
+  "366-R. Padre Adolfo Kolping, 328-384 - Vila Carli": {
+    "lon": -51.5010273,
+    "lat": -25.3819108,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Padre Adolfo Kolping"
+  },
+  "Av. Mari Thompson Milazo, 807-837": {
+    "lat": -25.392699999999998,
+    "lon": -51.4842,
+    "cep": "85010-000",
+    "bairro": "Jd Das Americas",
+    "osm_name": "Avenida Mari Thompson Milazo"
+  },
+  "R. Jorge S Do Amaral, 163-315": {
+    "lon": -51.4995396,
+    "lat": -25.3790779,
+    "cep": "85040-167",
+    "bairro": null,
+    "osm_name": "Rua Jorge Silveira do Amaral"
+  },
+  "R. Judite Bastos De Oliveira, 1164-1274": {
+    "lon": -51.5027378,
+    "lat": -25.3852769,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Judite Bastos de Oliveira"
+  },
+  "R. Judite Bastos De Oliveira, 570": {
+    "lon": -51.5027378,
+    "lat": -25.3852769,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Judite Bastos de Oliveira"
+  },
+  "R. Judite Bastos De Oliveira, 676-736": {
+    "lon": -51.5027378,
+    "lat": -25.3852769,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Judite Bastos de Oliveira"
+  },
+  "R. Judite Bastos De Oliveira, 604": {
+    "lon": -51.5027378,
+    "lat": -25.3852769,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Judite Bastos de Oliveira"
+  },
+  "Av. Aragão De M. Leão, 2511-2575": {
+    "lon": -51.4973925,
+    "lat": -25.3921328,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "R. Aragão de M. Leão, 1703 (Atitude Eventos)"
+  },
+  "R. Denise Ribas De Campos (Esquerda)": {
+    "lon": -51.4524594,
+    "lat": -25.3869502,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Francisco de Camargo Ribas"
+  },
+  "R. XV De Novembro, 5565 (Posto Box Petrobrás)": {
+    "lon": -51.4636176,
+    "lat": -25.391071,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua XV de Novembro"
+  },
+  "R. Anita Garibaldi, 1566 (Lot. Mansani Teixeira)": {
+    "lon": -51.4486369,
+    "lat": -25.3793649,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Anita Garibaldi"
+  },
+  "R. Anita Garibaldi, 21 (Loja Da Gra)": {
+    "lon": -51.4486369,
+    "lat": -25.3793649,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Anita Garibaldi"
+  },
+  "R. Arizona, 987 (Jardim Araucária)": {
+    "lon": -51.443509,
+    "lat": -25.3773905,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Arizona"
+  },
+  "R. Arizona, 779 (Ubs Jd. Araucária)": {
+    "lon": -51.443509,
+    "lat": -25.3773905,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Arizona"
+  },
+  "R. Dos Butiazeiros, 364 (R. Mathias Galan)": {
+    "lon": -51.4419767,
+    "lat": -25.3755818,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua dos Butiazeiros"
+  },
+  "R. Dos Butiazeiros, 950 (16º Bpm)": {
+    "lon": -51.4419767,
+    "lat": -25.3755818,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua dos Butiazeiros"
+  },
+  "Av. Bento De Camargo Ribas, 564 (Esf Adão Kaminski)": {
+    "lon": -51.4504758,
+    "lat": -25.3673991,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Avenida Bento Camargo Ribas"
+  },
+  "R. Agenor Maciel Ribas, 104 (Mercado Bon Fim)": {
+    "lon": -51.4484583,
+    "lat": -25.3698503,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Agenor Maciel Ribas"
+  },
+  "R. João Xxiii, 26 (Campo De Futebol)": {
+    "lon": -51.4515189,
+    "lat": -25.3718766,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua João XXIII"
+  },
+  "Rua Dalva Ribas Müler, 204": {
+    "lon": -51.4498335,
+    "lat": -25.3717586,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Dalva Ribas Muller"
+  },
+  "R. Presidente Costa E Silva, 256 (Lot. Dona Emília)": {
+    "lon": -51.4573373,
+    "lat": -25.3742507,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Rua Presidente Costa e Silva"
+  },
+  "R. João Alberto Horst, 109 (Lot. Humberto Fiori)": {
+    "lon": -51.4549417,
+    "lat": -25.3735449,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua João Alberto Horst"
+  },
+  "Av. Presidente Castelo Branco, 335 (São Francisco Agropecuária)": {
+    "lon": -51.4536495,
+    "lat": -25.3782126,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Avenida Castelo Branco"
+  },
+  "R. Bernardino R. Lacerda, 1382-1478": {
+    "lon": -51.4536461,
+    "lat": -25.3782725,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Bernardino Roseira de Lacerda"
+  },
+  "R. Guaíra, 1447": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "Rua Guaíra, 2035": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "Jordão": {
+    "lon": -51.4599379,
+    "lat": -25.4354597,
+    "cep": "85023-330",
+    "bairro": null,
+    "osm_name": "Jordão"
+  },
+  "R. Guaíra, 2582 (Posto Brasil Master)": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "Av. Ver. Rubens S. Ribas, 333-583": {
+    "lon": -51.4681492,
+    "lat": -25.4247575,
+    "cep": "85023-330",
+    "bairro": "Jordão",
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "Afonso Camargo 28": {
+    "lon": -51.435692,
+    "lat": -25.4435804,
+    "cep": "85023-330",
+    "bairro": "Jordão",
+    "osm_name": "Afonso Camargo"
+  },
+  "Afonso Camargo 30": {
+    "lon": -51.435692,
+    "lat": -25.4435804,
+    "cep": "85023-330",
+    "bairro": "Jordão",
+    "osm_name": "Afonso Camargo"
+  },
+  "Afonso Camargo 29": {
+    "lon": -51.435692,
+    "lat": -25.4435804,
+    "cep": "85023-330",
+    "bairro": "Jordão",
+    "osm_name": "Afonso Camargo"
+  },
+  "Afonso Camargo 33": {
+    "lon": -51.435692,
+    "lat": -25.4435804,
+    "cep": "85023-330",
+    "bairro": "Jordão",
+    "osm_name": "Afonso Camargo"
+  },
+  "Afonso Camargo 32": {
+    "lon": -51.435692,
+    "lat": -25.4435804,
+    "cep": "85023-330",
+    "bairro": "Jordão",
+    "osm_name": "Afonso Camargo"
+  },
+  "Afonso Camargo 31": {
+    "lon": -51.435692,
+    "lat": -25.4435804,
+    "cep": "85023-330",
+    "bairro": "Jordão",
+    "osm_name": "Afonso Camargo"
+  },
+  "Av. Ver. Rubens S. Ribas, 715-1017": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubens S. Ribas, 716-1018": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "Av. Ver. Rubens S. Ribas, 715 (Pq. Do Jordão)": {
+    "lon": -51.4681492,
+    "lat": -25.4247575,
+    "cep": "85023-330",
+    "bairro": "Jordão",
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "Avenida Vereador Rubéns Siqueira Ribas 7101": {
+    "lon": -51.4545868,
+    "lat": -25.4029809,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "Av. Vereador Rubéns Siqueira Ribas, 451 (Conceito 367)": {
+    "lon": -51.4545868,
+    "lat": -25.4029809,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "Av. Vereador Rubéns Siqueira Ribas, 2430 (Supermercado Parteka)": {
+    "lon": -51.4545868,
+    "lat": -25.4029809,
+    "cep": "85012-280",
+    "bairro": null,
+    "osm_name": "Avenida Vereador Rubem Siqueira Ribas"
+  },
+  "R. Capitão Rocha,177 (Trianon)": {
+    "lon": -51.4717164,
+    "lat": -25.3909273,
+    "cep": "85010-050",
+    "bairro": null,
+    "osm_name": "Rua Capitão Rocha"
+  },
+  "R. Inácio Karpinski, 1603 (Colégio Pe. Chagas)": {
+    "lon": -51.4797956,
+    "lat": -25.3769029,
+    "cep": "85055-010",
+    "bairro": null,
+    "osm_name": "Rua Inácio Karpinski"
+  },
+  "Av. Ver. Rubens S. Ribas, 707-709": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "R. Luís Vicente Verlangieri, 251": {
+    "lon": -51.4815406,
+    "lat": -25.3765735,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Rua Luiz Vicente Verlangieri"
+  },
+  "R. Princesa Isabel, 235 (Comunidade Maria Mãe Da Igreja)": {
+    "lon": -44.1787014,
+    "lat": -19.9726164,
+    "cep": "32655-086",
+    "bairro": "Petrópolis",
+    "osm_name": "Rua Princesa Isabel"
+  },
+  "Av. Ver. Rubéns S. Ribas, 3371-3447": {
+    "lon": -51.4530414,
+    "lat": -25.3957958,
+    "cep": "85070-180",
+    "bairro": "Santana",
+    "osm_name": "Fórum da Comarca de Guarapuava"
+  },
+  "R. General Osório, 999 (Sicredi - Sede Administrativa)": {
+    "lon": -51.4825972,
+    "lat": -25.3676449,
+    "cep": "85040-364",
+    "bairro": null,
+    "osm_name": "Rua General Osório"
+  },
+  "Rua João Pinto Ribeiro, 228 (Jardim Herminia)": {
+    "lon": -51.4817194,
+    "lat": -25.3697058,
+    "cep": "85040-364",
+    "bairro": null,
+    "osm_name": "Rua João Pinto Ribeiro"
+  },
+  "R. Sorocaba, 277 (Garagem Perola Do Oeste)": {
+    "lon": -51.4680369,
+    "lat": -25.368772,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Rua Sorocaba"
+  },
+  "R. João Gelinski, 1025": {
+    "lon": -51.4671028,
+    "lat": -25.3669771,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Rua João Gelinski"
+  },
+  "R. João Gelinski, 713 (Parque Das Árvores)": {
+    "lon": -51.4671028,
+    "lat": -25.3669771,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Rua João Gelinski"
+  },
+  "R. João Gelinski, 424 (Jardim Planalto Verde)": {
+    "lon": -51.4671028,
+    "lat": -25.3669771,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Rua João Gelinski"
+  },
+  "R. Eulalia Cais Tokarski, 235 (Jd. Planalto Verde)": {
+    "lon": -51.463173,
+    "lat": -25.3628123,
+    "cep": "85063-000",
+    "bairro": null,
+    "osm_name": "Rua Eulalia Cais Tokarski"
+  },
+  "R. Eulalia Cais Tokarski, 55 (Jardim Planalto Verde)": {
+    "lon": -51.463173,
+    "lat": -25.3628123,
+    "cep": "85063-000",
+    "bairro": null,
+    "osm_name": "Rua Eulalia Cais Tokarski"
+  },
+  "Av. Bento C. Ribas, 2565-2627": {
+    "lon": -51.4504758,
+    "lat": -25.3673991,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Avenida Bento Camargo Ribas"
+  },
+  "R. Nogueira Pecam, 303-361": {
+    "lon": -51.4586475,
+    "lat": -25.3670033,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Rua Nogueira Pecam"
+  },
+  "R. Das Videiras, 500 (Dona Costura)": {
+    "lon": -51.4596776,
+    "lat": -25.3665588,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Rua das Videiras"
+  },
+  "R. Eng. Lentsch, 758 (Ejm Transportadora)": {
+    "lon": -51.4646787,
+    "lat": -25.3610361,
+    "cep": "85063-000",
+    "bairro": null,
+    "osm_name": "Rua Engenheiro Lentsch"
+  },
+  "R. Eng. Lentsch, 1150 (Hotel Iapó)": {
+    "lon": -51.4646787,
+    "lat": -25.3610361,
+    "cep": "85063-000",
+    "bairro": null,
+    "osm_name": "Rua Engenheiro Lentsch"
+  },
+  "Rua General Osório, 999": {
+    "lon": -51.4825972,
+    "lat": -25.3676449,
+    "cep": "85040-364",
+    "bairro": null,
+    "osm_name": "Rua General Osório"
+  },
+  "Rua João Pinto Ribeiro, 309 (Jardim Herminia)": {
+    "lon": -51.4817194,
+    "lat": -25.3697058,
+    "cep": "85040-364",
+    "bairro": null,
+    "osm_name": "Rua João Pinto Ribeiro"
+  },
+  "R. Riachuelo, 177 (Jc Chagas)": {
+    "lon": -51.4833638,
+    "lat": -25.3698806,
+    "cep": "85040-364",
+    "bairro": null,
+    "osm_name": "Rua Riachuelo"
+  },
+  "R. Antônio Losso, 1228 (Supermercado Parteka)": {
+    "lon": -51.463015,
+    "lat": -25.3703376,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Avenida Antonio Losso"
+  },
+  "R. Luís Vicente Verlangieri 47": {
+    "lon": -51.4815406,
+    "lat": -25.3765735,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Rua Luiz Vicente Verlangieri"
+  },
+  "R. Antônio Losso, 1532 (Lombada Eletrônica)": {
+    "lon": -51.463015,
+    "lat": -25.3703376,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Avenida Antonio Losso"
+  },
+  "R. Inácio Karpinski, 1718 (Colégio Pe. Chagas)": {
+    "lon": -51.4797956,
+    "lat": -25.3769029,
+    "cep": "85055-010",
+    "bairro": null,
+    "osm_name": "Rua Inácio Karpinski"
+  },
+  "R. Júlio De Castilho, 934": {
+    "lon": -51.4847603,
+    "lat": -25.3791927,
+    "cep": "85040-167",
+    "bairro": null,
+    "osm_name": "Rua Julio de Castilho"
+  },
+  "R. Almirante Dídio Costa, 1023 (Santana)": {
+    "lon": -51.4555582,
+    "lat": -25.3873403,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Almirante Didio Costa"
+  },
+  "R. Almirante Dídio Costa, 789 (Igreja Pentecostal Filadélfia)": {
+    "lon": -51.4555582,
+    "lat": -25.3873403,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Almirante Didio Costa"
+  },
+  "R. Nagibe Fagundes Schier, 543 (Armazém Santana)": {
+    "lon": -51.4486884,
+    "lat": -25.392201,
+    "cep": "85070-100",
+    "bairro": null,
+    "osm_name": "Rua Nagib Fagundes Schier"
+  },
+  "R. Lions, 274 (Antena De Celular)": {
+    "lon": -51.4755436,
+    "lat": -25.3842448,
+    "cep": "85035-270",
+    "bairro": null,
+    "osm_name": "Rua Visconde de Guarapuava"
+  },
+  "R. Alberto Kohler, 121 (R. Lions)": {
+    "lon": -51.4476376,
+    "lat": -25.3928118,
+    "cep": "85070-100",
+    "bairro": null,
+    "osm_name": "Rua Alberto Kohler"
+  },
+  "R. Deputado Lauro Sodré Lopes, 995 (Mercadinho Da Vilma)": {
+    "lon": -51.4475805,
+    "lat": -25.3851847,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Deputado Lauro Sodre Lopes"
+  },
+  "R. Deputado Lauro Sodré Lopes, 739 (Panificadora Pão Da Hora)": {
+    "lon": -51.4475805,
+    "lat": -25.3851847,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Deputado Lauro Sodre Lopes"
+  },
+  "R. Deputado Lauro Sodré Lopes, 499 (Igreja Nosso Senhor Jesus Cristo)": {
+    "lon": -51.4475805,
+    "lat": -25.3851847,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Deputado Lauro Sodre Lopes"
+  },
+  "R. Deputado Lauro Sodré Lopes, 40 (Escola Mahatma Gandhi)": {
+    "lon": -51.4475805,
+    "lat": -25.3851847,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua Deputado Lauro Sodre Lopes"
+  },
+  "Av. Raulino Gabriel De Córdova, 1250 (Pizzaria Sabor Irresitível)": {
+    "lon": -51.4535032,
+    "lat": -25.3795755,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Avenida Raulino Gabriel de Córdova"
+  },
+  "R. Frei Caneca, 228 (Recanto Bela Vista)": {
+    "lon": -51.4567211,
+    "lat": -25.3925563,
+    "cep": "85070-175",
+    "bairro": null,
+    "osm_name": "Rua Frei Caneca"
+  },
+  "R. XV De Novembro, 1282-1334 (Cmei Morro Alto)": {
+    "lon": -51.4636176,
+    "lat": -25.391071,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua XV de Novembro"
+  },
+  "R. João Lacerda Caldas, 175-263": {
+    "lon": -51.4510196,
+    "lat": -25.3814298,
+    "cep": "85065-010",
+    "bairro": null,
+    "osm_name": "Rua João Lacerda Caldas"
+  },
+  "R. XV De Novembro, 1474-1720 (Dione Tur)": {
+    "lon": -51.4636176,
+    "lat": -25.391071,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua XV de Novembro"
+  },
+  "R. XV De Novembro, 1722-1878 (Igreja Comunidade Vida)": {
+    "lon": -51.4636176,
+    "lat": -25.391071,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua XV de Novembro"
+  },
+  "R. XV De Novembro, 2268 (Superpão P. Extra)": {
+    "lon": -51.4636176,
+    "lat": -25.391071,
+    "cep": "85010-210",
+    "bairro": null,
+    "osm_name": "Rua XV de Novembro"
+  },
+  "R. Guaíra, 3870 (Procuradoria Do Trabalho)": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "R. Guaíra, 4279 (14º Sub. Policial)": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "R. Guaíra, 4628 (Mecânica Santos)": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "R. Guaíra, 4852 (Fantasy Locação De Brinquedos)": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "R. Guaíra, 3198": {
+    "lon": -51.4670007,
+    "lat": -25.3912786,
+    "cep": "85010-260",
+    "bairro": null,
+    "osm_name": "Rua Guairá"
+  },
+  "Av. Manoel Antônio, 267": {
+    "lon": -51.4877067,
+    "lat": -25.4120166,
+    "cep": "85035-240",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Manoel Antonio"
+  },
+  "Av. Manoel Antônio, 444-492 (Posto Bv)": {
+    "lon": -51.4877067,
+    "lat": -25.4120166,
+    "cep": "85035-240",
+    "bairro": "Boqueirão",
+    "osm_name": "Avenida Manoel Antonio"
+  },
+  "R. Turíbio Gomes, 1505-1597": {
+    "lon": -49.3392189,
+    "lat": -20.8467476,
+    "cep": "15077-060",
+    "bairro": "Região Vila Toninho",
+    "osm_name": "Rua João Urias Gomes"
+  },
+  "R. Roberto Teixeira Marcondes, 2-118 (Comercial Brasília)": {
+    "lon": -51.4965306,
+    "lat": -25.4055534,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Roberto Teixeira Marcondes"
+  },
+  "R. Huberto Scorsin, 2-94": {
+    "lon": -51.4967147,
+    "lat": -25.4087047,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Humberto Scosin"
+  },
+  "R. Huberto Scorsin, 244-340": {
+    "lon": -51.4967147,
+    "lat": -25.4087047,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua Humberto Scosin"
+  },
+  "Av. Salvador Gomes, 1104": {
+    "lon": -51.501004,
+    "lat": -25.4077844,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Avenida Salvador Gomes"
+  },
+  "R. José Bonifácio, 136": {
+    "lon": -51.5019219,
+    "lat": -25.4084091,
+    "cep": "85027-250",
+    "bairro": null,
+    "osm_name": "Rua José Bonifácio"
+  },
+  "Rua Afonso Pena, 245": {
+    "lon": -51.4865883,
+    "lat": -25.4101004,
+    "cep": "85035-240",
+    "bairro": "Boqueirão",
+    "osm_name": "Rua Afonso Pena"
+  },
+  "R. Turíbio Gomes, 1885-1981": {
+    "lon": -51.4932342,
+    "lat": -25.3961422,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Avenida Turibio Gomes"
+  },
+  "R. Mal. Dutra, 304": {
+    "lon": -46.4418174,
+    "lat": -23.462662,
+    "cep": "07210-300",
+    "bairro": "Distrito Jardim Presidente Dutra",
+    "osm_name": "Rua Madri"
+  },
+  "Rua Marechal Deodoro, 146": {
+    "lon": -51.4879696,
+    "lat": -25.4070521,
+    "cep": "85035-240",
+    "bairro": null,
+    "osm_name": "Rua Marechal Deodoro"
+  },
+  "Br-277 (Churrascaria Brescovit)": {
+    "lon": -49.7254987,
+    "lat": -25.4693943,
+    "cep": "83600-970",
+    "bairro": "São Luiz do Purunã",
+    "osm_name": "Saída BR277 >>> Guarapuava > Foz do Iguaçú"
+  },
+  "Av. Aragão De M. Leão, 3291-3385": {
+    "lon": -51.4973925,
+    "lat": -25.3921328,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "R. Aragão de M. Leão, 1703 (Atitude Eventos)"
+  },
+  "Av. Aragão De Matos Leão, 3025": {
+    "lon": -51.4891202,
+    "lat": -25.3923807,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Av. Aragão de Matos Leão, 827-907 (Panificadora Ki Festa)"
+  },
+  "362-R. Judite Bastos De Oliveira, 575-745 - Jardim Das Americas": {
+    "lon": -51.5027378,
+    "lat": -25.3852769,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Judite Bastos de Oliveira"
+  },
+  "Rua Judite Bastos De Oliveira, 947": {
+    "lon": -51.5027378,
+    "lat": -25.3852769,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Judite Bastos de Oliveira"
+  },
+  "363-R. Judite Bastos De Oliveira, 365-435 - Jardim Das Americas": {
+    "lon": -51.5027378,
+    "lat": -25.3852769,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Judite Bastos de Oliveira"
+  },
+  "364-R. Judite Bastos De Oliveira, 975-1017 - Jardim Das Americas": {
+    "lon": -51.5027378,
+    "lat": -25.3852769,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Judite Bastos de Oliveira"
+  },
+  "Rocio": {
+    "lon": -51.459856,
+    "lat": -25.3731873,
+    "cep": "85055-390",
+    "bairro": null,
+    "osm_name": "Rua Nossa Senhora do Rocio"
+  },
+  "Estrada Do Lixão": {
+    "lon": -51.5278768,
+    "lat": -25.3842602,
+    "cep": "85030-230",
+    "bairro": null,
+    "osm_name": "Estrada do Lixão"
+  },
+  "Br-277 (Aeroporto Mun. Tancredo Thomás De Farias)": {
+    "lon": -49.7254987,
+    "lat": -25.4693943,
+    "cep": "83600-970",
+    "bairro": "São Luiz do Purunã",
+    "osm_name": "Saída BR277 >>> Guarapuava > Foz do Iguaçú"
+  },
+  "Rua Tucuruí, 28": {
+    "lon": -51.4935519,
+    "lat": -25.3678961,
+    "cep": "85040-005",
+    "bairro": null,
+    "osm_name": "Rua Tucurui"
+  },
+  "Rua Judite Bastos De Oliveira, 930-1678": {
+    "lon": -51.5027378,
+    "lat": -25.3852769,
+    "cep": "85025-220",
+    "bairro": null,
+    "osm_name": "Rua Judite Bastos de Oliveira"
+  },
+  "Rua Caxias Do Sul, 2": {
+    "lon": -51.5216244,
+    "lat": -25.3962136,
+    "cep": "85030-000",
+    "bairro": null,
+    "osm_name": "Rua Caxias do Sul"
+  },
+  "Av. Mari Thompson Milazo, 1181-1211": {
+    "lat": -25.406699999999997,
+    "lon": -51.4722,
+    "cep": "85010-000",
+    "bairro": "Interbairros",
+    "osm_name": "Avenida Mari Thompson Milazo"
+  },
+  "Av. Mari Thompson Milazo, 1463-1533": {
+    "lat": -25.4047,
+    "lon": -51.4722,
+    "cep": "85010-000",
+    "bairro": "Interbairros",
+    "osm_name": "Avenida Mari Thompson Milazo"
+  }
+}

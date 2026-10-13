@@ -10,9 +10,11 @@ import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { InfoFeed } from "@/components/InfoFeed";
 import { BusScheduleFeed } from "@/components/bus/BusScheduleFeed";
 import { BusFilterPanel } from "@/components/bus/BusFilterPanel";
+import { BusRoutePlannerPanel } from "@/components/bus/BusRoutePlannerPanel";
+import { useUserLocation } from "@/hooks/useUserLocation";
 import { useTheme } from "@/context/ThemeContext";
 import rawBusData from "@/data/horarios-onibus.json";
-import type { DadosHorariosOnibus } from "@/types/bus";
+import type { DadosHorariosOnibus, LinhaBairro, PontoItinerario } from "@/types/bus";
 
 const busData = rawBusData as unknown as DadosHorariosOnibus;
 
@@ -27,6 +29,12 @@ export default function HorariosOnibusPage() {
   const [selectedPontoId, setSelectedPontoId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Estados de Rota ("Modo Uber")
+  const [isRouteOpen, setIsRouteOpen] = useState(false);
+  const [routeStep, setRouteStep] = useState<"none" | "origin" | "destination" | "calculated">("none");
+  const [selectedOriginPonto, setSelectedOriginPonto] = useState<{ ponto: PontoItinerario; linha: LinhaBairro } | null>(null);
+  const [selectedDestinationPonto, setSelectedDestinationPonto] = useState<{ ponto: PontoItinerario; linha: LinhaBairro } | null>(null);
+
   // Estados Mobile
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
@@ -37,7 +45,10 @@ export default function HorariosOnibusPage() {
 
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const optionsButtonRef = useRef<HTMLButtonElement>(null);
+  const routeButtonRef = useRef<HTMLButtonElement>(null);
   const transitionTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const { coords, requestLocation } = useUserLocation();
 
   const mounted = useSyncExternalStore(
     emptySubscribe,
@@ -70,12 +81,22 @@ export default function HorariosOnibusPage() {
           setIsDesktopInfoOpen(false);
           return;
         }
+        if (isRouteOpen) {
+          setIsRouteOpen(false);
+          return;
+        }
         if (isFilterOpen) {
           setIsFilterOpen(false);
           return;
         }
         if (isOptionsOpen) {
           setIsOptionsOpen(false);
+          return;
+        }
+        if (routeStep === "calculated") {
+          setRouteStep("origin");
+          setSelectedOriginPonto(null);
+          setSelectedDestinationPonto(null);
           return;
         }
         if (selectedPontoId) {
@@ -91,7 +112,34 @@ export default function HorariosOnibusPage() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isDesktopInfoOpen, isFilterOpen, isOptionsOpen, selectedPontoId, selectedBairroId, searchQuery, router]);
+  }, [isDesktopInfoOpen, isRouteOpen, isFilterOpen, isOptionsOpen, routeStep, selectedPontoId, selectedBairroId, searchQuery, router]);
+
+  const handleToggleRoute = () => {
+    if (transitionTimerRef.current) {
+      clearTimeout(transitionTimerRef.current);
+      transitionTimerRef.current = null;
+    }
+
+    if (isRouteOpen) {
+      setIsRouteOpen(false);
+      return;
+    }
+
+    if (routeStep === "none") {
+      setRouteStep("origin");
+    }
+
+    if (isFilterOpen || isOptionsOpen) {
+      setIsFilterOpen(false);
+      setIsOptionsOpen(false);
+      transitionTimerRef.current = setTimeout(() => {
+        setIsRouteOpen(true);
+        transitionTimerRef.current = null;
+      }, 200);
+    } else {
+      setIsRouteOpen(true);
+    }
+  };
 
   const handleToggleFilter = () => {
     if (transitionTimerRef.current) {
@@ -104,8 +152,9 @@ export default function HorariosOnibusPage() {
       return;
     }
 
-    if (isOptionsOpen) {
+    if (isOptionsOpen || isRouteOpen) {
       setIsOptionsOpen(false);
+      setIsRouteOpen(false);
       transitionTimerRef.current = setTimeout(() => {
         setIsFilterOpen(true);
         transitionTimerRef.current = null;
@@ -126,8 +175,9 @@ export default function HorariosOnibusPage() {
       return;
     }
 
-    if (isFilterOpen) {
+    if (isFilterOpen || isRouteOpen) {
       setIsFilterOpen(false);
+      setIsRouteOpen(false);
       transitionTimerRef.current = setTimeout(() => {
         setIsOptionsOpen(true);
         transitionTimerRef.current = null;
@@ -135,6 +185,24 @@ export default function HorariosOnibusPage() {
     } else {
       setIsOptionsOpen(true);
     }
+  };
+
+  const handleConfirmOrigin = () => {
+    if (selectedOriginPonto) {
+      setRouteStep("destination");
+    }
+  };
+
+  const handleConfirmDestination = () => {
+    if (selectedDestinationPonto) {
+      setRouteStep("calculated");
+    }
+  };
+
+  const handleResetRoute = () => {
+    setRouteStep("origin");
+    setSelectedOriginPonto(null);
+    setSelectedDestinationPonto(null);
   };
 
   const handleSelectBairro = (bairroId: string | null) => {
@@ -251,15 +319,22 @@ export default function HorariosOnibusPage() {
               selectedPontoId={selectedPontoId}
               searchQuery={searchQuery}
               onClearFilter={handleClearFilters}
+              routeStep={routeStep}
+              selectedOriginPonto={selectedOriginPonto}
+              selectedDestinationPonto={selectedDestinationPonto}
+              userCoords={coords}
+              onSelectOrigin={(ponto, linha) => setSelectedOriginPonto({ ponto, linha })}
+              onSelectDestination={(ponto, linha) => setSelectedDestinationPonto({ ponto, linha })}
+              onResetRoute={handleResetRoute}
             />
 
-            {/* Dock Inferior Mobile: Mais - Filtrar - Voltar */}
+            {/* Dock Inferior Mobile: Mais - Filtrar - Rotas */}
             <Dock
               align="between"
               above={
                 <div className="flex flex-col gap-2 w-full">
-                  {/* Indicador de Filtros Ativos (Aparece no Mobile) */}
-                  <Presence isVisible={hasActiveFilters} duration={180}>
+                  {/* Indicador de Filtros Ativos (Aparece no Mobile quando não estiver em modo rota) */}
+                  <Presence isVisible={hasActiveFilters && !isRouteOpen && routeStep === "none"} duration={180}>
                     <FilterIndicator
                       label={filterIndicatorLabel}
                       onClear={handleClearFilters}
@@ -267,6 +342,29 @@ export default function HorariosOnibusPage() {
                   </Presence>
 
                   <div className="grid grid-cols-1 grid-rows-1 items-end w-full [grid-template-areas:'stack']">
+                    {/* Bloco de Rota ("Modo Uber") */}
+                    <div className="w-full [grid-area:stack]">
+                      <Presence isVisible={isRouteOpen} duration={180}>
+                        <BusRoutePlannerPanel
+                          linhas={busData.linhas}
+                          routeStep={routeStep}
+                          selectedOriginPonto={selectedOriginPonto}
+                          selectedDestinationPonto={selectedDestinationPonto}
+                          userCoords={coords}
+                          onConfirmOrigin={handleConfirmOrigin}
+                          onConfirmDestination={handleConfirmDestination}
+                          onResetRoute={handleResetRoute}
+                          onClose={() => setIsRouteOpen(false)}
+                          onSelectOrigin={(ponto, linha) => setSelectedOriginPonto({ ponto, linha })}
+                          onSelectDestination={(ponto, linha) => setSelectedDestinationPonto({ ponto, linha })}
+                          onRequestLocation={async () => {
+                            await requestLocation();
+                          }}
+                          routeButtonRef={routeButtonRef}
+                        />
+                      </Presence>
+                    </div>
+
                     {/* Bloco de Filtros */}
                     <div className="w-full [grid-area:stack]">
                       <Presence isVisible={isFilterOpen} duration={180}>
@@ -329,14 +427,17 @@ export default function HorariosOnibusPage() {
                   Filtrar
                 </Key>
 
-                {/* 3. Voltar */}
+                {/* 3. Rotas */}
                 <Key
+                  ref={routeButtonRef}
                   type="button"
-                  onClick={() => router.push("/utilidades")}
+                  pressed={isRouteOpen}
+                  onClick={handleToggleRoute}
+                  aria-expanded={isRouteOpen}
                   className="w-full px-2 text-[14px] justify-center text-center font-medium"
-                  aria-label="Voltar para a página de utilidades"
+                  aria-label={isRouteOpen ? "Fechar painel de rotas" : "Abrir criação de rotas"}
                 >
-                  Voltar
+                  Rotas
                 </Key>
               </div>
             </Dock>
@@ -423,13 +524,19 @@ export default function HorariosOnibusPage() {
                     </h1>
                   </header>
 
-                  {/* Lista de Linhas e Horários (Sem indicador laranja no Desktop) */}
                   <BusScheduleFeed
                     linhas={busData.linhas}
                     selectedBairroId={selectedBairroId}
                     selectedPontoId={selectedPontoId}
                     searchQuery={searchQuery}
                     onClearFilter={handleClearFilters}
+                    routeStep={routeStep}
+                    selectedOriginPonto={selectedOriginPonto}
+                    selectedDestinationPonto={selectedDestinationPonto}
+                    userCoords={coords}
+                    onSelectOrigin={(ponto, linha) => setSelectedOriginPonto({ ponto, linha })}
+                    onSelectDestination={(ponto, linha) => setSelectedDestinationPonto({ ponto, linha })}
+                    onResetRoute={handleResetRoute}
                   />
                 </div>
               </div>
