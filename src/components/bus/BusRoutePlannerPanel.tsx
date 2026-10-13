@@ -1,40 +1,47 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Search, X, MapPin, Navigation, ArrowRight, RotateCcw, Compass } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Search, X, MapPin, Navigation, ArrowRight, RotateCcw, Compass, Bookmark } from "lucide-react";
 import { Key } from "@/components/ui/Key";
 import type { LinhaBairro, PontoItinerario } from "@/types/bus";
 import type { GeoSuggestion } from "@/app/api/geo/autocomplete/route";
 
 export interface BusRoutePlannerPanelProps {
-  linhas: LinhaBairro[];
+  linhas?: LinhaBairro[];
   routeStep: "none" | "origin" | "destination" | "calculated";
   selectedOriginPonto: { ponto: PontoItinerario; linha: LinhaBairro } | null;
   selectedDestinationPonto: { ponto: PontoItinerario; linha: LinhaBairro } | null;
   userCoords: { lat: number; lon: number } | null;
+  isShowingSavedRoutes?: boolean;
+  onToggleSavedRoutes?: () => void;
+  onSaveRoute?: () => void;
+  isRouteSaved?: boolean;
   onConfirmOrigin: () => void;
   onConfirmDestination: () => void;
   onResetRoute: () => void;
   onClose: () => void;
-  onSelectOrigin: (ponto: PontoItinerario, linha: LinhaBairro) => void;
-  onSelectDestination: (ponto: PontoItinerario, linha: LinhaBairro) => void;
+  onSelectOrigin?: (ponto: PontoItinerario, linha: LinhaBairro) => void;
+  onSelectDestination?: (ponto: PontoItinerario, linha: LinhaBairro) => void;
   onRequestLocation: () => Promise<void>;
+  onSelectSearchCoords?: (coords: { lat: number; lon: number; label: string } | null) => void;
   routeButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }
 
 export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
-  linhas,
   routeStep,
   selectedOriginPonto,
   selectedDestinationPonto,
   userCoords,
+  isShowingSavedRoutes = false,
+  onToggleSavedRoutes,
+  onSaveRoute,
+  isRouteSaved = false,
   onConfirmOrigin,
   onConfirmDestination,
   onResetRoute,
   onClose,
-  onSelectOrigin,
-  onSelectDestination,
   onRequestLocation,
+  onSelectSearchCoords,
   routeButtonRef,
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
@@ -43,8 +50,16 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [hasPromptedLocation, setHasPromptedLocation] = useState(false);
+  const [isLocating, setIsLocating] = useState(false);
   const [suggestions, setSuggestions] = useState<GeoSuggestion[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
+
+  // Limpa o campo de busca quando a etapa da rota avança ou reseta
+  const [prevRouteStep, setPrevRouteStep] = useState(routeStep);
+  if (prevRouteStep !== routeStep) {
+    setPrevRouteStep(routeStep);
+    setSearchQuery("");
+    setSuggestions([]);
+  }
 
   // Fecha o bloco se clicar fora (exceto no botão Rotas do dock)
   useEffect(() => {
@@ -82,12 +97,10 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
   // Autocomplete com debounce de 250ms
   useEffect(() => {
     if (!searchQuery.trim() || searchQuery.trim().length < 2) {
-      setSuggestions([]);
       return;
     }
 
     const timer = setTimeout(async () => {
-      setIsSearching(true);
       try {
         const res = await fetch(
           `/api/geo/autocomplete?q=${encodeURIComponent(searchQuery.trim())}`
@@ -98,13 +111,13 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
         }
       } catch {
         // Silencioso
-      } finally {
-        setIsSearching(false);
       }
     }, 250);
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
+
+  const visibleSuggestions = searchQuery.trim().length >= 2 ? suggestions : [];
 
   const handleInputClick = () => {
     if (!hasPromptedLocation && !userCoords) {
@@ -113,9 +126,14 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
   };
 
   const handleAcceptLocation = async () => {
-    setHasPromptedLocation(true);
-    setShowLocationModal(false);
-    await onRequestLocation();
+    setIsLocating(true);
+    try {
+      await onRequestLocation();
+    } finally {
+      setIsLocating(false);
+      setHasPromptedLocation(true);
+      setShowLocationModal(false);
+    }
   };
 
   const handleDeclineLocation = () => {
@@ -127,35 +145,14 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
   };
 
   const handleSelectSuggestion = (sug: GeoSuggestion) => {
-    // Procura o ponto mais próximo da sugestão em todas as linhas
-    let bestPonto: PontoItinerario | null = null;
-    let bestLinha: LinhaBairro | null = null;
-    let bestDist = Infinity;
+    // Comunica as coordenadas do endereço para o feed ordenar as paradas ao redor
+    onSelectSearchCoords?.({
+      lat: sug.latitude,
+      lon: sug.longitude,
+      label: sug.label,
+    });
 
-    for (const linha of linhas) {
-      for (const ponto of linha.pontos) {
-        if (ponto.latitude && ponto.longitude) {
-          const d =
-            Math.pow(ponto.latitude - sug.latitude, 2) +
-            Math.pow(ponto.longitude - sug.longitude, 2);
-          if (d < bestDist) {
-            bestDist = d;
-            bestPonto = ponto;
-            bestLinha = linha;
-          }
-        }
-      }
-    }
-
-    if (bestPonto && bestLinha) {
-      if (routeStep === "origin") {
-        onSelectOrigin(bestPonto, bestLinha);
-      } else if (routeStep === "destination") {
-        onSelectDestination(bestPonto, bestLinha);
-      }
-    }
-
-    setSearchQuery("");
+    setSearchQuery(sug.label);
     setSuggestions([]);
   };
 
@@ -190,41 +187,68 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
       className="filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none relative"
     >
       {/* ==================================================================
-          1. LINHA SUPERIOR: Botão de Ação / Confirmar
+          1. LINHA SUPERIOR: Botões de Ação (Minhas Rotas / Confirmar ou Salvar / Nova)
          ================================================================== */}
-      <div className="grid grid-cols-1 w-full animate-stagger-item">
+      <div className="w-full animate-stagger-item">
         {isCalculatedStep ? (
-          <div className="flex items-center gap-2">
+          <div className="grid grid-cols-2 gap-2 w-full">
+            {/* Botão Salvar Rota */}
             <Key
               type="button"
-              variant="coral"
+              variant={isRouteSaved ? "label" : "coral"}
+              onClick={onSaveRoute}
+              className="w-full px-2 text-[13px] sm:text-[14px] justify-center text-center font-semibold flex items-center gap-1.5"
+              title="Salvar esta rota para consultas futuras"
+            >
+              <Bookmark className="w-4 h-4" />
+              <span>{isRouteSaved ? "Rota salva" : "Salvar rota"}</span>
+            </Key>
+
+            {/* Botão Nova Rota */}
+            <Key
+              type="button"
               onClick={onResetRoute}
-              className="flex-1 px-3 text-[13.5px] justify-center text-center font-semibold flex items-center gap-2"
+              className="w-full px-2 text-[13px] sm:text-[14px] justify-center text-center font-semibold flex items-center gap-1.5"
               title="Planejar outra rota"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span>Nova Rota</span>
+              <span>Nova rota</span>
             </Key>
           </div>
         ) : (
-          <Key
-            type="button"
-            variant={isConfirmEnabled ? "coral" : "label"}
-            disabled={!isConfirmEnabled}
-            onClick={() => {
-              if (isOriginStep) onConfirmOrigin();
-              else if (isDestinationStep) onConfirmDestination();
-            }}
-            className={`w-full px-3 text-[13.5px] justify-center text-center font-semibold transition-all ${
-              !isConfirmEnabled ? "opacity-50 cursor-not-allowed" : "shadow-md active:scale-95"
-            }`}
-            title={actionButtonText}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <span>{actionButtonText}</span>
-              {isConfirmEnabled && <ArrowRight className="w-4 h-4" />}
-            </div>
-          </Key>
+          <div className="grid grid-cols-2 gap-2 w-full">
+            {/* Botão Minhas Rotas */}
+            <Key
+              type="button"
+              pressed={isShowingSavedRoutes}
+              onClick={onToggleSavedRoutes}
+              className="w-full px-2 text-[13px] sm:text-[14px] justify-center text-center font-semibold flex items-center gap-1.5"
+              title="Ver rotas salvas"
+            >
+              <Bookmark className="w-4 h-4 text-coral" />
+              <span>Minhas rotas</span>
+            </Key>
+
+            {/* Botão de Confirmação de Etapa */}
+            <Key
+              type="button"
+              variant={isConfirmEnabled ? "coral" : "label"}
+              disabled={!isConfirmEnabled}
+              onClick={() => {
+                if (isOriginStep) onConfirmOrigin();
+                else if (isDestinationStep) onConfirmDestination();
+              }}
+              className={`w-full px-2 text-[13px] sm:text-[14px] justify-center text-center font-semibold transition-all ${
+                !isConfirmEnabled ? "opacity-50 cursor-not-allowed" : "shadow-md active:scale-95"
+              }`}
+              title={actionButtonText}
+            >
+              <div className="flex items-center justify-center gap-1.5 truncate">
+                <span className="truncate">{actionButtonText}</span>
+                {isConfirmEnabled && <ArrowRight className="w-3.5 h-3.5 shrink-0" />}
+              </div>
+            </Key>
+          </div>
         )}
       </div>
 
@@ -273,12 +297,12 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
           </div>
 
           {/* Dropdown de sugestões do autocomplete */}
-          {suggestions.length > 0 && (
+          {visibleSuggestions.length > 0 && (
             <div className="absolute left-0 right-0 bottom-full mb-1.5 bg-canvas/95 backdrop-blur-md rounded-xl border border-rule/40 shadow-raised-md overflow-hidden z-50 max-h-[190px] overflow-y-auto no-scrollbar">
               <div className="py-1 flex flex-col divide-y divide-rule/20">
-                {suggestions.map((sug) => (
+                {visibleSuggestions.map((sug, index) => (
                   <button
-                    key={sug.id}
+                    key={`${sug.id}-${index}`}
                     type="button"
                     onClick={() => handleSelectSuggestion(sug)}
                     className="w-full px-3 py-2 text-left hover:bg-rule/20 active:bg-rule/30 transition-colors flex items-start gap-2.5 cursor-pointer"
@@ -289,7 +313,7 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
                         {sug.label}
                       </div>
                       {sug.cep && (
-                        <div className="text-[11px] text-ink-muted">
+                        <div className="text-[12px] text-ink-muted">
                           CEP: {sug.cep}
                         </div>
                       )}
@@ -314,7 +338,7 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
         >
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 text-coral">
-              <Navigation className="w-5 h-5 animate-bounce" />
+              <Navigation className="w-5 h-5 animate-pulse" />
               <h4 id="loc-modal-title" className="text-[15px] font-bold text-ink">
                 Usar localização?
               </h4>
@@ -327,6 +351,7 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
           <div className="grid grid-cols-2 gap-2 pt-2">
             <Key
               type="button"
+              disabled={isLocating}
               onClick={handleDeclineLocation}
               className="w-full text-[13px] justify-center text-center font-medium"
             >
@@ -335,10 +360,11 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
             <Key
               type="button"
               variant="coral"
+              disabled={isLocating}
               onClick={handleAcceptLocation}
               className="w-full text-[13px] justify-center text-center font-bold"
             >
-              Sim, usar
+              {isLocating ? "Obtendo GPS..." : "Sim, usar"}
             </Key>
           </div>
         </div>

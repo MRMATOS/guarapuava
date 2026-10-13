@@ -3,7 +3,11 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { ArrowLeft, Search, X } from "lucide-react";
 import { Key } from "@/components/ui/Key";
+import { normalizeText } from "@/lib/utils/search";
+import { findNearestDestinationStop } from "@/lib/geo/distance";
+import { formatStopDisplayName } from "@/components/bus/BusScheduleFeed";
 import type { LinhaBairro, PontoItinerario } from "@/types/bus";
+import type { GeoSuggestion } from "@/app/api/geo/autocomplete/route";
 
 export interface BusFilterPanelProps {
   linhas: LinhaBairro[];
@@ -16,6 +20,25 @@ export interface BusFilterPanelProps {
   onClose: () => void;
   filterButtonRef?: React.RefObject<HTMLButtonElement | null>;
   persistent?: boolean;
+
+  // Propriedades do Planejador de Rotas
+  routeStep: "none" | "origin" | "destination" | "calculated";
+  selectedOriginPonto: { ponto: PontoItinerario; linha: LinhaBairro } | null;
+  selectedDestinationPonto: { ponto: PontoItinerario; linha: LinhaBairro } | null;
+  userCoords: { lat: number; lon: number } | null;
+  isShowingSavedRoutes?: boolean;
+  onToggleSavedRoutes?: () => void;
+  onSaveRoute?: () => void;
+  isRouteSaved?: boolean;
+  onStartRoute?: () => void;
+  onCancelRoute?: () => void;
+  onConfirmOrigin?: () => void;
+  onConfirmDestination?: () => void;
+  onResetRoute?: () => void;
+  onSelectOrigin?: (ponto: PontoItinerario, linha: LinhaBairro, distanceMeters?: number | null) => void;
+  onSelectDestination?: (ponto: PontoItinerario, linha: LinhaBairro, distanceMeters?: number | null) => void;
+  onRequestLocation: () => Promise<void>;
+  onSelectSearchCoords?: (coords: { lat: number; lon: number; label: string } | null) => void;
 }
 
 export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
@@ -29,6 +52,24 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   onClose,
   filterButtonRef,
   persistent = false,
+
+  routeStep = "origin",
+  selectedOriginPonto,
+  selectedDestinationPonto,
+  userCoords,
+  isShowingSavedRoutes = false,
+  onToggleSavedRoutes,
+  onSaveRoute,
+  isRouteSaved = false,
+  onStartRoute,
+  onCancelRoute,
+  onConfirmOrigin,
+  onConfirmDestination,
+  onResetRoute,
+  onSelectOrigin,
+  onSelectDestination,
+  onRequestLocation,
+  onSelectSearchCoords,
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -42,6 +83,10 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   });
 
   const [localSearch, setLocalSearch] = useState(searchQuery);
+  const [showLocationModal, setShowLocationModal] = useState(false);
+  const [hasPromptedLocation, setHasPromptedLocation] = useState(false);
+  const [isLocating, setIsLocating] = useState(false);
+  const [suggestions, setSuggestions] = useState<GeoSuggestion[]>([]);
 
   // Sincroniza busca externa
   useEffect(() => {
@@ -55,6 +100,15 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       if (found) setActiveBairro(found);
     }
   }, [selectedBairroId, linhas]);
+
+  // Quando o passo da rota muda (ex: avança de origin para destination), reseta foco do bairro e busca local
+  useEffect(() => {
+    if (routeStep === "origin" || routeStep === "destination") {
+      setActiveBairro(null);
+      setLocalSearch("");
+      setSuggestions([]);
+    }
+  }, [routeStep]);
 
   // Fecha o bloco se clicar fora (exceto no botão Filtrar do rodapé ou modo persistente)
   useEffect(() => {
@@ -75,6 +129,10 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        if (showLocationModal) {
+          setShowLocationModal(false);
+          return;
+        }
         onClose();
       }
     };
@@ -85,9 +143,185 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose, filterButtonRef, persistent]);
+  }, [onClose, filterButtonRef, persistent, showLocationModal]);
 
-  // Bairros ordenados alfabeticamente
+  // Autocomplete com debounce de 250ms usando /api/geo/autocomplete (insensível a acentos)
+  useEffect(() => {
+    if (!localSearch.trim() || localSearch.trim().length < 2) {
+      setSuggestions([]);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `/api/geo/autocomplete?q=${encodeURIComponent(localSearch.trim())}`
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setSuggestions(data.suggestions || []);
+        }
+      } catch {
+        // Silencioso
+      }
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [localSearch]);
+
+  const visibleSuggestions = localSearch.trim().length >= 2 ? suggestions : [];
+
+  const handleInputClick = () => {
+    if (!hasPromptedLocation && !userCoords) {
+      setShowLocationModal(true);
+    }
+  };
+
+  const handleAcceptLocation = async () => {
+    setIsLocating(true);
+    try {
+      await onRequestLocation();
+    } finally {
+      setIsLocating(false);
+      setHasPromptedLocation(true);
+      setShowLocationModal(false);
+    }
+  };
+
+  const handleDeclineLocation = () => {
+    setHasPromptedLocation(true);
+    setShowLocationModal(false);
+    setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 100);
+  };
+
+  const handleSelectSuggestion = (sug: GeoSuggestion) => {
+    // =========================================================================
+    // A. SE ESTAMOS NO PASSO 2: ESCOLHER DESTINO
+    // =========================================================================
+    if (routeStep === "destination") {
+      // 1. Sugestão é uma Parada de ônibus específica
+      if (sug.tipo === "ponto" && sug.linhaId && sug.pontoId) {
+        const linha = linhas.find((l) => l.id === sug.linhaId);
+        const ponto = linha?.pontos.find((p) => p.id === sug.pontoId);
+        if (linha && ponto) {
+          onSelectDestination?.(ponto, linha);
+          setLocalSearch("");
+          onSearchChange("");
+          setSuggestions([]);
+          if (!persistent) onClose();
+          return;
+        }
+      }
+
+      // 2. Sugestão é uma Linha de ônibus
+      if (sug.tipo === "linha" && sug.linhaId) {
+        const linha = linhas.find((l) => l.id === sug.linhaId);
+        if (linha) {
+          setActiveBairro(linha);
+          setLocalSearch("");
+          onSearchChange("");
+          setSuggestions([]);
+          return;
+        }
+      }
+
+      // 3. Sugestão é um POI (Universidade, Shopping, etc.) ou Endereço geral
+      const nearest = findNearestDestinationStop(sug.latitude, sug.longitude, linhas, selectedOriginPonto);
+      if (nearest) {
+        onSelectDestination?.(nearest.ponto, nearest.linha, nearest.distanceMeters);
+        setLocalSearch("");
+        onSearchChange("");
+        setSuggestions([]);
+        if (!persistent) onClose();
+        return;
+      }
+    }
+
+    // =========================================================================
+    // B. SE ESTAMOS NO PASSO 1: ESCOLHER EMBARQUE (ORIGEM)
+    // =========================================================================
+    if (routeStep === "origin") {
+      // 1. Sugestão é uma Parada de ônibus específica
+      if (sug.tipo === "ponto" && sug.linhaId && sug.pontoId) {
+        const linha = linhas.find((l) => l.id === sug.linhaId);
+        const ponto = linha?.pontos.find((p) => p.id === sug.pontoId);
+        if (linha && ponto) {
+          onSelectOrigin?.(ponto, linha);
+          setLocalSearch("");
+          onSearchChange("");
+          setSuggestions([]);
+          return;
+        }
+      }
+
+      // 2. Sugestão é uma Linha de ônibus
+      if (sug.tipo === "linha" && sug.linhaId) {
+        const linha = linhas.find((l) => l.id === sug.linhaId);
+        if (linha) {
+          setActiveBairro(linha);
+          setLocalSearch("");
+          onSearchChange("");
+          setSuggestions([]);
+          return;
+        }
+      }
+
+      // 3. Sugestão é um POI ou Endereço geral
+      const nearest = findNearestDestinationStop(sug.latitude, sug.longitude, linhas, null);
+      if (nearest) {
+        onSelectOrigin?.(nearest.ponto, nearest.linha, nearest.distanceMeters);
+        setLocalSearch("");
+        onSearchChange("");
+        setSuggestions([]);
+        return;
+      }
+    }
+
+    // =========================================================================
+    // C. MODO NORMAL (SEM CRIAÇÃO DE ROTA ATIVA: routeStep === "none")
+    // =========================================================================
+    // 1. Se for uma Linha de ônibus
+    if (sug.tipo === "linha" && sug.linhaId) {
+      const linha = linhas.find((l) => l.id === sug.linhaId);
+      if (linha) {
+        setActiveBairro(linha);
+        onSelectBairro(linha.id);
+        setLocalSearch("");
+        onSearchChange("");
+        setSuggestions([]);
+        return;
+      }
+    }
+
+    // 2. Se for uma Parada de ônibus específica
+    if (sug.tipo === "ponto" && sug.linhaId && sug.pontoId) {
+      const linha = linhas.find((l) => l.id === sug.linhaId);
+      const ponto = linha?.pontos.find((p) => p.id === sug.pontoId);
+      if (linha && ponto) {
+        setActiveBairro(linha);
+        onSelectPonto(linha.id, ponto.id);
+        setLocalSearch("");
+        onSearchChange("");
+        setSuggestions([]);
+        return;
+      }
+    }
+
+    // 3. Se for um POI ou Endereço geral em modo normal
+    onSelectSearchCoords?.({
+      lat: sug.latitude,
+      lon: sug.longitude,
+      label: sug.label,
+    });
+
+    setLocalSearch(sug.label);
+    onSearchChange("");
+    setSuggestions([]);
+  };
+
+  // Bairros ordenados alfabeticamente e filtrados sem acento
   const sortedBairros = useMemo(() => {
     const list = [...linhas].sort((a, b) =>
       a.bairro.localeCompare(b.bairro, "pt-BR", { sensitivity: "base" })
@@ -95,67 +329,224 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
 
     if (!localSearch.trim()) return list;
 
-    const query = localSearch.toLowerCase().trim();
+    const query = normalizeText(localSearch);
     return list.filter(
       (l) =>
-        l.bairro.toLowerCase().includes(query) ||
-        l.nomeExibicao.toLowerCase().includes(query) ||
-        l.codigo.includes(query)
+        normalizeText(l.bairro).includes(query) ||
+        normalizeText(l.nomeExibicao).includes(query) ||
+        normalizeText(l.codigo).includes(query)
     );
   }, [linhas, localSearch]);
 
-  // Pontos do bairro ativo
+  // Pontos do bairro ativo filtrados sem acento
   const filteredPontos = useMemo(() => {
     if (!activeBairro) return [];
     if (!localSearch.trim()) return activeBairro.pontos;
 
-    const query = localSearch.toLowerCase().trim();
-    return activeBairro.pontos.filter((p) =>
-      p.nome.toLowerCase().includes(query)
+    const query = normalizeText(localSearch);
+    return activeBairro.pontos.filter(
+      (p) =>
+        normalizeText(p.nome).includes(query) ||
+        (p.rua ? normalizeText(p.rua).includes(query) : false) ||
+        (p.referencia ? normalizeText(p.referencia).includes(query) : false)
     );
   }, [activeBairro, localSearch]);
 
+  // Determina título e estado do botão de ação de rota
+  const isRouteMode = routeStep !== "none";
+  const isCalculatedStep = routeStep === "calculated";
+  const isDestinationStep = routeStep === "destination";
+  const isOriginStep = routeStep === "origin";
+
+  const actionButtonText = isRouteMode ? "Cancelar rota" : "Criar rota";
+
+  const handleActionClick = () => {
+    if (isRouteMode) {
+      if (onCancelRoute) {
+        onCancelRoute();
+      } else if (onResetRoute) {
+        onResetRoute();
+      }
+    } else {
+      if (!userCoords) {
+        onRequestLocation?.();
+      }
+      onStartRoute?.();
+    }
+  };
+
+  const inputPlaceholder = activeBairro
+    ? isDestinationStep
+      ? `Buscar parada de desembarque...`
+      : isOriginStep
+      ? `Buscar parada de embarque...`
+      : "Buscar ponto neste bairro..."
+    : isDestinationStep
+    ? "Para onde você quer ir? (Buscar destino, faculdade, rua)"
+    : isOriginStep
+    ? "Onde você vai embarcar? (Buscar embarque, rua ou bairro)"
+    : "Buscar rua, bairro ou linha...";
+
+  const stepIndicatorBanner = isRouteMode && !isCalculatedStep ? (
+    <div className="surface-card w-full px-4.5 py-3 sm:px-5 sm:py-3.5 border border-rule/50 flex flex-col gap-1 rounded-2xl bg-canvas shadow-xs animate-fade-in text-left">
+      <div className="flex items-center justify-between">
+        <span className="text-[11px] uppercase tracking-wider font-bold text-coral">
+          {isDestinationStep ? "Passo 2 de 2 • Desembarque" : "Passo 1 de 2 • Embarque"}
+        </span>
+        {isDestinationStep && selectedOriginPonto && (
+          <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold truncate max-w-[170px]">
+            ✓ Embarque pronto
+          </span>
+        )}
+      </div>
+      <div className="text-[12.5px] text-ink font-medium truncate">
+        {isDestinationStep && selectedOriginPonto
+          ? `De: ${formatStopDisplayName(selectedOriginPonto.ponto, selectedOriginPonto.linha.bairro)}`
+          : "Busque um local ou selecione uma parada abaixo"}
+      </div>
+    </div>
+  ) : null;
+
+  // 1. NÓ DO INPUT DE BUSCA
   const searchInputNode = (
-    <div className={`relative w-full ${persistent ? "pb-0.5" : "pt-1 border-t border-rule/30"}`}>
-      <span
-        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
-        aria-hidden="true"
-      >
-        <Search className="w-4 h-4" strokeWidth={2.2} />
-      </span>
-
-      <input
-        ref={searchInputRef}
-        type="text"
-        value={localSearch}
-        onChange={(e) => {
-          const val = e.target.value;
-          setLocalSearch(val);
-          onSearchChange(val);
-        }}
-        placeholder={
-          activeBairro
-            ? "Buscar ponto neste bairro..."
-            : "Buscar bairro ou linha..."
-        }
-        aria-label="Buscar bairro ou linha de ônibus"
-        className="filter-input w-full h-[42px] pl-10 pr-9 text-[16px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
-      />
-
-      {localSearch ? (
-        <button
-          type="button"
-          onClick={() => {
-            setLocalSearch("");
-            onSearchChange("");
-          }}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
-          aria-label="Limpar pesquisa"
-          title="Limpar pesquisa"
+    <div className="relative w-full">
+      <div className="relative w-full">
+        <span
+          className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
+          aria-hidden="true"
         >
-          <X className="w-4 h-4" strokeWidth={2.2} />
-        </button>
-      ) : null}
+          <Search className="w-4 h-4" strokeWidth={2.2} />
+        </span>
+
+        <input
+          ref={searchInputRef}
+          type="text"
+          value={localSearch}
+          onClick={handleInputClick}
+          onChange={(e) => {
+            const val = e.target.value;
+            setLocalSearch(val);
+            onSearchChange(val);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              if (visibleSuggestions.length > 0) {
+                handleSelectSuggestion(visibleSuggestions[0]);
+              }
+            }
+          }}
+          placeholder={inputPlaceholder}
+          aria-label={inputPlaceholder}
+          className="filter-input w-full h-[42px] pl-10 pr-9 text-[15px] sm:text-[16px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow truncate"
+        />
+
+        {localSearch ? (
+          <button
+            type="button"
+            onClick={() => {
+              setLocalSearch("");
+              onSearchChange("");
+              setSuggestions([]);
+            }}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
+            aria-label="Limpar pesquisa"
+            title="Limpar pesquisa"
+          >
+            <X className="w-4 h-4" strokeWidth={2.2} />
+          </button>
+        ) : null}
+      </div>
+
+      {/* Dropdown de sugestões do autocomplete de endereços e POIs */}
+      {visibleSuggestions.length > 0 && (
+        <div
+          className={`absolute left-0 right-0 ${
+            persistent ? "top-full mt-1.5" : "bottom-full mb-1.5"
+          } bg-canvas/95 backdrop-blur-md rounded-xl border border-rule/40 shadow-raised-md overflow-hidden z-50 max-h-[220px] overflow-y-auto no-scrollbar`}
+        >
+          <div className="py-1 flex flex-col divide-y divide-rule/20">
+            {visibleSuggestions.map((sug, index) => {
+              const isPoi = sug.tipo === "poi";
+              const isLinha = sug.tipo === "linha";
+              const isPonto = sug.tipo === "ponto";
+
+              return (
+                <button
+                  key={`${sug.id}-${index}`}
+                  type="button"
+                  onClick={() => handleSelectSuggestion(sug)}
+                  className="w-full px-3 py-2 text-left hover:bg-rule/20 active:bg-rule/30 transition-colors flex items-start cursor-pointer"
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[13px] font-semibold text-ink truncate flex items-center gap-1.5">
+                      <span className="truncate">{sug.label}</span>
+                      {isLinha && (
+                        <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded bg-coral/10 text-coral shrink-0">
+                          Linha
+                        </span>
+                      )}
+                      {isPoi && (
+                        <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded bg-coral/10 text-coral shrink-0">
+                          Local
+                        </span>
+                      )}
+                      {isPonto && (
+                        <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
+                          Parada
+                        </span>
+                      )}
+                    </div>
+                    {sug.subtitulo && (
+                      <div className="text-[11.5px] text-ink-muted truncate">
+                        {sug.subtitulo}
+                      </div>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  // 2. NÓ DOS BOTÕES DE ROTA: Esquerda: Minhas rotas (ou Salvar rota) | Direita: Ação
+  const routeButtonsNode = (
+    <div className="grid grid-cols-2 gap-2 w-full animate-stagger-item">
+      {/* Botão Esquerdo */}
+      {isCalculatedStep ? (
+        <Key
+          type="button"
+          pressed={isRouteSaved}
+          onClick={onSaveRoute}
+          className="w-full px-2 text-[12.5px] sm:text-[13px] justify-center text-center font-semibold"
+          title="Salvar esta rota para consultas futuras"
+        >
+          <span>{isRouteSaved ? "Rota salva" : "Salvar rota"}</span>
+        </Key>
+      ) : (
+        <Key
+          type="button"
+          pressed={isShowingSavedRoutes}
+          onClick={onToggleSavedRoutes}
+          className="w-full px-2 text-[12.5px] sm:text-[13px] justify-center text-center font-semibold"
+          title="Ver rotas salvas"
+        >
+          <span>Minhas rotas</span>
+        </Key>
+      )}
+
+      {/* Botão Direito (Criar rota ou Cancelar rota) */}
+      <Key
+        type="button"
+        onClick={handleActionClick}
+        className="w-full px-2 text-[12.5px] sm:text-[13px] justify-center text-center font-semibold transition-all active:scale-95"
+        title={actionButtonText}
+      >
+        <span>{actionButtonText}</span>
+      </Key>
     </div>
   );
 
@@ -163,23 +554,32 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
     <div
       ref={panelRef}
       role="region"
-      aria-label="Painel de filtros de horários e bairros"
-      className={`${persistent ? "desktop-sidebar-panel" : "filter-panel"} w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none`}
+      aria-label="Painel de filtros de horários e rotas"
+      className={`${
+        persistent ? "desktop-sidebar-panel" : "filter-panel"
+      } w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none relative`}
     >
       {/* ==================================================================
-          1. TRANSIÇÃO ENTRE BAIRROS E PONTOS (Apenas seta na 2ª camada)
+          MODO MOBILE: BANNER DE PASSO ATIVO NO TOPO DO PAINEL
+         ================================================================== */}
+      {!persistent && stepIndicatorBanner}
+
+      {/* ==================================================================
+          TRANSIÇÃO ENTRE BAIRROS E PONTOS (Apenas seta na 2ª camada)
          ================================================================== */}
       {activeBairro && (
         <div className="flex items-center justify-between gap-2 px-0.5 animate-stagger-item">
           <span className="text-[13px] font-bold text-ink truncate min-w-0 pl-1">
-            {activeBairro.nomeExibicao}
+            {isDestinationStep ? `Desembarque: ${activeBairro.nomeExibicao}` : activeBairro.nomeExibicao}
           </span>
           <Key
             type="button"
             variant="icon"
             onClick={() => {
               setActiveBairro(null);
-              onSelectBairro(null);
+              if (routeStep === "none") {
+                onSelectBairro(null);
+              }
             }}
             className="w-[36px] h-[36px] min-w-[36px] p-0 flex items-center justify-center shrink-0"
             title="Voltar aos bairros"
@@ -191,14 +591,22 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       )}
 
       {/* ==================================================================
-          2. NO MODO DESKTOP: Campo de busca fica ACIMA dos botões
+          MODO DESKTOP:
+          1º: Botões de rotas ("Minhas rotas" à esq, "Confirmar Saída/Ação" à dir)
+          2º: Banner do passo atual (se rota em andamento)
+          3º: Input de busca
+          4º: Grade de linhas/bairros
          ================================================================== */}
-      {persistent && searchInputNode}
+      {persistent && (
+        <div className="flex flex-col gap-2 w-full shrink-0">
+          {routeButtonsNode}
+          {stepIndicatorBanner}
+          {searchInputNode}
+        </div>
+      )}
 
       {/* ==================================================================
-          3. GRADE DE BAIRROS OU PONTOS
-          - No desktop: exibe todos sem corte de altura ou scroll interno
-          - No mobile: usa scroll interno compacto acima do dock
+          GRADE DE BAIRROS OU PONTOS
          ================================================================== */}
       <div
         className={`${
@@ -210,32 +618,45 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
         {!activeBairro ? (
           /* Nível 1: Grade com todos os bairros */
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-            {sortedBairros.map((linha, idx) => {
-              const isSelected = selectedBairroId === linha.id;
-              return (
-                <div
-                  key={linha.id}
-                  className="w-full animate-stagger-item"
-                  style={{ animationDelay: `${Math.min(idx * 15, 120)}ms` }}
-                >
-                  <Key
-                    type="button"
-                    pressed={isSelected}
-                    onClick={() => {
-                      setActiveBairro(linha);
-                      onSelectBairro(linha.id);
-                    }}
-                    className="w-full px-2 text-[12.5px] sm:text-[13px] justify-start text-left truncate font-medium"
-                    title={`${linha.codigo} - ${linha.bairro}`}
+            {sortedBairros.length > 0 ? (
+              sortedBairros.map((linha, idx) => {
+                const isSelected = selectedBairroId === linha.id;
+                return (
+                  <div
+                    key={linha.id}
+                    className="w-full animate-stagger-item"
+                    style={{ animationDelay: `${Math.min(idx * 15, 120)}ms` }}
                   >
-                    <span className="font-bold opacity-60 mr-1 text-[11px]">
-                      {linha.codigo}
-                    </span>
-                    <span className="truncate">{linha.bairro}</span>
-                  </Key>
-                </div>
-              );
-            })}
+                    <Key
+                      type="button"
+                      pressed={isSelected}
+                      onClick={() => {
+                        setActiveBairro(linha);
+                        if (routeStep === "none") {
+                          onSelectBairro(linha.id);
+                        }
+                      }}
+                      className="w-full px-2 text-[12.5px] sm:text-[14px] justify-start text-left truncate font-medium"
+                      title={`${linha.codigo} - ${linha.bairro}`}
+                    >
+                      <span className="font-bold opacity-60 mr-1 text-[12px]">
+                        {linha.codigo}
+                      </span>
+                      <span className="truncate">{linha.bairro}</span>
+                    </Key>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="col-span-2 sm:col-span-3 py-6 px-3 flex flex-col items-center justify-center text-center gap-1.5 text-ink-muted">
+                <span className="text-[13px] font-medium text-ink">
+                  Nenhuma linha direta com este nome
+                </span>
+                <span className="text-[12px] text-ink-muted leading-snug">
+                  Selecione uma sugestão acima ou busque por faculdade, shopping ou endereço.
+                </span>
+              </div>
+            )}
           </div>
         ) : (
           /* Nível 2: Grade com todos os pontos de ônibus do bairro ativo */
@@ -252,18 +673,30 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
                     type="button"
                     pressed={isSelected}
                     onClick={() => {
-                      onSelectPonto(activeBairro.id, ponto.id);
-                      if (!persistent) {
-                        onClose();
+                      if (routeStep === "origin" && onSelectOrigin) {
+                        onSelectOrigin(ponto, activeBairro);
+                      } else if (routeStep === "destination" && onSelectDestination) {
+                        onSelectDestination(ponto, activeBairro);
+                        if (!persistent) {
+                          onClose();
+                        }
+                      } else {
+                        onSelectPonto(activeBairro.id, ponto.id);
                       }
                     }}
-                    className="w-full px-2 text-[12.5px] sm:text-[13px] justify-start text-left truncate font-medium"
+                    className="w-full px-2 text-[12.5px] sm:text-[14px] justify-start text-left truncate font-medium"
                     title={ponto.nome}
                   >
-                    <span className="font-mono text-[10.5px] opacity-60 mr-1">
+                    <span className="font-mono text-[12px] opacity-60 mr-1">
                       {String(ponto.ordem).padStart(2, "0")}.
                     </span>
-                    <span className="truncate">{ponto.nome}</span>
+                    <span className="truncate">
+                      {ponto.nome
+                        .replace(/\b(rua|r\.)\s+/gi, "")
+                        .replace(/\s*\((.*?)\)\s*/g, " - $1")
+                        .replace(/\s*-\s*-\s*/g, " - ")
+                        .trim()}
+                    </span>
                   </Key>
                 </div>
               );
@@ -273,9 +706,60 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       </div>
 
       {/* ==================================================================
-          4. NO MODO MOBILE: Campo de busca fica na base
+          MODO MOBILE:
+          1º: Grade de bairros/pontos (acima)
+          2º: Input de busca
+          3º: Botões de rotas na base ("Minhas rotas" à esq, "Confirmar Saída/Ação" à dir)
          ================================================================== */}
-      {!persistent && searchInputNode}
+      {!persistent && (
+        <div className="flex flex-col gap-2 w-full shrink-0 border-t border-rule/30 pt-2">
+          {searchInputNode}
+          {routeButtonsNode}
+        </div>
+      )}
+
+      {/* ==================================================================
+          MODAL DE LOCALIZAÇÃO TÁTIL: "Usar localização?"
+         ================================================================== */}
+      {showLocationModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="loc-modal-title"
+          className="absolute inset-0 bg-canvas/95 backdrop-blur-md z-40 rounded-dock p-4 flex flex-col justify-between border border-coral/30 shadow-raised-lg animate-scale-in"
+        >
+          <div className="flex flex-col gap-2">
+            <div>
+              <h4 id="loc-modal-title" className="text-[15px] font-bold text-ink">
+                Usar localização?
+              </h4>
+            </div>
+            <p className="text-[12.5px] text-ink-body leading-relaxed">
+              Podemos usar a localização do seu aparelho para filtrar e listar instantaneamente as paradas de ônibus mais próximas de você em Guarapuava.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 pt-2">
+            <Key
+              type="button"
+              disabled={isLocating}
+              onClick={handleDeclineLocation}
+              className="w-full text-[13px] justify-center text-center font-medium"
+            >
+              Não
+            </Key>
+            <Key
+              type="button"
+              variant="coral"
+              disabled={isLocating}
+              onClick={handleAcceptLocation}
+              className="w-full text-[13px] justify-center text-center font-bold"
+            >
+              {isLocating ? "Obtendo GPS..." : "Sim, usar"}
+            </Key>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
