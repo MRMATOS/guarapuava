@@ -1,5 +1,6 @@
 import JSZip from 'jszip';
 import { jobOpeningInputSchema, JobOpeningInput } from '@/lib/mcp/schema';
+import { getTodayDateString } from '@/lib/utils/date';
 
 const COMPANY_PREFIXES = [
   'Empresa contratante:',
@@ -182,7 +183,7 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
 
     let company = 'Empresa Confidencial';
     let registeredAt: string | null = null;
-    let publishedDate = '01/10/2026';
+    let publishedDate: string | null = null;
     let deadline: string | null = null;
     let location = 'Guarapuava - PR';
     let workModel: 'Presencial' | 'Híbrido' | 'Remoto' | 'Externo/Campo' = 'Presencial';
@@ -207,19 +208,24 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
       if (isCompanyLine(clean)) {
         company = extractCompany(clean);
       } else if (/^registro\s+no\s+documento\s*:/i.test(clean) || /^registrad[ao]\s+em\s*:/i.test(clean)) {
-        registeredAt = clean.split(':', 2)[1]?.trim() || null;
+        const colonIdx = clean.indexOf(':');
+        registeredAt = colonIdx !== -1 ? clean.substring(colonIdx + 1).trim() : clean;
       } else if (
         /^data\s+de\s+publica[çc][ãa]o(?:\s+original)?\s*:/i.test(clean) ||
         /^publicad[ao]\s+em\s*:/i.test(clean)
       ) {
-        const val = clean.split(':', 2)[1]?.trim() || '';
+        const colonIdx = clean.indexOf(':');
+        const val = colonIdx !== -1 ? clean.substring(colonIdx + 1).trim() : '';
         const dlMatch = val.match(/[Ii]nscrições.*?(?:até|encerram em)\s+([0-9]{2}\/[0-9]{2}\/[0-9]{4})/);
         if (dlMatch) {
           deadline = dlMatch[1];
         }
-        const dateMatch = val.match(/([0-9]{2}\/[0-9]{2}\/[0-9]{4})/);
-        if (dateMatch) {
-          publishedDate = dateMatch[1];
+        const dateMatches = val.match(/([0-9]{2}\/[0-9]{2}\/[0-9]{4})/g);
+        if (dateMatches) {
+          const pubCandidate = dateMatches.find((d) => d !== deadline) || (!dlMatch ? dateMatches[0] : null);
+          if (pubCandidate) {
+            publishedDate = pubCandidate;
+          }
         }
       } else if (
         /^modalidade(?:\s+e\s+local)?\s*:/i.test(clean) ||
@@ -297,6 +303,19 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
     }
 
     const sourceUrl = r.link || 'https://guarapuava.pr.gov.br/noticias';
+
+    // Se publishedDate não foi explicitamente informado, deriva da data de registro ou de hoje
+    if (!publishedDate) {
+      if (registeredAt) {
+        const regDateMatch = registeredAt.match(/([0-9]{2}\/[0-9]{2}\/[0-9]{4})/);
+        if (regDateMatch) {
+          publishedDate = regDateMatch[1];
+        }
+      }
+      if (!publishedDate) {
+        publishedDate = getTodayDateString();
+      }
+    }
 
     try {
       const parsed = jobOpeningInputSchema.parse({

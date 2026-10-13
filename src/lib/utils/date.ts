@@ -105,8 +105,8 @@ export function parseDateInput(
       return directDate;
     }
 
-    // Padrão brasileiro: "Registrado em 06/10/2026 as 18:30" ou "06/10/2026 18:30" ou "06/10/2026 às 18:30"
-    const brPattern = /(\d{2})\/(\d{2})\/(\d{4})(?:\s*(?:as|às|ás|em|,)?\s*(\d{2}):(\d{2}))?/i;
+    // Padrão brasileiro: "Registrado em 06/10/2026 as 18:30" ou "06/10/2026 18:30" ou "06/10/2026 às 18:30" ou "13/10/2026 as 11"
+    const brPattern = /(\d{2})\/(\d{2})\/(\d{4})(?:\s*(?:as|às|ás|em|,)?\s*(\d{2})(?::(\d{2}))?)?/i;
     const match = raw.match(brPattern);
     if (match) {
       const [, d, m, y, h, min] = match;
@@ -207,9 +207,18 @@ export function formatRelativeUpdateText(
  * Em caso de empate na data, utiliza registeredAt, createdAt ou updatedAt como desempate.
  */
 export function sortJobsByPublishedDate(jobs: JobOpening[]): JobOpening[] {
+  const now = new Date();
+  const maxReasonableTime = now.getTime() + 24 * 60 * 60 * 1000; // tolerância para fuso horário de hoje
+
   return [...jobs].sort((a, b) => {
-    const dateA = parseDateInput(a.publishedDate);
-    const dateB = parseDateInput(b.publishedDate);
+    let dateA = parseDateInput(a.publishedDate);
+    if (dateA && dateA.getTime() > maxReasonableTime) {
+      dateA = parseDateInput(a.registeredAt || a.registeredDate || a.createdAt);
+    }
+    let dateB = parseDateInput(b.publishedDate);
+    if (dateB && dateB.getTime() > maxReasonableTime) {
+      dateB = parseDateInput(b.registeredAt || b.registeredDate || b.createdAt);
+    }
 
     const timeA = dateA ? dateA.getTime() : 0;
     const timeB = dateB ? dateB.getTime() : 0;

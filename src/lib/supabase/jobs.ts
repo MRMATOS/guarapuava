@@ -66,7 +66,7 @@ export function mapRowToJob(row: DatabaseJobRow): JobOpening {
 /**
  * Lista todas as vagas ativas no portal, ordenadas pela data de criação.
  */
-export async function listActiveJobs(limit = 500): Promise<JobOpening[]> {
+export async function listActiveJobs(limit = 1000): Promise<JobOpening[]> {
   try {
     const { data, error } = await supabase
       .from('jobs')
