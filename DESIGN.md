@@ -265,7 +265,7 @@ Uma tecla de aparelho: firme, curta, afunda ao toque.
     1. Linha de metadados: Nome da linha à esquerda, distância do trajeto e botão tátil Mapa (`MapPin` + "Mapa") à direita.
     2. Nome da parada em destaque (`h3`, `14.5px`/`15px`, `font-bold`, `text-ink`).
     3. Grade oficial de horários da parada:
-       - No Embarque: `DIAS ÚTEIS (N SAÍDAS)` (ou Sábados / Domingos).
+       - No Embarque: `DIAS ÚTEIS` (ou Sábados / Domingos).
        - No Desembarque: `PREVISÃO DE CHEGADA`.
        - Ambas utilizam pílulas de dimensões idênticas (`text-[13px]`, `px-2.5 py-1`, `font-mono`).
     4. Selo de ação alinhado à esquerda na base: `Embarque` (coral) ou `Desembarque` (esmeralda).

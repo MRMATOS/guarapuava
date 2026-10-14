@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo, useSyncExternalStore } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback, useSyncExternalStore } from "react";
 import { MapPin } from "lucide-react";
 import { Key } from "@/components/ui/Key";
 import type { LinhaBairro, PontoItinerario } from "@/types/bus";
@@ -330,7 +330,8 @@ function renderHorariosSection(
   ponto: PontoItinerario,
   highlightedHorario?: string | null,
   highlightColor: "coral" | "emerald" = "coral",
-  customTitle?: string
+  customTitle?: string,
+  isExpanded: boolean = false
 ) {
   const getBadgeClasses = (horario: string) => {
     if (highlightedHorario && horario === highlightedHorario) {
@@ -342,18 +343,109 @@ function renderHorariosSection(
     return "bg-surface-inset text-ink border border-rule/40 shadow-xs";
   };
 
+  const hasAnyHorarios =
+    (ponto.horariosUteis && ponto.horariosUteis.length > 0) ||
+    (ponto.horariosSabado && ponto.horariosSabado.length > 0) ||
+    (ponto.horariosDomingo && ponto.horariosDomingo.length > 0);
+
+  if (!hasAnyHorarios) {
+    return (
+      <div className="pt-0.5 text-[12.5px] text-ink-muted italic flex items-center gap-1.5">
+        <span className="w-1.5 h-1.5 rounded-full bg-ink-muted/50 shrink-0" />
+        <span>Ponto de passagem do itinerário</span>
+      </div>
+    );
+  }
+
+  // Quando recolhido (estado inicial padrão de todos os cards):
+  // Exibe o próximo horário em relação ao usuário e o segundo box com efeito de opacidade como dica tátil
+  if (!isExpanded) {
+    const dayOfWeek = new Date().getDay(); // 0 = Domingo, 6 = Sábado
+    let activeList: string[] = [];
+    let activeTitle = customTitle || "Dias Úteis";
+
+    if (dayOfWeek === 6 && ponto.horariosSabado && ponto.horariosSabado.length > 0) {
+      activeList = ponto.horariosSabado;
+      if (!customTitle) activeTitle = "Sábados";
+    } else if (dayOfWeek === 0 && ponto.horariosDomingo && ponto.horariosDomingo.length > 0) {
+      activeList = ponto.horariosDomingo;
+      if (!customTitle) activeTitle = "Domingos e Feriados";
+    } else if (ponto.horariosUteis && ponto.horariosUteis.length > 0) {
+      activeList = ponto.horariosUteis;
+      if (!customTitle) activeTitle = "Dias Úteis";
+    } else if (ponto.horariosSabado && ponto.horariosSabado.length > 0) {
+      activeList = ponto.horariosSabado;
+      if (!customTitle) activeTitle = "Sábados";
+    } else if (ponto.horariosDomingo && ponto.horariosDomingo.length > 0) {
+      activeList = ponto.horariosDomingo;
+      if (!customTitle) activeTitle = "Domingos e Feriados";
+    }
+
+    if (activeList.length === 0) {
+      return (
+        <div className="pt-0.5 text-[12.5px] text-ink-muted italic flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-ink-muted/50 shrink-0" />
+          <span>Ponto de passagem do itinerário</span>
+        </div>
+      );
+    }
+
+    // Identifica o próximo horário (ou o horário destacado no caso de embarque/desembarque)
+    const closest = highlightedHorario || getClosestDeparture(activeList).closest || activeList[0];
+    const closestIdx = closest ? activeList.indexOf(closest) : -1;
+    const validIdx = closestIdx !== -1 ? closestIdx : 0;
+
+    const firstHorario = closest || activeList[0];
+    const secondHorario =
+      activeList.length > 1
+        ? activeList[(validIdx + 1) % activeList.length]
+        : null;
+
+    return (
+      <div className="flex flex-col gap-1.5 pt-1">
+        <span className="text-[11.5px] font-semibold uppercase tracking-wider text-ink-muted">
+          {activeTitle}
+        </span>
+        <div
+          className="flex items-center gap-1.5 overflow-hidden select-none pointer-events-none"
+          style={{
+            WebkitMaskImage: secondHorario
+              ? "linear-gradient(to right, black 0px, black 60px, rgba(0,0,0,0.92) 68px, rgba(0,0,0,0.45) 96px, rgba(0,0,0,0.1) 116px, transparent 126px)"
+              : undefined,
+            maskImage: secondHorario
+              ? "linear-gradient(to right, black 0px, black 60px, rgba(0,0,0,0.92) 68px, rgba(0,0,0,0.45) 96px, rgba(0,0,0,0.1) 116px, transparent 126px)"
+              : undefined,
+          }}
+        >
+          <span
+            className={`font-mono text-[13px] font-semibold px-2.5 py-1 rounded-md transition-colors shrink-0 ${getBadgeClasses(
+              firstHorario
+            )}`}
+          >
+            {firstHorario}
+          </span>
+          {secondHorario && (
+            <span
+              className={`font-mono text-[13px] font-semibold px-2.5 py-1 rounded-md transition-colors shrink-0 ${getBadgeClasses(
+                secondHorario
+              )}`}
+            >
+              {secondHorario}
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Quando expandido (ao toque do usuário): revela todos os horários completos
   return (
-    <>
+    <div className="flex flex-col gap-2 animate-fade-in">
       {/* Horários: Dias Úteis */}
       {ponto.horariosUteis.length > 0 && (
         <div className="flex flex-col gap-1.5 pt-1">
-          <span className="text-[12.5px] uppercase tracking-wider font-bold text-ink flex items-center gap-1.5">
+          <span className="text-[11.5px] font-semibold uppercase tracking-wider text-ink-muted">
             {customTitle || "Dias Úteis"}
-            {!customTitle && (
-              <span className="text-[12px] font-normal text-ink-muted">
-                ({ponto.horariosUteis.length} saídas)
-              </span>
-            )}
           </span>
           <div className="flex flex-wrap gap-1.5">
             {ponto.horariosUteis.map((horario, hIdx) => (
@@ -373,11 +465,8 @@ function renderHorariosSection(
       {/* Horários: Sábados */}
       {ponto.horariosSabado.length > 0 && (
         <div className="flex flex-col gap-1.5 pt-1.5 border-t border-rule/20">
-          <span className="text-[12.5px] uppercase tracking-wider font-bold text-ink flex items-center gap-1.5">
+          <span className="text-[11.5px] font-semibold uppercase tracking-wider text-ink-muted">
             Sábados
-            <span className="text-[12px] font-normal text-ink-muted">
-              ({ponto.horariosSabado.length} saídas)
-            </span>
           </span>
           <div className="flex flex-wrap gap-1.5">
             {ponto.horariosSabado.map((horario, hIdx) => (
@@ -397,11 +486,8 @@ function renderHorariosSection(
       {/* Horários: Domingos e Feriados */}
       {ponto.horariosDomingo.length > 0 && (
         <div className="flex flex-col gap-1.5 pt-1.5 border-t border-rule/20">
-          <span className="text-[12.5px] uppercase tracking-wider font-bold text-ink flex items-center gap-1.5">
+          <span className="text-[11.5px] font-semibold uppercase tracking-wider text-ink-muted">
             Domingos e Feriados
-            <span className="text-[12px] font-normal text-ink-muted">
-              ({ponto.horariosDomingo.length} saídas)
-            </span>
           </span>
           <div className="flex flex-wrap gap-1.5">
             {ponto.horariosDomingo.map((horario, hIdx) => (
@@ -417,21 +503,16 @@ function renderHorariosSection(
           </div>
         </div>
       )}
-
-      {/* Caso sem horários específicos */}
-      {ponto.horariosUteis.length === 0 &&
-        ponto.horariosSabado.length === 0 &&
-        ponto.horariosDomingo.length === 0 && (
-          <div className="pt-0.5 text-[12.5px] text-ink-muted italic flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-ink-muted/50 shrink-0" />
-            <span>Ponto de passagem do itinerário</span>
-          </div>
-        )}
-    </>
+    </div>
   );
 }
 
-function renderJourneyView(journey: RouteJourneyData, showHeader: boolean = false) {
+function renderJourneyView(
+  journey: RouteJourneyData,
+  showHeader: boolean = false,
+  expandedCards?: Record<string, boolean>,
+  toggleCardExpanded?: (key: string) => void
+) {
   const activeHorariosOrigem = getPontoActiveHorarios(journey.origem);
   const { closest: proximoHorario } = getClosestDeparture(activeHorariosOrigem);
   const horarioChegada = getEstimatedArrival(
@@ -468,56 +549,66 @@ function renderJourneyView(journey: RouteJourneyData, showHeader: boolean = fals
       )}
 
       {/* 1. CARD DE EMBARQUE */}
-      <div className="surface-card w-full p-4 flex flex-col gap-3 border border-coral/60 shadow-raised-sm">
-        {/* Linha, Distância e Mapa */}
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-[12.5px] font-semibold text-ink-muted truncate">
-            {journey.linha.nomeExibicao}
-          </span>
-
-          <div className="flex items-center gap-1.5 shrink-0">
-            {journey.origDistanceMeters !== null && journey.origDistanceMeters !== undefined && (
-              <span
-                className="px-2.5 py-0.5 rounded-full bg-coral/10 text-coral text-[12px] font-bold tracking-tight"
-                title={`Distância: ${journey.origDistanceMeters} metros`}
-              >
-                a {formatDistance(journey.origDistanceMeters)}
-              </span>
-            )}
-
-            <a
-              href={getGoogleMapsUrl(journey.origem)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-2.5 py-1 rounded-md border border-rule/40 hover:border-coral/50 bg-canvas hover:bg-coral/10 text-ink-body hover:text-coral transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs active:scale-95 text-[12px] font-semibold"
-              title="Ver localização no Google Maps"
-            >
-              <MapPin className="w-3.5 h-3.5 text-coral" />
-              <span>Mapa</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Nome do Ponto */}
-        <div className="min-w-0 w-full">
-          <h3
-            className="text-[14.5px] sm:text-[15px] font-bold text-ink tracking-tight break-words leading-snug"
-            title={formatStopDisplayName(journey.origem, journey.linha.bairro)}
+      {(() => {
+        const origemKey = `journey-origem-${journey.origem.id}`;
+        const isOrigemExpanded = Boolean(expandedCards?.[origemKey]);
+        return (
+          <div
+            onClick={() => toggleCardExpanded?.(origemKey)}
+            className="surface-card w-full p-4 flex flex-col gap-3 border border-coral/60 shadow-raised-sm cursor-pointer transition-all duration-200 active:scale-[0.995]"
           >
-            {formatStopDisplayName(journey.origem, journey.linha.bairro)}
-          </h3>
-        </div>
+            {/* Linha, Distância e Mapa */}
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[12.5px] font-semibold text-ink-muted truncate">
+                {journey.linha.nomeExibicao}
+              </span>
 
-        {/* Horários com o horário mais próximo destacado em coral */}
-        {renderHorariosSection(journey.origem, proximoHorario, "coral")}
+              <div className="flex items-center gap-1.5 shrink-0">
+                {journey.origDistanceMeters !== null && journey.origDistanceMeters !== undefined && (
+                  <span
+                    className="px-2.5 py-0.5 rounded-full bg-coral/10 text-coral text-[12px] font-bold tracking-tight"
+                    title={`Distância: ${journey.origDistanceMeters} metros`}
+                  >
+                    a {formatDistance(journey.origDistanceMeters)}
+                  </span>
+                )}
 
-        {/* Badge de Embarque alinhada à esquerda abaixo dos horários */}
-        <div className="pt-1 flex items-center justify-start">
-          <span className="px-2.5 py-0.5 rounded-md bg-coral text-white text-[12px] font-bold shadow-xs">
-            Embarque
-          </span>
-        </div>
-      </div>
+                <a
+                  href={getGoogleMapsUrl(journey.origem)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="px-2.5 py-1 rounded-md border border-rule/40 hover:border-coral/50 bg-canvas hover:bg-coral/10 text-ink-body hover:text-coral transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs active:scale-95 text-[12px] font-semibold"
+                  title="Ver localização no Google Maps"
+                >
+                  <MapPin className="w-3.5 h-3.5 text-coral" />
+                  <span>Mapa</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Nome do Ponto */}
+            <div className="min-w-0 w-full">
+              <h3
+                className="text-[14.5px] sm:text-[15px] font-bold text-ink tracking-tight break-words leading-snug"
+                title={formatStopDisplayName(journey.origem, journey.linha.bairro)}
+              >
+                {formatStopDisplayName(journey.origem, journey.linha.bairro)}
+              </h3>
+            </div>
+
+            {/* Horários com o horário mais próximo destacado em coral */}
+            {renderHorariosSection(journey.origem, proximoHorario, "coral", undefined, isOrigemExpanded)}
+
+            {/* Badge de Embarque alinhada à esquerda abaixo dos horários */}
+            <div className="pt-1 flex items-center justify-start">
+              <span className="px-2.5 py-0.5 rounded-md bg-coral text-white text-[12px] font-bold shadow-xs">
+                Embarque
+              </span>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* 2. PARADAS INTERMEDIÁRIAS */}
       {journey.intermediarias.length > 0 && (
@@ -553,55 +644,65 @@ function renderJourneyView(journey: RouteJourneyData, showHeader: boolean = fals
       )}
 
       {/* 3. CARD DE CHEGADA / DESTINO */}
-      <div className="surface-card w-full p-4 flex flex-col gap-3 border border-emerald-500/60 shadow-raised-sm">
-        {/* Linha, Distância e Mapa */}
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-[12.5px] font-semibold text-ink-muted truncate">
-            {journey.linha.nomeExibicao}
-          </span>
-
-          <div className="flex items-center gap-1.5 shrink-0">
-            {destDistanceMeters !== null && (
-              <span
-                className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[12px] font-bold tracking-tight"
-                title={`Distância do percurso: ${destDistanceMeters} metros`}
-              >
-                a {formatDistance(destDistanceMeters)}
-              </span>
-            )}
-            <a
-              href={getGoogleMapsUrl(journey.destino)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-2.5 py-1 rounded-md border border-rule/40 hover:border-emerald-500/50 bg-canvas hover:bg-emerald-500/10 text-ink-body hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs active:scale-95 text-[12px] font-semibold"
-              title="Ver localização no Google Maps"
-            >
-              <MapPin className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-              <span>Mapa</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Nome do Ponto */}
-        <div className="min-w-0 w-full">
-          <h3
-            className="text-[14.5px] sm:text-[15px] font-bold text-ink tracking-tight break-words leading-snug"
-            title={formatStopDisplayName(journey.destino, journey.linha.bairro)}
+      {(() => {
+        const destinoKey = `journey-destino-${journey.destino.id}`;
+        const isDestinoExpanded = Boolean(expandedCards?.[destinoKey]);
+        return (
+          <div
+            onClick={() => toggleCardExpanded?.(destinoKey)}
+            className="surface-card w-full p-4 flex flex-col gap-3 border border-emerald-500/60 shadow-raised-sm cursor-pointer transition-all duration-200 active:scale-[0.995]"
           >
-            {formatStopDisplayName(journey.destino, journey.linha.bairro)}
-          </h3>
-        </div>
+            {/* Linha, Distância e Mapa */}
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[12.5px] font-semibold text-ink-muted truncate">
+                {journey.linha.nomeExibicao}
+              </span>
 
-        {/* Horários do Ponto de Desembarque (Previsão de Chegada) com destaque suave no horário previsto */}
-        {renderHorariosSection(journey.destino, horarioChegada, "emerald", "Previsão de Chegada")}
+              <div className="flex items-center gap-1.5 shrink-0">
+                {destDistanceMeters !== null && (
+                  <span
+                    className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[12px] font-bold tracking-tight"
+                    title={`Distância do percurso: ${destDistanceMeters} metros`}
+                  >
+                    a {formatDistance(destDistanceMeters)}
+                  </span>
+                )}
+                <a
+                  href={getGoogleMapsUrl(journey.destino)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="px-2.5 py-1 rounded-md border border-rule/40 hover:border-emerald-500/50 bg-canvas hover:bg-emerald-500/10 text-ink-body hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs active:scale-95 text-[12px] font-semibold"
+                  title="Ver localização no Google Maps"
+                >
+                  <MapPin className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span>Mapa</span>
+                </a>
+              </div>
+            </div>
 
-        {/* Badge de Desembarque alinhada à esquerda abaixo dos horários */}
-        <div className="pt-1 flex items-center justify-start">
-          <span className="px-2.5 py-0.5 rounded-md bg-emerald-600 text-white text-[12px] font-bold shadow-xs">
-            Desembarque
-          </span>
-        </div>
-      </div>
+            {/* Nome do Ponto */}
+            <div className="min-w-0 w-full">
+              <h3
+                className="text-[14.5px] sm:text-[15px] font-bold text-ink tracking-tight break-words leading-snug"
+                title={formatStopDisplayName(journey.destino, journey.linha.bairro)}
+              >
+                {formatStopDisplayName(journey.destino, journey.linha.bairro)}
+              </h3>
+            </div>
+
+            {/* Horários do Ponto de Desembarque (Previsão de Chegada) com destaque suave no horário previsto */}
+            {renderHorariosSection(journey.destino, horarioChegada, "emerald", "Previsão de Chegada", isDestinoExpanded)}
+
+            {/* Badge de Desembarque alinhada à esquerda abaixo dos horários */}
+            <div className="pt-1 flex items-center justify-start">
+              <span className="px-2.5 py-0.5 rounded-md bg-emerald-600 text-white text-[12px] font-bold shadow-xs">
+                Desembarque
+              </span>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
@@ -660,6 +761,16 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
   const isSelectingOrigin = routeStep === "origin";
   const isSelectingDestination = routeStep === "destination";
   const isCalculatedRoute = routeStep === "calculated";
+
+  // Armazena estado expandido de cada card para revelar todos os horários ao toque
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+
+  const toggleCardExpanded = useCallback((cardKey: string) => {
+    setExpandedCards((prev) => ({
+      ...prev,
+      [cardKey]: !prev[cardKey],
+    }));
+  }, []);
 
   // Gerenciamento reativo de rotas salvas sem render cascata
   const savedRoutes = useSyncExternalStore(
@@ -806,7 +917,7 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                   {saved.destino.ponto.bairro || saved.destino.linha.bairro}
                 </span>
               </div>
-              {renderJourneyView(journey)}
+              {renderJourneyView(journey, false, expandedCards, toggleCardExpanded)}
             </div>
           );
         })}
@@ -827,7 +938,7 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
           onClearOrigin,
           onClearDestination,
         })}
-        {renderJourneyView(routeJourney, false)}
+        {renderJourneyView(routeJourney, false, expandedCards, toggleCardExpanded)}
       </div>
     );
   }
@@ -859,15 +970,17 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
 
     return (
       <div className="flex flex-col gap-4 w-full select-text pb-12 animate-fade-in">
-        {/* Bloco no Header de Criação de Rota */}
-        {renderRouteHeaderCard({
-          routeStep,
-          selectedOriginPonto,
-          selectedDestinationPonto,
-          onCancelRoute,
-          onClearOrigin,
-          onClearDestination,
-        })}
+        {/* Bloco no Header de Criação de Rota (apenas desktop, no mobile fica acima do dock) */}
+        <div className="hidden lg:block w-full">
+          {renderRouteHeaderCard({
+            routeStep,
+            selectedOriginPonto,
+            selectedDestinationPonto,
+            onCancelRoute,
+            onClearOrigin,
+            onClearDestination,
+          })}
+        </div>
 
         {/* Banner Informativo de Ordenação por Proximidade */}
         <div className="surface-card w-full p-3.5 border border-rule/50 flex items-center shadow-raised-sm">
@@ -896,11 +1009,16 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
               selectedDestinationPonto?.ponto.id === ponto.id &&
               selectedDestinationPonto?.linha.id === linha.id;
 
+            const cardKey = `near-${linha.id}-${ponto.id}-${index}`;
+            const isExpanded = Boolean(expandedCards[cardKey]);
+
             const handleCardClick = () => {
               if (isSelectingOrigin && onSelectOrigin) {
                 onSelectOrigin(ponto, linha, distanceMeters);
               } else if (isSelectingDestination && onSelectDestination) {
                 onSelectDestination(ponto, linha, distanceMeters);
+              } else {
+                toggleCardExpanded(cardKey);
               }
             };
 
@@ -919,9 +1037,9 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                 key={`near-${linha.id}-${ponto.id}-${index}`}
                 id={`ponto-${linha.codigo}-${ponto.id}`}
                 ref={isSelectedByFilter ? selectedPontoRef : null}
-                onClick={isRouteMode ? handleCardClick : undefined}
-                className={`surface-card w-full p-4 flex flex-col gap-3 transition-all duration-200 ${
-                  isRouteMode ? "cursor-pointer hover:border-coral/50 active:scale-[0.99]" : ""
+                onClick={handleCardClick}
+                className={`surface-card w-full p-4 flex flex-col gap-3 transition-all duration-200 cursor-pointer ${
+                  isRouteMode ? "hover:border-coral/50 active:scale-[0.99]" : "active:scale-[0.995]"
                 } ${
                   isSelectedOrigin
                     ? "border border-coral/60 shadow-raised-sm"
@@ -972,7 +1090,14 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                 </div>
 
                 {/* Horários */}
-                {renderHorariosSection(ponto)}
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleCardExpanded(cardKey);
+                  }}
+                >
+                  {renderHorariosSection(ponto, null, "coral", undefined, isExpanded)}
+                </div>
 
                 {/* Badges de Embarque ou Destino alinhadas à esquerda abaixo dos horários */}
                 {(isSelectedOrigin || isSelectedDest) && (
@@ -1069,15 +1194,17 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
 
   return (
     <div className="flex flex-col gap-6 w-full select-text pb-12">
-      {/* Bloco no Header de Criação de Rota */}
-      {renderRouteHeaderCard({
-        routeStep,
-        selectedOriginPonto,
-        selectedDestinationPonto,
-        onCancelRoute,
-        onClearOrigin,
-        onClearDestination,
-      })}
+      {/* Bloco no Header de Criação de Rota (apenas desktop, no mobile fica acima do dock) */}
+      <div className="hidden lg:block w-full">
+        {renderRouteHeaderCard({
+          routeStep,
+          selectedOriginPonto,
+          selectedDestinationPonto,
+          onCancelRoute,
+          onClearOrigin,
+          onClearDestination,
+        })}
+      </div>
 
       {linhasParaExibir.map((linha) => {
         const query = normalizeText(searchQuery);
@@ -1146,11 +1273,16 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                       )
                     : null;
 
+                const cardKey = `main-${linha.id}-${ponto.id}-${index}`;
+                const isExpanded = Boolean(expandedCards[cardKey]);
+
                 const handleCardClick = () => {
                   if (isSelectingOrigin && onSelectOrigin) {
                     onSelectOrigin(ponto, linha, distanceMeters);
                   } else if (isSelectingDestination && onSelectDestination) {
                     onSelectDestination(ponto, linha, distanceMeters);
+                  } else {
+                    toggleCardExpanded(cardKey);
                   }
                 };
 
@@ -1159,9 +1291,9 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                     key={`${linha.id}-${ponto.id}-${index}`}
                     id={`ponto-${linha.codigo}-${ponto.id}`}
                     ref={isSelectedByFilter ? selectedPontoRef : null}
-                    onClick={isRouteMode ? handleCardClick : undefined}
-                    className={`surface-card w-full p-4 flex flex-col gap-3 transition-all duration-200 ${
-                      isRouteMode ? "cursor-pointer hover:border-coral/50 active:scale-[0.99]" : ""
+                    onClick={handleCardClick}
+                    className={`surface-card w-full p-4 flex flex-col gap-3 transition-all duration-200 cursor-pointer ${
+                      isRouteMode ? "hover:border-coral/50 active:scale-[0.99]" : "active:scale-[0.995]"
                     } ${
                       isSelectedOrigin
                         ? "border border-coral/60 shadow-raised-sm"
@@ -1214,7 +1346,14 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                     </div>
 
                     {/* Horários */}
-                    {renderHorariosSection(ponto)}
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleCardExpanded(cardKey);
+                      }}
+                    >
+                      {renderHorariosSection(ponto, null, "coral", undefined, isExpanded)}
+                    </div>
 
                     {/* Badges de Embarque ou Destino alinhadas à esquerda abaixo dos horários */}
                     {(isSelectedOrigin || isSelectedDest) && (

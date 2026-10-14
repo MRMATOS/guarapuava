@@ -39,6 +39,8 @@ export interface BusFilterPanelProps {
   onSelectDestination?: (ponto: PontoItinerario, linha: LinhaBairro, distanceMeters?: number | null) => void;
   onRequestLocation: () => Promise<void>;
   onSelectSearchCoords?: (coords: { lat: number; lon: number; label: string } | null) => void;
+  showLinesGrid?: boolean;
+  onToggleLinesGrid?: () => void;
 }
 
 export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
@@ -52,6 +54,8 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   onClose,
   filterButtonRef,
   persistent = false,
+  showLinesGrid: propShowLinesGrid,
+  onToggleLinesGrid: propToggleLinesGrid,
 
   routeStep = "origin",
   selectedOriginPonto,
@@ -73,6 +77,16 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const [localShowLinesGrid, setLocalShowLinesGrid] = useState(false);
+  const showLinesGrid = propShowLinesGrid !== undefined ? propShowLinesGrid : localShowLinesGrid;
+  const handleToggleLinesGrid = () => {
+    if (propToggleLinesGrid) {
+      propToggleLinesGrid();
+    } else {
+      setLocalShowLinesGrid((prev) => !prev);
+    }
+  };
 
   // Bairro atualmente em foco no painel para listar seus pontos
   const [activeBairro, setActiveBairro] = useState<LinhaBairro | null>(() => {
@@ -387,25 +401,6 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
     ? "Onde você vai embarcar? (Buscar embarque, rua ou bairro)"
     : "Buscar rua, bairro ou linha...";
 
-  const stepIndicatorBanner = isRouteMode && !isCalculatedStep ? (
-    <div className="surface-card w-full px-4.5 py-3 sm:px-5 sm:py-3.5 border border-rule/50 flex flex-col gap-1 rounded-2xl bg-canvas shadow-xs animate-fade-in text-left">
-      <div className="flex items-center justify-between">
-        <span className="text-[11px] uppercase tracking-wider font-bold text-coral">
-          {isDestinationStep ? "Passo 2 de 2 • Desembarque" : "Passo 1 de 2 • Embarque"}
-        </span>
-        {isDestinationStep && selectedOriginPonto && (
-          <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold truncate max-w-[170px]">
-            ✓ Embarque pronto
-          </span>
-        )}
-      </div>
-      <div className="text-[12.5px] text-ink font-medium truncate">
-        {isDestinationStep && selectedOriginPonto
-          ? `De: ${formatStopDisplayName(selectedOriginPonto.ponto, selectedOriginPonto.linha.bairro)}`
-          : "Busque um local ou selecione uma parada abaixo"}
-      </div>
-    </div>
-  ) : null;
 
   // 1. NÓ DO INPUT DE BUSCA
   const searchInputNode = (
@@ -512,40 +507,51 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
     </div>
   );
 
-  // 2. NÓ DOS BOTÕES DE ROTA: Esquerda: Minhas rotas (ou Salvar rota) | Direita: Ação
+  // 2. NÓ DOS BOTÕES DE ROTA: Esquerda: Linhas/Ocultar | Centro: Minhas rotas (ou Salvar rota) | Direita: Ação
   const routeButtonsNode = (
-    <div className="grid grid-cols-2 gap-2 w-full animate-stagger-item">
-      {/* Botão Esquerdo */}
+    <div className="grid grid-cols-3 gap-1.5 sm:gap-2 w-full animate-stagger-item">
+      {/* Botão 1 (Esquerda): Linhas (ou Ocultar) */}
+      <Key
+        type="button"
+        pressed={showLinesGrid}
+        onClick={handleToggleLinesGrid}
+        className="w-full px-1 sm:px-2 text-[12px] sm:text-[13px] justify-center text-center font-semibold transition-all"
+        title={showLinesGrid ? "Ocultar grade de linhas" : "Mostrar grade de linhas"}
+      >
+        <span className="truncate">{showLinesGrid ? "Ocultar" : "Linhas"}</span>
+      </Key>
+
+      {/* Botão 2 (Centro): Minhas rotas (ou Salvar rota) */}
       {isCalculatedStep ? (
         <Key
           type="button"
           pressed={isRouteSaved}
           onClick={onSaveRoute}
-          className="w-full px-2 text-[12.5px] sm:text-[13px] justify-center text-center font-semibold"
+          className="w-full px-1 sm:px-2 text-[12px] sm:text-[13px] justify-center text-center font-semibold"
           title="Salvar esta rota para consultas futuras"
         >
-          <span>{isRouteSaved ? "Rota salva" : "Salvar rota"}</span>
+          <span className="truncate">{isRouteSaved ? "Rota salva" : "Salvar rota"}</span>
         </Key>
       ) : (
         <Key
           type="button"
           pressed={isShowingSavedRoutes}
           onClick={onToggleSavedRoutes}
-          className="w-full px-2 text-[12.5px] sm:text-[13px] justify-center text-center font-semibold"
+          className="w-full px-1 sm:px-2 text-[12px] sm:text-[13px] justify-center text-center font-semibold"
           title="Ver rotas salvas"
         >
-          <span>Minhas rotas</span>
+          <span className="truncate">Minhas rotas</span>
         </Key>
       )}
 
-      {/* Botão Direito (Criar rota ou Cancelar rota) */}
+      {/* Botão 3 (Direita): Criar rota ou Cancelar rota */}
       <Key
         type="button"
         onClick={handleActionClick}
-        className="w-full px-2 text-[12.5px] sm:text-[13px] justify-center text-center font-semibold transition-all active:scale-95"
+        className="w-full px-1 sm:px-2 text-[12px] sm:text-[13px] justify-center text-center font-semibold transition-all active:scale-95"
         title={actionButtonText}
       >
-        <span>{actionButtonText}</span>
+        <span className="truncate">{actionButtonText}</span>
       </Key>
     </div>
   );
@@ -559,15 +565,11 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
         persistent ? "desktop-sidebar-panel" : "filter-panel"
       } w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none relative`}
     >
-      {/* ==================================================================
-          MODO MOBILE: BANNER DE PASSO ATIVO NO TOPO DO PAINEL
-         ================================================================== */}
-      {!persistent && stepIndicatorBanner}
 
       {/* ==================================================================
           TRANSIÇÃO ENTRE BAIRROS E PONTOS (Apenas seta na 2ª camada)
          ================================================================== */}
-      {activeBairro && (
+      {showLinesGrid && activeBairro && (
         <div className="flex items-center justify-between gap-2 px-0.5 animate-stagger-item">
           <span className="text-[13px] font-bold text-ink truncate min-w-0 pl-1">
             {isDestinationStep ? `Desembarque: ${activeBairro.nomeExibicao}` : activeBairro.nomeExibicao}
@@ -592,7 +594,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
 
       {/* ==================================================================
           MODO DESKTOP:
-          1º: Botões de rotas ("Minhas rotas" à esq, "Confirmar Saída/Ação" à dir)
+          1º: Botões de rotas ("Linhas", "Minhas rotas", "Criar/Cancelar rota")
           2º: Banner do passo atual (se rota em andamento)
           3º: Input de busca
           4º: Grade de linhas/bairros
@@ -600,7 +602,6 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       {persistent && (
         <div className="flex flex-col gap-2 w-full shrink-0">
           {routeButtonsNode}
-          {stepIndicatorBanner}
           {searchInputNode}
         </div>
       )}
@@ -608,22 +609,65 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       {/* ==================================================================
           GRADE DE BAIRROS OU PONTOS
          ================================================================== */}
-      <div
-        className={`${
-          persistent
-            ? "overflow-visible"
-            : "max-h-[142px] min-h-[142px] overflow-y-auto no-scrollbar overscroll-contain"
-        } pr-0.5`}
-      >
-        {!activeBairro ? (
-          /* Nível 1: Grade com todos os bairros */
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-            {sortedBairros.length > 0 ? (
-              sortedBairros.map((linha, idx) => {
-                const isSelected = selectedBairroId === linha.id;
+      {showLinesGrid && (
+        <div
+          className={`${
+            persistent
+              ? "overflow-visible"
+              : "max-h-[142px] min-h-[142px] overflow-y-auto no-scrollbar overscroll-contain"
+          } pr-0.5`}
+        >
+          {!activeBairro ? (
+            /* Nível 1: Grade com todos os bairros */
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+              {sortedBairros.length > 0 ? (
+                sortedBairros.map((linha, idx) => {
+                  const isSelected = selectedBairroId === linha.id;
+                  return (
+                    <div
+                      key={linha.id}
+                      className="w-full animate-stagger-item"
+                      style={{ animationDelay: `${Math.min(idx * 15, 120)}ms` }}
+                    >
+                      <Key
+                        type="button"
+                        pressed={isSelected}
+                        onClick={() => {
+                          setActiveBairro(linha);
+                          if (routeStep === "none") {
+                            onSelectBairro(linha.id);
+                          }
+                        }}
+                        className="w-full px-2 text-[12.5px] sm:text-[14px] justify-start text-left truncate font-medium"
+                        title={`${linha.codigo} - ${linha.bairro}`}
+                      >
+                        <span className="font-bold opacity-60 mr-1 text-[12px]">
+                          {linha.codigo}
+                        </span>
+                        <span className="truncate">{linha.bairro}</span>
+                      </Key>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="col-span-2 sm:col-span-3 py-6 px-3 flex flex-col items-center justify-center text-center gap-1.5 text-ink-muted">
+                  <span className="text-[13px] font-medium text-ink">
+                    Nenhuma linha direta com este nome
+                  </span>
+                  <span className="text-[12px] text-ink-muted leading-snug">
+                    Selecione uma sugestão acima ou busque por faculdade, shopping ou endereço.
+                  </span>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Nível 2: Grade com todos os pontos de ônibus do bairro ativo */
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+              {filteredPontos.map((ponto: PontoItinerario, idx: number) => {
+                const isSelected = selectedPontoId === ponto.id;
                 return (
                   <div
-                    key={linha.id}
+                    key={`${ponto.id}-${idx}`}
                     className="w-full animate-stagger-item"
                     style={{ animationDelay: `${Math.min(idx * 15, 120)}ms` }}
                   >
@@ -631,88 +675,47 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
                       type="button"
                       pressed={isSelected}
                       onClick={() => {
-                        setActiveBairro(linha);
-                        if (routeStep === "none") {
-                          onSelectBairro(linha.id);
+                        if (routeStep === "origin" && onSelectOrigin) {
+                          onSelectOrigin(ponto, activeBairro);
+                        } else if (routeStep === "destination" && onSelectDestination) {
+                          onSelectDestination(ponto, activeBairro);
+                          if (!persistent) {
+                            onClose();
+                          }
+                        } else {
+                          onSelectPonto(activeBairro.id, ponto.id);
                         }
                       }}
                       className="w-full px-2 text-[12.5px] sm:text-[14px] justify-start text-left truncate font-medium"
-                      title={`${linha.codigo} - ${linha.bairro}`}
+                      title={ponto.nome}
                     >
-                      <span className="font-bold opacity-60 mr-1 text-[12px]">
-                        {linha.codigo}
+                      <span className="font-mono text-[12px] opacity-60 mr-1">
+                        {String(ponto.ordem).padStart(2, "0")}.
                       </span>
-                      <span className="truncate">{linha.bairro}</span>
+                      <span className="truncate">
+                        {ponto.nome
+                          .replace(/\b(rua|r\.)\s+/gi, "")
+                          .replace(/\s*\((.*?)\)\s*/g, " - $1")
+                          .replace(/\s*-\s*-\s*/g, " - ")
+                          .trim()}
+                      </span>
                     </Key>
                   </div>
                 );
-              })
-            ) : (
-              <div className="col-span-2 sm:col-span-3 py-6 px-3 flex flex-col items-center justify-center text-center gap-1.5 text-ink-muted">
-                <span className="text-[13px] font-medium text-ink">
-                  Nenhuma linha direta com este nome
-                </span>
-                <span className="text-[12px] text-ink-muted leading-snug">
-                  Selecione uma sugestão acima ou busque por faculdade, shopping ou endereço.
-                </span>
-              </div>
-            )}
-          </div>
-        ) : (
-          /* Nível 2: Grade com todos os pontos de ônibus do bairro ativo */
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-            {filteredPontos.map((ponto: PontoItinerario, idx: number) => {
-              const isSelected = selectedPontoId === ponto.id;
-              return (
-                <div
-                  key={`${ponto.id}-${idx}`}
-                  className="w-full animate-stagger-item"
-                  style={{ animationDelay: `${Math.min(idx * 15, 120)}ms` }}
-                >
-                  <Key
-                    type="button"
-                    pressed={isSelected}
-                    onClick={() => {
-                      if (routeStep === "origin" && onSelectOrigin) {
-                        onSelectOrigin(ponto, activeBairro);
-                      } else if (routeStep === "destination" && onSelectDestination) {
-                        onSelectDestination(ponto, activeBairro);
-                        if (!persistent) {
-                          onClose();
-                        }
-                      } else {
-                        onSelectPonto(activeBairro.id, ponto.id);
-                      }
-                    }}
-                    className="w-full px-2 text-[12.5px] sm:text-[14px] justify-start text-left truncate font-medium"
-                    title={ponto.nome}
-                  >
-                    <span className="font-mono text-[12px] opacity-60 mr-1">
-                      {String(ponto.ordem).padStart(2, "0")}.
-                    </span>
-                    <span className="truncate">
-                      {ponto.nome
-                        .replace(/\b(rua|r\.)\s+/gi, "")
-                        .replace(/\s*\((.*?)\)\s*/g, " - $1")
-                        .replace(/\s*-\s*-\s*/g, " - ")
-                        .trim()}
-                    </span>
-                  </Key>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+              })}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ==================================================================
           MODO MOBILE:
-          1º: Grade de bairros/pontos (acima)
+          1º: Grade de bairros/pontos (acima se visível)
           2º: Input de busca
-          3º: Botões de rotas na base ("Minhas rotas" à esq, "Confirmar Saída/Ação" à dir)
+          3º: Botões de rotas na base ("Linhas", "Minhas rotas", "Criar/Cancelar rota")
          ================================================================== */}
       {!persistent && (
-        <div className="flex flex-col gap-2 w-full shrink-0 border-t border-rule/30 pt-2">
+        <div className={`flex flex-col gap-2 w-full shrink-0 ${showLinesGrid ? "border-t border-rule/30 pt-2" : ""}`}>
           {searchInputNode}
           {routeButtonsNode}
         </div>

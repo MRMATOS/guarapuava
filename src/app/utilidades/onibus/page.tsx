@@ -10,6 +10,7 @@ import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { InfoFeed } from "@/components/InfoFeed";
 import { BusScheduleFeed } from "@/components/bus/BusScheduleFeed";
 import { BusFilterPanel } from "@/components/bus/BusFilterPanel";
+import { BusRouteStepCard } from "@/components/bus/BusRouteStepCard";
 import { useUserLocation } from "@/hooks/useUserLocation";
 import { useTheme } from "@/context/ThemeContext";
 import { saveRoute, isRouteSaved } from "@/lib/bus/saved-routes";
@@ -42,6 +43,13 @@ export default function HorariosOnibusPage() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [isMobileInfoOpen, setIsMobileInfoOpen] = useState(false);
+
+  // Controle de visibilidade da grade de linhas no painel de filtros
+  const [showLinesGrid, setShowLinesGrid] = useState(false);
+
+  const handleToggleLinesGrid = useCallback(() => {
+    setShowLinesGrid((prev) => !prev);
+  }, []);
 
   // Estados Desktop
   const [isDesktopInfoOpen, setIsDesktopInfoOpen] = useState(false);
@@ -464,6 +472,17 @@ export default function HorariosOnibusPage() {
                     />
                   </Presence>
 
+                  {/* Painel de passos da criação de rota (acima do painel de filtro e acima do docker) */}
+                  <Presence isVisible={routeStep === "origin" || routeStep === "destination"} duration={180}>
+                    <BusRouteStepCard
+                      routeStep={routeStep}
+                      selectedOriginPonto={selectedOriginPonto}
+                      selectedDestinationPonto={selectedDestinationPonto}
+                      onCancelRoute={handleCancelRoute}
+                      onClearOrigin={handleClearOrigin}
+                    />
+                  </Presence>
+
                   <div className="grid grid-cols-1 grid-rows-1 items-end w-full [grid-template-areas:'stack']">
                     {/* Bloco de Filtros & Rotas */}
                     <div className="w-full [grid-area:stack]">
@@ -478,6 +497,8 @@ export default function HorariosOnibusPage() {
                           onSearchChange={(q) => setSearchQuery(q)}
                           onClose={() => setIsFilterOpen(false)}
                           filterButtonRef={filterButtonRef}
+                          showLinesGrid={showLinesGrid}
+                          onToggleLinesGrid={handleToggleLinesGrid}
                           routeStep={routeStep}
                           selectedOriginPonto={selectedOriginPonto}
                           selectedDestinationPonto={selectedDestinationPonto}
@@ -757,6 +778,8 @@ export default function HorariosOnibusPage() {
                     onSelectPonto={handleSelectPonto}
                     onSearchChange={(q) => setSearchQuery(q)}
                     onClose={() => {}}
+                    showLinesGrid={showLinesGrid}
+                    onToggleLinesGrid={handleToggleLinesGrid}
                     routeStep={routeStep}
                     selectedOriginPonto={selectedOriginPonto}
                     selectedDestinationPonto={selectedDestinationPonto}
