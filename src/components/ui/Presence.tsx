@@ -27,6 +27,12 @@ export function usePresence(
       setShouldRender(true);
       setIsExiting(false);
     } else if (shouldRender) {
+      if (durationMs <= 0) {
+        setShouldRender(false);
+        setIsExiting(false);
+        onExitComplete?.();
+        return;
+      }
       setIsExiting(true);
       timer = setTimeout(() => {
         setShouldRender(false);

@@ -96,11 +96,11 @@ function renderRouteHeaderCard({
 
   if (routeStep === "destination" || !selectedDestinationPonto) {
     return (
-      <div className="sticky top-2 z-20 surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 border border-coral/40 shadow-raised-md flex items-center justify-between gap-3 animate-scale-in bg-canvas">
+      <div className="sticky top-2 z-20 surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 border border-emerald-500/40 dark:border-emerald-400/40 shadow-raised-md flex items-center justify-between gap-3 animate-scale-in bg-canvas">
         <div className="min-w-0 flex-1 flex flex-col gap-0.5">
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-coral shrink-0 animate-pulse" />
-            <span className="text-[11.5px] sm:text-[12px] font-bold text-coral uppercase tracking-wide">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 shrink-0 animate-pulse" />
+            <span className="text-[11.5px] sm:text-[12px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
               Passo 2 de 2 • Escolha o Destino
             </span>
           </div>

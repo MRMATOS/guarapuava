@@ -36,6 +36,9 @@ export interface BusRouteStepCardProps {
   selectedDestinationPonto?: { ponto: PontoItinerario; linha: LinhaBairro } | null;
   onCancelRoute?: () => void;
   onClearOrigin?: () => void;
+  showCancelButton?: boolean;
+  actionButtonLabel?: string;
+  onActionButtonClick?: () => void;
 }
 
 export const BusRouteStepCard: React.FC<BusRouteStepCardProps> = ({
@@ -43,6 +46,8 @@ export const BusRouteStepCard: React.FC<BusRouteStepCardProps> = ({
   selectedOriginPonto,
   onCancelRoute,
   onClearOrigin,
+  actionButtonLabel,
+  onActionButtonClick,
 }) => {
   if (routeStep === "none" || routeStep === "calculated") {
     return null;
@@ -50,8 +55,11 @@ export const BusRouteStepCard: React.FC<BusRouteStepCardProps> = ({
 
   // PASSO 1: Escolha o Embarque
   if (routeStep === "origin" || !selectedOriginPonto) {
+    const label = actionButtonLabel || "Cancelar";
+    const handleClick = onActionButtonClick || onCancelRoute;
+
     return (
-      <div className="surface-card w-full p-3 sm:p-3.5 border border-rule/50 shadow-raised-md flex items-center justify-between gap-3 animate-scale-in bg-canvas rounded-2xl text-left">
+      <div className="surface-card w-full p-3 sm:p-3.5 border border-rule/50 shadow-raised-md flex items-center justify-between gap-3 bg-canvas rounded-2xl text-left">
         <div className="min-w-0 flex-1 flex flex-col gap-0.5">
           <span className="text-[11.5px] sm:text-[12px] font-bold text-coral uppercase tracking-wide">
             Passo 1 de 2 • Escolha o Embarque
@@ -64,13 +72,13 @@ export const BusRouteStepCard: React.FC<BusRouteStepCardProps> = ({
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            onCancelRoute?.();
+            handleClick?.();
           }}
-          className="px-3.5 h-[38px] text-[12.5px] sm:text-[13px] font-medium shrink-0 justify-center text-center"
-          title="Cancelar criação de rota"
-          aria-label="Cancelar criação de rota"
+          className="px-3.5 h-[38px] text-[12.5px] sm:text-[13px] font-medium shrink-0 justify-center text-center transition-all"
+          title={label === "Entendi" ? "Entendi as instruções" : "Cancelar criação de rota"}
+          aria-label={label === "Entendi" ? "Entendi as instruções" : "Cancelar criação de rota"}
         >
-          Cancelar
+          {label}
         </Key>
       </div>
     );
@@ -78,11 +86,11 @@ export const BusRouteStepCard: React.FC<BusRouteStepCardProps> = ({
 
   // PASSO 2: Escolha o Destino
   return (
-    <div className="surface-card w-full p-3 sm:p-3.5 border border-coral/40 shadow-raised-md flex items-center justify-between gap-3 animate-scale-in bg-canvas rounded-2xl text-left">
+    <div className="surface-card w-full p-3 sm:p-3.5 border border-emerald-500/40 dark:border-emerald-400/40 shadow-raised-md flex items-center justify-between gap-3 bg-canvas rounded-2xl text-left">
       <div className="min-w-0 flex-1 flex flex-col gap-0.5">
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-coral shrink-0 animate-pulse" />
-          <span className="text-[11.5px] sm:text-[12px] font-bold text-coral uppercase tracking-wide">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 shrink-0 animate-pulse" />
+          <span className="text-[11.5px] sm:text-[12px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
             Passo 2 de 2 • Escolha o Destino
           </span>
         </div>

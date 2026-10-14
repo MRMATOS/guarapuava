@@ -42,7 +42,12 @@ export default function HorariosOnibusPage() {
   // Estados Mobile
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-  const [isMobileInfoOpen, setIsMobileInfoOpen] = useState(false);
+
+  // Estados de UX para Criação de Rota (Overlay do Passo 1, Foco do Passo 2 e Ocultação na Busca)
+  const [isStep1OverlayOpen, setIsStep1OverlayOpen] = useState(false);
+  const [isStep1AnimatingDown, setIsStep1AnimatingDown] = useState(false);
+  const [isStep2FocusActive, setIsStep2FocusActive] = useState(false);
+  const [isSearchTyping, setIsSearchTyping] = useState(false);
 
   // Controle de visibilidade da grade de linhas no painel de filtros
   const [showLinesGrid, setShowLinesGrid] = useState(false);
@@ -90,12 +95,27 @@ export default function HorariosOnibusPage() {
     setSelectedDestinationPonto(null);
     setTargetSearchCoords(null);
     setIsShowingSavedRoutes(false);
+    setIsStep1OverlayOpen(false);
+    setIsStep1AnimatingDown(false);
+    setIsStep2FocusActive(false);
   }, []);
 
   // Suporte à tecla Esc
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        if (isStep1OverlayOpen) {
+          setIsStep1AnimatingDown(true);
+          setTimeout(() => {
+            setIsStep1OverlayOpen(false);
+            setIsStep1AnimatingDown(false);
+          }, 320);
+          return;
+        }
+        if (isStep2FocusActive) {
+          setIsStep2FocusActive(false);
+          return;
+        }
         if (isDesktopInfoOpen) {
           setIsDesktopInfoOpen(false);
           return;
@@ -149,6 +169,11 @@ export default function HorariosOnibusPage() {
       transitionTimerRef.current = null;
     }
 
+    if (isStep1OverlayOpen) {
+      setIsStep1OverlayOpen(false);
+      setIsStep1AnimatingDown(false);
+    }
+
     if (isFilterOpen) {
       setIsFilterOpen(false);
       return;
@@ -169,6 +194,11 @@ export default function HorariosOnibusPage() {
     if (transitionTimerRef.current) {
       clearTimeout(transitionTimerRef.current);
       transitionTimerRef.current = null;
+    }
+
+    if (isStep1OverlayOpen) {
+      setIsStep1OverlayOpen(false);
+      setIsStep1AnimatingDown(false);
     }
 
     if (isOptionsOpen) {
@@ -217,6 +247,16 @@ export default function HorariosOnibusPage() {
     );
   }, [selectedOriginPonto, selectedDestinationPonto, savedRoutesVersion]);
 
+  // Deslizar overlay do passo 1 para a base
+  const handleDismissStep1Intro = useCallback(() => {
+    if (isStep1AnimatingDown) return;
+    setIsStep1AnimatingDown(true);
+    setTimeout(() => {
+      setIsStep1OverlayOpen(false);
+      setIsStep1AnimatingDown(false);
+    }, 320);
+  }, [isStep1AnimatingDown]);
+
   // Iniciar criação de rota a partir do botão 'Criar rota'
   const handleStartRoute = useCallback(() => {
     setRouteStep("origin");
@@ -228,6 +268,9 @@ export default function HorariosOnibusPage() {
     setSearchQuery("");
     setIsShowingSavedRoutes(false);
     setIsFilterOpen(false); // Fecha o painel no mobile para o usuário escolher o embarque no feed
+    setIsStep1OverlayOpen(true);
+    setIsStep1AnimatingDown(false);
+    setIsStep2FocusActive(false);
 
     // Solicita localização do usuário imediatamente para ordenar as paradas mais próximas de embarque
     requestLocation();
@@ -242,6 +285,9 @@ export default function HorariosOnibusPage() {
     setSelectedBairroId(null);
     setSelectedPontoId(null);
     setSearchQuery("");
+    setIsStep1OverlayOpen(false);
+    setIsStep1AnimatingDown(false);
+    setIsStep2FocusActive(false);
   }, []);
 
   // Escolha de ponto de origem no feed ou painel
@@ -249,6 +295,7 @@ export default function HorariosOnibusPage() {
     (ponto: PontoItinerario, linha: LinhaBairro, distanceMeters?: number | null) => {
       setSelectedOriginPonto({ ponto, linha, distanceMeters });
       setRouteStep("destination");
+      setIsStep2FocusActive(true); // Foco nos cards de horários para seleção do desembarque
       setTargetSearchCoords(null);
       setSelectedBairroId(null);
       setSelectedPontoId(null);
@@ -262,6 +309,7 @@ export default function HorariosOnibusPage() {
     (ponto: PontoItinerario, linha: LinhaBairro, distanceMeters?: number | null) => {
       setSelectedDestinationPonto({ ponto, linha, distanceMeters });
       setRouteStep("calculated");
+      setIsStep2FocusActive(false);
       setTargetSearchCoords(null);
       setSelectedBairroId(null);
       setSelectedPontoId(null);
@@ -275,6 +323,7 @@ export default function HorariosOnibusPage() {
   const handleConfirmOrigin = useCallback(() => {
     if (selectedOriginPonto) {
       setRouteStep("destination");
+      setIsStep2FocusActive(true);
       setTargetSearchCoords(null);
       setSelectedBairroId(null);
       setSelectedPontoId(null);
@@ -405,33 +454,7 @@ export default function HorariosOnibusPage() {
           1. CASCA MOBILE (< 1024px) COM DOCK INFERIOR
          ================================================================== */}
       <div className="lg:hidden w-full flex justify-center py-6 px-4 select-text">
-        {isMobileInfoOpen ? (
-          <div className="w-full max-w-[430px]">
-            <InfoFeed
-              hideNav={true}
-              onSelectNoticias={() => {
-                setIsMobileInfoOpen(false);
-                router.push("/");
-              }}
-              onSelectVagas={() => {
-                setIsMobileInfoOpen(false);
-                router.push("/#vagas");
-              }}
-            />
-            <Dock align="between" aria-label="Navegação de retorno">
-              <div className="grid grid-cols-1 w-full">
-                <Key
-                  type="button"
-                  onClick={() => setIsMobileInfoOpen(false)}
-                  className="w-full px-2 text-[14px] justify-center text-center font-medium"
-                >
-                  Voltar aos Horários de Ônibus
-                </Key>
-              </div>
-            </Dock>
-          </div>
-        ) : (
-          <div className="w-full max-w-[430px] flex flex-col gap-4 pb-32">
+        <div className="w-full max-w-[430px] flex flex-col gap-4 pb-32">
             {/* Cabeçalho limpo */}
             <header className="flex flex-col gap-1 px-1 pt-1">
               <h1 className="text-[20px] font-bold text-ink tracking-tight">
@@ -440,53 +463,91 @@ export default function HorariosOnibusPage() {
             </header>
 
             {/* Feed de Rolagem Contínua dos Horários */}
-            <BusScheduleFeed
-              linhas={busData.linhas}
-              selectedBairroId={selectedBairroId}
-              selectedPontoId={selectedPontoId}
-              searchQuery={searchQuery}
-              onClearFilter={handleClearFilters}
-              routeStep={routeStep}
-              selectedOriginPonto={selectedOriginPonto}
-              selectedDestinationPonto={selectedDestinationPonto}
-              userCoords={coords}
-              targetSearchCoords={targetSearchCoords}
-              isShowingSavedRoutes={isShowingSavedRoutes}
-              onSelectOrigin={handleSelectOrigin}
-              onSelectDestination={handleSelectDestination}
-              onCancelRoute={handleCancelRoute}
-              onClearOrigin={handleClearOrigin}
-              onClearDestination={handleClearDestination}
-            />
+            <div
+              className={`transition-all duration-300 ${
+                isStep1OverlayOpen && !isStep1AnimatingDown
+                  ? "opacity-0 pointer-events-none scale-[0.98]"
+                  : "opacity-100 scale-100"
+              }`}
+            >
+              <BusScheduleFeed
+                linhas={busData.linhas}
+                selectedBairroId={selectedBairroId}
+                selectedPontoId={selectedPontoId}
+                searchQuery={searchQuery}
+                onClearFilter={handleClearFilters}
+                routeStep={routeStep}
+                selectedOriginPonto={selectedOriginPonto}
+                selectedDestinationPonto={selectedDestinationPonto}
+                userCoords={coords}
+                targetSearchCoords={targetSearchCoords}
+                isShowingSavedRoutes={isShowingSavedRoutes}
+                onSelectOrigin={handleSelectOrigin}
+                onSelectDestination={handleSelectDestination}
+                onCancelRoute={handleCancelRoute}
+                onClearOrigin={handleClearOrigin}
+                onClearDestination={handleClearDestination}
+              />
+            </div>
 
             {/* Dock Inferior Mobile: Mais - Filtrar - Voltar */}
             <Dock
               align="between"
               above={
                 <div className="flex flex-col gap-2 w-full">
-                  {/* Indicador de Filtros Ativos */}
-                  <Presence isVisible={hasActiveFilters && !isShowingSavedRoutes && routeStep !== "calculated"} duration={180}>
+                  {/* Indicador de Filtros Ativos (oculto quando digitando na busca para desobstruir sugestões) */}
+                  <Presence
+                    isVisible={hasActiveFilters && !isShowingSavedRoutes && routeStep !== "calculated" && !isSearchTyping}
+                    duration={180}
+                  >
                     <FilterIndicator
                       label={filterIndicatorLabel}
                       onClear={handleClearFilters}
                     />
                   </Presence>
 
-                  {/* Painel de passos da criação de rota (acima do painel de filtro e acima do docker) */}
-                  <Presence isVisible={routeStep === "origin" || routeStep === "destination"} duration={180}>
-                    <BusRouteStepCard
-                      routeStep={routeStep}
-                      selectedOriginPonto={selectedOriginPonto}
-                      selectedDestinationPonto={selectedDestinationPonto}
-                      onCancelRoute={handleCancelRoute}
-                      onClearOrigin={handleClearOrigin}
-                    />
-                  </Presence>
+                  {/* Painel de passos da criação de rota na base (mesmo componente BusRouteStepCard) */}
+                  {/* Card de rota: inicia centralizado e desliza suavemente até a base */}
+                  {(routeStep === "origin" || routeStep === "destination") && !isSearchTyping && (
+                    <div
+                      style={{
+                        transform:
+                          routeStep === "origin" && isStep1OverlayOpen && !isStep1AnimatingDown
+                            ? "translateY(calc(-50dvh + var(--dock-offset, 12px) + 112px))"
+                            : "translateY(0px)",
+                        transition: isStep1AnimatingDown
+                          ? "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)"
+                          : "none",
+                        willChange: isStep1OverlayOpen ? "transform" : "auto",
+                        zIndex: isStep1OverlayOpen ? 50 : 10,
+                      }}
+                      className="w-full relative"
+                      onClick={isStep1OverlayOpen ? handleDismissStep1Intro : undefined}
+                    >
+                      <BusRouteStepCard
+                        routeStep={routeStep}
+                        selectedOriginPonto={selectedOriginPonto}
+                        selectedDestinationPonto={selectedDestinationPonto}
+                        onCancelRoute={handleCancelRoute}
+                        onClearOrigin={handleClearOrigin}
+                        actionButtonLabel={
+                          routeStep === "origin" && isStep1OverlayOpen
+                            ? "Entendi"
+                            : "Cancelar"
+                        }
+                        onActionButtonClick={
+                          routeStep === "origin" && isStep1OverlayOpen
+                            ? handleDismissStep1Intro
+                            : undefined
+                        }
+                      />
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-1 grid-rows-1 items-end w-full [grid-template-areas:'stack']">
-                    {/* Bloco de Filtros & Rotas */}
+                    {/* Bloco de Filtros & Rotas - acessível a qualquer momento, inclusive durante criação de rota */}
                     <div className="w-full [grid-area:stack]">
-                      <Presence isVisible={isFilterOpen} duration={180}>
+                      <Presence isVisible={isFilterOpen} duration={isStep1OverlayOpen ? 0 : 180}>
                         <BusFilterPanel
                           linhas={busData.linhas}
                           selectedBairroId={selectedBairroId}
@@ -518,6 +579,7 @@ export default function HorariosOnibusPage() {
                             await requestLocation();
                           }}
                           onSelectSearchCoords={handleSelectSearchCoords}
+                          onSearchTypingChange={setIsSearchTyping}
                         />
                       </Presence>
                     </div>
@@ -529,7 +591,7 @@ export default function HorariosOnibusPage() {
                           onClose={() => setIsOptionsOpen(false)}
                           onSelectInfo={() => {
                             setIsOptionsOpen(false);
-                            setIsMobileInfoOpen(true);
+                            router.push("/#informacoes");
                           }}
                           optionsButtonRef={optionsButtonRef}
                         />
@@ -580,7 +642,6 @@ export default function HorariosOnibusPage() {
               </div>
             </Dock>
           </div>
-        )}
       </div>
 
       {/* ==================================================================
@@ -799,6 +860,7 @@ export default function HorariosOnibusPage() {
                       await requestLocation();
                     }}
                     onSelectSearchCoords={handleSelectSearchCoords}
+                    onSearchTypingChange={setIsSearchTyping}
                   />
                 )}
               </div>
@@ -806,6 +868,58 @@ export default function HorariosOnibusPage() {
           </div>
         </div>
       </div>
+
+      {/* ==================================================================
+          OVERLAY ISOLADO: PASSO 1 (ESCOLHA O EMBARQUE)
+          Utiliza exatamente o mesmo componente BusRouteStepCard.
+          Sem botões e sem textos extras no estado centralizado.
+          Ao tocar no card ou na tela, o card desliza visivelmente do centro
+          até a posição de descanso na base, e apenas ao aterrissar o botão Cancelar surge.
+         ================================================================== */}
+      {/* ==================================================================
+          PASSO 1: BACKDROP CENTRALIZADO
+          Posicionado em z-[35], atrás do dock (z-40) e à frente do feed.
+          Mantém o dock e seus 3 botões 100% visíveis desde o primeiro instante.
+          O card de passo desliza suavemente do centro diretamente no .dock-stack.
+         ================================================================== */}
+      {isStep1OverlayOpen && (
+        <div
+          role="presentation"
+          aria-hidden="true"
+          onClick={handleDismissStep1Intro}
+          className={`fixed inset-0 z-[35] bg-canvas/75 backdrop-blur-sm transition-opacity duration-320 ease-out cursor-pointer ${
+            isStep1AnimatingDown ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+        />
+      )}
+
+      {/* ==================================================================
+          OVERLAY DE FOCO: PASSO 2 (ESCOLHA O DESEMBARQUE)
+          Foca inteiramente nos cards de horários.
+          Ao tocar na tela novamente, remove o overlay/blur para permitir
+          a seleção do destino.
+         ================================================================== */}
+      {isStep2FocusActive && routeStep === "destination" && (
+        <div
+          role="region"
+          aria-label="Foco no Passo 2: Escolha o Desembarque"
+          onClick={() => setIsStep2FocusActive(false)}
+          className="fixed inset-0 z-30 bg-canvas/30 backdrop-blur-[2.5px] animate-fade-in cursor-pointer flex flex-col items-center justify-start pt-20 px-4"
+        >
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsStep2FocusActive(false);
+            }}
+            className="surface-card py-2.5 px-4 rounded-xl border border-emerald-500/40 shadow-raised-md animate-scale-in flex items-center gap-2 max-w-[340px] text-center"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <span className="text-[13px] font-semibold text-ink leading-snug">
+              Agora toque na parada onde você quer desembarcar
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

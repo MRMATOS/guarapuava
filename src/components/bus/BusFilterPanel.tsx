@@ -41,6 +41,7 @@ export interface BusFilterPanelProps {
   onSelectSearchCoords?: (coords: { lat: number; lon: number; label: string } | null) => void;
   showLinesGrid?: boolean;
   onToggleLinesGrid?: () => void;
+  onSearchTypingChange?: (isTyping: boolean) => void;
 }
 
 export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
@@ -56,6 +57,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   persistent = false,
   showLinesGrid: propShowLinesGrid,
   onToggleLinesGrid: propToggleLinesGrid,
+  onSearchTypingChange,
 
   routeStep = "origin",
   selectedOriginPonto,
@@ -211,6 +213,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   };
 
   const handleSelectSuggestion = (sug: GeoSuggestion) => {
+    onSearchTypingChange?.(false);
     // =========================================================================
     // A. SE ESTAMOS NO PASSO 2: ESCOLHER DESTINO
     // =========================================================================
@@ -418,10 +421,25 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
           type="text"
           value={localSearch}
           onClick={handleInputClick}
+          onFocus={() => {
+            if (localSearch.trim().length > 0) {
+              onSearchTypingChange?.(true);
+            }
+          }}
+          onBlur={() => {
+            setTimeout(() => {
+              onSearchTypingChange?.(false);
+            }, 180);
+          }}
           onChange={(e) => {
             const val = e.target.value;
             setLocalSearch(val);
             onSearchChange(val);
+            if (val.trim().length > 0) {
+              onSearchTypingChange?.(true);
+            } else {
+              onSearchTypingChange?.(false);
+            }
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -443,6 +461,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
               setLocalSearch("");
               onSearchChange("");
               setSuggestions([]);
+              onSearchTypingChange?.(false);
             }}
             className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
             aria-label="Limpar pesquisa"
@@ -477,17 +496,17 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
                     <div className="text-[13px] font-semibold text-ink truncate flex items-center gap-1.5">
                       <span className="truncate">{sug.label}</span>
                       {isLinha && (
-                        <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded bg-coral/10 text-coral shrink-0">
+                        <span className="text-[12px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-coral/10 text-coral shrink-0">
                           Linha
                         </span>
                       )}
                       {isPoi && (
-                        <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded bg-coral/10 text-coral shrink-0">
+                        <span className="text-[12px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-coral/10 text-coral shrink-0">
                           Local
                         </span>
                       )}
                       {isPonto && (
-                        <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
+                        <span className="text-[12px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
                           Parada
                         </span>
                       )}
