@@ -118,29 +118,22 @@ async function generateAll() {
 
     <!-- Fundo Escuro Neumórfico -->
     <rect width="1200" height="630" fill="url(#ogBg)" />
-    <circle cx="600" cy="225" r="340" fill="url(#ogGlow)" />
+    <circle cx="600" cy="230" r="340" fill="url(#ogGlow)" />
 
     <!-- Moldura Sutil de Cartão -->
     <rect x="28" y="28" width="1144" height="574" rx="28" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="2" />
 
     <!-- Logo Centralizada com Sombra Suave (210x210 a partir de 182x182) -->
     <g filter="url(#dropShadow)">
-      <g transform="translate(495, 115) scale(1.1538)">
+      <g transform="translate(495, 125) scale(1.1538)">
         ${rawSvgInner}
       </g>
     </g>
 
     <!-- Títulos e Tipografia -->
-    <text x="600" y="415" text-anchor="middle" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="48" font-weight="700" letter-spacing="-1">Guarapuava Digital</text>
+    <text x="600" y="425" text-anchor="middle" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="48" font-weight="700" letter-spacing="-1">Guarapuava Digital</text>
     
-    <text x="600" y="468" text-anchor="middle" fill="#a0a6b1" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="400">Notícias e Vagas de Emprego de Hoje</text>
-
-    <!-- Badge Pill -->
-    <g transform="translate(475, 510)">
-      <rect width="250" height="40" rx="20" fill="rgba(255, 76, 70, 0.12)" stroke="rgba(255, 76, 70, 0.35)" stroke-width="1.5" />
-      <circle cx="24" cy="20" r="5" fill="#FF4C46" />
-      <text x="38" y="26" fill="#FF6B66" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="0.6">ATUALIZADO EM TEMPO REAL</text>
-    </g>
+    <text x="600" y="480" text-anchor="middle" fill="#a0a6b1" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="400">Notícias, vagas e utilidades</text>
   </svg>
   `;
 
