@@ -223,6 +223,9 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
         const linha = linhas.find((l) => l.id === sug.linhaId);
         const ponto = linha?.pontos.find((p) => p.id === sug.pontoId);
         if (linha && ponto) {
+          if (selectedOriginPonto && selectedOriginPonto.ponto.id === ponto.id) {
+            return;
+          }
           onSelectDestination?.(ponto, linha);
           setLocalSearch("");
           onSearchChange("");
@@ -684,6 +687,9 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
               {filteredPontos.map((ponto: PontoItinerario, idx: number) => {
                 const isSelected = selectedPontoId === ponto.id;
+                const isOriginStop = selectedOriginPonto?.ponto.id === ponto.id;
+                const isOriginDisabledInDestStep = routeStep === "destination" && isOriginStop;
+
                 return (
                   <div
                     key={`${ponto.id}-${idx}`}
@@ -692,22 +698,30 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
                   >
                     <Key
                       type="button"
-                      pressed={isSelected}
-                      onClick={() => {
-                        if (routeStep === "origin" && onSelectOrigin) {
-                          onSelectOrigin(ponto, activeBairro);
-                        } else if (routeStep === "destination" && onSelectDestination) {
-                          onSelectDestination(ponto, activeBairro);
-                          if (!persistent) {
-                            onClose();
+                        pressed={isSelected}
+                        disabled={isOriginDisabledInDestStep}
+                        onClick={() => {
+                          if (isOriginDisabledInDestStep) return;
+                          if (routeStep === "origin" && onSelectOrigin) {
+                            onSelectOrigin(ponto, activeBairro);
+                          } else if (routeStep === "destination" && onSelectDestination) {
+                            onSelectDestination(ponto, activeBairro);
+                            if (!persistent) {
+                              onClose();
+                            }
+                          } else {
+                            onSelectPonto(activeBairro.id, ponto.id);
                           }
-                        } else {
-                          onSelectPonto(activeBairro.id, ponto.id);
+                        }}
+                        className={`w-full px-2 text-[12.5px] sm:text-[14px] justify-start text-left truncate font-medium ${
+                          isOriginDisabledInDestStep ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                        title={
+                          isOriginDisabledInDestStep
+                            ? `${ponto.nome} (Local de embarque selecionado)`
+                            : ponto.nome
                         }
-                      }}
-                      className="w-full px-2 text-[12.5px] sm:text-[14px] justify-start text-left truncate font-medium"
-                      title={ponto.nome}
-                    >
+                      >
                       <span className="font-mono text-[12px] opacity-60 mr-1">
                         {String(ponto.ordem).padStart(2, "0")}.
                       </span>

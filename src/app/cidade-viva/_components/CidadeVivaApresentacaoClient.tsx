@@ -146,36 +146,10 @@ export function CidadeVivaApresentacaoClient() {
               aria-label="Apresentação do Cidade Viva"
               className="w-[430px] shrink-0 h-full max-h-full flex flex-col relative"
             >
-              {/* Cabeçalho de Notícias e Vagas mantido estritamente */}
-              <div className="w-full shrink-0 z-20 pb-2.5">
-                <nav
-                  aria-label="Navegação de abas"
-                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
-                >
-                  <Key
-                    type="button"
-                    onClick={() => router.push("/")}
-                    className="w-full text-[14.5px] justify-center text-center font-semibold"
-                    title="Ir para Notícias"
-                  >
-                    Notícias
-                  </Key>
-
-                  <Key
-                    type="button"
-                    onClick={() => router.push("/#vagas")}
-                    className="w-full text-[14.5px] justify-center text-center font-semibold"
-                    title="Ir para Vagas"
-                  >
-                    Vagas
-                  </Key>
-                </nav>
-              </div>
-
-              {/* Conteúdo: Cartão da Apresentação */}
+              {/* Conteúdo: Cartão da Apresentação com espaço vertical otimizado */}
               <div
                 id="desktop-center-scroller"
-                className="w-[calc(100%+48px)] -mx-6 px-6 pt-3 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
+                className="w-[calc(100%+48px)] -mx-6 px-6 pt-1 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
               >
                 <div className="flex flex-col gap-3.5">
                   <article className="surface-card w-full p-6 text-left flex flex-col gap-3.5">
@@ -206,12 +180,13 @@ export function CidadeVivaApresentacaoClient() {
               </div>
             </main>
 
-            {/* Coluna Direita (Opções e Ferramentas) */}
+            {/* Coluna Direita (Opções e Ferramentas em 3 Linhas / 6 Botões) */}
             <aside
               aria-label="Painel lateral de opções"
               className="w-[360px] shrink-0 h-full max-h-full flex flex-col"
             >
               <div className="w-full shrink-0 z-20 pb-2.5 flex flex-col gap-2">
+                {/* Linha 1: Informações e Modo Claro/Escuro */}
                 <div
                   role="toolbar"
                   aria-label="Opções primárias"
@@ -237,10 +212,36 @@ export function CidadeVivaApresentacaoClient() {
                   </Key>
                 </div>
 
+                {/* Linha 2: Notícias e Vagas */}
+                <div
+                  role="toolbar"
+                  aria-label="Navegação de abas"
+                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
+                >
+                  <Key
+                    type="button"
+                    onClick={() => router.push("/")}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Ir para Notícias"
+                  >
+                    Notícias
+                  </Key>
+
+                  <Key
+                    type="button"
+                    onClick={() => router.push("/#vagas")}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Ir para Vagas"
+                  >
+                    Vagas
+                  </Key>
+                </div>
+
+                {/* Linha 3: Cidade Viva e Utilidades */}
                 <div
                   role="toolbar"
                   aria-label="Ferramentas e utilidades"
-                  className="grid grid-cols-3 gap-2 w-full h-[42px]"
+                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
                 >
                   <Key
                     type="button"
@@ -259,16 +260,6 @@ export function CidadeVivaApresentacaoClient() {
                     title="Utilidades e serviços"
                   >
                     Utilidades
-                  </Key>
-
-                  <Key
-                    type="button"
-                    disabled
-                    aria-disabled="true"
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-40 cursor-not-allowed"
-                    title="Estatísticas (em breve)"
-                  >
-                    Estatísticas
                   </Key>
                 </div>
               </div>

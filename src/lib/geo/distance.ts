@@ -119,6 +119,9 @@ export function findNearestDestinationStop(
       let minSameLineDist = Infinity;
 
       for (const p of originLinha.pontos) {
+        if (originInfo?.ponto?.id && p.id === originInfo.ponto.id) {
+          continue;
+        }
         if (typeof p.latitude === "number" && typeof p.longitude === "number") {
           const d = calculateDistanceMeters(destLat, destLon, p.latitude, p.longitude);
           if (d < minSameLineDist) {
@@ -138,10 +141,10 @@ export function findNearestDestinationStop(
     }
   }
 
-  // 2. Busca a parada mais próxima globalmente em todas as linhas
-  const nearest = findNearestStops(destLat, destLon, linhas, 1);
-  if (nearest.length > 0) {
-    const match = nearest[0];
+  // 2. Busca a parada mais próxima globalmente em todas as linhas (excluindo a origem)
+  const nearest = findNearestStops(destLat, destLon, linhas, 10);
+  const match = nearest.find((m) => !originInfo?.ponto?.id || m.ponto.id !== originInfo.ponto.id);
+  if (match) {
     const linha = linhas.find((l) => l.id === match.linhaId);
     if (linha) {
       return {

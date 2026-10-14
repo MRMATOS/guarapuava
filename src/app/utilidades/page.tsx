@@ -148,36 +148,10 @@ export default function UtilidadesPage() {
               aria-label="Central de utilidades"
               className="w-[430px] shrink-0 h-full max-h-full flex flex-col relative"
             >
-              {/* Cabeçalho de Notícias e Vagas mantido estritamente */}
-              <div className="w-full shrink-0 z-20 pb-2.5">
-                <nav
-                  aria-label="Navegação de abas"
-                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
-                >
-                  <Key
-                    type="button"
-                    onClick={() => router.push("/")}
-                    className="w-full text-[14.5px] justify-center text-center font-semibold"
-                    title="Ir para Notícias"
-                  >
-                    Notícias
-                  </Key>
-
-                  <Key
-                    type="button"
-                    onClick={() => router.push("/#vagas")}
-                    className="w-full text-[14.5px] justify-center text-center font-semibold"
-                    title="Ir para Vagas"
-                  >
-                    Vagas
-                  </Key>
-                </nav>
-              </div>
-
-              {/* Conteúdo: Cartão limpo de Horários de Ônibus */}
+              {/* Conteúdo: Cartão limpo de Horários de Ônibus alinhado ao topo */}
               <div
                 id="desktop-center-scroller"
-                className="w-[calc(100%+48px)] -mx-6 px-6 pt-1 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain flex flex-col justify-between [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
+                className="w-[calc(100%+48px)] -mx-6 px-6 pt-1 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain flex flex-col justify-start [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
               >
                 {/* Cabeçalho de Utilidades (mesmo padrão do InfoFeed) */}
                 <div className="flex items-center justify-between mb-4 px-1 shrink-0">
@@ -189,8 +163,8 @@ export default function UtilidadesPage() {
                   </span>
                 </div>
 
-                {/* Lista de Utilidades alinhada de baixo para cima */}
-                <div className="flex-1 flex flex-col justify-end gap-3.5">
+                {/* Lista de Utilidades alinhada ao topo no desktop */}
+                <div className="flex flex-col justify-start gap-3.5">
                   <button
                     type="button"
                     onClick={() => router.push("/utilidades/onibus")}
@@ -209,12 +183,13 @@ export default function UtilidadesPage() {
               </div>
             </main>
 
-            {/* Coluna Direita (Opções e Ferramentas) */}
+            {/* Coluna Direita (Opções e Ferramentas em 3 Linhas / 6 Botões) */}
             <aside
               aria-label="Painel lateral de opções"
               className="w-[360px] shrink-0 h-full max-h-full flex flex-col"
             >
               <div className="w-full shrink-0 z-20 pb-2.5 flex flex-col gap-2">
+                {/* Linha 1: Informações e Modo Claro/Escuro */}
                 <div
                   role="toolbar"
                   aria-label="Opções primárias"
@@ -240,10 +215,36 @@ export default function UtilidadesPage() {
                   </Key>
                 </div>
 
+                {/* Linha 2: Notícias e Vagas */}
+                <div
+                  role="toolbar"
+                  aria-label="Navegação de abas"
+                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
+                >
+                  <Key
+                    type="button"
+                    onClick={() => router.push("/")}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Ir para Notícias"
+                  >
+                    Notícias
+                  </Key>
+
+                  <Key
+                    type="button"
+                    onClick={() => router.push("/#vagas")}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Ir para Vagas"
+                  >
+                    Vagas
+                  </Key>
+                </div>
+
+                {/* Linha 3: Cidade Viva e Utilidades */}
                 <div
                   role="toolbar"
                   aria-label="Ferramentas e utilidades"
-                  className="grid grid-cols-3 gap-2 w-full h-[42px]"
+                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
                 >
                   <Key
                     type="button"
@@ -263,16 +264,6 @@ export default function UtilidadesPage() {
                     title="Utilidades e serviços"
                   >
                     Utilidades
-                  </Key>
-
-                  <Key
-                    type="button"
-                    disabled
-                    aria-disabled="true"
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-40 cursor-not-allowed"
-                    title="Estatísticas (em breve)"
-                  >
-                    Estatísticas
                   </Key>
                 </div>
               </div>

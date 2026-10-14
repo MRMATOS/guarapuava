@@ -48,127 +48,7 @@ export function formatStopDisplayName(
   return raw;
 }
 
-function renderRouteHeaderCard({
-  routeStep,
-  selectedOriginPonto,
-  selectedDestinationPonto,
-  routeJourney,
-  onCancelRoute,
-  onClearOrigin,
-  onClearDestination,
-}: {
-  routeStep: "none" | "origin" | "destination" | "calculated";
-  selectedOriginPonto?: { ponto: PontoItinerario; linha: LinhaBairro } | null;
-  selectedDestinationPonto?: { ponto: PontoItinerario; linha: LinhaBairro } | null;
-  routeJourney?: RouteJourneyData | null;
-  onCancelRoute?: () => void;
-  onClearOrigin?: () => void;
-  onClearDestination?: () => void;
-}) {
-  if (routeStep === "none") return null;
 
-  if (routeStep === "origin" || !selectedOriginPonto) {
-    return (
-      <div className="sticky top-2 z-20 surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 border border-rule/50 shadow-raised-md flex items-center justify-between gap-3 animate-scale-in bg-canvas">
-        <div className="min-w-0 flex-1 flex flex-col gap-0.5">
-          <span className="text-[11.5px] sm:text-[12px] font-bold text-coral uppercase tracking-wide">
-            Passo 1 de 2 • Escolha o Embarque
-          </span>
-          <h3 className="text-[13.5px] sm:text-[14px] font-medium text-ink leading-snug break-words">
-            Toque em uma parada ou use a busca para seu local de saída
-          </h3>
-        </div>
-        <Key
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onCancelRoute?.();
-          }}
-          className="px-3.5 h-[38px] text-[12.5px] sm:text-[13px] font-medium shrink-0 justify-center text-center"
-          title="Cancelar criação de rota"
-          aria-label="Cancelar criação de rota"
-        >
-          Cancelar
-        </Key>
-      </div>
-    );
-  }
-
-  if (routeStep === "destination" || !selectedDestinationPonto) {
-    return (
-      <div className="sticky top-2 z-20 surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 border border-emerald-500/40 dark:border-emerald-400/40 shadow-raised-md flex items-center justify-between gap-3 animate-scale-in bg-canvas">
-        <div className="min-w-0 flex-1 flex flex-col gap-0.5">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 shrink-0 animate-pulse" />
-            <span className="text-[11.5px] sm:text-[12px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
-              Passo 2 de 2 • Escolha o Destino
-            </span>
-          </div>
-          <div className="text-[13px] sm:text-[13.5px] text-ink-muted truncate">
-            Embarque:{" "}
-            <strong className="text-ink font-semibold">
-              {formatStopDisplayName(selectedOriginPonto.ponto, selectedOriginPonto.linha.bairro)}
-            </strong>
-          </div>
-        </div>
-        <Key
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClearOrigin?.();
-          }}
-          className="px-3.5 h-[38px] text-[12.5px] sm:text-[13px] font-medium shrink-0 justify-center text-center"
-          title="Trocar ponto de embarque"
-          aria-label="Trocar ponto de embarque"
-        >
-          Trocar
-        </Key>
-      </div>
-    );
-  }
-
-  // 3. Rota Traçada Unificada (borda padrão, botão Trocar para voltar ao segundo passo)
-  return (
-    <div className="sticky top-2 z-20 surface-card w-full px-5 py-3.5 sm:px-6 sm:py-4 border border-rule/50 shadow-raised-md flex items-start justify-between gap-3 animate-scale-in bg-canvas">
-      <div className="min-w-0 flex-1 flex flex-col gap-1.5 text-left">
-        {/* Linha 1: Nome da linha (fica sozinha) */}
-        <div>
-          <span className="text-[12px] sm:text-[12.5px] font-bold text-coral uppercase tracking-wide">
-            {routeJourney ? routeJourney.linha.nomeExibicao : "Rota Traçada"}
-          </span>
-        </div>
-
-        {/* Linha 2: Endereço completo com quebra de linha (sem truncar) */}
-        <h3 className="text-[13.5px] sm:text-[14px] font-bold text-ink leading-snug break-words">
-          {formatStopDisplayName(selectedOriginPonto.ponto, selectedOriginPonto.linha.bairro)}{" "}
-          <span className="text-ink-muted font-normal px-1">→</span>{" "}
-          {formatStopDisplayName(selectedDestinationPonto.ponto, selectedDestinationPonto.linha.bairro)}
-        </h3>
-
-        {/* Linha 3: Quantas paradas tem no percurso (em sua própria linha) */}
-        {routeJourney && (
-          <div>
-            <span className="text-[12px] text-ink-muted font-medium">
-              {routeJourney.intermediarias.length + 2} paradas no percurso
-            </span>
-          </div>
-        )}
-      </div>
-      <Key
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onClearDestination?.();
-        }}
-        className="px-3.5 h-[38px] text-[12.5px] sm:text-[13px] font-medium shrink-0 justify-center text-center mt-0.5"
-        title="Trocar ponto de destino"
-        aria-label="Trocar ponto de destino"
-      >
-        Trocar
-      </Key>
-    </div>
-  );
-}
 
 /**
  * Calcula o horário mais próximo da hora atual (próxima saída).
@@ -255,7 +135,7 @@ function getEstimatedArrival(
   return null;
 }
 
-interface RouteJourneyData {
+export interface RouteJourneyData {
   linha: LinhaBairro;
   origem: PontoItinerario;
   intermediarias: PontoItinerario[];
@@ -263,7 +143,7 @@ interface RouteJourneyData {
   origDistanceMeters?: number | null;
 }
 
-function computeRouteJourney(
+export function computeRouteJourney(
   origemPonto: { ponto: PontoItinerario; linha: LinhaBairro; distanceMeters?: number | null },
   destinoPonto: { ponto: PontoItinerario; linha: LinhaBairro; distanceMeters?: number | null },
   linhas: LinhaBairro[],
@@ -929,15 +809,6 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
   if (isCalculatedRoute && routeJourney) {
     return (
       <div className="flex flex-col gap-4 w-full select-text animate-fade-in pb-12">
-        {renderRouteHeaderCard({
-          routeStep,
-          selectedOriginPonto,
-          selectedDestinationPonto,
-          routeJourney,
-          onCancelRoute,
-          onClearOrigin,
-          onClearDestination,
-        })}
         {renderJourneyView(routeJourney, false, expandedCards, toggleCardExpanded)}
       </div>
     );
@@ -970,17 +841,6 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
 
     return (
       <div className="flex flex-col gap-4 w-full select-text pb-12 animate-fade-in">
-        {/* Bloco no Header de Criação de Rota (apenas desktop, no mobile fica acima do dock) */}
-        <div className="hidden lg:block w-full">
-          {renderRouteHeaderCard({
-            routeStep,
-            selectedOriginPonto,
-            selectedDestinationPonto,
-            onCancelRoute,
-            onClearOrigin,
-            onClearDestination,
-          })}
-        </div>
 
         {/* Banner Informativo de Ordenação por Proximidade */}
         <div className="surface-card w-full p-3.5 border border-rule/50 flex items-center shadow-raised-sm">
@@ -1011,11 +871,14 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
 
             const cardKey = `near-${linha.id}-${ponto.id}-${index}`;
             const isExpanded = Boolean(expandedCards[cardKey]);
+            const isOriginStop = selectedOriginPonto?.ponto.id === ponto.id;
+            const isOriginDisabledInDestStep = isSelectingDestination && isOriginStop;
 
             const handleCardClick = () => {
               if (isSelectingOrigin && onSelectOrigin) {
                 onSelectOrigin(ponto, linha, distanceMeters);
               } else if (isSelectingDestination && onSelectDestination) {
+                if (isOriginStop) return;
                 onSelectDestination(ponto, linha, distanceMeters);
               } else {
                 toggleCardExpanded(cardKey);
@@ -1038,8 +901,17 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                 id={`ponto-${linha.codigo}-${ponto.id}`}
                 ref={isSelectedByFilter ? selectedPontoRef : null}
                 onClick={handleCardClick}
-                className={`surface-card w-full p-4 flex flex-col gap-3 transition-all duration-200 cursor-pointer ${
-                  isRouteMode ? "hover:border-coral/50 active:scale-[0.99]" : "active:scale-[0.995]"
+                title={
+                  isOriginDisabledInDestStep
+                    ? "Parada selecionada como local de embarque. Escolha outro destino."
+                    : undefined
+                }
+                className={`surface-card w-full p-4 flex flex-col gap-3 transition-all duration-200 ${
+                  isOriginDisabledInDestStep
+                    ? "opacity-50 cursor-not-allowed border border-coral/40"
+                    : isRouteMode
+                    ? "cursor-pointer hover:border-coral/50 active:scale-[0.99]"
+                    : "cursor-pointer active:scale-[0.995]"
                 } ${
                   isSelectedOrigin
                     ? "border border-coral/60 shadow-raised-sm"
@@ -1194,17 +1066,6 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
 
   return (
     <div className="flex flex-col gap-6 w-full select-text pb-12">
-      {/* Bloco no Header de Criação de Rota (apenas desktop, no mobile fica acima do dock) */}
-      <div className="hidden lg:block w-full">
-        {renderRouteHeaderCard({
-          routeStep,
-          selectedOriginPonto,
-          selectedDestinationPonto,
-          onCancelRoute,
-          onClearOrigin,
-          onClearDestination,
-        })}
-      </div>
 
       {linhasParaExibir.map((linha) => {
         const query = normalizeText(searchQuery);
@@ -1275,11 +1136,14 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
 
                 const cardKey = `main-${linha.id}-${ponto.id}-${index}`;
                 const isExpanded = Boolean(expandedCards[cardKey]);
+                const isOriginStop = selectedOriginPonto?.ponto.id === ponto.id;
+                const isOriginDisabledInDestStep = isSelectingDestination && isOriginStop;
 
                 const handleCardClick = () => {
                   if (isSelectingOrigin && onSelectOrigin) {
                     onSelectOrigin(ponto, linha, distanceMeters);
                   } else if (isSelectingDestination && onSelectDestination) {
+                    if (isOriginStop) return;
                     onSelectDestination(ponto, linha, distanceMeters);
                   } else {
                     toggleCardExpanded(cardKey);
@@ -1292,8 +1156,17 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                     id={`ponto-${linha.codigo}-${ponto.id}`}
                     ref={isSelectedByFilter ? selectedPontoRef : null}
                     onClick={handleCardClick}
-                    className={`surface-card w-full p-4 flex flex-col gap-3 transition-all duration-200 cursor-pointer ${
-                      isRouteMode ? "hover:border-coral/50 active:scale-[0.99]" : "active:scale-[0.995]"
+                    title={
+                      isOriginDisabledInDestStep
+                        ? "Parada selecionada como local de embarque. Escolha outro destino."
+                        : undefined
+                    }
+                    className={`surface-card w-full p-4 flex flex-col gap-3 transition-all duration-200 ${
+                      isOriginDisabledInDestStep
+                        ? "opacity-50 cursor-not-allowed border border-coral/40"
+                        : isRouteMode
+                        ? "cursor-pointer hover:border-coral/50 active:scale-[0.99]"
+                        : "cursor-pointer active:scale-[0.995]"
                     } ${
                       isSelectedOrigin
                         ? "border border-coral/60 shadow-raised-sm"

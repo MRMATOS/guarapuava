@@ -74,8 +74,8 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
                 id="desktop-left-scroller"
                 className={`w-[calc(100%+48px)] -mx-6 px-6 ${
                   slotLeftHeader
-                    ? "pt-3 [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_86%,transparent_100%)]"
-                    : "pt-4 [mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)]"
+                    ? "pt-2 [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_86%,transparent_100%)]"
+                    : "pt-1 [mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)]"
                 } flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain pb-28`}
               >
                 {slotLeft}
@@ -88,6 +88,8 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
 
         {/* ==================================================================
             2. COLUNA CENTRAL (Feed Principal ou Detalhe Ativo)
+            Espaço vertical otimizado: os botões de Notícias/Vagas foram
+            movidos para a coluna direita, permitindo expansão completa do feed.
            ================================================================== */}
         <main
           aria-label="Conteúdo principal"
@@ -96,42 +98,10 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
           }}
           className="w-[430px] shrink-0 h-full max-h-full flex flex-col relative"
         >
-          {/* Cabeçalho de 2 Botões (Notícias / Vagas) com alinhamento pixel-perfect ao feed */}
-          <div className="w-full shrink-0 z-20 pb-2.5">
-            <nav
-              aria-label="Navegação de abas"
-              className="grid grid-cols-2 gap-2 w-full h-[42px]"
-            >
-              <Key
-                aria-current={activeTab === "noticias" ? "page" : undefined}
-                pressed={activeTab === "noticias"}
-                onClick={() => {
-                  if (isInfoOpen) onCloseInfo();
-                  onSelectTab("noticias");
-                }}
-                className="w-full text-[14.5px] justify-center text-center font-semibold"
-              >
-                Notícias
-              </Key>
-
-              <Key
-                aria-current={activeTab === "vagas" ? "page" : undefined}
-                pressed={activeTab === "vagas"}
-                onClick={() => {
-                  if (isInfoOpen) onCloseInfo();
-                  onSelectTab("vagas");
-                }}
-                className="w-full text-[14.5px] justify-center text-center font-semibold"
-              >
-                Vagas
-              </Key>
-            </nav>
-          </div>
-
           {/* Conteúdo Central com dissipação de sombras sem corte rígido no topo ou na base */}
           <div
             id="desktop-center-scroller"
-            className="w-[calc(100%+48px)] -mx-6 px-6 pt-3 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
+            className="w-[calc(100%+48px)] -mx-6 px-6 pt-1 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
           >
             {slotCenter}
           </div>
@@ -139,19 +109,23 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
 
         {/* ==================================================================
             3. COLUNA DIREITA (Opções + Filtros ou Informações)
+            Estrutura em 3 linhas (6 botões no total / 2 por linha):
+              Linha 1: Informações e Modo Escuro
+              Linha 2: Notícias e Vagas
+              Linha 3: Cidade Viva e Utilidades
            ================================================================== */}
         <aside
           aria-label="Painel lateral de filtros e opções"
           className="w-[360px] shrink-0 h-full max-h-full flex flex-col"
         >
-          {/* Linha dos Botões de Opções em Duas Linhas */}
+          {/* Linha dos Botões de Opções em Três Linhas */}
           <div className="w-full shrink-0 z-20 pb-2.5 flex flex-col gap-2">
+            {/* Linha 1: Informações e Modo Claro/Escuro */}
             <div
               role="toolbar"
               aria-label="Opções e preferências primárias"
               className="grid grid-cols-2 gap-2 w-full h-[42px]"
             >
-              {/* 1. Botão Informações */}
               <Key
                 type="button"
                 pressed={isInfoOpen}
@@ -164,7 +138,6 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
                 Informações
               </Key>
 
-              {/* 2. Alternador de Modo Claro / Escuro */}
               <Key
                 type="button"
                 onClick={toggleTheme}
@@ -176,12 +149,47 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
               </Key>
             </div>
 
+            {/* Linha 2: Notícias e Vagas */}
+            <div
+              role="toolbar"
+              aria-label="Navegação de abas"
+              className="grid grid-cols-2 gap-2 w-full h-[42px]"
+            >
+              <Key
+                type="button"
+                aria-current={activeTab === "noticias" && !isInfoOpen ? "page" : undefined}
+                pressed={activeTab === "noticias" && !isInfoOpen}
+                onClick={() => {
+                  if (isInfoOpen) onCloseInfo();
+                  onSelectTab("noticias");
+                }}
+                className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                title="Ir para Notícias"
+              >
+                Notícias
+              </Key>
+
+              <Key
+                type="button"
+                aria-current={activeTab === "vagas" && !isInfoOpen ? "page" : undefined}
+                pressed={activeTab === "vagas" && !isInfoOpen}
+                onClick={() => {
+                  if (isInfoOpen) onCloseInfo();
+                  onSelectTab("vagas");
+                }}
+                className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                title="Ir para Vagas"
+              >
+                Vagas
+              </Key>
+            </div>
+
+            {/* Linha 3: Cidade Viva e Utilidades */}
             <div
               role="toolbar"
               aria-label="Ferramentas e utilidades"
-              className="grid grid-cols-3 gap-2 w-full h-[42px]"
+              className="grid grid-cols-2 gap-2 w-full h-[42px]"
             >
-              {/* 1. Botão Cidade Viva (Mapa Colaborativo) */}
               <Key
                 type="button"
                 onClick={() => {
@@ -194,7 +202,6 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
                 Cidade Viva
               </Key>
 
-              {/* 2. Botão Utilidades */}
               <Key
                 type="button"
                 onClick={() => {
@@ -205,18 +212,6 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
                 aria-label="Abrir Utilidades"
               >
                 Utilidades
-              </Key>
-
-              {/* 3. Botão Estatísticas (Desabilitado) */}
-              <Key
-                type="button"
-                disabled
-                aria-disabled="true"
-                className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-40 cursor-not-allowed"
-                title="Estatísticas (em breve)"
-                aria-label="Estatísticas indisponível"
-              >
-                Estatísticas
               </Key>
             </div>
           </div>

@@ -8,7 +8,7 @@ import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { InfoFeed } from "@/components/InfoFeed";
-import { BusScheduleFeed } from "@/components/bus/BusScheduleFeed";
+import { BusScheduleFeed, computeRouteJourney } from "@/components/bus/BusScheduleFeed";
 import { BusFilterPanel } from "@/components/bus/BusFilterPanel";
 import { BusRouteStepCard } from "@/components/bus/BusRouteStepCard";
 import { useUserLocation } from "@/hooks/useUserLocation";
@@ -247,6 +247,15 @@ export default function HorariosOnibusPage() {
     );
   }, [selectedOriginPonto, selectedDestinationPonto, savedRoutesVersion]);
 
+  // Rota calculada para exibir detalhes no card inferior
+  const routeJourney = useMemo(() => {
+    if (routeStep !== "calculated" || !selectedOriginPonto || !selectedDestinationPonto) {
+      return null;
+    }
+    const activeRefCoords = targetSearchCoords || coords;
+    return computeRouteJourney(selectedOriginPonto, selectedDestinationPonto, busData.linhas, activeRefCoords);
+  }, [routeStep, selectedOriginPonto, selectedDestinationPonto, targetSearchCoords, coords]);
+
   // Deslizar overlay do passo 1 para a base
   const handleDismissStep1Intro = useCallback(() => {
     if (isStep1AnimatingDown) return;
@@ -268,8 +277,13 @@ export default function HorariosOnibusPage() {
     setSearchQuery("");
     setIsShowingSavedRoutes(false);
     setIsFilterOpen(false); // Fecha o painel no mobile para o usuário escolher o embarque no feed
-    setIsStep1OverlayOpen(true);
-    setIsStep1AnimatingDown(false);
+    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+      setIsStep1OverlayOpen(false);
+      setIsStep1AnimatingDown(false);
+    } else {
+      setIsStep1OverlayOpen(true);
+      setIsStep1AnimatingDown(false);
+    }
     setIsStep2FocusActive(false);
 
     // Solicita localização do usuário imediatamente para ordenar as paradas mais próximas de embarque
@@ -295,11 +309,20 @@ export default function HorariosOnibusPage() {
     (ponto: PontoItinerario, linha: LinhaBairro, distanceMeters?: number | null) => {
       setSelectedOriginPonto({ ponto, linha, distanceMeters });
       setRouteStep("destination");
-      setIsStep2FocusActive(true); // Foco nos cards de horários para seleção do desembarque
+      setIsStep2FocusActive(true); // Foco nos cards com suave desfoque
       setTargetSearchCoords(null);
       setSelectedBairroId(null);
       setSelectedPontoId(null);
       setSearchQuery("");
+
+      // Rolar automaticamente para o topo ao selecionar o embarque (passo 1)
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        const desktopScroller = document.getElementById("desktop-center-scroller");
+        if (desktopScroller) {
+          desktopScroller.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
     },
     []
   );
@@ -307,6 +330,11 @@ export default function HorariosOnibusPage() {
   // Escolha de ponto de destino no feed ou painel
   const handleSelectDestination = useCallback(
     (ponto: PontoItinerario, linha: LinhaBairro, distanceMeters?: number | null) => {
+      // Impedir selecionar o mesmo local de embarque como destino
+      if (selectedOriginPonto && selectedOriginPonto.ponto.id === ponto.id) {
+        return;
+      }
+
       setSelectedDestinationPonto({ ponto, linha, distanceMeters });
       setRouteStep("calculated");
       setIsStep2FocusActive(false);
@@ -315,8 +343,17 @@ export default function HorariosOnibusPage() {
       setSelectedPontoId(null);
       setSearchQuery("");
       setIsFilterOpen(false); // Fecha o painel e exibe a rota calculada no feed
+
+      // Rolar para o topo ao exibir o resultado da rota
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        const desktopScroller = document.getElementById("desktop-center-scroller");
+        if (desktopScroller) {
+          desktopScroller.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
     },
-    []
+    [selectedOriginPonto]
   );
 
   // Confirmação manual de avanço (caso o usuário clique no botão Avançar)
@@ -328,6 +365,14 @@ export default function HorariosOnibusPage() {
       setSelectedBairroId(null);
       setSelectedPontoId(null);
       setSearchQuery("");
+
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        const desktopScroller = document.getElementById("desktop-center-scroller");
+        if (desktopScroller) {
+          desktopScroller.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
     }
   }, [selectedOriginPonto]);
 
@@ -508,7 +553,7 @@ export default function HorariosOnibusPage() {
 
                   {/* Painel de passos da criação de rota na base (mesmo componente BusRouteStepCard) */}
                   {/* Card de rota: inicia centralizado e desliza suavemente até a base */}
-                  {(routeStep === "origin" || routeStep === "destination") && !isSearchTyping && (
+                  {(routeStep === "origin" || routeStep === "destination" || routeStep === "calculated") && !isSearchTyping && (
                     <div
                       style={{
                         transform:
@@ -528,8 +573,10 @@ export default function HorariosOnibusPage() {
                         routeStep={routeStep}
                         selectedOriginPonto={selectedOriginPonto}
                         selectedDestinationPonto={selectedDestinationPonto}
+                        routeJourney={routeJourney}
                         onCancelRoute={handleCancelRoute}
                         onClearOrigin={handleClearOrigin}
+                        onClearDestination={handleClearDestination}
                         actionButtonLabel={
                           routeStep === "origin" && isStep1OverlayOpen
                             ? "Entendi"
@@ -684,45 +731,36 @@ export default function HorariosOnibusPage() {
               aria-label="Conteúdo de horários"
               className="w-[430px] shrink-0 h-full max-h-full flex flex-col relative"
             >
-              {/* Cabeçalho com Notícias e Vagas */}
-              <div className="w-full shrink-0 z-20 pb-2.5">
-                <nav
-                  aria-label="Navegação de abas"
-                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
-                >
-                  <Key
-                    type="button"
-                    onClick={() => router.push("/")}
-                    className="w-full text-[14.5px] justify-center text-center font-semibold"
-                    title="Ir para Notícias"
-                  >
-                    Notícias
-                  </Key>
+              {/* Cabeçalho Fixo Desktop (Título + Card de Criação de Rota) */}
+              <div className="w-full shrink-0 z-40 pb-3 flex flex-col gap-3">
+                <header className="flex flex-col gap-1 px-1 pt-1">
+                  <h1 className="text-[20px] font-bold text-ink tracking-tight">
+                    Horários de Ônibus
+                  </h1>
+                </header>
 
-                  <Key
-                    type="button"
-                    onClick={() => router.push("/#vagas")}
-                    className="w-full text-[14.5px] justify-center text-center font-semibold"
-                    title="Ir para Vagas"
-                  >
-                    Vagas
-                  </Key>
-                </nav>
+                {/* Step Card Fixo no Topo do Desktop durante criação de rota */}
+                {routeStep !== "none" && (
+                  <div className="w-full">
+                    <BusRouteStepCard
+                      routeStep={routeStep}
+                      selectedOriginPonto={selectedOriginPonto}
+                      selectedDestinationPonto={selectedDestinationPonto}
+                      routeJourney={routeJourney}
+                      onCancelRoute={handleCancelRoute}
+                      onClearOrigin={handleClearOrigin}
+                      onClearDestination={handleClearDestination}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Feed com Rolagem Suave */}
               <div
                 id="desktop-center-scroller"
-                className="w-[calc(100%+48px)] -mx-6 px-6 pt-3 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
+                className="w-[calc(100%+48px)] -mx-6 px-6 pt-1 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
               >
                 <div className="flex flex-col gap-4">
-                  {/* Cabeçalho de Título limpo */}
-                  <header className="flex flex-col gap-1 px-1 pt-1">
-                    <h1 className="text-[20px] font-bold text-ink tracking-tight">
-                      Horários de Ônibus
-                    </h1>
-                  </header>
-
                   <BusScheduleFeed
                     linhas={busData.linhas}
                     selectedBairroId={selectedBairroId}
@@ -745,13 +783,14 @@ export default function HorariosOnibusPage() {
               </div>
             </main>
 
-            {/* Coluna Direita (Opções no Topo + Filtros e Rotas Unificados) */}
+            {/* Coluna Direita (Opções no Topo + Filtros e Rotas Unificados em 3 Linhas / 6 Botões) */}
             <aside
               aria-label="Painel lateral de filtros e opções"
               className="w-[360px] shrink-0 h-full max-h-full flex flex-col"
             >
-              {/* Linha dos Botões de Opções em Duas Linhas */}
+              {/* Linha dos Botões de Opções em Três Linhas */}
               <div className="w-full shrink-0 z-20 pb-2.5 flex flex-col gap-2">
+                {/* Linha 1: Informações e Modo Claro/Escuro */}
                 <div
                   role="toolbar"
                   aria-label="Opções primárias"
@@ -777,10 +816,36 @@ export default function HorariosOnibusPage() {
                   </Key>
                 </div>
 
+                {/* Linha 2: Notícias e Vagas */}
+                <div
+                  role="toolbar"
+                  aria-label="Navegação de abas"
+                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
+                >
+                  <Key
+                    type="button"
+                    onClick={() => router.push("/")}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Ir para Notícias"
+                  >
+                    Notícias
+                  </Key>
+
+                  <Key
+                    type="button"
+                    onClick={() => router.push("/#vagas")}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Ir para Vagas"
+                  >
+                    Vagas
+                  </Key>
+                </div>
+
+                {/* Linha 3: Cidade Viva e Utilidades */}
                 <div
                   role="toolbar"
                   aria-label="Ferramentas e utilidades"
-                  className="grid grid-cols-3 gap-2 w-full h-[42px]"
+                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
                 >
                   <Key
                     type="button"
@@ -800,16 +865,6 @@ export default function HorariosOnibusPage() {
                     title="Utilidades e horários"
                   >
                     Utilidades
-                  </Key>
-
-                  <Key
-                    type="button"
-                    disabled
-                    aria-disabled="true"
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-40 cursor-not-allowed"
-                    title="Estatísticas (em breve)"
-                  >
-                    Estatísticas
                   </Key>
                 </div>
               </div>
@@ -887,38 +942,26 @@ export default function HorariosOnibusPage() {
           role="presentation"
           aria-hidden="true"
           onClick={handleDismissStep1Intro}
-          className={`fixed inset-0 z-[35] bg-canvas/75 backdrop-blur-sm transition-opacity duration-320 ease-out cursor-pointer ${
+          className={`lg:hidden fixed inset-0 z-[35] bg-canvas/75 backdrop-blur-sm transition-opacity duration-320 ease-out cursor-pointer ${
             isStep1AnimatingDown ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
         />
       )}
 
+
       {/* ==================================================================
           OVERLAY DE FOCO: PASSO 2 (ESCOLHA O DESEMBARQUE)
-          Foca inteiramente nos cards de horários.
-          Ao tocar na tela novamente, remove o overlay/blur para permitir
-          a seleção do destino.
+          Efeito suave de desfoque de fundo focado nos horários.
+          Ao tocar na tela, remove o desfoque para permitir a seleção do destino.
          ================================================================== */}
       {isStep2FocusActive && routeStep === "destination" && (
         <div
-          role="region"
-          aria-label="Foco no Passo 2: Escolha o Desembarque"
+          role="presentation"
+          aria-hidden="true"
           onClick={() => setIsStep2FocusActive(false)}
-          className="fixed inset-0 z-30 bg-canvas/30 backdrop-blur-[2.5px] animate-fade-in cursor-pointer flex flex-col items-center justify-start pt-20 px-4"
-        >
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsStep2FocusActive(false);
-            }}
-            className="surface-card py-2.5 px-4 rounded-xl border border-emerald-500/40 shadow-raised-md animate-scale-in flex items-center gap-2 max-w-[340px] text-center"
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span className="text-[13px] font-semibold text-ink leading-snug">
-              Agora toque na parada onde você quer desembarcar
-            </span>
-          </div>
-        </div>
+          onTouchStart={() => setIsStep2FocusActive(false)}
+          className="fixed inset-0 z-30 bg-canvas/30 backdrop-blur-[2.5px] animate-fade-in cursor-pointer transition-opacity duration-300"
+        />
       )}
     </div>
   );

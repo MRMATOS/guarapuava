@@ -102,8 +102,8 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
         </div>
       </div>
 
-      {/* Linha Inferior: 1º Cidade Viva, 2º Utilidades, 3º Estatísticas */}
-      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+      {/* Linha Inferior: 1º Cidade Viva, 2º Utilidades */}
+      <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
         {/* 1. Botão Cidade Viva (Mapa Colaborativo) */}
         <div className="w-full animate-stagger-item" style={{ animationDelay: "60ms" }}>
           <Key
@@ -133,20 +133,6 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
             aria-label="Abrir Utilidades"
           >
             Utilidades
-          </Key>
-        </div>
-
-        {/* 3. Botão Estatísticas (Desabilitado) */}
-        <div className="w-full animate-stagger-item" style={{ animationDelay: "100ms" }}>
-          <Key
-            type="button"
-            disabled
-            aria-disabled="true"
-            className="w-full px-1 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-40 cursor-not-allowed"
-            title="Estatísticas (em breve)"
-            aria-label="Estatísticas indisponível"
-          >
-            Estatísticas
           </Key>
         </div>
       </div>
