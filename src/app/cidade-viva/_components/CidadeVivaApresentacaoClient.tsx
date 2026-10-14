@@ -17,7 +17,6 @@ export function CidadeVivaApresentacaoClient() {
 
   // Estados Mobile
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-  const [isMobileInfoOpen, setIsMobileInfoOpen] = useState(false);
   const optionsButtonRef = useRef<HTMLButtonElement>(null);
 
   // Estados Desktop
@@ -38,121 +37,94 @@ export function CidadeVivaApresentacaoClient() {
           1. CASCA MOBILE (< 1024px) COM DOCK NO PADRÃO CANÔNICO
          ================================================================== */}
       <div className="lg:hidden w-full flex justify-center py-6 px-4 select-text">
-        {isMobileInfoOpen ? (
-          <div className="w-full max-w-[430px]">
-            <InfoFeed
-              hideNav={true}
-              onSelectNoticias={() => {
-                setIsMobileInfoOpen(false);
-                router.push("/");
-              }}
-              onSelectVagas={() => {
-                setIsMobileInfoOpen(false);
-                router.push("/#vagas");
-              }}
-            />
-            <Dock align="between" aria-label="Navegação de retorno">
-              <div className="grid grid-cols-1 w-full">
-                <Key
-                  type="button"
-                  onClick={() => setIsMobileInfoOpen(false)}
-                  className="w-full px-2 text-[14px] justify-center text-center font-medium"
-                >
-                  Voltar ao Cidade Viva
-                </Key>
+        <div className="w-full max-w-[430px] flex flex-col gap-3.5 pb-28 pt-1">
+          {/* Cartão de Apresentação do Cidade Viva */}
+          <article className="surface-card w-full p-6 text-left flex flex-col gap-3.5">
+            <h1 className="text-[19px] sm:text-[20px] font-bold text-ink tracking-tight">
+              Cidade Viva
+            </h1>
+
+            <p className="text-[14.5px] sm:text-[15px] text-ink-body leading-relaxed">
+              O <strong>Cidade Viva</strong> é uma ferramenta colaborativa para acompanhar e registrar ocorrências de zeladoria urbana em Guarapuava. Pelo mapa, você visualiza em tempo real demandas como asfalto danificado, iluminação pública apagada, vazamentos de água, semáforos, terrenos com mato alto e focos de dengue.
+            </p>
+
+            <p className="text-[14.5px] sm:text-[15px] text-ink-body leading-relaxed">
+              A plataforma é anônima e aberta a toda a comunidade, sem necessidade de cadastro burocrático. A sua localização só é consultada sob demanda caso você decida conferir o que há no seu bairro ou apontar um novo relato no mapa.
+            </p>
+
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => router.push("/cidade-viva/mapa")}
+                className="key key--coral w-full py-3 h-[44px] inline-flex items-center justify-center font-bold text-[14.5px] rounded-xl cursor-pointer"
+                aria-label="Abrir mapa colaborativo do Cidade Viva"
+              >
+                Abrir Mapa
+              </button>
+            </div>
+          </article>
+
+          {/* Dock Fixo Mobile no Padrão Canônico: Mais - Filtrar (desab.) - Notícias - Vagas */}
+          <Dock
+            align="between"
+            above={
+              <div className="w-full">
+                <Presence isVisible={isOptionsOpen} duration={180}>
+                  <OptionsPanel
+                    onClose={() => setIsOptionsOpen(false)}
+                    onSelectInfo={() => {
+                      setIsOptionsOpen(false);
+                      router.push("/#informacoes");
+                    }}
+                    optionsButtonRef={optionsButtonRef}
+                  />
+                </Presence>
               </div>
-            </Dock>
-          </div>
-        ) : (
-          <div className="w-full max-w-[430px] flex flex-col gap-3.5 pb-28 pt-1">
-            {/* Cartão de Apresentação do Cidade Viva */}
-            <article className="surface-card w-full p-6 text-left flex flex-col gap-3.5">
-              <h1 className="text-[19px] sm:text-[20px] font-bold text-ink tracking-tight">
-                Cidade Viva
-              </h1>
+            }
+            aria-label="Navegação principal do Cidade Viva"
+          >
+            <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
+              <Key
+                ref={optionsButtonRef}
+                type="button"
+                pressed={isOptionsOpen}
+                onClick={() => setIsOptionsOpen((prev) => !prev)}
+                aria-expanded={isOptionsOpen}
+                className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                aria-label={isOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
+              >
+                Mais
+              </Key>
 
-              <p className="text-[14.5px] sm:text-[15px] text-ink-body leading-relaxed">
-                O <strong>Cidade Viva</strong> é uma ferramenta colaborativa para acompanhar e registrar ocorrências de zeladoria urbana em Guarapuava. Pelo mapa, você visualiza em tempo real demandas como asfalto danificado, iluminação pública apagada, vazamentos de água, semáforos, terrenos com mato alto e focos de dengue.
-              </p>
+              <Key
+                type="button"
+                disabled
+                className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-35 cursor-not-allowed pointer-events-none"
+                aria-label="Filtros indisponíveis nesta página"
+              >
+                Filtrar
+              </Key>
 
-              <p className="text-[14.5px] sm:text-[15px] text-ink-body leading-relaxed">
-                A plataforma é anônima e aberta a toda a comunidade, sem necessidade de cadastro burocrático. A sua localização só é consultada sob demanda caso você decida conferir o que há no seu bairro ou apontar um novo relato no mapa.
-              </p>
+              <Key
+                type="button"
+                onClick={() => router.push("/")}
+                className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                aria-label="Ir para Notícias"
+              >
+                Notícias
+              </Key>
 
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => router.push("/cidade-viva/mapa")}
-                  className="key key--coral w-full py-3 h-[44px] inline-flex items-center justify-center font-bold text-[14.5px] rounded-xl cursor-pointer"
-                  aria-label="Abrir mapa colaborativo do Cidade Viva"
-                >
-                  Abrir Mapa
-                </button>
-              </div>
-            </article>
-
-            {/* Dock Fixo Mobile no Padrão Canônico: Mais - Filtrar (desab.) - Notícias - Vagas */}
-            <Dock
-              align="between"
-              above={
-                <div className="w-full">
-                  <Presence isVisible={isOptionsOpen} duration={180}>
-                    <OptionsPanel
-                      onClose={() => setIsOptionsOpen(false)}
-                      onSelectInfo={() => {
-                        setIsOptionsOpen(false);
-                        setIsMobileInfoOpen(true);
-                      }}
-                      optionsButtonRef={optionsButtonRef}
-                    />
-                  </Presence>
-                </div>
-              }
-              aria-label="Navegação principal do Cidade Viva"
-            >
-              <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
-                <Key
-                  ref={optionsButtonRef}
-                  type="button"
-                  pressed={isOptionsOpen}
-                  onClick={() => setIsOptionsOpen((prev) => !prev)}
-                  aria-expanded={isOptionsOpen}
-                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                  aria-label={isOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
-                >
-                  Mais
-                </Key>
-
-                <Key
-                  type="button"
-                  disabled
-                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-35 cursor-not-allowed pointer-events-none"
-                  aria-label="Filtros indisponíveis nesta página"
-                >
-                  Filtrar
-                </Key>
-
-                <Key
-                  type="button"
-                  onClick={() => router.push("/")}
-                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                  aria-label="Ir para Notícias"
-                >
-                  Notícias
-                </Key>
-
-                <Key
-                  type="button"
-                  onClick={() => router.push("/#vagas")}
-                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                  aria-label="Ir para Vagas"
-                >
-                  Vagas
-                </Key>
-              </div>
-            </Dock>
-          </div>
-        )}
+              <Key
+                type="button"
+                onClick={() => router.push("/#vagas")}
+                className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                aria-label="Ir para Vagas"
+              >
+                Vagas
+              </Key>
+            </div>
+          </Dock>
+        </div>
       </div>
 
       {/* ==================================================================

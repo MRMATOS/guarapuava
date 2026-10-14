@@ -17,7 +17,6 @@ export default function UtilidadesPage() {
 
   // Estados Mobile
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-  const [isMobileInfoOpen, setIsMobileInfoOpen] = useState(false);
   const optionsButtonRef = useRef<HTMLButtonElement>(null);
 
   // Estados Desktop
@@ -38,34 +37,19 @@ export default function UtilidadesPage() {
           1. CASCA MOBILE (< 1024px) COM DOCK NO PADRÃO CANÔNICO
          ================================================================== */}
       <div className="lg:hidden w-full flex justify-center py-6 px-4 select-text">
-        {isMobileInfoOpen ? (
-          <div className="w-full max-w-[430px]">
-            <InfoFeed
-              hideNav={true}
-              onSelectNoticias={() => {
-                setIsMobileInfoOpen(false);
-                router.push("/");
-              }}
-              onSelectVagas={() => {
-                setIsMobileInfoOpen(false);
-                router.push("/#vagas");
-              }}
-            />
-            <Dock align="between" aria-label="Navegação de retorno">
-              <div className="grid grid-cols-1 w-full">
-                <Key
-                  type="button"
-                  onClick={() => setIsMobileInfoOpen(false)}
-                  className="w-full px-2 text-[14px] justify-center text-center font-medium"
-                >
-                  Voltar às Utilidades
-                </Key>
-              </div>
-            </Dock>
+        <div className="w-full max-w-[430px] flex flex-col min-h-[calc(100dvh-3rem)] pb-28 pt-1">
+          {/* Cabeçalho de Utilidades (mesmo padrão do InfoFeed) */}
+          <div className="flex items-center justify-between mb-4 px-1 shrink-0">
+            <h1 className="font-semibold text-ink text-[15px] tracking-tight">
+              Utilidades
+            </h1>
+            <span className="badge-inset">
+              Ferramentas acessíveis
+            </span>
           </div>
-        ) : (
-          <div className="w-full max-w-[430px] flex flex-col gap-3.5 pb-28 pt-1">
-            {/* Card limpo: sem 45 Linhas e sem texto de rodapé da Pérola do Oeste */}
+
+          {/* Lista de Utilidades alinhada de baixo para cima */}
+          <div className="flex-1 flex flex-col justify-end gap-3.5">
             <button
               type="button"
               onClick={() => router.push("/utilidades/onibus")}
@@ -80,69 +64,69 @@ export default function UtilidadesPage() {
                 Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
               </p>
             </button>
-
-            {/* Dock Fixo Mobile no Padrão Canônico: Mais - Filtrar - Notícias - Vagas */}
-            <Dock
-              align="between"
-              above={
-                <div className="w-full">
-                  <Presence isVisible={isOptionsOpen} duration={180}>
-                    <OptionsPanel
-                      onClose={() => setIsOptionsOpen(false)}
-                      onSelectInfo={() => {
-                        setIsOptionsOpen(false);
-                        setIsMobileInfoOpen(true);
-                      }}
-                      optionsButtonRef={optionsButtonRef}
-                    />
-                  </Presence>
-                </div>
-              }
-              aria-label="Navegação principal de utilidades"
-            >
-              <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
-                <Key
-                  ref={optionsButtonRef}
-                  type="button"
-                  pressed={isOptionsOpen}
-                  onClick={() => setIsOptionsOpen((prev) => !prev)}
-                  aria-expanded={isOptionsOpen}
-                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                  aria-label={isOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
-                >
-                  Mais
-                </Key>
-
-                <Key
-                  type="button"
-                  disabled
-                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-35 cursor-not-allowed pointer-events-none"
-                  aria-label="Filtros indisponíveis nesta página"
-                >
-                  Filtrar
-                </Key>
-
-                <Key
-                  type="button"
-                  onClick={() => router.push("/")}
-                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                  aria-label="Ir para Notícias"
-                >
-                  Notícias
-                </Key>
-
-                <Key
-                  type="button"
-                  onClick={() => router.push("/#vagas")}
-                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                  aria-label="Ir para Vagas"
-                >
-                  Vagas
-                </Key>
-              </div>
-            </Dock>
           </div>
-        )}
+
+          {/* Dock Fixo Mobile no Padrão Canônico: Mais - Filtrar - Notícias - Vagas */}
+          <Dock
+            align="between"
+            above={
+              <div className="w-full">
+                <Presence isVisible={isOptionsOpen} duration={180}>
+                  <OptionsPanel
+                    onClose={() => setIsOptionsOpen(false)}
+                    onSelectInfo={() => {
+                      setIsOptionsOpen(false);
+                      router.push("/#informacoes");
+                    }}
+                    optionsButtonRef={optionsButtonRef}
+                  />
+                </Presence>
+              </div>
+            }
+            aria-label="Navegação principal de utilidades"
+          >
+            <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
+              <Key
+                ref={optionsButtonRef}
+                type="button"
+                pressed={isOptionsOpen}
+                onClick={() => setIsOptionsOpen((prev) => !prev)}
+                aria-expanded={isOptionsOpen}
+                className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                aria-label={isOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
+              >
+                Mais
+              </Key>
+
+              <Key
+                type="button"
+                disabled
+                className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap opacity-35 cursor-not-allowed pointer-events-none"
+                aria-label="Filtros indisponíveis nesta página"
+              >
+                Filtrar
+              </Key>
+
+              <Key
+                type="button"
+                onClick={() => router.push("/")}
+                className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                aria-label="Ir para Notícias"
+              >
+                Notícias
+              </Key>
+
+              <Key
+                type="button"
+                onClick={() => router.push("/#vagas")}
+                className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                aria-label="Ir para Vagas"
+              >
+                Vagas
+              </Key>
+            </div>
+          </Dock>
+        </div>
       </div>
 
       {/* ==================================================================
@@ -193,9 +177,20 @@ export default function UtilidadesPage() {
               {/* Conteúdo: Cartão limpo de Horários de Ônibus */}
               <div
                 id="desktop-center-scroller"
-                className="w-[calc(100%+48px)] -mx-6 px-6 pt-3 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
+                className="w-[calc(100%+48px)] -mx-6 px-6 pt-1 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain flex flex-col justify-between [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
               >
-                <div className="flex flex-col gap-3.5">
+                {/* Cabeçalho de Utilidades (mesmo padrão do InfoFeed) */}
+                <div className="flex items-center justify-between mb-4 px-1 shrink-0">
+                  <h1 className="font-semibold text-ink text-[15px] tracking-tight">
+                    Utilidades
+                  </h1>
+                  <span className="badge-inset">
+                    Ferramentas acessíveis
+                  </span>
+                </div>
+
+                {/* Lista de Utilidades alinhada de baixo para cima */}
+                <div className="flex-1 flex flex-col justify-end gap-3.5">
                   <button
                     type="button"
                     onClick={() => router.push("/utilidades/onibus")}
