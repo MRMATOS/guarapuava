@@ -9,6 +9,7 @@ import { Presence } from "@/components/ui/Presence";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { InfoFeed } from "@/components/InfoFeed";
 import { BusScheduleFeed, computeRouteJourney } from "@/components/bus/BusScheduleFeed";
+import { UtilidadesAsideNav } from "@/components/utilidades/UtilidadesAsideNav";
 import { BusFilterPanel } from "@/components/bus/BusFilterPanel";
 import { BusRouteStepCard } from "@/components/bus/BusRouteStepCard";
 import { useUserLocation } from "@/hooks/useUserLocation";
@@ -699,33 +700,12 @@ export default function HorariosOnibusPage() {
       <div className="hidden lg:flex w-full justify-center">
         <div className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden flex justify-center py-6 px-4 xl:px-8 select-text">
           <div className="flex items-start justify-center gap-4.5 max-w-[1300px] w-full h-full max-h-full">
-            {/* Coluna Esquerda: Página de Utilidades estacionada em perspectiva 3D */}
+            {/* Coluna Esquerda: Lista de utilidades em perspectiva 3D (alterna entre ferramentas) */}
             <aside
-              aria-label="Página de utilidades estacionada"
-              className="w-[430px] shrink-0 desktop-perspective-container h-full max-h-full pointer-events-auto"
+              aria-label="Lista de utilidades"
+              className="w-[430px] shrink-0 desktop-perspective-container h-full max-h-full pointer-events-none"
             >
-              <div
-                onClick={() => router.push("/utilidades")}
-                className="desktop-parked-panel w-full h-full flex flex-col group relative cursor-pointer pt-3"
-                title="Voltar para a lista de utilidades"
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    router.push("/utilidades");
-                  }
-                }}
-              >
-                <div className="surface-card w-full p-5 text-left flex flex-col gap-2.5">
-                  <h2 className="text-[15px] font-bold text-ink tracking-tight">
-                    Horários de Ônibus
-                  </h2>
-
-                  <p className="text-[14.5px] text-ink-body leading-relaxed">
-                    Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
-                  </p>
-                </div>
-              </div>
+              <UtilidadesAsideNav activeId="onibus" />
             </aside>
 
             {/* Coluna Central (Feed Principal de Horários) */}

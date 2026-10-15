@@ -52,6 +52,20 @@ export default function UtilidadesPage() {
           <div className="flex-1 flex flex-col justify-end gap-3.5">
             <button
               type="button"
+              onClick={() => router.push("/utilidades/descarte")}
+              className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
+              aria-label="Abrir Descarte correto"
+            >
+              <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
+                Descarte correto
+              </h2>
+
+              <p className="text-[13.5px] text-ink-body leading-relaxed">
+                Encontre onde levar pilhas, pneus, remédios vencidos e outros resíduos em Guarapuava.
+              </p>
+            </button>
+            <button
+              type="button"
               onClick={() => router.push("/utilidades/onibus")}
               className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
               aria-label="Abrir Horários de Ônibus"
@@ -165,6 +179,20 @@ export default function UtilidadesPage() {
 
                 {/* Lista de Utilidades alinhada ao topo no desktop */}
                 <div className="flex flex-col justify-start gap-3.5">
+                  <button
+                    type="button"
+                    onClick={() => router.push("/utilidades/descarte")}
+                    className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
+                    aria-label="Abrir Descarte correto"
+                  >
+                    <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
+                      Descarte correto
+                    </h2>
+
+                    <p className="text-[13.5px] text-ink-body leading-relaxed">
+                      Encontre onde levar pilhas, pneus, remédios vencidos e outros resíduos em Guarapuava.
+                    </p>
+                  </button>
                   <button
                     type="button"
                     onClick={() => router.push("/utilidades/onibus")}

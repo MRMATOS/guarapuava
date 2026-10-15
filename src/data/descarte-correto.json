@@ -1,0 +1,506 @@
+[
+  {
+    "id": "descarte-001",
+    "categoria": "Resíduos de Construção Civil",
+    "empresa": "Ecoponto",
+    "endereco": "Rua Tamoios, 787, Vila Carli",
+    "telefone": "(42) 3142-1800",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Ecoponto%2C+Rua+Tamoios%2C+787%2C+Vila+Carli%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-002",
+    "categoria": "Resíduos Verdes",
+    "empresa": "SURG",
+    "endereco": "Rua Afonso Botelho, 63, Trianon",
+    "telefone": "(42) 3630-0500",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=SURG%2C+Rua+Afonso+Botelho%2C+63%2C+Trianon%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-003",
+    "categoria": "Resíduos Classe I, II em geral, para empresas",
+    "empresa": "CETRIC",
+    "endereco": "Rodovia BR-277, S/N, Jardim das Américas (fundos aeroporto)",
+    "telefone": "(42) 3622-6597 / (42) 9 8825-9261",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=CETRIC%2C+Rodovia+BR-277%2C+Jardim+das+Am%C3%A9ricas%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-004",
+    "categoria": "Resíduos Classe I, II em geral, para empresas",
+    "empresa": "Eficiência Ambiental",
+    "endereco": "Rodovia PR-466, Km 13 S/N, Linhas Prestes - Distrito Palmeirinha",
+    "telefone": "(42) 3624-3585 / (42) 9 9999-2113",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Efici%C3%AAncia+Ambiental%2C+Rodovia+PR-466%2C+Km+13%2C+Distrito+Palmeirinha%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-005",
+    "categoria": "Óleo Vegetal",
+    "empresa": "GRT",
+    "endereco": "Rua Manoel Alves, 290, Distrito Industrial",
+    "telefone": "(42) 3624-6464 / (42) 9 9977-1079",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=GRT%2C+Rua+Manoel+Alves%2C+290%2C+Distrito+Industrial%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-006",
+    "categoria": "Pneus inservíveis",
+    "empresa": "Machadinho Pneus",
+    "endereco": "Rua Grécia, 91, Industrial",
+    "telefone": "(42) 3624-8999",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Machadinho+Pneus%2C+Rua+Gr%C3%A9cia%2C+91%2C+Industrial%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-007",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Casas Bahia",
+    "endereco": "Rua XV de Novembro, 7575, Centro",
+    "telefone": "(42) 9 7603-0554",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Casas+Bahia%2C+Rua+XV+de+Novembro%2C+7575%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-008",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Banco SICOOB",
+    "endereco": "Av. Manoel Ribas, 4167, Conradinho",
+    "telefone": "(42) 3622-4400",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=SICOOB%2C+Av.+Manoel+Ribas%2C+4167%2C+Conradinho%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-009",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Farmácia Droga Raia",
+    "endereco": "Rua XV de Novembro, 7893, Centro",
+    "telefone": "(42) 9 9138-9666",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Droga+Raia%2C+Rua+XV+de+Novembro%2C+7893%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-010",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Farmácia Droga Raia",
+    "endereco": "Rua XV de Novembro, 6793, Alto da XV",
+    "telefone": "(42) 9 9148-2234",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Droga+Raia%2C+Rua+XV+de+Novembro%2C+6793%2C+Alto+da+XV%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-011",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Farmácia Droga Raia",
+    "endereco": "Rua Saldanha Marinho, 1753, Centro",
+    "telefone": "(42) 9 9139-9638",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Droga+Raia%2C+Rua+Saldanha+Marinho%2C+1753%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-012",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Farmácia Droga Raia",
+    "endereco": "Av. Pref. Moacyr Júlio Silvestre, 1025, Centro",
+    "telefone": "(42) 3035-0319",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Droga+Raia%2C+Av.+Pref.+Moacyr+J%C3%BAlio+Silvestre%2C+1025%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-013",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Farmácia Droga Raia",
+    "endereco": "Av. Sebastião Camargo Ribas, S/N, Industrial",
+    "telefone": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Droga+Raia%2C+Av.+Sebasti%C3%A3o+Camargo+Ribas%2C+Industrial%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-014",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Rede Superpão - Loja 06 - Morro Alto",
+    "endereco": "Rua Treze de Junho, 1028, Morro Alto",
+    "telefone": "(42) 3261-4306",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Superp%C3%A3o%2C+Rua+Treze+de+Junho%2C+1028%2C+Morro+Alto%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-015",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Rede Superpão - Loja 09 - Alto da XV",
+    "endereco": "Rua XV de Novembro, 6686, Alto da XV",
+    "telefone": "(42) 3621-6800",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Superp%C3%A3o%2C+Rua+XV+de+Novembro%2C+6686%2C+Alto+da+XV%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-016",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Rede Superpão - Loja 14 - Centro",
+    "endereco": "Av. Pref. Moacyr Júlio Silvestre, 901, Centro",
+    "telefone": "(42) 3621-3950",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Superp%C3%A3o%2C+Av.+Pref.+Moacyr+J%C3%BAlio+Silvestre%2C+901%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-017",
+    "categoria": "Pilhas e Baterias",
+    "empresa": "Compre Mais Mega Loja - Loja 21 - Boqueirão",
+    "endereco": "Rua Guaíra, 5555, Boqueirão",
+    "telefone": "(42) 3621-4321",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Compre+Mais+Mega+Loja%2C+Rua+Gua%C3%ADra%2C+5555%2C+Boqueir%C3%A3o%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-018",
+    "categoria": "Embalagens de Agrotóxicos",
+    "empresa": "Instituto Nacional de Processamento de Embalagens Vazias - INPEV",
+    "endereco": "BR 277, Km 348, Estrada São Sebastião S/N, Aeroporto",
+    "telefone": "(42) 3627-6035 / (42) 99133-1246",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=INPEV%2C+BR+277%2C+Km+348%2C+Estrada+S%C3%A3o+Sebasti%C3%A3o%2C+Aeroporto%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-019",
+    "categoria": "Medicamentos vencidos ou em desuso e suas embalagens",
+    "empresa": "Farmácia Droga Raia",
+    "endereco": "Rua XV de Novembro, 6793, Alto da XV",
+    "telefone": "(42) 9 9138-9666",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Droga+Raia%2C+Rua+XV+de+Novembro%2C+6793%2C+Alto+da+XV%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-020",
+    "categoria": "Medicamentos vencidos ou em desuso e suas embalagens",
+    "empresa": "Farmácia Droga Raia",
+    "endereco": "Rua Saldanha Marinho, 1753, Centro",
+    "telefone": "(42) 9 9148-2234",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Droga+Raia%2C+Rua+Saldanha+Marinho%2C+1753%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-021",
+    "categoria": "Medicamentos vencidos ou em desuso e suas embalagens",
+    "empresa": "Farmácia Droga Raia",
+    "endereco": "Av. Pref. Moacyr Júlio Silvestre, 1025, Centro",
+    "telefone": "(42) 9 9139-9638",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Droga+Raia%2C+Av.+Pref.+Moacyr+J%C3%BAlio+Silvestre%2C+1025%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-022",
+    "categoria": "Medicamentos vencidos ou em desuso e suas embalagens",
+    "empresa": "Farmácia Droga Raia",
+    "endereco": "Av. Sebastião Camargo Ribas, S/N, Industrial",
+    "telefone": "(42) 3035-0319",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Droga+Raia%2C+Av.+Sebasti%C3%A3o+Camargo+Ribas%2C+Industrial%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-023",
+    "categoria": "Medicamentos vencidos ou em desuso e suas embalagens",
+    "empresa": "Farmácia Nissei",
+    "endereco": "Av. Manoel Ribas, 3759 - Conradinho",
+    "telefone": "(41) 4004-4041",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Farm%C3%A1cia+Nissei%2C+Av.+Manoel+Ribas%2C+3759%2C+Conradinho%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-024",
+    "categoria": "Medicamentos vencidos ou em desuso e suas embalagens",
+    "empresa": "Farmácia Nissei",
+    "endereco": "Rua XV de Novembro, 7130 - Centro",
+    "telefone": "(41) 4004-4041",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Farm%C3%A1cia+Nissei%2C+Rua+XV+de+Novembro%2C+7130%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-025",
+    "categoria": "Eletrônicos inservíveis (pequeno volume)",
+    "empresa": "Casas Bahia",
+    "endereco": "Rua XV de Novembro, 7575, Centro",
+    "telefone": "(42) 9 7603-0554",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Casas+Bahia%2C+Rua+XV+de+Novembro%2C+7575%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-026",
+    "categoria": "Eletrônicos inservíveis (pequeno volume)",
+    "empresa": "Rede Superpão - Loja 06 - Morro Alto",
+    "endereco": "Rua Treze de Junho, 1028, Morro Alto",
+    "telefone": "(42) 3261-4306",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Superp%C3%A3o%2C+Rua+Treze+de+Junho%2C+1028%2C+Morro+Alto%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-027",
+    "categoria": "Eletrônicos inservíveis (pequeno volume)",
+    "empresa": "Rede Superpão - Loja 09 - Alto da XV",
+    "endereco": "Rua XV de Novembro, 6686, Alto da XV",
+    "telefone": "(42) 3621-6800",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Superp%C3%A3o%2C+Rua+XV+de+Novembro%2C+6686%2C+Alto+da+XV%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-028",
+    "categoria": "Eletrônicos inservíveis (pequeno volume)",
+    "empresa": "Rede Superpão - Loja 14 - Centro",
+    "endereco": "Av. Pref. Moacyr Júlio Silvestre, 901, Centro",
+    "telefone": "(42) 3621-3950",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Superp%C3%A3o%2C+Av.+Pref.+Moacyr+J%C3%BAlio+Silvestre%2C+901%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-029",
+    "categoria": "Eletrônicos inservíveis (pequeno volume)",
+    "empresa": "Compre Mais Mega Loja - Loja 21 - Boqueirão",
+    "endereco": "Rua Guaíra, 5555, Boqueirão",
+    "telefone": "(42) 3621-4321",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Compre+Mais+Mega+Loja%2C+Rua+Gua%C3%ADra%2C+5555%2C+Boqueir%C3%A3o%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-030",
+    "categoria": "Resíduos Urbanos orgânicos e rejeitos",
+    "empresa": "SURG",
+    "endereco": "Rua Afonso Botelho, 63, Trianon",
+    "telefone": "(42) 3630-0500",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=SURG%2C+Rua+Afonso+Botelho%2C+63%2C+Trianon%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-031",
+    "categoria": "Residuos recicláveis (coleta seletiva)",
+    "empresa": "Associação dos Catadores de Papel de Guarapuava (ACPG)",
+    "endereco": "Av. Dr. Aragão de Mattos Leão Filho, 3733, Jardim das Américas",
+    "telefone": "(42) 9 9975-3054",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=ACPG%2C+Av.+Dr.+Arag%C3%A3o+de+Mattos+Le%C3%A3o+Filho%2C+3733%2C+Jardim+das+Am%C3%A9ricas%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-032",
+    "categoria": "Residuos recicláveis (coleta seletiva)",
+    "empresa": "Atacadão",
+    "endereco": "Av. Dr. Aragão de Mattos Leão Filho, 293, Dos Estados",
+    "telefone": "(42) 3303-0207",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Atacad%C3%A3o%2C+Av.+Dr.+Arag%C3%A3o+de+Mattos+Le%C3%A3o+Filho%2C+293%2C+Dos+Estados%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-033",
+    "categoria": "Residuos recicláveis (coleta seletiva)",
+    "empresa": "Atacadão",
+    "endereco": "Rua Conrado Kluber, 191, Conradinho",
+    "telefone": "(42) 3629-9300",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Atacad%C3%A3o%2C+Rua+Conrado+Kluber%2C+191%2C+Conradinho%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-034",
+    "categoria": "Residuos recicláveis (coleta seletiva)",
+    "empresa": "Balaroti",
+    "endereco": "Av. Manoel Ribas, 2537, Centro",
+    "telefone": "(42) 3141-0005",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Balaroti%2C+Av.+Manoel+Ribas%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-035",
+    "categoria": "Residuos recicláveis (coleta seletiva)",
+    "empresa": "Eletrotrafo",
+    "endereco": "Av. Manoel Ribas, 4500, Conradinho",
+    "telefone": "(42) 3629-9800",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Eletrotrafo%2C+Av.+Manoel+Ribas%2C+4500%2C+Conradinho%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-036",
+    "categoria": "Lâmpadas",
+    "empresa": "Rede Superpão - Loja 03 - Saldanha",
+    "endereco": "Rua Saldanha Marinho, 973, Santa Cruz",
+    "telefone": "(42) 3621-4303",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Superp%C3%A3o%2C+Rua+Saldanha+Marinho%2C+973%2C+Santa+Cruz%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-037",
+    "categoria": "Lâmpadas",
+    "empresa": "Compre Mais, loja Centro",
+    "endereco": "Rua Mal. Floriano Peixoto, 2048, Boqueirão",
+    "telefone": "(42) 3902-1005",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Compre+Mais%2C+Rua+Mal.+Floriano+Peixoto%2C+2048%2C+Boqueir%C3%A3o%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-038",
+    "categoria": "Lâmpadas",
+    "empresa": "Compre Mais Mega Loja",
+    "endereco": "Rua Treze de Julho, 1028, Morro Alto",
+    "telefone": "(42) 3261-4306",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Compre+Mais+Mega+Loja%2C+Rua+Treze+de+Julho%2C+1028%2C+Morro+Alto%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-039",
+    "categoria": "Lâmpadas",
+    "empresa": "Rede Superpão - Loja 09 - Alto da XV",
+    "endereco": "Rua XV de Novembro, 6686, Alto da XV",
+    "telefone": "(42) 3621-6800",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Superp%C3%A3o%2C+Rua+XV+de+Novembro%2C+6686%2C+Alto+da+XV%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-040",
+    "categoria": "Lâmpadas",
+    "empresa": "Rede Superpão - Loja 14 - Centro",
+    "endereco": "Av. Pref. Moacyr Júlio Silvestre, 901, Centro",
+    "telefone": "(42) 3621-3950",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Superp%C3%A3o%2C+Av.+Pref.+Moacyr+J%C3%BAlio+Silvestre%2C+901%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-041",
+    "categoria": "Lâmpadas",
+    "empresa": "Compre Mais Mega Loja - Loja 21 - Boqueirão",
+    "endereco": "Rua Guaíra, 5555, Boqueirão",
+    "telefone": "(42) 3621-4321",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Compre+Mais+Mega+Loja%2C+Rua+Gua%C3%ADra%2C+5555%2C+Boqueir%C3%A3o%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-042",
+    "categoria": "Lâmpadas",
+    "empresa": "Compre Mais - Conradinho",
+    "endereco": "Rua dos Eucaliptos, 427, Conradinho",
+    "telefone": "(42) 3624-3672",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Compre+Mais%2C+Rua+dos+Eucaliptos%2C+427%2C+Conradinho%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-043",
+    "categoria": "Lâmpadas",
+    "empresa": "Patoeste",
+    "endereco": "Av. Manoel Ribas, 3189, Conradinho/Dos Estados",
+    "telefone": "(42) 3621-3366",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Patoeste%2C+Av.+Manoel+Ribas%2C+3189%2C+Conradinho%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-044",
+    "categoria": "Lâmpadas",
+    "empresa": "Super Dal Pozzo - Cidade dos Lagos",
+    "endereco": "Av. Professora Laura Pacheco Bastos, 1170, Aldeia",
+    "telefone": "(42) 3627-4784",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Super+Dal+Pozzo%2C+Av.+Professora+Laura+Pacheco+Bastos%2C+1170%2C+Cidade+dos+Lagos%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-045",
+    "categoria": "Lâmpadas",
+    "empresa": "Super Dal Pozzo - Vila Bela",
+    "endereco": "Rua Dr. João Ferreira Neves, 308, Vila Bela",
+    "telefone": "(42) 3627-4784",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Super+Dal+Pozzo%2C+Rua+Dr.+Jo%C3%A3o+Ferreira+Neves%2C+308%2C+Vila+Bela%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-046",
+    "categoria": "Tampinhas",
+    "empresa": "Secretaria de Meio Ambiente",
+    "endereco": "Rua Alzino Carazai, 445-649 - Primavera (Parque das Araucárias)",
+    "telefone": "(42) 3142-1800",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Secretaria+de+Meio+Ambiente%2C+Rua+Alzino+Carazai%2C+Primavera%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-047",
+    "categoria": "Tampinhas",
+    "empresa": "Prefeitura",
+    "endereco": "Rua Brigadeiro Rocha, 2777 - Centro",
+    "telefone": "(42) 3142-1000",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Prefeitura+Municipal+de+Guarapuava%2C+Rua+Brigadeiro+Rocha%2C+2777%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-048",
+    "categoria": "Tampinhas",
+    "empresa": "Secretaria de Agricultura",
+    "endereco": "Av. Sebastião de Camargo Ribas, 2301 - Bonsucesso",
+    "telefone": "(42) 3142-0940",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Secretaria+de+Agricultura%2C+Av.+Sebasti%C3%A3o+de+Camargo+Ribas%2C+2301%2C+Bonsucesso%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-049",
+    "categoria": "Tampinhas",
+    "empresa": "Secretaria de Trânsito e Transportes",
+    "endereco": "Av. Sebastião de Camargo Ribas, 2301 - Bonsucesso",
+    "telefone": "(42) 3142-1940",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Secretaria+de+Tr%C3%A2nsito+e+Transportes%2C+Av.+Sebasti%C3%A3o+de+Camargo+Ribas%2C+2301%2C+Bonsucesso%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-050",
+    "categoria": "Tampinhas",
+    "empresa": "Boutique Pet",
+    "endereco": "Rua Padre Honorino João Muraro, 269 - Vila Carli",
+    "telefone": "(42) 9 9990-8405",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Boutique+Pet%2C+Rua+Padre+Honorino+Jo%C3%A3o+Muraro%2C+269%2C+Vila+Carli%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-051",
+    "categoria": "Tampinhas",
+    "empresa": "Bujas Pizzaria",
+    "endereco": "R. XV de Novembro, 6394 - Alto da XV",
+    "telefone": "(42) 9 9992-9662",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Bujas+Pizzaria%2C+R.+XV+de+Novembro%2C+6394%2C+Alto+da+XV%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-052",
+    "categoria": "Tampinhas",
+    "empresa": "Campo Real",
+    "endereco": "R. Comendador Norberto, 1299 - Santa Cruz",
+    "telefone": "(42) 3621-5200",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Campo+Real%2C+R.+Comendador+Norberto%2C+1299%2C+Santa+Cruz%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-053",
+    "categoria": "Tampinhas",
+    "empresa": "Clínica São Sebastião",
+    "endereco": "R. Leonardo Coblinski - Boqueirão",
+    "telefone": "(42) 9 9808-0409",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Cl%C3%ADnica+S%C3%A3o+Sebasti%C3%A3o%2C+R.+Leonardo+Coblinski%2C+Boqueir%C3%A3o%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-054",
+    "categoria": "Tampinhas",
+    "empresa": "Escoteiros 34 PR",
+    "endereco": "R. do Escoteiro, 68 - Pérola do Oeste",
+    "telefone": "(42) 9 8415-7547",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Escoteiros+34+PR%2C+R.+do+Escoteiro%2C+68%2C+P%C3%A9rola+do+Oeste%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-055",
+    "categoria": "Tampinhas",
+    "empresa": "4º Batalhão de Polícia Ambiental",
+    "endereco": "Av. Ver. Rubéns Siqueira Ribas, 2829 - Santa Cruz",
+    "telefone": "(42) 3141-0065",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=4%C2%BA+Batalh%C3%A3o+de+Pol%C3%ADcia+Ambiental%2C+Av.+Ver.+Rub%C3%A9ns+Siqueira+Ribas%2C+2829%2C+Santa+Cruz%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-056",
+    "categoria": "Tampinhas",
+    "empresa": "Mega Plast",
+    "endereco": "Av. Pref. Moacyr Júlio Silvestri, 906",
+    "telefone": "(42) 3623-3317",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Mega+Plast%2C+Av.+Pref.+Moacyr+J%C3%BAlio+Silvestri%2C+906%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-057",
+    "categoria": "Tampinhas",
+    "empresa": "SOS Airton Haenisch",
+    "endereco": "R. Generoso de Paula Bastos, 2245 - Trianon",
+    "telefone": "(42) 3623-1872",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=SOS+Airton+Haenisch%2C+R.+Generoso+de+Paula+Bastos%2C+2245%2C+Trianon%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-058",
+    "categoria": "Tampinhas",
+    "empresa": "Unicentro",
+    "endereco": "Rua Salvatore Renna, 875 - Santa Cruz",
+    "telefone": "(42) 3621-1458",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Unicentro%2C+Rua+Salvatore+Renna%2C+875%2C+Santa+Cruz%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-059",
+    "categoria": "Tampinhas",
+    "empresa": "Usina do Conhecimento - UD",
+    "endereco": "Rua Capitão Frederico Virmond - Centro (parque do lago)",
+    "telefone": "(42) 3622-4543",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Usina+do+Conhecimento%2C+Rua+Capit%C3%A3o+Frederico+Virmond%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-060",
+    "categoria": "Tampinhas",
+    "empresa": "Wizard",
+    "endereco": "R. Padre Chagas, 3812 - Centro",
+    "telefone": "(42) 3035-1222",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Wizard%2C+R.+Padre+Chagas%2C+3812%2C+Centro%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-061",
+    "categoria": "Tampinhas",
+    "empresa": "16º Batalhão de Polícia Militar",
+    "endereco": "R. XV de Novembro, 4347 - Morro Alto",
+    "telefone": "(42) 3626-0000",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=16%C2%BA+Batalh%C3%A3o+de+Pol%C3%ADcia+Militar%2C+R.+XV+de+Novembro%2C+4347%2C+Morro+Alto%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-062",
+    "categoria": "Móveis inservíveis",
+    "empresa": "Ecoponto",
+    "endereco": "Rua Tamoios, 787, Vila Carli",
+    "telefone": "(42) 3142-1800",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Ecoponto%2C+Rua+Tamoios%2C+787%2C+Vila+Carli%2C+Guarapuava+-+PR"
+  },
+  {
+    "id": "descarte-063",
+    "categoria": "Isopor",
+    "empresa": "Lopes EPS",
+    "endereco": "BR-277, Km 334, Rio das Mortes",
+    "telefone": "42 99827-0403",
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Lopes+EPS%2C+BR-277%2C+Km+334%2C+Rio+das+Mortes%2C+Guarapuava+-+PR"
+  }
+]

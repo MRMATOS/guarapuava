@@ -1,0 +1,169 @@
+[
+  {
+    "categoria_residuo": "Resíduos de Construção Civil",
+    "slug": "construcao_civil",
+    "termos_busca": [
+      "entulho", "resto de obra", "reforma", "tijolo", "tijolos", "telha", "telhas",
+      "cimento", "concreto", "caliça", "argamassa", "piso", "piso quebrado",
+      "azulejo", "azulejos", "cerâmica", "gesso", "drywall", "brita", "pedrisco",
+      "areia", "lajota", "bloco de concreto", "pedregulho", "demolição",
+      "resto de cimento", "cascalho", "revestimento", "porcelanato quebrado"
+    ],
+    "fonte": [span_0](start_span)"[span_0](end_span)"
+  },
+  {
+    "categoria_residuo": "Resíduos Verdes",
+    "slug": "residuos_verdes",
+    "termos_busca": [
+      "folhas", "galho", "galhos", "poda", "poda de árvore", "corte de árvore",
+      "resto de jardim", "jardinagem", "grama", "capim", "mato", "tronco",
+      "toco", "folhagem", "aparas de grama", "arbusto", "cerca viva",
+      "terra vegetal", "raízes", "roçada"
+    ],
+    "fonte": [span_1](start_span)"[span_1](end_span)"
+  },
+  {
+    "categoria_residuo": "Resíduos Classe I, II em geral, para empresas",
+    "slug": "residuos_industriais_empresas",
+    "termos_busca": [
+      "lixo industrial", "resíduo de empresa", "resíduo fabril", "classe 1", "classe 2",
+      "resíduo perigoso", "efluentes", "químicos", "resíduo químico", "tambor",
+      "borra de tinta", "lodo industrial", "solventes", "graxa", "estopa contaminada",
+      "óleo automotivo", "óleo mineral", "resíduos químicos industriais"
+    ],
+    "fonte": [span_2](start_span)"[span_2](end_span)"
+  },
+  {
+    "categoria_residuo": "Óleo Vegetal",
+    "slug": "oleo_vegetal",
+    "termos_busca": [
+      "óleo", "óleo de cozinha", "óleo de fritura", "óleo usado", "óleo velho",
+      "óleo de soja", "azeite usado", "gordura de fritura", "gordura vegetal",
+      "óleo comestível", "óleo de pastel", "óleo de pastelaria"
+    ],
+    "fonte": [span_3](start_span)"[span_3](end_span)"
+  },
+  {
+    "categoria_residuo": "Pneus inservíveis",
+    "slug": "pneus",
+    "termos_busca": [
+      "pneu", "pneus", "pneu velho", "pneu careca", "pneu furado", "pneu furado",
+      "pneu rasgado", "pneu de carro", "pneu de moto", "pneu de bicicleta",
+      "câmara de ar", "borracha de pneu", "pneu usado", "recauchutagem"
+    ],
+    "fonte": [span_4](start_span)"[span_4](end_span)"
+  },
+  {
+    "categoria_residuo": "Pilhas e Baterias",
+    "slug": "pilhas_e_baterias",
+    "termos_busca": [
+      "pilha", "pilhas", "bateria", "baterias", "pilha aa", "pilha aaa", "pilha palito",
+      "pilha comum", "pilha alcalina", "pilha recarregável", "bateria de celular",
+      "bateria de notebook", "bateria portátil", "powerbank", "bateria 9v",
+      "pilha botão", "bateria de relógio", "bateria de nobreak"
+    ],
+    "fonte": [span_5](start_span)"[span_5](end_span)"
+  },
+  {
+    "categoria_residuo": "Embalagens de Agrotóxicos",
+    "slug": "embalagens_agrotoxicos",
+    "termos_busca": [
+      "agrotóxico", "agrotóxicos", "veneno de lavoura", "defensivo agrícola",
+      "pesticida", "herbicida", "fungicida", "inseticida agrícola",
+      "galão de veneno", "galão de agrotóxico", "frasco de defensivo",
+      "tríplice lavagem", "inpev", "embalagem vazia de agrotóxico"
+    ],
+    "fonte": [span_6](start_span)"[span_6](end_span)"
+  },
+  {
+    "categoria_residuo": "Medicamentos vencidos ou em desuso e suas embalagens",
+    "slug": "medicamentos",
+    "termos_busca": [
+      "remédio", "remédios", "medicamento", "medicamentos", "remédio vencido",
+      "remédio velho", "comprimido", "comprimidos", "cartela de comprimido",
+      "blister", "xarope", "pomada", "colírio", "ampola", "injeção",
+      "antibiótico", "analgésico", "frasco de remédio", "caixa de remédio",
+      "cápsula", "gotas"
+    ],
+    "fonte": [span_7](start_span)"[span_7](end_span)"
+  },
+  {
+    "categoria_residuo": "Eletrônicos inservíveis (pequeno volume)",
+    "slug": "eletronicos_pequeno_volume",
+    "termos_busca": [
+      "lixo eletrônico", "e-waste", "aparelho quebrado", "celular", "celular velho",
+      "smartphone quebrado", "carregador", "carregador de celular", "cabo usb",
+      "cabo de força", "fone de ouvido", "headphone", "mouse", "teclado",
+      "tablet", "roteador", "modem", "placa eletrônica", "calculadora",
+      "controle remoto", "ferro de passar", "secador de cabelo", "barbeador elétrico",
+      "rádio", "caixa de som"
+    ],
+    "fonte": [span_8](start_span)"[span_8](end_span)"
+  },
+  {
+    "categoria_residuo": "Resíduos Urbanos orgânicos e rejeitos",
+    "slug": "organicos_e_rejeitos",
+    "termos_busca": [
+      "lixo orgânico", "lixo comum", "resto de comida", "casca de fruta",
+      "casca de ovo", "borra de café", "saquinho de chá", "papel higiênico",
+      "fralda descartável", "absorvente", "lixo de banheiro", "guardanapo sujo",
+      "esponja de pia", "ponta de cigarro", "lixo que não recicla", "varrição",
+      "rejeito doméstico"
+    ],
+    "fonte": [span_9](start_span)"[span_9](end_span)"
+  },
+  {
+    "categoria_residuo": "Residuos recicláveis (coleta seletiva)",
+    "slug": "reciclaveis_geral",
+    "termos_busca": [
+      "reciclável", "reciclagem", "coleta seletiva", "papel", "papelão",
+      "caixa de papelão", "jornal", "revista", "papel sulfite", "plástico",
+      "garrafa pet", "saco plástico", "sacola", "pote de margarina",
+      "garrafa de amaciante", "latas", "lata de refrigerante", "lata de cerveja",
+      "lata de milho", "alumínio", "vidro", "garrafa de vidro", "pote de conserva",
+      "tetrapak", "caixa de leite", "caixa de suco", "metal"
+    ],
+    "fonte": [span_10](start_span)"[span_10](end_span)"
+  },
+  {
+    "categoria_residuo": "Lâmpadas",
+    "slug": "lampadas",
+    "termos_busca": [
+      "lâmpada", "lâmpadas", "lâmpada queimada", "lâmpada tubular", "lâmpada fluorescente",
+      "fluorescente", "lâmpada led", "led", "lâmpada econômica", "lâmpada incandescente",
+      "lâmpada de halogênio", "lâmpada espiral", "bulbo", "tubo de luz"
+    ],
+    "fonte": [span_11](start_span)"[span_11](end_span)"
+  },
+  {
+    "categoria_residuo": "Tampinhas",
+    "slug": "tampinhas",
+    "termos_busca": [
+      "tampinha", "tampinhas", "tampa plástica", "tampa de pet", "tampa de refrigerante",
+      "tampa de garrafa", "tampa de leite", "tampa de amaciante", "tampa de xampu",
+      "tampinha plástica", "tampa de remédio", "lacre de garrafa"
+    ],
+    "fonte": [span_12](start_span)"[span_12](end_span)"
+  },
+  {
+    "categoria_residuo": "Móveis inservíveis",
+    "slug": "moveis_inserviveis",
+    "termos_busca": [
+      "móvel", "móveis", "móvel velho", "móvel quebrado", "sofá", "sofá velho",
+      "colchão", "cama", "estrado de cama", "guarda-roupa", "armário", "estante",
+      "mesa", "cadeira", "cômoda", "rack", "poltrona", "madeira", "mdf",
+      "mdp", "compensado", "berço"
+    ],
+    "fonte": [span_13](start_span)"[span_13](end_span)"
+  },
+  {
+    "categoria_residuo": "Isopor",
+    "slug": "isopor",
+    "termos_busca": [
+      "isopor", "eps", "caixa de isopor", "caixa térmica", "pedaço de isopor",
+      "embalagem de isopor", "bandeja de isopor", "bandeja de carne", "marmitex de isopor",
+      "placa de isopor", "bolinha de isopor", "poliestireno expandido"
+    ],
+    "fonte": [span_14](start_span)"[span_14](end_span)"
+  }
+]
