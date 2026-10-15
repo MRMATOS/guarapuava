@@ -40,19 +40,14 @@ export interface BusRouteStepCardProps {
   onClearOrigin?: () => void;
   onClearDestination?: () => void;
   showCancelButton?: boolean;
-  actionButtonLabel?: string;
-  onActionButtonClick?: () => void;
 }
 
 export const BusRouteStepCard: React.FC<BusRouteStepCardProps> = ({
   routeStep,
   selectedOriginPonto,
   routeJourney,
-  onCancelRoute,
   onClearOrigin,
   onClearDestination,
-  actionButtonLabel,
-  onActionButtonClick,
 }) => {
   if (routeStep === "none") {
     return null;
@@ -60,9 +55,6 @@ export const BusRouteStepCard: React.FC<BusRouteStepCardProps> = ({
 
   // PASSO 1: Escolha o Embarque
   if (routeStep === "origin" || !selectedOriginPonto) {
-    const label = actionButtonLabel || "Cancelar";
-    const handleClick = onActionButtonClick || onCancelRoute;
-
     return (
       <div className="surface-card w-full p-3 sm:p-3.5 border border-rule/50 shadow-raised-md flex items-center justify-between gap-3 bg-canvas rounded-2xl text-left">
         <div className="min-w-0 flex-1 flex flex-col gap-0.5">
@@ -73,18 +65,6 @@ export const BusRouteStepCard: React.FC<BusRouteStepCardProps> = ({
             Toque em uma parada ou use a busca para seu local de saída
           </h3>
         </div>
-        <Key
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClick?.();
-          }}
-          className="px-3.5 h-[38px] text-[12.5px] sm:text-[13px] font-medium shrink-0 justify-center text-center transition-all"
-          title={label === "Entendi" ? "Entendi as instruções" : "Cancelar criação de rota"}
-          aria-label={label === "Entendi" ? "Entendi as instruções" : "Cancelar criação de rota"}
-        >
-          {label}
-        </Key>
       </div>
     );
   }

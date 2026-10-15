@@ -535,7 +535,7 @@ export default function HorariosOnibusPage() {
               />
             </div>
 
-            {/* Dock Inferior Mobile: Mais - Filtrar - Voltar */}
+            {/* Dock Inferior Mobile: Mais - Filtrar - Criar rota - Voltar */}
             <Dock
               align="between"
               above={
@@ -577,16 +577,6 @@ export default function HorariosOnibusPage() {
                         onCancelRoute={handleCancelRoute}
                         onClearOrigin={handleClearOrigin}
                         onClearDestination={handleClearDestination}
-                        actionButtonLabel={
-                          routeStep === "origin" && isStep1OverlayOpen
-                            ? "Entendi"
-                            : "Cancelar"
-                        }
-                        onActionButtonClick={
-                          routeStep === "origin" && isStep1OverlayOpen
-                            ? handleDismissStep1Intro
-                            : undefined
-                        }
                       />
                     </div>
                   )}
@@ -616,6 +606,7 @@ export default function HorariosOnibusPage() {
                           onSaveRoute={handleSaveRoute}
                           isRouteSaved={isCurrentRouteSaved}
                           onStartRoute={handleStartRoute}
+                          hideRouteAction
                           onCancelRoute={handleCancelRoute}
                           onConfirmOrigin={handleConfirmOrigin}
                           onConfirmDestination={handleConfirmDestination}
@@ -649,7 +640,7 @@ export default function HorariosOnibusPage() {
               }
               aria-label="Navegação da tela de horários"
             >
-              <div className="grid grid-cols-3 w-full gap-2">
+              <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
                 {/* 1. Mais */}
                 <Key
                   ref={optionsButtonRef}
@@ -676,7 +667,18 @@ export default function HorariosOnibusPage() {
                   Filtrar
                 </Key>
 
-                {/* 3. Voltar */}
+                {/* 3. Criar rota / Cancelar */}
+                <Key
+                  type="button"
+                  pressed={routeStep !== "none"}
+                  onClick={routeStep !== "none" ? handleCancelRoute : handleStartRoute}
+                  className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center font-medium overflow-hidden text-ellipsis whitespace-nowrap"
+                  aria-label={routeStep !== "none" ? "Cancelar criação de rota" : "Criar rota"}
+                >
+                  {routeStep !== "none" ? "Cancelar" : "Criar rota"}
+                </Key>
+
+                {/* 4. Voltar */}
                 <Key
                   type="button"
                   onClick={() => router.push("/utilidades")}

@@ -31,6 +31,8 @@ export interface BusFilterPanelProps {
   onSaveRoute?: () => void;
   isRouteSaved?: boolean;
   onStartRoute?: () => void;
+  /** Oculta o botão Criar/Cancelar rota (no mobile ele fica no Dock) */
+  hideRouteAction?: boolean;
   onCancelRoute?: () => void;
   onConfirmOrigin?: () => void;
   onConfirmDestination?: () => void;
@@ -68,6 +70,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   onSaveRoute,
   isRouteSaved = false,
   onStartRoute,
+  hideRouteAction = false,
   onCancelRoute,
   onConfirmOrigin,
   onConfirmDestination,
@@ -531,7 +534,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
 
   // 2. NÓ DOS BOTÕES DE ROTA: Esquerda: Linhas/Ocultar | Centro: Minhas rotas (ou Salvar rota) | Direita: Ação
   const routeButtonsNode = (
-    <div className="grid grid-cols-3 gap-1.5 sm:gap-2 w-full animate-stagger-item">
+    <div className={`grid ${hideRouteAction ? "grid-cols-2" : "grid-cols-3"} gap-1.5 sm:gap-2 w-full animate-stagger-item`}>
       {/* Botão 1 (Esquerda): Linhas (ou Ocultar) */}
       <Key
         type="button"
@@ -567,14 +570,16 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       )}
 
       {/* Botão 3 (Direita): Criar rota ou Cancelar rota */}
-      <Key
-        type="button"
-        onClick={handleActionClick}
-        className="w-full px-1 sm:px-2 text-[12px] sm:text-[13px] justify-center text-center font-semibold transition-all active:scale-95"
-        title={actionButtonText}
-      >
-        <span className="truncate">{actionButtonText}</span>
-      </Key>
+      {!hideRouteAction && (
+        <Key
+          type="button"
+          onClick={handleActionClick}
+          className="w-full px-1 sm:px-2 text-[12px] sm:text-[13px] justify-center text-center font-semibold transition-all active:scale-95"
+          title={actionButtonText}
+        >
+          <span className="truncate">{actionButtonText}</span>
+        </Key>
+      )}
     </div>
   );
 
