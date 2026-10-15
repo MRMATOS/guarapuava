@@ -135,7 +135,14 @@ export const JobDetail: React.FC<JobDetailProps> = ({
         document.querySelector(`[data-job-id="${targetId}"]`);
       if (el) {
         const desktopScroller = document.getElementById("desktop-center-scroller");
-        if (desktopScroller) {
+        // Verifica se o container de scroll do desktop está realmente visível e ativo (não oculto por display: none)
+        const isDesktopScrollerActive = Boolean(
+          desktopScroller &&
+            (desktopScroller.offsetParent !== null ||
+              (desktopScroller.clientWidth > 0 && desktopScroller.clientHeight > 0))
+        );
+
+        if (isDesktopScrollerActive && desktopScroller) {
           const scrollerRect = desktopScroller.getBoundingClientRect();
           const elRect = el.getBoundingClientRect();
           const targetTop = desktopScroller.scrollTop + (elRect.top - scrollerRect.top) - 16;
@@ -144,9 +151,12 @@ export const JobDetail: React.FC<JobDetailProps> = ({
             behavior: isInitial ? "instant" : "smooth",
           });
         } else {
-          el.scrollIntoView({
+          // No mobile (viewport scroll): calcula a posição absoluta no documento para scroll preciso
+          const elRect = el.getBoundingClientRect();
+          const targetTop = window.scrollY + elRect.top - 16;
+          window.scrollTo({
+            top: Math.max(0, targetTop),
             behavior: isInitial ? "instant" : "smooth",
-            block: "start",
           });
         }
         hasInitialScrolled.current = true;
@@ -154,7 +164,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
     };
 
     performScroll();
-    const timer = setTimeout(performScroll, 40);
+    const timer = setTimeout(performScroll, 50);
 
     return () => clearTimeout(timer);
   }, [initialJobId, jobs, onMarkJobViewed]);
@@ -164,6 +174,12 @@ export const JobDetail: React.FC<JobDetailProps> = ({
     if (jobs.length <= 1) return;
 
     const desktopScroller = document.getElementById("desktop-center-scroller");
+    const isDesktopScrollerActive = Boolean(
+      desktopScroller &&
+        (desktopScroller.offsetParent !== null ||
+          (desktopScroller.clientWidth > 0 && desktopScroller.clientHeight > 0))
+    );
+
     const observer = new IntersectionObserver(
       (entries) => {
         // Encontra a vaga mais visível no terço superior de leitura da tela
@@ -181,7 +197,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
         }
       },
       {
-        root: desktopScroller || null,
+        root: isDesktopScrollerActive ? desktopScroller : null,
         rootMargin: "-15% 0px -50% 0px",
         threshold: 0,
       }
