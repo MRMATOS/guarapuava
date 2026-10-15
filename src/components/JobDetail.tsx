@@ -8,6 +8,7 @@ import { FilterPanel } from "@/components/ui/FilterPanel";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
+import { useIncrementalList } from "@/hooks/useIncrementalList";
 
 interface JobDetailProps {
   jobs: JobOpening[];
@@ -68,6 +69,25 @@ export const JobDetail: React.FC<JobDetailProps> = ({
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const hasInitialScrolled = useRef(false);
   const lastScrolledJobId = useRef<string | null>(null);
+
+  // Renderização incremental: detalhe é pesado, mostra 10 por vez.
+  const resetKey = `${jobs.length}|${initialJobId ?? ""}|${searchQuery}|${contractState}|${pcdState}|${experienceState}|${favoritesOnly}`;
+  const { visibleCount, hasMore, sentinelRef, ensureIndexVisible } =
+    useIncrementalList(jobs.length, resetKey);
+  const visibleJobs = jobs.slice(0, visibleCount);
+
+  // Se a vaga aberta estiver além da primeira página, expande até ela.
+  useEffect(() => {
+    if (!initialJobId || jobs.length === 0) return;
+    const idx = jobs.findIndex(
+      (j) =>
+        j.id === initialJobId ||
+        j.externalId === initialJobId ||
+        `vaga-${j.id}` === initialJobId ||
+        `vaga-${j.externalId}` === initialJobId
+    );
+    if (idx >= 0) ensureIndexVisible(idx);
+  }, [jobs, initialJobId, ensureIndexVisible]);
 
   const handleToggleOptions = () => {
     if (isFilterOpen && onCloseFilter) {
@@ -167,7 +187,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
     const timer = setTimeout(performScroll, 50);
 
     return () => clearTimeout(timer);
-  }, [initialJobId, jobs, onMarkJobViewed]);
+  }, [initialJobId, jobs, visibleJobs.length, onMarkJobViewed]);
 
   // Atualiza a URL hash via replaceState conforme o usuário rola o feed de detalhes
   useEffect(() => {
@@ -210,7 +230,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, [jobs, onMarkJobViewed]);
+  }, [jobs, visibleJobs.length, onMarkJobViewed]);
 
   return (
     <div className="page-shell">
@@ -220,7 +240,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
       {/* Feed contínuo de cards de detalhe das vagas ou Estado Vazio */}
       {jobs.length > 0 ? (
         <div className="space-y-6">
-          {jobs.map((job) => {
+          {visibleJobs.map((job) => {
             const jobKey = job.id || job.externalId || "vaga";
             const targetUrl = job.sourceUrl || job.link || "#";
 
@@ -475,6 +495,18 @@ export const JobDetail: React.FC<JobDetailProps> = ({
               </article>
             );
           })}
+          {/* Sentinela do infinite scroll (cards de detalhe são pesados) */}
+          {hasMore && (
+            <div
+              ref={sentinelRef}
+              aria-hidden="true"
+              className="surface-card w-full p-6 sm:p-7"
+            >
+              <p className="text-center text-[13px] text-ink-muted">
+                Carregando mais vagas… ({visibleCount} de {jobs.length})
+              </p>
+            </div>
+          )}
         </div>
       ) : (
         <div className="surface-card w-full p-8 text-center text-ink-muted text-[15px]">

@@ -15,6 +15,7 @@ import {
 } from "@/lib/utils/date";
 import { filterJobs } from "@/lib/utils/search";
 import { JobCardSkeleton } from "@/components/ui/JobCardSkeleton";
+import { useIncrementalList } from "@/hooks/useIncrementalList";
 
 interface JobsFeedProps {
   jobs: JobOpening[];
@@ -127,6 +128,14 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
     experienceState !== 0 ||
     Boolean(favoritesOnly);
 
+  // Renderização incremental: 10 de cada vez via IntersectionObserver.
+  const resetKey = `${searchQuery}|${contractState}|${pcdState}|${experienceState}|${favoritesOnly}|${jobs.length}`;
+  const { visibleCount, hasMore, sentinelRef } = useIncrementalList(
+    filteredJobs.length,
+    resetKey
+  );
+  const visibleJobs = filteredJobs.slice(0, visibleCount);
+
   return (
     <div className="page-shell">
       {/* Título semântico para acessibilidade/SEO */}
@@ -144,7 +153,7 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
       {/* Lista de cartões de vagas ou Estado Vazio */}
       {filteredJobs.length > 0 ? (
         <div className="space-y-4">
-          {filteredJobs.map((job) => {
+          {visibleJobs.map((job) => {
             const isViewed = Boolean(
               viewedJobIds &&
                 ((job.id && viewedJobIds.includes(job.id)) ||
@@ -209,6 +218,19 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
               </article>
             );
           })}
+          {/* Sentinela do infinite scroll + progresso da lista */}
+          {hasMore ? (
+            <div ref={sentinelRef} aria-hidden="true" className="space-y-4 pt-1">
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+            </div>
+          ) : (
+            filteredJobs.length > 10 && (
+              <p className="text-center text-[12.5px] text-ink-muted pt-1">
+                Mostrando {visibleCount} de {filteredJobs.length} vagas
+              </p>
+            )
+          )}
         </div>
       ) : isLoading && jobs.length === 0 ? (
         <div className="w-full space-y-4">
