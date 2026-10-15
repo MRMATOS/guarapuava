@@ -1,18 +1,20 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { JobOpening } from "@/types/job";
-import { ArrowLeft } from "lucide-react";
 import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
 import { FilterPanel } from "@/components/ui/FilterPanel";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
+import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
 
 interface JobDetailProps {
   jobs: JobOpening[];
   initialJobId?: string;
   onBack: () => void;
+  onSelectNoticias?: () => void;
+  onSelectInfo?: () => void;
 
   // Estados e manipuladores dos filtros
   searchQuery?: string;
@@ -40,6 +42,8 @@ export const JobDetail: React.FC<JobDetailProps> = ({
   jobs,
   initialJobId,
   onBack,
+  onSelectNoticias,
+  onSelectInfo,
   searchQuery = "",
   onSearchChange,
   contractState = 0,
@@ -60,8 +64,45 @@ export const JobDetail: React.FC<JobDetailProps> = ({
 }) => {
   const cardRefs = useRef<Map<string, HTMLElement>>(new Map());
   const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const optionsButtonRef = useRef<HTMLButtonElement>(null);
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const hasInitialScrolled = useRef(false);
   const lastScrolledJobId = useRef<string | null>(null);
+
+  const handleToggleOptions = () => {
+    if (isFilterOpen && onCloseFilter) {
+      onCloseFilter();
+    }
+    setIsOptionsOpen((prev) => !prev);
+  };
+
+  const handleCloseOptions = () => {
+    setIsOptionsOpen(false);
+  };
+
+  const handleToggleFilter = () => {
+    if (isOptionsOpen) {
+      setIsOptionsOpen(false);
+    }
+    onToggleFilter?.();
+  };
+
+  const handleSelectInfo = () => {
+    setIsOptionsOpen(false);
+    onSelectInfo?.();
+  };
+
+  const handleSelectNoticias = () => {
+    setIsOptionsOpen(false);
+    if (onCloseFilter) onCloseFilter();
+    onSelectNoticias?.();
+  };
+
+  const handleBack = () => {
+    setIsOptionsOpen(false);
+    if (onCloseFilter) onCloseFilter();
+    onBack();
+  };
 
   const hasActiveFilters = Boolean(
     searchQuery.trim() ||
@@ -436,9 +477,9 @@ export const JobDetail: React.FC<JobDetailProps> = ({
         </div>
       )}
 
-      {/* Footer com botão Filtrar e Voltar agrupados à direita */}
+      {/* Footer com navegação principal: Mais, Filtrar, Notícias, Voltar */}
       <Dock
-        align="end"
+        align="between"
         above={
           <>
             <Presence isVisible={Boolean(hasActiveFilters && onResetFilters)} duration={200}>
@@ -459,53 +500,91 @@ export const JobDetail: React.FC<JobDetailProps> = ({
                 />
               )}
             </Presence>
-            <Presence isVisible={Boolean(isFilterOpen && onCloseFilter)} duration={200}>
+
+            <div className="grid grid-cols-1 grid-rows-1 items-end w-full [grid-template-areas:'stack']">
               {onCloseFilter && (
-                <FilterPanel
-                  mode="vagas"
-                  onClose={onCloseFilter}
-                  filterButtonRef={filterButtonRef}
-                  contractState={contractState}
-                  onCycleContract={onCycleContract ?? (() => {})}
-                  pcdState={pcdState}
-                  onCyclePcd={onCyclePcd ?? (() => {})}
-                  experienceState={experienceState}
-                  onCycleExperience={onCycleExperience ?? (() => {})}
-                  searchQuery={searchQuery}
-                  onSearchChange={onSearchChange ?? (() => {})}
-                  favoritesOnly={favoritesOnly}
-                  onToggleFavoritesOnly={onToggleFavoritesOnly}
-                />
+                <div className="w-full [grid-area:stack]">
+                  <Presence isVisible={Boolean(isFilterOpen)} duration={200}>
+                    <FilterPanel
+                      mode="vagas"
+                      onClose={onCloseFilter}
+                      filterButtonRef={filterButtonRef}
+                      contractState={contractState}
+                      onCycleContract={onCycleContract ?? (() => {})}
+                      pcdState={pcdState}
+                      onCyclePcd={onCyclePcd ?? (() => {})}
+                      experienceState={experienceState}
+                      onCycleExperience={onCycleExperience ?? (() => {})}
+                      searchQuery={searchQuery}
+                      onSearchChange={onSearchChange ?? (() => {})}
+                      favoritesOnly={favoritesOnly}
+                      onToggleFavoritesOnly={onToggleFavoritesOnly}
+                    />
+                  </Presence>
+                </div>
               )}
-            </Presence>
+
+              <div className="w-full [grid-area:stack]">
+                <Presence isVisible={isOptionsOpen} duration={180}>
+                  <OptionsPanel
+                    onClose={handleCloseOptions}
+                    onSelectInfo={handleSelectInfo}
+                    optionsButtonRef={optionsButtonRef}
+                  />
+                </Presence>
+              </div>
+            </div>
           </>
         }
         aria-label="Ações e filtros da vaga"
       >
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          {onToggleFilter && (
-            <Key
-              ref={filterButtonRef}
-              pressed={isFilterOpen}
-              onClick={onToggleFilter}
-              aria-expanded={isFilterOpen}
-              aria-label={
-                isFilterOpen
-                  ? "Fechar bloco de filtros"
-                  : "Abrir bloco de filtros"
-              }
-              className="px-2.5 sm:px-3.5 text-[14px]"
-            >
-              Filtrar
-            </Key>
-          )}
-
+        <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
+          {/* 1. Botão Mais */}
           <Key
-            variant="icon"
-            onClick={onBack}
-            aria-label="Voltar para a lista de vagas"
+            ref={optionsButtonRef}
+            pressed={isOptionsOpen}
+            onClick={handleToggleOptions}
+            aria-expanded={isOptionsOpen}
+            aria-label={isOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
+            className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
           >
-            <ArrowLeft className="w-5 h-5" strokeWidth={2.2} />
+            Mais
+          </Key>
+
+          {/* 2. Botão Filtrar */}
+          <Key
+            ref={filterButtonRef}
+            pressed={isFilterOpen}
+            onClick={handleToggleFilter}
+            disabled={!onToggleFilter}
+            aria-expanded={isFilterOpen}
+            aria-label={
+              isFilterOpen
+                ? "Fechar bloco de filtros"
+                : "Abrir bloco de filtros"
+            }
+            className={`w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap ${
+              !onToggleFilter ? "opacity-35 cursor-not-allowed pointer-events-none" : ""
+            }`}
+          >
+            Filtrar
+          </Key>
+
+          {/* 3. Botão Notícias */}
+          <Key
+            onClick={handleSelectNoticias}
+            className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            Notícias
+          </Key>
+
+          {/* 4. Botão Voltar */}
+          <Key
+            onClick={handleBack}
+            aria-label="Voltar para a lista de vagas"
+            className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            Voltar
           </Key>
         </div>
       </Dock>

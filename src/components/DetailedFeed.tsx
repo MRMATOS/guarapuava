@@ -2,10 +2,12 @@
 
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { DailyDigest, NewsBatch } from "@/types/news";
-import { ArrowLeft, ExternalLink, Search, X } from "lucide-react";
+import { ExternalLink, Search, X } from "lucide-react";
 import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
+import { OptionsPanel } from "@/components/ui/OptionsPanel";
+import { Presence } from "@/components/ui/Presence";
 import { formatRelativeUpdateText } from "@/lib/utils/date";
 import { normalizeText, normalizeCategory, matchesQuery } from "@/lib/utils/search";
 
@@ -13,6 +15,8 @@ interface DetailedFeedProps {
   digest: DailyDigest;
   tags: string[];
   onBack: () => void;
+  onSelectVagas?: () => void;
+  onSelectInfo?: () => void;
   searchQuery?: string;
   onSearchChange?: (query: string) => void;
   selectedCategory?: string | null;
@@ -24,6 +28,8 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
   digest,
   tags,
   onBack,
+  onSelectVagas,
+  onSelectInfo,
   searchQuery: controlledSearchQuery,
   onSearchChange,
   selectedCategory: controlledCategory,
@@ -33,8 +39,10 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
   const [internalTag, setInternalTag] = useState<string | null>(null);
   const [internalSearchQuery, setInternalSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
   const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const optionsButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const isControlledCategory = controlledCategory !== undefined;
@@ -52,14 +60,15 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
     return Array.from(set).sort((a, b) => a.localeCompare(b, "pt-BR"));
   }, [tags]);
 
-  // Fecha o painel se clicar fora ou pressionar Escape
+  // Fecha os painéis se clicar fora ou pressionar Escape
   useEffect(() => {
     const handlePointerDown = (event: MouseEvent | TouchEvent) => {
       const target = event.target as Node;
       if (
         panelRef.current &&
         !panelRef.current.contains(target) &&
-        (!filterButtonRef.current || !filterButtonRef.current.contains(target))
+        (!filterButtonRef.current || !filterButtonRef.current.contains(target)) &&
+        (!optionsButtonRef.current || !optionsButtonRef.current.contains(target))
       ) {
         setIsFilterOpen(false);
       }
@@ -68,10 +77,11 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsFilterOpen(false);
+        setIsOptionsOpen(false);
       }
     };
 
-    if (isFilterOpen) {
+    if (isFilterOpen || isOptionsOpen) {
       document.addEventListener("pointerdown", handlePointerDown);
       document.addEventListener("keydown", handleKeyDown);
     }
@@ -79,7 +89,46 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isFilterOpen]);
+  }, [isFilterOpen, isOptionsOpen]);
+
+  const handleToggleOptions = () => {
+    if (isFilterOpen) {
+      setIsFilterOpen(false);
+    }
+    setIsOptionsOpen((prev) => !prev);
+  };
+
+  const handleCloseOptions = () => {
+    setIsOptionsOpen(false);
+  };
+
+  const handleToggleFilter = () => {
+    if (isOptionsOpen) {
+      setIsOptionsOpen(false);
+    }
+    setIsFilterOpen((prev) => !prev);
+  };
+
+  const handleCloseFilter = () => {
+    setIsFilterOpen(false);
+  };
+
+  const handleSelectInfo = () => {
+    setIsOptionsOpen(false);
+    onSelectInfo?.();
+  };
+
+  const handleSelectVagas = () => {
+    setIsOptionsOpen(false);
+    setIsFilterOpen(false);
+    onSelectVagas?.();
+  };
+
+  const handleBack = () => {
+    setIsOptionsOpen(false);
+    setIsFilterOpen(false);
+    onBack();
+  };
 
   // Toggle do filtro de categoria: clicar na mesma tag limpa o filtro
   const handleTagClick = (tag: string) => {
@@ -268,112 +317,149 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
         )}
       </main>
 
-      {/* Footer com botões Filtrar e Voltar agrupados à direita */}
+      {/* Footer com navegação principal: Mais, Filtrar, Vagas, Voltar */}
       <Dock
-        align="end"
+        align="between"
         above={
           <>
-            {filterIndicator}
+            <Presence isVisible={hasActiveFilters} duration={180}>
+              {filterIndicator}
+            </Presence>
 
-            {/* Painel de Filtros flutuante idêntico ao padrão de vagas */}
-            {isFilterOpen && (
-              <div
-                ref={panelRef}
-                role="region"
-                aria-label="Painel de filtros de notícias"
-                className="filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none"
-              >
-                {/* Linha 1 (superior): carrossel com scroll horizontal de categorias */}
-                <div
-                  role="toolbar"
-                  aria-label="Filtro de categorias"
-                  className="w-full overflow-x-auto no-scrollbar scroll-smooth flex items-center gap-2 py-1 px-0.5"
-                >
-                  {normalizedTags.map((tag) => {
-                    const isPressed =
-                      activeTag !== null &&
-                      normalizeText(activeTag) === normalizeText(tag);
-                    return (
-                      <Key
-                        key={tag}
-                        pressed={isPressed}
-                        onClick={() => handleTagClick(tag)}
-                        title={
-                          isPressed
-                            ? `Remover filtro ${tag}`
-                            : `Filtrar apenas por ${tag}`
-                        }
-                        className="shrink-0 text-[12.5px] px-2.5"
-                      >
-                        {tag}
-                      </Key>
-                    );
-                  })}
-                </div>
-
-                {/* Linha 2 (inferior): input de busca de notícias em largura cheia */}
-                <div className="relative w-full">
-                  <span
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
-                    aria-hidden="true"
+            <div className="grid grid-cols-1 grid-rows-1 items-end w-full [grid-template-areas:'stack']">
+              <div className="w-full [grid-area:stack]">
+                <Presence isVisible={isFilterOpen} duration={180}>
+                  <div
+                    ref={panelRef}
+                    role="region"
+                    aria-label="Painel de filtros de notícias"
+                    className="filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none"
                   >
-                    <Search className="w-4 h-4" strokeWidth={2.2} />
-                  </span>
-
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => handleSearchChange(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                      }
-                    }}
-                    placeholder="Pesquisar..."
-                    aria-label="Pesquisar notícias do dia por assunto ou palavra-chave"
-                    className="filter-input w-full h-[42px] pl-10 pr-9 text-[16px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
-                  />
-
-                  {searchQuery ? (
-                    <button
-                      type="button"
-                      onClick={() => handleSearchChange("")}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
-                      aria-label="Limpar texto da pesquisa"
-                      title="Limpar pesquisa"
+                    {/* Linha 1 (superior): carrossel com scroll horizontal de categorias */}
+                    <div
+                      role="toolbar"
+                      aria-label="Filtro de categorias"
+                      className="w-full overflow-x-auto no-scrollbar scroll-smooth flex items-center gap-2 py-1 px-0.5"
                     >
-                      <X className="w-4 h-4" strokeWidth={2.2} />
-                    </button>
-                  ) : null}
-                </div>
+                      {normalizedTags.map((tag) => {
+                        const isPressed =
+                          activeTag !== null &&
+                          normalizeText(activeTag) === normalizeText(tag);
+                        return (
+                          <Key
+                            key={tag}
+                            pressed={isPressed}
+                            onClick={() => handleTagClick(tag)}
+                            title={
+                              isPressed
+                                ? `Remover filtro ${tag}`
+                                : `Filtrar apenas por ${tag}`
+                            }
+                            className="shrink-0 text-[12.5px] px-2.5"
+                          >
+                            {tag}
+                          </Key>
+                        );
+                      })}
+                    </div>
+
+                    {/* Linha 2 (inferior): input de busca de notícias em largura cheia */}
+                    <div className="relative w-full">
+                      <span
+                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
+                        aria-hidden="true"
+                      >
+                        <Search className="w-4 h-4" strokeWidth={2.2} />
+                      </span>
+
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => handleSearchChange(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                          }
+                        }}
+                        placeholder="Pesquisar..."
+                        aria-label="Pesquisar notícias do dia por assunto ou palavra-chave"
+                        className="filter-input w-full h-[42px] pl-10 pr-9 text-[16px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow"
+                      />
+
+                      {searchQuery ? (
+                        <button
+                          type="button"
+                          onClick={() => handleSearchChange("")}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
+                          aria-label="Limpar texto da pesquisa"
+                          title="Limpar pesquisa"
+                        >
+                          <X className="w-4 h-4" strokeWidth={2.2} />
+                        </button>
+                      ) : null}
+                    </div>
+                  </div>
+                </Presence>
               </div>
-            )}
+
+              <div className="w-full [grid-area:stack]">
+                <Presence isVisible={isOptionsOpen} duration={180}>
+                  <OptionsPanel
+                    onClose={handleCloseOptions}
+                    onSelectInfo={handleSelectInfo}
+                    optionsButtonRef={optionsButtonRef}
+                  />
+                </Presence>
+              </div>
+            </div>
           </>
         }
-        aria-label="Ações e filtros da notícia"
+        aria-label="Navegação e filtros da notícia"
       >
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
+          {/* 1. Botão Mais */}
+          <Key
+            ref={optionsButtonRef}
+            pressed={isOptionsOpen}
+            onClick={handleToggleOptions}
+            aria-expanded={isOptionsOpen}
+            aria-label={isOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
+            className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            Mais
+          </Key>
+
+          {/* 2. Botão Filtrar */}
           <Key
             ref={filterButtonRef}
             pressed={isFilterOpen}
-            onClick={() => setIsFilterOpen((prev) => !prev)}
+            onClick={handleToggleFilter}
             aria-expanded={isFilterOpen}
             aria-label={
               isFilterOpen
                 ? "Fechar bloco de filtros"
                 : "Abrir bloco de filtros"
             }
-            className="px-2.5 sm:px-3.5 text-[14px]"
+            className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
           >
             Filtrar
           </Key>
 
+          {/* 3. Botão Vagas */}
           <Key
-            variant="icon"
-            onClick={onBack}
-            aria-label="Voltar para a página inicial"
+            onClick={handleSelectVagas}
+            className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
           >
-            <ArrowLeft className="w-5 h-5" strokeWidth={2.2} />
+            Vagas
+          </Key>
+
+          {/* 4. Botão Voltar */}
+          <Key
+            onClick={handleBack}
+            aria-label="Voltar para a página inicial"
+            className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            Voltar
           </Key>
         </div>
       </Dock>

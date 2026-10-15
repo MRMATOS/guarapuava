@@ -437,6 +437,15 @@ export default function Page() {
             digest={selectedDigest}
             tags={currentNewsTags}
             onBack={() => navigateTo("home")}
+            onSelectVagas={() => {
+              savedVagasScrollY.current = 0;
+              setIsNewsFilterOpen(false);
+              navigateTo("vagas");
+            }}
+            onSelectInfo={() => {
+              setIsNewsFilterOpen(false);
+              navigateTo("info");
+            }}
             searchQuery={newsSearchQuery}
             onSearchChange={setNewsSearchQuery}
             selectedCategory={selectedNewsCategory}
@@ -509,6 +518,14 @@ export default function Page() {
             jobs={detailFeedJobs}
             initialJobId={selectedJob?.id || selectedJob?.externalId}
             onBack={handleBackFromJobDetail}
+            onSelectNoticias={() => {
+              setIsJobFilterOpen(false);
+              navigateTo("home");
+            }}
+            onSelectInfo={() => {
+              setIsJobFilterOpen(false);
+              navigateTo("info");
+            }}
             searchQuery={jobSearchQuery}
             onSearchChange={setJobSearchQuery}
             contractState={contractState}
@@ -608,6 +625,8 @@ export default function Page() {
                   digest={selectedDigest}
                   tags={currentNewsTags}
                   onBack={() => navigateTo("home")}
+                  onSelectVagas={() => handleDesktopSelectTab("vagas")}
+                  onSelectInfo={handleToggleDesktopInfo}
                   searchQuery={newsSearchQuery}
                   onSearchChange={setNewsSearchQuery}
                   selectedCategory={selectedNewsCategory}
@@ -627,6 +646,8 @@ export default function Page() {
                   jobs={detailFeedJobs}
                   initialJobId={selectedJob?.id || selectedJob?.externalId}
                   onBack={handleBackFromJobDetail}
+                  onSelectNoticias={() => handleDesktopSelectTab("noticias")}
+                  onSelectInfo={handleToggleDesktopInfo}
                   searchQuery={jobSearchQuery}
                   onSearchChange={setJobSearchQuery}
                   contractState={contractState}
