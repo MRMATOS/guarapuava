@@ -19,16 +19,21 @@ export function normalizeText(text: string): string {
 export const CANONICAL_NEWS_CATEGORIES: Record<string, string> = {
   saude: "Saúde",
   politica: "Política",
+  policia: "Polícia",
   transito: "Trânsito",
   educacao: "Educação",
   seguranca: "Segurança",
   gestao: "Gestão",
   economia: "Economia",
-  comunidade: "Comunidade",
+  comunidade: "Social",
+  social: "Social",
   cultura: "Cultura",
   clima: "Clima",
   tecnologia: "Tecnologia",
   prazos: "Prazos",
+  oportunidade: "Trabalho",
+  oportunidades: "Trabalho",
+  trabalho: "Trabalho",
   esporte: "Esportes",
   esportes: "Esportes",
   habitacao: "Habitação",
@@ -267,10 +272,11 @@ export function filterNewsHighlights(
 ): NewsItem[] {
   return items.filter((item) => {
     if (category) {
-      const matchCat =
-        normalizeText(item.category) === normalizeText(category) ||
-        normalizeText(item.title).includes(normalizeText(category));
-      if (!matchCat) return false;
+      // Comparação estrita por categoria canônica: evita que uma notícia de
+      // "Polícia" apareça no filtro "Social" só porque o título contém a palavra.
+      if (normalizeCategory(item.category) !== normalizeCategory(category)) {
+        return false;
+      }
     }
 
     if (query.trim()) {

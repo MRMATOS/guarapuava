@@ -164,16 +164,12 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
     return digest.batches
       .map((batch) => {
         const filteredItems = batch.items.filter((item) => {
-          // Filtro por categoria (tag)
+          // Filtro por categoria (tag) — comparação estrita pela categoria
+          // canônica para não misturar categorias (ex: Polícia no filtro Social).
           if (activeTag) {
-            const itemCatNorm = normalizeText(item.category);
-            const activeTagNorm = normalizeText(activeTag);
-            const tagMatch =
-              itemCatNorm === activeTagNorm ||
-              itemCatNorm.includes(activeTagNorm) ||
-              activeTagNorm.includes(itemCatNorm) ||
-              normalizeText(item.title).includes(activeTagNorm);
-            if (!tagMatch) return false;
+            if (normalizeCategory(item.category) !== normalizeCategory(activeTag)) {
+              return false;
+            }
           }
 
           // Filtro por texto de pesquisa (título, texto ou categoria)
