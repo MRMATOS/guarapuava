@@ -42,6 +42,8 @@ next-env.d.ts
 
 # agent harnesses & temporary folders
 .agent/
+.agents/
+skills-lock.json
 .claude/
 .gemini/
 .grok/

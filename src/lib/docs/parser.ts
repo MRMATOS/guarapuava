@@ -84,6 +84,55 @@ function cleanField(f: string): string {
   return f.replace(/^[\s\-*•_#]+/, '').trim();
 }
 
+function isFieldLine(txt: string): boolean {
+  if (!txt) return false;
+  if (isCompanyLine(txt)) return true;
+  const clean = cleanField(txt).toLowerCase();
+  return /^(?:registro\s+no\s+documento|registrad[ao]\s+em|data\s+de\s+registro|data\s+de\s+publica[çc][ãa]o|publicad[ao]\s+em|modalidade|local|tipo\s+de\s+contrato|contrato|benef[íi]cios?|atribui[çc][õo]es|descri[çc][ãa]o|requisitos|remunera[çc][ãa]o|sal[áa]rio|hor[áa]rio|carga\s+hor[áa]ria|inscri[çc][õo]es|prazo|fonte|canal|link|c[óo]digo(?:\s+da\s+vaga)?|id(?:\s+da\s+vaga)?)\s*:/i.test(
+    clean
+  );
+}
+
+function isNextJobStart(paragraphs: { text: string; links: string[] }[], index: number): boolean {
+  if (index >= paragraphs.length) return false;
+  const currentText = paragraphs[index].text.trim();
+  if (!currentText) return false;
+
+  // Se a linha é uma Empresa Contratante, pode iniciar uma vaga
+  if (isCompanyLine(currentText)) return true;
+
+  // Se a linha atual é uma linha de campo conhecida, não é início de vaga
+  if (isFieldLine(currentText)) return false;
+
+  // Se for cabeçalho global do documento, não é vaga
+  const IGNORED = [
+    'vagas registradas',
+    'atualização diária',
+    'oportunidades e vagas',
+    'este documento é atualizado',
+  ];
+  const cleanLower = currentText.toLowerCase();
+  if (IGNORED.some((ig) => cleanLower.includes(ig))) return false;
+
+  // Procura se nas próximas linhas há uma linha de Empresa Contratante
+  let checkedCount = 0;
+  for (let offset = 1; index + offset < paragraphs.length && checkedCount < 5; offset++) {
+    const candidate = paragraphs[index + offset].text.trim();
+    if (!candidate) continue;
+    checkedCount++;
+
+    if (isCompanyLine(candidate)) {
+      return true;
+    }
+    // Se no caminho encontrarmos outra linha que não é campo, interrompe
+    if (!isFieldLine(candidate)) {
+      break;
+    }
+  }
+
+  return false;
+}
+
 /**
  * Converte parágrafos com texto e links no formato normalizado de vagas JobOpeningInput[].
  */
@@ -93,46 +142,69 @@ export function parseJobParagraphs(paragraphs: { text: string; links: string[] }
   let i = 0;
 
   while (i < paragraphs.length) {
-    const txt = paragraphs[i].text;
-    if (isCompanyLine(txt)) {
-      const titleItem = i > 0 ? paragraphs[i - 1] : { text: '', links: [] };
-      const title = titleItem.text.replace(/^[\s\-*•_#]+/, '').replace(/[\*_]/g, '').trim();
-      let link = titleItem.links[0] || (paragraphs[i].links[0] ?? '');
+    if (isNextJobStart(paragraphs, i)) {
+      let title = '';
+      let link = '';
+      const jobFields: string[] = [];
+      let hasSeenCompany = false;
 
-      const jobFields = [txt];
-      let j = i + 1;
-
-      while (j < paragraphs.length) {
-        const nextTxt = paragraphs[j].text;
-        if (isCompanyLine(nextTxt)) {
-          break;
+      const currentTxt = paragraphs[i].text.trim();
+      if (!isCompanyLine(currentTxt)) {
+        // paragraphs[i] é o título da vaga
+        const titleItem = paragraphs[i];
+        title = titleItem.text.replace(/^[\s\-*•_#]+/, '').replace(/[\*_]/g, '').trim();
+        link = titleItem.links[0] || '';
+        i++;
+      } else {
+        // Empresa direta sem título explícito prévio
+        if (i > 0 && !isFieldLine(paragraphs[i - 1].text)) {
+          title = paragraphs[i - 1].text.replace(/^[\s\-*•_#]+/, '').replace(/[\*_]/g, '').trim();
+          link = paragraphs[i - 1].links[0] || '';
         }
-        if (
-          j + 1 < paragraphs.length &&
-          isCompanyLine(paragraphs[j + 1].text)
-        ) {
-          break;
-        }
-        if (
-          nextTxt &&
-          !['Vagas Registradas', 'Atualização Diária de Vagas', 'Oportunidades e Vagas de Emprego - Guarapuava / PR'].some(
-            (ignored) => nextTxt.includes(ignored)
-          )
-        ) {
-          jobFields.push(nextTxt);
-          if (!link && paragraphs[j].links.length > 0) {
-            link = paragraphs[j].links[0];
-          }
-        }
-        j++;
       }
 
-      rawJobs.push({
-        title,
-        link,
-        fields: jobFields,
-      });
-      i = j;
+      // Agora acumula todos os campos desta vaga até a próxima vaga
+      while (i < paragraphs.length) {
+        const lineTxt = paragraphs[i].text.trim();
+        if (!lineTxt) {
+          i++;
+          continue;
+        }
+
+        // Se encontramos o início da próxima vaga:
+        // Caso A: nova linha de título (!isCompanyLine) que inicia próxima vaga -> para
+        // Caso B: já vimos uma empresa nesta vaga e encontramos outra linha de empresa -> para
+        if (isNextJobStart(paragraphs, i) && (!isCompanyLine(lineTxt) || hasSeenCompany)) {
+          break;
+        }
+
+        if (isCompanyLine(lineTxt)) {
+          hasSeenCompany = true;
+        }
+
+        const IGNORED = [
+          'Vagas Registradas',
+          'Atualização Diária de Vagas',
+          'Oportunidades e Vagas de Emprego - Guarapuava / PR',
+        ];
+
+        if (!IGNORED.some((ig) => lineTxt.includes(ig))) {
+          jobFields.push(lineTxt);
+          if (!link && paragraphs[i].links.length > 0) {
+            link = paragraphs[i].links[0];
+          }
+        }
+
+        i++;
+      }
+
+      if (title || jobFields.some((f) => isCompanyLine(f))) {
+        rawJobs.push({
+          title,
+          link,
+          fields: jobFields,
+        });
+      }
     } else {
       i++;
     }
@@ -357,14 +429,23 @@ export function parseDocText(content: string): JobOpeningInput[] {
     const links: string[] = [];
     let cleanText = line;
 
+    // Detecta links em formato markdown: [Texto](https://...)
+    const mdLinkMatches = [...cleanText.matchAll(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g)];
+    if (mdLinkMatches.length > 0) {
+      for (const m of mdLinkMatches) {
+        if (!links.includes(m[2])) links.push(m[2]);
+      }
+      cleanText = cleanText.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '$1').trim();
+    }
+
     // Detecta padrão customizado: (Link: https://...)
-    const customLinkMatch = line.match(/\(Link:\s*(https?:\/\/[^\s)]+)\)/i);
+    const customLinkMatch = cleanText.match(/\(Link:\s*(https?:\/\/[^\s)]+)\)/i);
     if (customLinkMatch) {
-      links.push(customLinkMatch[1]);
-      cleanText = line.replace(/\(Link:\s*https?:\/\/[^\s)]+\)/i, '').trim();
-    } else {
-      // Detecta URL direta na linha caso exista
-      const urlMatch = line.match(/(https?:\/\/[^\s]+)/i);
+      if (!links.includes(customLinkMatch[1])) links.push(customLinkMatch[1]);
+      cleanText = cleanText.replace(/\(Link:\s*https?:\/\/[^\s)]+\)/i, '').trim();
+    } else if (links.length === 0) {
+      // Detecta URL direta na linha caso não tenha link extraído
+      const urlMatch = cleanText.match(/(https?:\/\/[^\s)]+)/i);
       if (urlMatch) {
         links.push(urlMatch[1]);
       }

@@ -3,7 +3,7 @@ import { parseNewsDocxBuffer, parseNewsDocText } from './news-parser';
 import { listActiveNewsDigests } from '@/lib/supabase/news';
 import { syncNewsDigests } from '@/lib/supabase/news-admin';
 
-export const DEFAULT_GOOGLE_DOCS_NEWS_ID = '1OAa9XYR7ZT3WNuF3jtQsWC03ODXSocPBm83hGeinKkc';
+export const DEFAULT_GOOGLE_DOCS_NEWS_ID = '1wlRgk8UNZA7gPPAvzrcNvWXFSklxs9Dtp5wL7VAAA_8';
 
 export interface NewsDocsSyncResult {
   success: boolean;
