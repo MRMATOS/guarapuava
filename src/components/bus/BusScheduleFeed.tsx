@@ -11,31 +11,26 @@ import { normalizeText } from "@/lib/utils/search";
 const emptySavedRoutes: SavedBusRoute[] = [];
 const getServerSavedRoutes = () => emptySavedRoutes;
 
-function getGoogleMapsUrl(ponto: PontoItinerario): string {
-  if (ponto.latitude && ponto.longitude) {
-    return `https://www.google.com/maps/search/?api=1&query=${ponto.latitude},${ponto.longitude}`;
-  }
-  const cleanName = ponto.nome.replace(/\(.*?\)/g, "").trim();
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${cleanName}, Guarapuava - PR`)}`;
-}
-
 export function formatStopDisplayName(
   ponto: PontoItinerario,
   fallbackBairro?: string
 ): string {
   let raw = (ponto.nome || ponto.rua || "").trim();
 
-  // 1. Remove os termos "Rua" e "R."
+  // 1. Remove prefixo numérico de rota (ex: "365-R. Judite..." -> "R. Judite...")
+  raw = raw.replace(/^\d+\s*-\s*/, "").trim();
+
+  // 2. Remove os termos "Rua" e "R."
   raw = raw.replace(/\b(rua|r\.)\s+/gi, "").trim();
 
-  // 2. Converte parênteses em traço (ex: "(Gastrocentro)" -> " - Gastrocentro")
+  // 3. Converte parênteses em traço (ex: "(Gastrocentro)" -> " - Gastrocentro")
   raw = raw.replace(/\s*\((.*?)\)\s*/g, " - $1").trim();
 
-  // 3. Limpa traços duplicados ou soltos
+  // 4. Limpa traços duplicados ou soltos
   raw = raw.replace(/\s*-\s*-\s*/g, " - ").trim();
   raw = raw.replace(/^-\s*/, "").replace(/\s*-$/, "").trim();
 
-  // 4. Adiciona bairro no final caso ainda não esteja presente
+  // 5. Adiciona bairro no final caso ainda não esteja presente
   const bairro = (ponto.bairro || fallbackBairro || "").trim();
   if (bairro) {
     const normBairro = normalizeText(bairro);
@@ -46,6 +41,32 @@ export function formatStopDisplayName(
   }
 
   return raw;
+}
+
+export function getGoogleMapsUrl(
+  ponto: PontoItinerario,
+  fallbackBairro?: string
+): string {
+  // 1. Se já tiver maps_url validada nos dados, usa diretamente
+  if (ponto.maps_url) {
+    return ponto.maps_url;
+  }
+
+  // 2. Constrói o link com o endereço exibido no card
+  const cardAddress = formatStopDisplayName(ponto, fallbackBairro);
+  if (cardAddress && cardAddress.length >= 6) {
+    const query = cardAddress.toLowerCase().includes("guarapuava")
+      ? cardAddress
+      : `${cardAddress}, Guarapuava - PR`;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  }
+
+  // 3. Fallback para coordenadas ou nome puro
+  if (ponto.latitude && ponto.longitude) {
+    return `https://www.google.com/maps/search/?api=1&query=${ponto.latitude},${ponto.longitude}`;
+  }
+  const cleanName = ponto.nome.replace(/\(.*?\)/g, "").trim();
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${cleanName}, Guarapuava - PR`)}`;
 }
 
 
@@ -454,7 +475,7 @@ function renderJourneyView(
                 )}
 
                 <a
-                  href={getGoogleMapsUrl(journey.origem)}
+                  href={getGoogleMapsUrl(journey.origem, journey.linha.bairro)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
@@ -510,7 +531,7 @@ function renderJourneyView(
               </div>
 
               <a
-                href={getGoogleMapsUrl(p)}
+                href={getGoogleMapsUrl(p, journey.linha.bairro)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-ink-muted hover:text-coral shrink-0"
@@ -548,7 +569,7 @@ function renderJourneyView(
                   </span>
                 )}
                 <a
-                  href={getGoogleMapsUrl(journey.destino)}
+                  href={getGoogleMapsUrl(journey.destino, journey.linha.bairro)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
@@ -937,7 +958,7 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                     </span>
 
                     <a
-                      href={getGoogleMapsUrl(ponto)}
+                      href={getGoogleMapsUrl(ponto, linha.bairro)}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
@@ -1194,7 +1215,7 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                         )}
 
                         <a
-                          href={getGoogleMapsUrl(ponto)}
+                          href={getGoogleMapsUrl(ponto, linha.bairro)}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}

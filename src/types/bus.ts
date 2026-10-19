@@ -9,6 +9,7 @@ export interface PontoItinerario {
   cep?: string;            // ex: "85010-190"
   latitude?: number;       // ex: -25.392566
   longitude?: number;      // ex: -51.468079
+  maps_url?: string;       // ex: "https://www.google.com/maps/search/?api=1&query=..."
   horariosUteis: string[]; // ["06:52", "07:22", "07:52", ...]
   horariosSabado: string[];// ["07:52", "08:52", "09:52", ...]
   horariosDomingo: string[]; // [...]

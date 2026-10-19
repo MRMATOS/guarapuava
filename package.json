@@ -11,7 +11,8 @@
     "postinstall": "bash scripts/copy-maplibre-worker.sh",
     "sync:gemini": "tsx --env-file=.env.local scripts/run-gemini-agent.ts",
     "sync:docs": "tsx --env-file=.env.local scripts/run-docs-sync.ts",
-    "sync:news": "tsx --env-file=.env.local scripts/run-news-docs-sync.ts"
+    "sync:news": "tsx --env-file=.env.local scripts/run-news-docs-sync.ts",
+    "update:bus-maps": "tsx scripts/atualizar-links-mapas-onibus.ts"
   },
   "dependencies": {
     "@google/genai": "^2.27.0",

@@ -57,6 +57,7 @@ skills-lock.json
 .superpowers/
 .vibe/
 .vscode/
+.playwright-mcp/
 *.docx
 
 # maplibre generated worker build artifacts
