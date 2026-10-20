@@ -4,10 +4,10 @@ const isProd = process.env.NODE_ENV === "production";
 
 const cspHeader = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval';
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com;
   style-src 'self' 'unsafe-inline';
-  img-src 'self' data: blob: https://ufjvqciyrtpfpetpgavf.supabase.co https://tiles.openfreemap.org https://gmaisnoticias.com https://guarapuava.digital;
-  connect-src 'self' https://ufjvqciyrtpfpetpgavf.supabase.co https://tiles.openfreemap.org https://nominatim.openstreetmap.org;
+  img-src 'self' data: blob: https://ufjvqciyrtpfpetpgavf.supabase.co https://tiles.openfreemap.org https://gmaisnoticias.com https://guarapuava.digital https://*.google-analytics.com https://*.googletagmanager.com;
+  connect-src 'self' https://ufjvqciyrtpfpetpgavf.supabase.co https://tiles.openfreemap.org https://nominatim.openstreetmap.org https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com;
   worker-src 'self' blob:;
   font-src 'self';
   object-src 'none';
