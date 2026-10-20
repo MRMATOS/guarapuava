@@ -124,8 +124,8 @@ export function MapClient({
     );
   }, [selectedPointId, proximityTour]);
 
-  const hasPrev = currentTourIndex > 0;
-  const hasNext = currentTourIndex >= 0 && currentTourIndex < proximityTour.length - 1;
+  const hasPrev = proximityTour.length > 1;
+  const hasNext = proximityTour.length > 1;
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -343,8 +343,12 @@ export function MapClient({
   }, []);
 
   const handleNavigateNext = useCallback(() => {
-    if (currentTourIndex < 0 || currentTourIndex >= proximityTour.length - 1) return;
-    const target = proximityTour[currentTourIndex + 1];
+    if (proximityTour.length <= 1) return;
+    const nextIndex =
+      currentTourIndex >= 0
+        ? (currentTourIndex + 1) % proximityTour.length
+        : 0;
+    const target = proximityTour[nextIndex];
     setSelectedPointId(target.id);
     mapRef.current?.flyTo({
       center: [target.longitude, target.latitude],
@@ -354,8 +358,12 @@ export function MapClient({
   }, [currentTourIndex, proximityTour]);
 
   const handleNavigatePrev = useCallback(() => {
-    if (currentTourIndex <= 0) return;
-    const target = proximityTour[currentTourIndex - 1];
+    if (proximityTour.length <= 1) return;
+    const prevIndex =
+      currentTourIndex >= 0
+        ? (currentTourIndex - 1 + proximityTour.length) % proximityTour.length
+        : proximityTour.length - 1;
+    const target = proximityTour[prevIndex];
     setSelectedPointId(target.id);
     mapRef.current?.flyTo({
       center: [target.longitude, target.latitude],
@@ -480,7 +488,7 @@ export function MapClient({
         {/* 1. Botão de Voltar */}
         <Link
           href="/cidade-viva"
-          className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 px-3.5 py-2 text-xs font-bold text-ink rounded-xl shadow-xs hover:border-coral transition-all active:scale-95"
+          className="bg-neutral-900/90 text-white border border-neutral-700/80 dark:bg-white/95 dark:text-neutral-900 dark:border-black/10 backdrop-blur-xs px-3.5 py-2 text-xs font-bold rounded-xl shadow-md hover:border-coral transition-all active:scale-95"
           title="Voltar para a apresentação do Cidade Viva"
         >
           Voltar
@@ -499,7 +507,7 @@ export function MapClient({
           type="button"
           onClick={locateUser}
           disabled={isLocating}
-          className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 px-3.5 py-2 text-xs font-bold text-ink rounded-xl shadow-sm hover:border-coral transition-all active:scale-95 cursor-pointer"
+          className="bg-neutral-900/90 text-white border border-neutral-700/80 dark:bg-white/95 dark:text-neutral-900 dark:border-black/10 backdrop-blur-xs px-3.5 py-2 text-xs font-bold rounded-xl shadow-md hover:border-coral transition-all active:scale-95 cursor-pointer disabled:opacity-50"
         >
           {isLocating ? "Localizando..." : "Minha localização"}
         </button>

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ==========================================================================
    Design System — "O Painel de Rádio"
    Fonte de verdade dos tokens. Documentação completa em /DESIGN.md.

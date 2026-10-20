@@ -19,11 +19,11 @@ export function FilterBar({
     <button 
       type="button"
       onClick={onClick}
-      className="bg-canvas/95 backdrop-blur-xs border border-rule/80 dark:border-white/10 rounded-xl shadow-xs flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-ink transition-transform active:scale-95 cursor-pointer select-none"
+      className="bg-neutral-900/90 text-white border border-neutral-700/80 dark:bg-white/95 dark:text-neutral-900 dark:border-black/10 backdrop-blur-xs rounded-xl shadow-md flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold hover:border-coral transition-all active:scale-95 cursor-pointer select-none"
       title="Ocorrências ativas no mapa"
     >
-      <span className="font-bold text-ink">{reportCount}</span>
-      <span className="text-[11px] text-ink-muted">relatos ativos</span>
+      <span className="font-bold text-white dark:text-neutral-900">{reportCount}</span>
+      <span className="text-[11px] text-white/70 dark:text-neutral-600">relatos ativos</span>
     </button>
   );
 }

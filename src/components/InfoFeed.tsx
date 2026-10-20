@@ -324,7 +324,7 @@ export const InfoFeed: React.FC<InfoFeedProps> = ({
                       nome, e-mail, telefone nem cadastro para submissão de relatos. O
                       endereço IP do dispositivo é transformado em um código criptográfico
                       unidirecional com salt secreto, utilizado unicamente para proteção
-                      antispam (máximo de 1 relato a cada 5 minutos), nunca sendo exposto
+                      antispam, nunca sendo exposto
                       publicamente nem compartilhado.
                     </span>
                   </li>

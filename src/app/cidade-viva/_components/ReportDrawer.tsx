@@ -229,17 +229,6 @@ export function ReportDrawer({
           )}
 
           <div className="flex items-center gap-2">
-            {hasPrev && (
-              <button
-                type="button"
-                onClick={onNavigatePrev}
-                className="px-3 py-2 text-xs font-semibold rounded-lg border border-rule bg-surface text-ink hover:border-coral/50 transition-colors cursor-pointer"
-                title="Ir para ocorrência anterior"
-              >
-                ← Anterior
-              </button>
-            )}
-
             <button
               type="button"
               onClick={handleShare}
@@ -252,14 +241,25 @@ export function ReportDrawer({
               <span>{copied ? "Link Copiado!" : "Compartilhar"}</span>
             </button>
 
+            {hasPrev && (
+              <button
+                type="button"
+                onClick={onNavigatePrev}
+                className="px-3 py-2 text-xs font-semibold rounded-lg border border-rule bg-surface text-ink hover:border-coral/50 transition-colors cursor-pointer shrink-0"
+                title="Ir para ocorrência anterior"
+              >
+                ← Anterior
+              </button>
+            )}
+
             {hasNext && (
               <button
                 type="button"
                 onClick={onNavigateNext}
-                className="px-3 py-2 text-xs font-semibold rounded-lg border border-rule bg-surface text-ink hover:border-coral/50 transition-colors cursor-pointer"
+                className="px-3 py-2 text-xs font-semibold rounded-lg border border-rule bg-surface text-ink hover:border-coral/50 transition-colors cursor-pointer shrink-0"
                 title="Ir para próxima ocorrência"
               >
-                Próxima →
+                Próximo →
               </button>
             )}
           </div>

@@ -254,24 +254,13 @@ export function ReportModal({
               {step === 1 ? "Qual é o problema?" : "Foto e Detalhes"}
             </h2>
             <div className="flex items-center gap-2 shrink-0">
-              {step === 2 && (
-                <button
-                  type="button"
-                  onClick={() => setStep(1)}
-                  disabled={isSubmitting}
-                  className="px-2.5 py-1 text-xs font-semibold text-ink-muted hover:text-ink cursor-pointer"
-                >
-                  Voltar
-                </button>
-              )}
               <button
                 type="button"
                 onClick={handleCloseAttempt}
                 disabled={isSubmitting}
-                aria-label="Fechar"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-ink-muted hover:text-ink cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition-colors font-bold text-sm"
+                className="px-2.5 py-1 text-xs font-semibold text-ink-muted hover:text-ink cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors"
               >
-                ✕
+                Fechar
               </button>
             </div>
           </div>
@@ -355,7 +344,6 @@ export function ReportModal({
                   onClick={() => fileInputRef.current?.click()}
                   className="w-full py-5 px-4 border-2 border-dashed border-rule rounded-xl flex flex-col items-center justify-center gap-1.5 hover:border-coral/50 transition-colors cursor-pointer bg-surface/50"
                 >
-                  <span className="text-xl">📷</span>
                   <span className="text-xs font-bold text-ink">Tirar ou anexar foto</span>
                   <span className="text-[11px] text-ink-muted">Comprovante obrigatório</span>
                 </button>
@@ -378,18 +366,35 @@ export function ReportModal({
                 </span>
               </div>
 
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={!photoFile || isSubmitting}
-                className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all cursor-pointer ${
-                  photoFile && !isSubmitting
-                    ? "bg-coral text-white hover:opacity-95 shadow-md active:scale-[0.98]"
-                    : "bg-rule/40 text-ink-muted cursor-not-allowed"
-                }`}
-              >
-                {isSubmitting ? submitStatus || "Enviando..." : "Enviar Relato Anônimo"}
-              </button>
+              {photoFile && !isSubmitting && (
+                <p className="text-[11px] text-coral font-medium text-center leading-relaxed">
+                  Atenção. Ao enviar, você não poderá editar ou excluir o relato. Revise as informações.
+                </p>
+              )}
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  disabled={isSubmitting}
+                  className="flex-1 py-3.5 rounded-xl font-bold text-sm bg-surface border border-rule text-ink hover:border-coral transition-all active:scale-[0.98] cursor-pointer text-center disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Voltar
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={!photoFile || isSubmitting}
+                  className={`flex-1 py-3.5 rounded-xl font-bold text-sm transition-all cursor-pointer text-center ${
+                    photoFile && !isSubmitting
+                      ? "bg-coral text-white hover:opacity-95 shadow-md active:scale-[0.98]"
+                      : "bg-rule/40 text-ink-muted cursor-not-allowed"
+                  }`}
+                >
+                  {isSubmitting ? submitStatus || "Enviando..." : "Enviar Relato"}
+                </button>
+              </div>
             </div>
           )}
         </div>
