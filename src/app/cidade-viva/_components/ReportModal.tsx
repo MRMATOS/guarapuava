@@ -316,27 +316,30 @@ export function ReportModal({
           {step === 2 && (
             <div className="flex flex-col gap-3.5 mt-3">
               {photoFile ? (
-                <div className="flex items-center justify-between p-3 rounded-xl border border-rule/70 bg-surface">
-                  <div className="flex items-center gap-2">
-                    <span className="text-emerald-500 font-bold">✓</span>
-                    <span className="text-xs font-semibold text-ink">Foto anexada</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsPhotoModalOpen(true)}
-                      className="text-xs font-semibold text-coral hover:underline cursor-pointer"
-                    >
-                      Visualizar
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleRemovePhoto}
-                      className="text-xs text-red-500 hover:underline cursor-pointer"
-                    >
-                      Remover
-                    </button>
-                  </div>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setIsPhotoModalOpen(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setIsPhotoModalOpen(true);
+                    }
+                  }}
+                  className="flex items-center justify-between p-3 rounded-xl border border-rule/70 bg-surface hover:border-coral/50 transition-colors cursor-pointer select-none"
+                  title="Clique para visualizar a foto"
+                >
+                  <span className="text-xs font-semibold text-ink">Foto anexada</span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemovePhoto();
+                    }}
+                    className="px-2.5 py-1 text-xs font-semibold text-ink-muted hover:text-ink rounded-lg border border-rule/70 bg-surface hover:border-coral transition-colors cursor-pointer"
+                  >
+                    Remover
+                  </button>
                 </div>
               ) : (
                 <button
