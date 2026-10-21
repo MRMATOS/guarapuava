@@ -275,25 +275,7 @@ export default function DescarteCorretoPage() {
 
             <aside aria-label="Painel lateral de filtros e opções" className="w-[360px] shrink-0 h-full max-h-full flex flex-col">
               <div className="w-full shrink-0 z-20 pb-2.5 flex flex-col gap-2">
-                <div role="toolbar" aria-label="Opções primárias" className="grid grid-cols-2 gap-2 w-full h-[42px]">
-                  <Key
-                    type="button"
-                    pressed={isDesktopInfoOpen}
-                    onClick={() => setIsDesktopInfoOpen((prev) => !prev)}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title="Abrir termos e diretrizes"
-                  >
-                    Informações
-                  </Key>
-                  <Key
-                    type="button"
-                    onClick={toggleTheme}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title={`Alternar para ${themeLabel}`}
-                  >
-                    {themeLabel}
-                  </Key>
-                </div>
+                {/* Linha 1: Notícias e Vagas */}
                 <div role="toolbar" aria-label="Navegação de abas" className="grid grid-cols-2 gap-2 w-full h-[42px]">
                   <Key
                     type="button"
@@ -312,24 +294,47 @@ export default function DescarteCorretoPage() {
                     Vagas
                   </Key>
                 </div>
-                <div role="toolbar" aria-label="Ferramentas e utilidades" className="grid grid-cols-2 gap-2 w-full h-[42px]">
+
+                {/* Linha 2: Utilidades, Modo Claro/Escuro e Informações */}
+                <div role="toolbar" aria-label="Opções e preferências secundárias" className="grid grid-cols-3 gap-1.5 sm:gap-2 w-full h-[42px]">
+                  {/* 1. Utilidades */}
                   <Key
                     type="button"
-                    onClick={() => router.push("/cidade-viva")}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title="Abrir mapa colaborativo Cidade Viva"
-                  >
-                    Cidade Viva
-                  </Key>
-                  <Key
-                    type="button"
-                    pressed={true}
+                    pressed={!isDesktopInfoOpen}
                     aria-current="page"
-                    onClick={() => router.push("/utilidades")}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                    onClick={() => {
+                      if (isDesktopInfoOpen) setIsDesktopInfoOpen(false);
+                      router.push("/utilidades");
+                    }}
+                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
                     title="Utilidades e serviços"
+                    aria-label="Utilidades"
                   >
                     Utilidades
+                  </Key>
+
+                  {/* 2. Modo Claro / Escuro */}
+                  <Key
+                    type="button"
+                    onClick={toggleTheme}
+                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                    title={`Alternar para ${themeLabel}`}
+                    aria-label={`Alternar para ${themeLabel}`}
+                  >
+                    {themeLabel}
+                  </Key>
+
+                  {/* 3. Informações */}
+                  <Key
+                    type="button"
+                    pressed={isDesktopInfoOpen}
+                    aria-expanded={isDesktopInfoOpen}
+                    onClick={() => setIsDesktopInfoOpen((prev) => !prev)}
+                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Abrir termos e diretrizes"
+                    aria-label="Informações do site"
+                  >
+                    Informações
                   </Key>
                 </div>
               </div>

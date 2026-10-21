@@ -52,6 +52,20 @@ export default function UtilidadesPage() {
           <div className="flex-1 flex flex-col justify-end gap-3.5">
             <button
               type="button"
+              onClick={() => router.push("/cidade-viva/mapa")}
+              className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
+              aria-label="Abrir mapa colaborativo Cidade Viva"
+            >
+              <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
+                Cidade Viva
+              </h2>
+
+              <p className="text-[13.5px] text-ink-body leading-relaxed">
+                Mapeamento colaborativo para acompanhar e registrar ocorrências de zeladoria urbana, asfalto, iluminação e saneamento em tempo real.
+              </p>
+            </button>
+            <button
+              type="button"
               onClick={() => router.push("/utilidades/descarte")}
               className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
               aria-label="Abrir Descarte correto"
@@ -181,6 +195,20 @@ export default function UtilidadesPage() {
                 <div className="flex flex-col justify-start gap-3.5">
                   <button
                     type="button"
+                    onClick={() => router.push("/cidade-viva/mapa")}
+                    className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
+                    aria-label="Abrir mapa colaborativo Cidade Viva"
+                  >
+                    <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
+                      Cidade Viva
+                    </h2>
+
+                    <p className="text-[13.5px] text-ink-body leading-relaxed">
+                      Mapeamento colaborativo para acompanhar e registrar ocorrências de zeladoria urbana, asfalto, iluminação e saneamento em tempo real.
+                    </p>
+                  </button>
+                  <button
+                    type="button"
                     onClick={() => router.push("/utilidades/descarte")}
                     className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
                     aria-label="Abrir Descarte correto"
@@ -211,39 +239,13 @@ export default function UtilidadesPage() {
               </div>
             </main>
 
-            {/* Coluna Direita (Opções e Ferramentas em 3 Linhas / 6 Botões) */}
+            {/* Coluna Direita (Opções e Ferramentas em 2 Linhas) */}
             <aside
               aria-label="Painel lateral de opções"
               className="w-[360px] shrink-0 h-full max-h-full flex flex-col"
             >
               <div className="w-full shrink-0 z-20 pb-2.5 flex flex-col gap-2">
-                {/* Linha 1: Informações e Modo Claro/Escuro */}
-                <div
-                  role="toolbar"
-                  aria-label="Opções primárias"
-                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
-                >
-                  <Key
-                    type="button"
-                    pressed={isDesktopInfoOpen}
-                    onClick={() => setIsDesktopInfoOpen((prev) => !prev)}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title="Abrir termos e diretrizes"
-                  >
-                    Informações
-                  </Key>
-
-                  <Key
-                    type="button"
-                    onClick={toggleTheme}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title={`Alternar para ${themeLabel}`}
-                  >
-                    {themeLabel}
-                  </Key>
-                </div>
-
-                {/* Linha 2: Notícias e Vagas */}
+                {/* Linha 1: Notícias e Vagas */}
                 <div
                   role="toolbar"
                   aria-label="Navegação de abas"
@@ -268,30 +270,50 @@ export default function UtilidadesPage() {
                   </Key>
                 </div>
 
-                {/* Linha 3: Cidade Viva e Utilidades */}
+                {/* Linha 2: Utilidades, Modo Claro/Escuro e Informações */}
                 <div
                   role="toolbar"
-                  aria-label="Ferramentas e utilidades"
-                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
+                  aria-label="Opções e preferências secundárias"
+                  className="grid grid-cols-3 gap-1.5 sm:gap-2 w-full h-[42px]"
                 >
+                  {/* 1. Utilidades */}
                   <Key
                     type="button"
-                    onClick={() => router.push("/cidade-viva")}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title="Abrir mapa colaborativo Cidade Viva"
-                  >
-                    Cidade Viva
-                  </Key>
-
-                  <Key
-                    type="button"
-                    pressed={true}
+                    pressed={!isDesktopInfoOpen}
                     aria-current="page"
-                    onClick={() => router.push("/utilidades")}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                    onClick={() => {
+                      if (isDesktopInfoOpen) setIsDesktopInfoOpen(false);
+                      router.push("/utilidades");
+                    }}
+                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
                     title="Utilidades e serviços"
+                    aria-label="Utilidades"
                   >
                     Utilidades
+                  </Key>
+
+                  {/* 2. Modo Claro / Escuro */}
+                  <Key
+                    type="button"
+                    onClick={toggleTheme}
+                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                    title={`Alternar para ${themeLabel}`}
+                    aria-label={`Alternar para ${themeLabel}`}
+                  >
+                    {themeLabel}
+                  </Key>
+
+                  {/* 3. Informações */}
+                  <Key
+                    type="button"
+                    pressed={isDesktopInfoOpen}
+                    aria-expanded={isDesktopInfoOpen}
+                    onClick={() => setIsDesktopInfoOpen((prev) => !prev)}
+                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Abrir termos e diretrizes"
+                    aria-label="Informações do site"
+                  >
+                    Informações
                   </Key>
                 </div>
               </div>

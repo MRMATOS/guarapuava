@@ -31,10 +31,10 @@ export default async function CidadeVivaPage({ searchParams }: CidadeVivaPagePro
   const resolvedParams = searchParams ? await searchParams : undefined;
   const id = resolvedParams?.id;
 
-  // Se houver id de relato compartilhado via deep link, redireciona direto para o mapa
+  // Se houver id de relato compartilhado via deep link, redireciona para o mapa com id
   if (id && typeof id === "string") {
     redirect(`/cidade-viva/mapa?id=${encodeURIComponent(id)}`);
   }
 
-  return <CidadeVivaApresentacaoClient />;
+  redirect("/cidade-viva/mapa");
 }

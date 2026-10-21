@@ -29,9 +29,9 @@ O projeto nasceu para resolver uma dor crônica da cidade: **a dispersão de inf
 graph TD
     GD["Guarapuava Digital"] --> Vagas["Portal de Vagas de Emprego"]
     GD --> Noticias["Radar de Notícias Diárias"]
-    GD --> CidadeViva["Cidade Viva (Zeladoria Colaborativa)"]
     GD --> Utilidades["Central de Utilidades"]
     
+    Utilidades --> CidadeViva["Cidade Viva (Zeladoria Colaborativa)"]
     Utilidades --> Onibus["Horários & Rotas de Ônibus"]
     Utilidades --> Descarte["Guia de Descarte Correto"]
 ```

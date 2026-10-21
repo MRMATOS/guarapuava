@@ -488,9 +488,9 @@ export function MapClient({
       <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 pointer-events-auto flex flex-col items-end gap-2.5">
         {/* 1. Botão de Voltar */}
         <Link
-          href="/cidade-viva"
+          href="/utilidades"
           className="bg-neutral-900/90 text-white border border-neutral-700/80 dark:bg-white/95 dark:text-neutral-900 dark:border-black/10 backdrop-blur-xs px-3.5 py-2 text-xs font-bold rounded-xl shadow-md hover:border-coral transition-all active:scale-95"
-          title="Voltar para a apresentação do Cidade Viva"
+          title="Voltar para a página de utilidades"
         >
           Voltar
         </Link>
