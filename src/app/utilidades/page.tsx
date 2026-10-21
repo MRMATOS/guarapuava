@@ -165,7 +165,7 @@ export default function UtilidadesPage() {
               {/* Conteúdo: Cartão limpo de Horários de Ônibus alinhado ao topo */}
               <div
                 id="desktop-center-scroller"
-                className="w-[calc(100%+48px)] -mx-6 px-6 pt-1 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain flex flex-col justify-start [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
+                className="w-[calc(100%+80px)] -mx-10 px-10 pt-1 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain flex flex-col justify-start [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
               >
                 {/* Cabeçalho de Utilidades (mesmo padrão do InfoFeed) */}
                 <div className="flex items-center justify-between mb-4 px-1 shrink-0">
@@ -297,7 +297,13 @@ export default function UtilidadesPage() {
               </div>
 
               {/* Corpo Lateral */}
-              <div className="w-[calc(100%+32px)] -mx-4 px-4 py-3 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain">
+              <div
+                className={`w-[calc(100%+64px)] -mx-8 px-8 py-5 flex-1 min-h-0 ${
+                  isDesktopInfoOpen
+                    ? "overflow-y-auto no-scrollbar overscroll-contain"
+                    : "overflow-visible"
+                }`}
+              >
                 {isDesktopInfoOpen && (
                   <div
                     role="region"

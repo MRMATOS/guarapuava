@@ -3,6 +3,8 @@
 
 import React, { useState, useTransition } from "react";
 import type { Report, Category, UnifiedReportPoint, ReportStatus } from "../_lib/types";
+import { formatReportStatus } from "../_lib/types";
+import { Key } from "@/components/ui/Key";
 import { updateReportStatusAction, deleteReportAction } from "../actions-admin";
 
 interface ReportDrawerProps {
@@ -50,8 +52,10 @@ export function ReportDrawer({
 }: ReportDrawerProps) {
   const [lightboxPhotoUrl, setLightboxPhotoUrl] = useState<string | null>(null);
   const [isModeratorModalOpen, setIsModeratorModalOpen] = useState(false);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const [modalError, setModalError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   const reportList = unifiedPoint?.reports || (initialReport ? [initialReport] : []);
   const primaryReport = reportList[0] || initialReport;
@@ -87,34 +91,44 @@ export function ReportDrawer({
     setTimeout(() => setCopied(false), 2500);
   };
 
+  const handleOpenModerator = () => {
+    setModalError(null);
+    setIsConfirmingDelete(false);
+    setIsModeratorModalOpen(true);
+  };
+
+  const handleCloseModeratorModal = () => {
+    if (isPending) return;
+    setIsModeratorModalOpen(false);
+    setIsConfirmingDelete(false);
+    setModalError(null);
+  };
+
   const handleUpdateStatus = (newStatus: ReportStatus) => {
     if (!primaryReport) return;
+    setModalError(null);
     startTransition(async () => {
       const res = await updateReportStatusAction(primaryReport.id, newStatus);
       if (!res.success) {
-        alert(`Erro ao atualizar status: ${res.error}`);
+        setModalError(`Erro ao atualizar status: ${res.error}`);
         return;
       }
       onReportStatusUpdated?.(primaryReport.id, newStatus);
-      setIsModeratorModalOpen(false);
+      handleCloseModeratorModal();
     });
   };
 
-  const handleDelete = () => {
+  const handleExecuteDelete = () => {
     if (!primaryReport) return;
-    const confirm = window.confirm(
-      "Tem certeza que deseja excluir permanentemente esta ocorrência e sua foto?"
-    );
-    if (!confirm) return;
-
+    setModalError(null);
     startTransition(async () => {
       const res = await deleteReportAction(primaryReport.id);
       if (!res.success) {
-        alert(`Erro ao excluir: ${res.error}`);
+        setModalError(`Erro ao excluir: ${res.error}`);
         return;
       }
       onReportDeleted?.(primaryReport.id);
-      setIsModeratorModalOpen(false);
+      handleCloseModeratorModal();
     });
   };
 
@@ -164,10 +178,9 @@ export function ReportDrawer({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Fechar painel"
-            className="w-7 h-7 rounded-full flex items-center justify-center text-ink-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/5 transition-colors font-bold text-sm shrink-0 cursor-pointer"
+            className="px-2.5 py-1 text-xs font-semibold text-ink-muted hover:text-ink cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors shrink-0"
           >
-            ✕
+            Fechar
           </button>
         </div>
 
@@ -183,9 +196,7 @@ export function ReportDrawer({
                 <div className="flex items-center justify-between text-[11px] font-semibold text-ink-muted">
                   <span>{dateStr || `Relato #${index + 1}`}</span>
                   {item.status && (
-                    <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-surface border border-rule text-ink">
-                      {item.status.replace(/_/g, " ")}
-                    </span>
+                    <span>{formatReportStatus(item.status)}</span>
                   )}
                 </div>
 
@@ -219,48 +230,44 @@ export function ReportDrawer({
         {/* Rodapé Fixo */}
         <div className="p-3 border-t border-rule/50 flex flex-col gap-2 shrink-0 bg-background/50">
           {isAdmin && (
-            <button
-              type="button"
-              onClick={() => setIsModeratorModalOpen(true)}
-              className="w-full py-2 px-3 text-xs font-bold rounded-lg border border-coral text-coral hover:bg-coral/10 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            <Key
+              variant="coral"
+              onClick={handleOpenModerator}
+              className="w-full !h-10 text-xs font-bold justify-center"
             >
-              <span>Opções do Moderador</span>
-            </button>
+              Opções do Moderador
+            </Key>
           )}
 
           <div className="flex items-center gap-2">
-            <button
+            <Key
               type="button"
               onClick={handleShare}
-              className={`flex-1 py-2 px-3 text-xs font-bold rounded-lg border transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                copied
-                  ? "bg-emerald-600 text-white border-emerald-600"
-                  : "bg-surface border-rule text-ink hover:border-coral"
-              }`}
+              className="flex-1 !h-10 text-xs font-semibold justify-center truncate"
             >
-              <span>{copied ? "Link Copiado!" : "Compartilhar"}</span>
-            </button>
+              {copied ? "Link Copiado!" : "Compartilhar"}
+            </Key>
 
             {hasPrev && (
-              <button
+              <Key
                 type="button"
                 onClick={onNavigatePrev}
-                className="px-3 py-2 text-xs font-semibold rounded-lg border border-rule bg-surface text-ink hover:border-coral/50 transition-colors cursor-pointer shrink-0"
+                className="!h-10 px-3 text-xs font-semibold shrink-0"
                 title="Ir para ocorrência anterior"
               >
                 ← Anterior
-              </button>
+              </Key>
             )}
 
             {hasNext && (
-              <button
+              <Key
                 type="button"
                 onClick={onNavigateNext}
-                className="px-3 py-2 text-xs font-semibold rounded-lg border border-rule bg-surface text-ink hover:border-coral/50 transition-colors cursor-pointer shrink-0"
+                className="!h-10 px-3 text-xs font-semibold shrink-0"
                 title="Ir para próxima ocorrência"
               >
                 Próximo →
-              </button>
+              </Key>
             )}
           </div>
         </div>
@@ -287,49 +294,117 @@ export function ReportDrawer({
       {isModeratorModalOpen && (
         <div className="fixed inset-0 z-[190] bg-black/60 flex items-center justify-center p-4">
           <div className="bg-canvas border border-rule/70 dark:border-white/10 rounded-2xl shadow-none max-w-sm w-full p-5 flex flex-col gap-3">
-            <h3 className="font-bold text-ink text-sm">Moderação de Relato</h3>
-            <p className="text-xs text-ink-muted">
-              Altere o status ou exclua permanentemente a ocorrência:
-            </p>
-            <div className="grid grid-cols-1 gap-2 pt-1">
-              <button
-                type="button"
-                onClick={() => handleUpdateStatus("confirmado_comunidade")}
-                className="w-full py-2 text-xs font-semibold rounded-lg border border-rule text-ink hover:border-coral text-left px-3 cursor-pointer"
-              >
-                Confirmado pela Comunidade
-              </button>
-              <button
-                type="button"
-                onClick={() => handleUpdateStatus("verificado_in_loco")}
-                className="w-full py-2 text-xs font-semibold rounded-lg border border-rule text-ink hover:border-coral text-left px-3 cursor-pointer"
-              >
-                Verificado in loco
-              </button>
-              <button
-                type="button"
-                onClick={() => handleUpdateStatus("resolvido")}
-                className="w-full py-2 text-xs font-semibold rounded-lg border border-emerald-500 text-emerald-600 hover:bg-emerald-50 text-left px-3 cursor-pointer"
-              >
-                Marcar como Resolvido
-              </button>
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="w-full py-2 text-xs font-bold rounded-lg border border-red-500 text-red-600 hover:bg-red-50 text-left px-3 cursor-pointer mt-2"
-              >
-                Excluir Relato e Foto
-              </button>
-            </div>
-            <div className="flex justify-end pt-2">
-              <button
-                type="button"
-                onClick={() => setIsModeratorModalOpen(false)}
-                className="px-3 py-1.5 text-xs font-semibold text-ink-muted hover:text-ink cursor-pointer"
-              >
-                Cancelar
-              </button>
-            </div>
+            {isConfirmingDelete ? (
+              /* Confirmação de Exclusão no Design System */
+              <div className="flex flex-col gap-3">
+                <h3 className="font-bold text-ink text-sm">
+                  Excluir relato permanentemente?
+                </h3>
+                <p className="text-xs text-ink-body leading-relaxed">
+                  Esta ocorrência e sua fotografia serão removidas em definitivo do banco de dados e do mapa. Esta ação não pode ser desfeita.
+                </p>
+
+                {modalError && (
+                  <div className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-medium">
+                    {modalError}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-end gap-2 pt-2 border-t border-rule/40">
+                  <Key
+                    type="button"
+                    onClick={() => {
+                      setIsConfirmingDelete(false);
+                      setModalError(null);
+                    }}
+                    disabled={isPending}
+                    className="!h-8 px-3 text-xs font-semibold disabled:opacity-50"
+                  >
+                    Voltar
+                  </Key>
+                  <button
+                    type="button"
+                    onClick={handleExecuteDelete}
+                    disabled={isPending}
+                    className="key key--coral !h-8 px-3.5 text-xs font-bold !bg-red-600 hover:!bg-red-700 !text-white cursor-pointer disabled:opacity-50"
+                  >
+                    {isPending ? "Excluindo..." : "Confirmar Exclusão"}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* Menu Principal de Opções de Moderação */
+              <>
+                <h3 className="font-bold text-ink text-sm">Moderação de Relato</h3>
+                <p className="text-xs text-ink-muted">
+                  Altere o status ou exclua permanentemente a ocorrência:
+                </p>
+
+                {modalError && (
+                  <div className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-medium">
+                    {modalError}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 gap-2 pt-1">
+                  {primaryReport.status !== "sugestivo" && (
+                    <Key
+                      type="button"
+                      disabled={isPending}
+                      onClick={() => handleUpdateStatus("sugestivo")}
+                      className="w-full !h-9 text-xs font-semibold !justify-start text-left px-3 disabled:opacity-50"
+                    >
+                      Manter como Não confirmado
+                    </Key>
+                  )}
+                  <Key
+                    type="button"
+                    disabled={isPending}
+                    onClick={() => handleUpdateStatus("confirmado_comunidade")}
+                    className="w-full !h-9 text-xs font-semibold !justify-start text-left px-3 disabled:opacity-50"
+                  >
+                    Confirmado pela Comunidade
+                  </Key>
+                  <Key
+                    type="button"
+                    disabled={isPending}
+                    onClick={() => handleUpdateStatus("verificado_in_loco")}
+                    className="w-full !h-9 text-xs font-semibold !justify-start text-left px-3 disabled:opacity-50"
+                  >
+                    Verificado in loco
+                  </Key>
+                  <Key
+                    type="button"
+                    disabled={isPending}
+                    onClick={() => handleUpdateStatus("resolvido")}
+                    className="w-full !h-9 text-xs font-semibold !justify-start text-left px-3 !text-emerald-600 dark:!text-emerald-400 disabled:opacity-50"
+                  >
+                    Marcar como Resolvido
+                  </Key>
+                  <Key
+                    type="button"
+                    disabled={isPending}
+                    onClick={() => {
+                      setModalError(null);
+                      setIsConfirmingDelete(true);
+                    }}
+                    className="w-full !h-9 text-xs font-bold !justify-start text-left px-3 !text-red-600 dark:!text-red-400 mt-1 disabled:opacity-50"
+                  >
+                    Excluir Relato e Foto
+                  </Key>
+                </div>
+                <div className="flex justify-end pt-2">
+                  <Key
+                    type="button"
+                    onClick={handleCloseModeratorModal}
+                    disabled={isPending}
+                    className="!h-8 px-3 text-xs font-semibold disabled:opacity-50"
+                  >
+                    Cancelar
+                  </Key>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

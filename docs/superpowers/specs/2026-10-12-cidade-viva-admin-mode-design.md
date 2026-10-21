@@ -76,7 +76,7 @@ No **Guarapuava Digital**, a interface deve ser **100% harmonizada com a linguag
 
 ### 4.2 Filtros e Contadores
 1. **Filtro de Status**:
-   - Opções: Todos, Sugestivos, Verificados in loco, Não Verificados, Resolvidos e Não Resolvidos.
+   - Opções: Todos, Não Confirmados, Verificados in loco, Não Verificados, Resolvidos e Não Resolvidos.
    - Contadores numéricos em tempo real ao lado de cada opção.
 2. **Filtro de Risco Geoespacial**:
    - Cálculo automático via `clusterReportsByCategory` (raio de 100m por categoria):
@@ -96,7 +96,7 @@ Para cada relato listado:
 - **Ações**:
   - **Abrir no Mapa**: Link direto para `/cidade-viva/mapa?id=[report.id]`.
   - **Opções (Modal)**:
-    - *Alterar Status*: "Marcar como Verificado in loco", "Manter como Sugestivo", "Marcar como Resolvido".
+    - *Alterar Status*: "Marcar como Verificado in loco", "Manter como Não confirmado", "Marcar como Resolvido".
     - *Excluir Ocorrência*: Confirmação de exclusão permanente com remoção da foto do bucket `cidade-viva-reports`.
 
 ---
@@ -108,7 +108,7 @@ Para cada relato listado:
    - Caso `user?.email === process.env.ADMIN_EMAIL`, passa `isAdmin={true}` ao `CidadeVivaContainer`.
 2. **Gaveta de Detalhes (`ReportDrawer.tsx`)**:
    - Quando `isAdmin` é verdadeiro, exibe o botão **"Opções do Moderador"**.
-   - Ao ser acionado, abre o modal que permite alterar o status (para verificado, resolvido ou sugestivo) ou excluir o relato.
+   - Ao ser acionado, abre o modal que permite alterar o status (para verificado, resolvido ou não confirmado) ou excluir o relato.
    - A atualização reflete dinamicamente no estado local do mapa sem necessidade de recarregar a página.
 
 ---

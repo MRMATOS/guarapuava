@@ -57,6 +57,7 @@ export function MapClient({
   const [currentFilter, setCurrentFilter] = useState<SeverityFilter>("todas");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWaitingLocation, setIsWaitingLocation] = useState(false);
+  const [locationNotice, setLocationNotice] = useState<string | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
   const {
@@ -65,7 +66,7 @@ export function MapClient({
     syncUserLocationSilently,
     setUserMarkerPosition,
     cleanupMarker,
-  } = useUserLocation(mapRef);
+  } = useUserLocation(mapRef, setLocationNotice);
 
   const categoryMap = useMemo(() => {
     const map = new Map<string, Category>();
@@ -419,7 +420,7 @@ export function MapClient({
     }
 
     if (!navigator.geolocation) {
-      alert("Seu navegador não suporta geolocalização.");
+      setLocationNotice("Seu navegador não suporta geolocalização.");
       return;
     }
 
@@ -432,7 +433,7 @@ export function MapClient({
       },
       () => {
         setIsWaitingLocation(false);
-        alert(
+        setLocationNotice(
           "Não foi possível obter sua localização. Por favor, ative a permissão de GPS no navegador para relatar ocorrências."
         );
       },
@@ -546,6 +547,27 @@ export function MapClient({
         hasNext={hasNext}
         totalPointsCount={proximityTour.length}
       />
+
+      {/* Modal de Aviso de Localização / Permissão */}
+      {locationNotice && (
+        <div className="fixed inset-0 z-[170] bg-black/60 flex items-center justify-center p-4">
+          <div className="bg-canvas border border-rule/70 dark:border-white/10 rounded-2xl shadow-none max-w-sm w-full p-5 flex flex-col gap-3">
+            <h3 className="font-bold text-ink text-sm">Permissão de Localização</h3>
+            <p className="text-xs text-ink-body leading-relaxed">
+              {locationNotice}
+            </p>
+            <div className="flex justify-end pt-2 border-t border-rule/40">
+              <button
+                type="button"
+                onClick={() => setLocationNotice(null)}
+                className="px-4 py-1.5 text-xs font-bold rounded-xl bg-coral text-white hover:opacity-95 cursor-pointer transition-opacity"
+              >
+                Entendi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

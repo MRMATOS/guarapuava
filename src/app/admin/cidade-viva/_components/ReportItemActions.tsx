@@ -31,22 +31,25 @@ export function ReportItemActions({
 }: ReportItemActionsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [confirmAction, setConfirmAction] = useState<ConfirmActionType>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleClose = () => {
     if (isPending) return;
     setIsOpen(false);
     setConfirmAction(null);
+    setActionError(null);
   };
 
   const handleConfirmAction = () => {
     if (!confirmAction) return;
+    setActionError(null);
 
     if (confirmAction === "excluir") {
       startTransition(async () => {
         const res = await deleteReportAction(report.id);
         if (!res.success) {
-          alert(`Erro ao excluir: ${res.error}`);
+          setActionError(`Erro ao excluir: ${res.error}`);
           return;
         }
         onReportDeleted?.(report.id);
@@ -65,7 +68,7 @@ export function ReportItemActions({
     startTransition(async () => {
       const res = await updateReportStatusAction(report.id, newStatus);
       if (!res.success) {
-        alert(`Erro ao atualizar: ${res.error}`);
+        setActionError(`Erro ao atualizar: ${res.error}`);
         return;
       }
       onReportUpdated?.(report.id, newStatus);
@@ -93,6 +96,7 @@ export function ReportItemActions({
           onClick={() => {
             setIsOpen((prev) => !prev);
             setConfirmAction(null);
+            setActionError(null);
           }}
           className={`w-full py-2 px-2 text-xs font-semibold inline-flex items-center justify-center cursor-pointer truncate ${
             isOpen ? "border-coral font-bold" : ""
@@ -124,13 +128,22 @@ export function ReportItemActions({
                 {confirmAction === "resolvido" &&
                   "Deseja encerrar e marcar este relato como 'Resolvido'?"}
                 {confirmAction === "sugestivo" &&
-                  "Deseja alterar o status para 'Sugestivo'?"}
+                  "Deseja alterar o status para 'Não confirmado'?"}
               </p>
+
+              {actionError && (
+                <div className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-medium">
+                  {actionError}
+                </div>
+              )}
 
               <div className="flex items-center justify-end gap-2 pt-1">
                 <Key
                   type="button"
-                  onClick={() => setConfirmAction(null)}
+                  onClick={() => {
+                    setConfirmAction(null);
+                    setActionError(null);
+                  }}
                   disabled={isPending}
                   className="px-3 py-1 text-xs font-semibold"
                 >
@@ -186,7 +199,7 @@ export function ReportItemActions({
                   onClick={() => setConfirmAction("sugestivo")}
                   className="w-full text-left p-2.5 rounded-xl border border-rule/60 hover:border-yellow-500 bg-canvas transition-colors text-xs font-semibold text-ink flex items-center justify-between gap-2 cursor-pointer"
                 >
-                  <span className="truncate">Manter como Sugestivo</span>
+                  <span className="truncate">Manter como Não confirmado</span>
                   <span className="text-[10px] text-yellow-600 font-bold shrink-0">
                     Pendente
                   </span>

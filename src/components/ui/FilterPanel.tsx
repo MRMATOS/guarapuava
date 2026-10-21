@@ -152,7 +152,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         <div
           role="toolbar"
           aria-label="Filtro de categorias de notícias"
-          className="w-full flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible no-scrollbar scroll-smooth items-center lg:items-stretch gap-1.5 sm:gap-2 py-1 px-0.5 lg:py-0"
+          className="w-full flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible no-scrollbar scroll-smooth items-center lg:items-stretch gap-1.5 sm:gap-2 py-1 px-0.5"
         >
           {(categories && categories.length > 0 ? categories : ["Política", "Saúde", "Clima"]).map((cat, idx) => {
             const isPressed =

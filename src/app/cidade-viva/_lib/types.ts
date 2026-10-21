@@ -8,6 +8,21 @@ export type ReportStatus =
   | "verificado_in_loco"
   | "resolvido";
 
+export const REPORT_STATUS_LABELS: Record<ReportStatus, string> = {
+  sugestivo: "Não confirmado",
+  confirmado_comunidade: "Confirmado pela comunidade",
+  verificado_in_loco: "Verificado in loco",
+  resolvido: "Resolvido",
+};
+
+export function formatReportStatus(status?: string | null): string {
+  if (!status) return "";
+  if (status in REPORT_STATUS_LABELS) {
+    return REPORT_STATUS_LABELS[status as ReportStatus];
+  }
+  return status.replace(/_/g, " ");
+}
+
 export interface Category {
   id: string;
   name: string;

@@ -72,7 +72,7 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
               {/* Feed navegável completo com rolagem independente e dissipação suave */}
               <div
                 id="desktop-left-scroller"
-                className={`w-[calc(100%+48px)] -mx-6 px-6 ${
+                className={`w-[calc(100%+80px)] -mx-10 px-10 ${
                   slotLeftHeader
                     ? "pt-2 [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_86%,transparent_100%)]"
                     : "pt-1 [mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)]"
@@ -101,7 +101,7 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
           {/* Conteúdo Central com dissipação de sombras sem corte rígido no topo ou na base */}
           <div
             id="desktop-center-scroller"
-            className="w-[calc(100%+48px)] -mx-6 px-6 pt-1 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
+            className="w-[calc(100%+80px)] -mx-10 px-10 pt-1 pb-24 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0px,black_24px,black_calc(100%-36px),transparent_100%)]"
           >
             {slotCenter}
           </div>
@@ -217,7 +217,13 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
           </div>
 
           {/* Corpo Dinâmico da Lateral: Informações ou Filtros com sombra integral sem clipping */}
-          <div className="w-[calc(100%+32px)] -mx-4 px-4 py-3 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain">
+          <div
+            className={`w-[calc(100%+64px)] -mx-8 px-8 py-5 flex-1 min-h-0 ${
+              isInfoOpen
+                ? "overflow-y-auto no-scrollbar overscroll-contain"
+                : "overflow-visible"
+            }`}
+          >
             {isInfoOpen ? (
               <div
                 role="region"

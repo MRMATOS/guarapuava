@@ -350,7 +350,7 @@ export function AdminCidadeVivaView({
             defaultLabel={`Todos os Status (${statusCounts.todos})`}
             options={[
               { value: "todos", label: `Todos os Status (${statusCounts.todos})` },
-              { value: "sugestivos", label: `Sugestivos (${statusCounts.sugestivos})` },
+              { value: "sugestivos", label: `Não Confirmados (${statusCounts.sugestivos})` },
               { value: "verificados", label: `Verificados (${statusCounts.verificados})` },
               { value: "nao_verificados", label: `Não Verificados (${statusCounts.nao_verificados})` },
               { value: "resolvidos", label: `Resolvidos (${statusCounts.resolvidos})` },
@@ -478,6 +478,8 @@ export function AdminCidadeVivaView({
                               ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
                               : report.status === "resolvido"
                               ? "bg-blue-500/15 text-blue-600 dark:text-blue-400"
+                              : report.status === "confirmado_comunidade"
+                              ? "bg-amber-500/15 text-amber-600 dark:text-amber-400"
                               : "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400"
                           }`}
                         >
@@ -485,7 +487,9 @@ export function AdminCidadeVivaView({
                             ? "Verificado"
                             : report.status === "resolvido"
                             ? "Resolvido"
-                            : "Sugestivo"}
+                            : report.status === "confirmado_comunidade"
+                            ? "Comunidade"
+                            : "Não confirmado"}
                         </span>
 
                         {/* Badge de Risco */}

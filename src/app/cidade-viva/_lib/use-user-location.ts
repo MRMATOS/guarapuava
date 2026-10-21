@@ -7,7 +7,10 @@ import { saveUserLocation, getSavedUserLocation } from "./location-storage";
 /**
  * Hook para gerenciar geolocalização do usuário e seu marcador visual no MapLibre.
  */
-export function useUserLocation(mapRef: React.RefObject<maplibregl.Map | null>) {
+export function useUserLocation(
+  mapRef: React.RefObject<maplibregl.Map | null>,
+  onError?: (message: string) => void
+) {
   const [isLocating, setIsLocating] = useState(false);
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
 
@@ -28,7 +31,11 @@ export function useUserLocation(mapRef: React.RefObject<maplibregl.Map | null>) 
    */
   const locateUser = useCallback(() => {
     if (!navigator.geolocation) {
-      alert("Seu navegador não possui suporte a geolocalização.");
+      if (onError) {
+        onError("Seu navegador não possui suporte a geolocalização.");
+      } else {
+        console.warn("Seu navegador não possui suporte a geolocalização.");
+      }
       return;
     }
 
@@ -53,11 +60,16 @@ export function useUserLocation(mapRef: React.RefObject<maplibregl.Map | null>) 
       (err) => {
         setIsLocating(false);
         console.warn("Falha ao obter localização:", err);
-        alert("Não foi possível obter sua localização. Verifique as permissões do navegador.");
+        const msg = "Não foi possível obter sua localização. Verifique as permissões de GPS no navegador.";
+        if (onError) {
+          onError(msg);
+        } else {
+          console.warn(msg);
+        }
       },
       { enableHighAccuracy: false, timeout: 15000, maximumAge: 10000 }
     );
-  }, [mapRef]);
+  }, [mapRef, onError]);
 
   /**
    * Sincronização em segundo plano:

@@ -10,6 +10,7 @@ function AdminLoginForm() {
   const searchParams = useSearchParams();
   const errorParam = searchParams.get("error");
   const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && window.location.hostname === "0.0.0.0") {
@@ -20,6 +21,7 @@ function AdminLoginForm() {
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
+      setLoginError(null);
       const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL ||
           "https://ufjvqciyrtpfpetpgavf.supabase.co",
@@ -36,12 +38,12 @@ function AdminLoginForm() {
       });
 
       if (error) {
-        alert(`Erro ao iniciar login: ${error.message}`);
+        setLoginError(`Erro ao iniciar login: ${error.message}`);
         setLoading(false);
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Erro desconhecido";
-      alert(`Falha no login: ${msg}`);
+      setLoginError(`Falha no login: ${msg}`);
       setLoading(false);
     }
   };
@@ -75,6 +77,15 @@ function AdminLoginForm() {
           className="p-3.5 rounded-xl border border-coral/30 bg-coral/10 text-coral text-xs font-semibold leading-relaxed"
         >
           Falha na autenticação. Por favor, tente novamente.
+        </div>
+      )}
+
+      {loginError && (
+        <div
+          role="alert"
+          className="p-3.5 rounded-xl border border-coral/30 bg-coral/10 text-coral text-xs font-semibold leading-relaxed"
+        >
+          {loginError}
         </div>
       )}
 

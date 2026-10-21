@@ -60,7 +60,7 @@ graph TD
 * **Funcionalidades:**
   * **Mapa Interativo (MapLibre GL):** Navegação fluida, clusterização automática de pinos com cores e ícones específicos de severidade (`alto`, `medio`, `baixo`).
   * **Relato Fácil com Foto:** Envio de foto tirada na hora (com compressão automática e limite de 2MB), captura automática de coordenadas GPS via navegador e geocodificação reversa de endereço.
-  * **Moderação e Gestão Administrativa (`/admin/cidade-viva`):** Área restrita protegida por Supabase Auth para atualização de status dos chamados (*Sugestivo* $\rightarrow$ *Confirmado pela comunidade* $\rightarrow$ *Verificado in loco* $\rightarrow$ *Resolvido*).
+  * **Moderação e Gestão Administrativa (`/admin/cidade-viva`):** Área restrita protegida por Supabase Auth para atualização de status dos chamados (*Não confirmado* $\rightarrow$ *Confirmado pela comunidade* $\rightarrow$ *Verificado in loco* $\rightarrow$ *Resolvido*).
 
 ### 3.4. Horários & Rotas de Ônibus (`/utilidades/onibus`)
 * **Objetivo:** Substituir tabelas confusas da operadora municipal Pérola do Oeste por um planejador de mobilidade inteligente.

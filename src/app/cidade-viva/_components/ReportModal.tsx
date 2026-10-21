@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import type { Category, Report } from "../_lib/types";
+import { Key } from "@/components/ui/Key";
 import { compressImageToWebP } from "../_lib/image-compression";
 import { createReport } from "../actions";
 import { getSavedUserLocation, saveUserLocation } from "../_lib/location-storage";
@@ -245,7 +246,7 @@ export function ReportModal({
       <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
         <div
           className={`bg-canvas border border-rule/70 dark:border-white/10 rounded-3xl shadow-none relative w-full p-4 sm:p-6 my-auto transition-all ${
-            step === 1 ? "max-w-md md:max-w-xl" : "max-w-md"
+            step === 1 ? "max-w-lg md:max-w-xl" : "max-w-md"
           }`}
         >
           {/* Cabeçalho */}
@@ -275,40 +276,43 @@ export function ReportModal({
           {/* ETAPA 1: SELEÇÃO DA CATEGORIA */}
           {step === 1 && (
             <div className="flex flex-col gap-4 mt-3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[50vh] overflow-y-auto pr-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 p-1.5 sm:p-2 max-h-[64vh] sm:max-h-none overflow-y-auto sm:overflow-visible">
                 {optionsList.map((item) => {
                   const isSelected = selectedCategory === item.id;
                   return (
-                    <button
+                    <Key
                       key={item.id}
                       type="button"
+                      pressed={isSelected}
                       onClick={() => setSelectedCategory(item.id)}
-                      className={`w-full text-left p-3 rounded-xl border text-xs sm:text-[13px] font-semibold transition-all cursor-pointer select-none ${
-                        isSelected
-                          ? "bg-coral text-white border-coral shadow-sm font-bold"
-                          : "bg-surface text-ink border-rule/70 hover:border-coral/40"
+                      className={`w-full !h-11 sm:!h-12 px-3.5 sm:px-4 !justify-start text-left text-xs sm:text-[13px] font-semibold border border-transparent transition-all select-none ${
+                        isSelected ? "!border-coral font-bold !text-coral" : ""
                       }`}
                     >
-                      {item.name}
-                    </button>
+                      <span className="truncate">{item.name}</span>
+                    </Key>
                   );
                 })}
               </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  if (selectedCategory) setStep(2);
-                }}
-                disabled={!selectedCategory}
-                className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all cursor-pointer ${
-                  selectedCategory
-                    ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 hover:opacity-95 shadow-sm active:scale-[0.98]"
-                    : "bg-rule/30 text-ink-muted/50 cursor-not-allowed"
-                }`}
-              >
-                Continuar
-              </button>
+              {selectedCategory ? (
+                <Key
+                  variant="coral"
+                  type="button"
+                  onClick={() => setStep(2)}
+                  className="w-full !h-12 font-bold text-sm justify-center"
+                >
+                  Continuar
+                </Key>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="key w-full !h-12 font-bold text-sm justify-center opacity-40 cursor-not-allowed"
+                >
+                  Continuar
+                </button>
+              )}
             </div>
           )}
 
@@ -330,16 +334,16 @@ export function ReportModal({
                   title="Clique para visualizar a foto"
                 >
                   <span className="text-xs font-semibold text-ink">Foto anexada</span>
-                  <button
+                  <Key
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleRemovePhoto();
                     }}
-                    className="px-2.5 py-1 text-xs font-semibold text-ink-muted hover:text-ink rounded-lg border border-rule/70 bg-surface hover:border-coral transition-colors cursor-pointer"
+                    className="!h-7 px-2.5 text-xs font-semibold"
                   >
                     Remover
-                  </button>
+                  </Key>
                 </div>
               ) : (
                 <button
@@ -376,27 +380,33 @@ export function ReportModal({
               )}
 
               <div className="flex items-center gap-3">
-                <button
+                <Key
                   type="button"
                   onClick={() => setStep(1)}
                   disabled={isSubmitting}
-                  className="flex-1 py-3.5 rounded-xl font-bold text-sm bg-surface border border-rule text-ink hover:border-coral transition-all active:scale-[0.98] cursor-pointer text-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 !h-12 font-bold text-sm justify-center disabled:opacity-50"
                 >
                   Voltar
-                </button>
+                </Key>
 
-                <button
-                  type="button"
-                  onClick={handleSubmit}
-                  disabled={!photoFile || isSubmitting}
-                  className={`flex-1 py-3.5 rounded-xl font-bold text-sm transition-all cursor-pointer text-center ${
-                    photoFile && !isSubmitting
-                      ? "bg-coral text-white hover:opacity-95 shadow-md active:scale-[0.98]"
-                      : "bg-rule/40 text-ink-muted cursor-not-allowed"
-                  }`}
-                >
-                  {isSubmitting ? submitStatus || "Enviando..." : "Enviar Relato"}
-                </button>
+                {photoFile && !isSubmitting ? (
+                  <Key
+                    variant="coral"
+                    type="button"
+                    onClick={handleSubmit}
+                    className="flex-1 !h-12 font-bold text-sm justify-center"
+                  >
+                    {submitStatus || "Enviar Relato"}
+                  </Key>
+                ) : (
+                  <button
+                    type="button"
+                    disabled
+                    className="key flex-1 !h-12 font-bold text-sm justify-center opacity-40 cursor-not-allowed"
+                  >
+                    {isSubmitting ? submitStatus || "Enviando..." : "Enviar Relato"}
+                  </button>
+                )}
               </div>
             </div>
           )}
@@ -411,18 +421,18 @@ export function ReportModal({
             <p className="text-xs text-ink-body">
               As informações e foto preenchidas serão perdidas.
             </p>
-            <div className="flex gap-2 justify-end pt-2">
-              <button
+            <div className="flex gap-2 justify-end pt-2 border-t border-rule/40">
+              <Key
                 type="button"
                 onClick={() => setShowConfirmClose(false)}
-                className="px-3 py-1.5 text-xs font-semibold text-ink-muted hover:text-ink cursor-pointer"
+                className="!h-8 px-3 text-xs font-semibold"
               >
                 Continuar editando
-              </button>
+              </Key>
               <button
                 type="button"
                 onClick={handleForceClose}
-                className="px-3 py-1.5 text-xs font-bold text-red-500 hover:text-red-600 cursor-pointer"
+                className="key key--coral !h-8 px-3 text-xs font-bold !bg-red-600 hover:!bg-red-700 !text-white"
               >
                 Descartar
               </button>
