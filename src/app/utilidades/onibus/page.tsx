@@ -15,7 +15,7 @@ import { BusRouteStepCard } from "@/components/bus/BusRouteStepCard";
 import { useUserLocation } from "@/hooks/useUserLocation";
 import { useTheme } from "@/context/ThemeContext";
 import { saveRoute, isRouteSaved } from "@/lib/bus/saved-routes";
-import { normalizeText } from "@/lib/utils/search";
+import { normalizeText, matchesFuzzyQuery } from "@/lib/utils/search";
 import rawBusData from "@/data/horarios-onibus.json";
 import type { DadosHorariosOnibus, LinhaBairro, PontoItinerario } from "@/types/bus";
 
@@ -444,15 +444,15 @@ export default function HorariosOnibusPage() {
     return busData.linhas.filter((linha) => {
       if (selectedBairroId && linha.id !== selectedBairroId) return false;
       if (!searchQuery.trim()) return true;
-      const query = normalizeText(searchQuery);
       const matchLinha =
-        normalizeText(linha.bairro).includes(query) ||
-        normalizeText(linha.nomeExibicao).includes(query) ||
-        normalizeText(linha.codigo).includes(query);
+        matchesFuzzyQuery(linha.bairro, searchQuery) ||
+        matchesFuzzyQuery(linha.nomeExibicao, searchQuery) ||
+        matchesFuzzyQuery(linha.codigo, searchQuery);
       const matchPontos = linha.pontos.some((p) =>
-        normalizeText(p.nome).includes(query) ||
-        (p.rua ? normalizeText(p.rua).includes(query) : false) ||
-        (p.bairro ? normalizeText(p.bairro).includes(query) : false)
+        matchesFuzzyQuery(p.nome, searchQuery) ||
+        (p.rua ? matchesFuzzyQuery(p.rua, searchQuery) : false) ||
+        (p.referencia ? matchesFuzzyQuery(p.referencia, searchQuery) : false) ||
+        (p.bairro ? matchesFuzzyQuery(p.bairro, searchQuery) : false)
       );
       return matchLinha || matchPontos;
     }).length;

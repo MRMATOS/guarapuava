@@ -8,12 +8,14 @@ import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
 import { InfoFeed } from "@/components/InfoFeed";
 import { useTheme } from "@/context/ThemeContext";
+import { getUtilidades } from "@/lib/utilidades/list";
 
 const emptySubscribe = () => () => {};
 
 export default function UtilidadesPage() {
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
+  const utilidades = getUtilidades();
 
   // Estados Mobile
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
@@ -50,48 +52,23 @@ export default function UtilidadesPage() {
 
           {/* Lista de Utilidades alinhada de baixo para cima */}
           <div className="flex-1 flex flex-col justify-end gap-3.5">
-            <button
-              type="button"
-              onClick={() => router.push("/cidade-viva/mapa")}
-              className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
-              aria-label="Abrir mapa colaborativo Cidade Viva"
-            >
-              <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-                Cidade Viva
-              </h2>
+            {utilidades.map((u) => (
+              <button
+                key={u.id}
+                type="button"
+                onClick={() => router.push(u.href)}
+                className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
+                aria-label={`Abrir ${u.titulo}`}
+              >
+                <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
+                  {u.titulo}
+                </h2>
 
-              <p className="text-[13.5px] text-ink-body leading-relaxed">
-                Mapeamento colaborativo para acompanhar e registrar ocorrências de zeladoria urbana, asfalto, iluminação e saneamento em tempo real.
-              </p>
-            </button>
-            <button
-              type="button"
-              onClick={() => router.push("/utilidades/descarte")}
-              className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
-              aria-label="Abrir Descarte correto"
-            >
-              <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-                Descarte correto
-              </h2>
-
-              <p className="text-[13.5px] text-ink-body leading-relaxed">
-                Encontre onde levar pilhas, pneus, remédios vencidos e outros resíduos em Guarapuava.
-              </p>
-            </button>
-            <button
-              type="button"
-              onClick={() => router.push("/utilidades/onibus")}
-              className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
-              aria-label="Abrir Horários de Ônibus"
-            >
-              <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-                Horários de Ônibus
-              </h2>
-
-              <p className="text-[13.5px] text-ink-body leading-relaxed">
-                Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
-              </p>
-            </button>
+                <p className="text-[13.5px] text-ink-body leading-relaxed">
+                  {u.descricao}
+                </p>
+              </button>
+            ))}
           </div>
 
           {/* Dock Fixo Mobile no Padrão Canônico: Mais - Filtrar - Notícias - Vagas */}
@@ -193,48 +170,23 @@ export default function UtilidadesPage() {
 
                 {/* Lista de Utilidades alinhada ao topo no desktop */}
                 <div className="flex flex-col justify-start gap-3.5">
-                  <button
-                    type="button"
-                    onClick={() => router.push("/cidade-viva/mapa")}
-                    className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
-                    aria-label="Abrir mapa colaborativo Cidade Viva"
-                  >
-                    <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-                      Cidade Viva
-                    </h2>
+                  {utilidades.map((u) => (
+                    <button
+                      key={u.id}
+                      type="button"
+                      onClick={() => router.push(u.href)}
+                      className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
+                      aria-label={`Abrir ${u.titulo}`}
+                    >
+                      <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
+                        {u.titulo}
+                      </h2>
 
-                    <p className="text-[13.5px] text-ink-body leading-relaxed">
-                      Mapeamento colaborativo para acompanhar e registrar ocorrências de zeladoria urbana, asfalto, iluminação e saneamento em tempo real.
-                    </p>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => router.push("/utilidades/descarte")}
-                    className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
-                    aria-label="Abrir Descarte correto"
-                  >
-                    <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-                      Descarte correto
-                    </h2>
-
-                    <p className="text-[13.5px] text-ink-body leading-relaxed">
-                      Encontre onde levar pilhas, pneus, remédios vencidos e outros resíduos em Guarapuava.
-                    </p>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => router.push("/utilidades/onibus")}
-                    className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
-                    aria-label="Abrir Horários de Ônibus"
-                  >
-                    <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-                      Horários de Ônibus
-                    </h2>
-
-                    <p className="text-[13.5px] text-ink-body leading-relaxed">
-                      Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.
-                    </p>
-                  </button>
+                      <p className="text-[13.5px] text-ink-body leading-relaxed">
+                        {u.descricao}
+                      </p>
+                    </button>
+                  ))}
                 </div>
               </div>
             </main>

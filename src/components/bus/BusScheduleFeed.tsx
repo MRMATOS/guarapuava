@@ -6,7 +6,7 @@ import { Key } from "@/components/ui/Key";
 import type { LinhaBairro, PontoItinerario } from "@/types/bus";
 import { calculateDistanceMeters, formatDistance } from "@/lib/geo/distance";
 import { getSavedRoutes, subscribeSavedRoutes, type SavedBusRoute } from "@/lib/bus/saved-routes";
-import { normalizeText } from "@/lib/utils/search";
+import { normalizeText, matchesFuzzyQuery } from "@/lib/utils/search";
 
 const emptySavedRoutes: SavedBusRoute[] = [];
 const getServerSavedRoutes = () => emptySavedRoutes;
@@ -748,21 +748,21 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
       }
 
       const matchLinha =
-        !query ||
-        normalizeText(linha.bairro).includes(query) ||
-        normalizeText(linha.nomeExibicao).includes(query) ||
-        normalizeText(linha.codigo).includes(query);
+        !searchQuery.trim() ||
+        matchesFuzzyQuery(linha.bairro, searchQuery) ||
+        matchesFuzzyQuery(linha.nomeExibicao, searchQuery) ||
+        matchesFuzzyQuery(linha.codigo, searchQuery);
 
       for (const ponto of linha.pontos) {
         if (!ponto.latitude || !ponto.longitude) continue;
 
         const matchPonto =
-          !query ||
+          !searchQuery.trim() ||
           matchLinha ||
-          normalizeText(ponto.nome).includes(query) ||
-          (ponto.rua ? normalizeText(ponto.rua).includes(query) : false) ||
-          (ponto.referencia ? normalizeText(ponto.referencia).includes(query) : false) ||
-          (ponto.bairro ? normalizeText(ponto.bairro).includes(query) : false);
+          matchesFuzzyQuery(ponto.nome, searchQuery) ||
+          (ponto.rua ? matchesFuzzyQuery(ponto.rua, searchQuery) : false) ||
+          (ponto.referencia ? matchesFuzzyQuery(ponto.referencia, searchQuery) : false) ||
+          (ponto.bairro ? matchesFuzzyQuery(ponto.bairro, searchQuery) : false);
 
         if (!matchPonto) continue;
 
@@ -1043,17 +1043,16 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
 
     if (!searchQuery.trim()) return true;
 
-    const query = normalizeText(searchQuery);
     const matchLinha =
-      normalizeText(linha.bairro).includes(query) ||
-      normalizeText(linha.nomeExibicao).includes(query) ||
-      normalizeText(linha.codigo).includes(query);
+      matchesFuzzyQuery(linha.bairro, searchQuery) ||
+      matchesFuzzyQuery(linha.nomeExibicao, searchQuery) ||
+      matchesFuzzyQuery(linha.codigo, searchQuery);
 
     const matchPontos = linha.pontos.some((p) =>
-      normalizeText(p.nome).includes(query) ||
-      (p.rua ? normalizeText(p.rua).includes(query) : false) ||
-      (p.referencia ? normalizeText(p.referencia).includes(query) : false) ||
-      (p.bairro ? normalizeText(p.bairro).includes(query) : false)
+      matchesFuzzyQuery(p.nome, searchQuery) ||
+      (p.rua ? matchesFuzzyQuery(p.rua, searchQuery) : false) ||
+      (p.referencia ? matchesFuzzyQuery(p.referencia, searchQuery) : false) ||
+      (p.bairro ? matchesFuzzyQuery(p.bairro, searchQuery) : false)
     );
 
     return matchLinha || matchPontos;
@@ -1089,21 +1088,20 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
     <div className="flex flex-col gap-6 w-full select-text pb-12">
 
       {linhasParaExibir.map((linha) => {
-        const query = normalizeText(searchQuery);
         const pontosExibidos = linha.pontos.filter((ponto) => {
-          if (!query) return true;
+          if (!searchQuery.trim()) return true;
           if (
-            normalizeText(linha.bairro).includes(query) ||
-            normalizeText(linha.nomeExibicao).includes(query) ||
-            normalizeText(linha.codigo).includes(query)
+            matchesFuzzyQuery(linha.bairro, searchQuery) ||
+            matchesFuzzyQuery(linha.nomeExibicao, searchQuery) ||
+            matchesFuzzyQuery(linha.codigo, searchQuery)
           ) {
             return true;
           }
           return (
-            normalizeText(ponto.nome).includes(query) ||
-            (ponto.rua ? normalizeText(ponto.rua).includes(query) : false) ||
-            (ponto.referencia ? normalizeText(ponto.referencia).includes(query) : false) ||
-            (ponto.bairro ? normalizeText(ponto.bairro).includes(query) : false)
+            matchesFuzzyQuery(ponto.nome, searchQuery) ||
+            (ponto.rua ? matchesFuzzyQuery(ponto.rua, searchQuery) : false) ||
+            (ponto.referencia ? matchesFuzzyQuery(ponto.referencia, searchQuery) : false) ||
+            (ponto.bairro ? matchesFuzzyQuery(ponto.bairro, searchQuery) : false)
           );
         });
 

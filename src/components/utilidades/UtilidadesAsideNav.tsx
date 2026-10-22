@@ -10,7 +10,7 @@ export const UtilidadesAsideNav: React.FC<{ activeId: string }> = ({ activeId })
 
   return (
     <div className="desktop-parked-panel w-full h-full flex flex-col group relative pointer-events-auto">
-      <div className="w-[calc(100%+48px)] -mx-6 px-6 pt-3 pb-8 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain">
+      <div className="w-[calc(100%+80px)] -mx-10 px-10 pt-3 pb-8 flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain">
         <div className="flex flex-col gap-3.5" aria-label="Lista de utilidades">
       {utilidades.map((u) => {
         const isActive = u.id === activeId;

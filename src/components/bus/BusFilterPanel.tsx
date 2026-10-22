@@ -106,6 +106,8 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   const [hasPromptedLocation, setHasPromptedLocation] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [suggestions, setSuggestions] = useState<GeoSuggestion[]>([]);
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   // Sincroniza busca externa
   useEffect(() => {
@@ -129,16 +131,24 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
     }
   }, [routeStep]);
 
-  // Fecha o bloco se clicar fora (exceto no botão Filtrar do rodapé ou modo persistente)
+  // Fecha sugestões ao clicar fora ou tecla Escape (em desktop e mobile)
+  // E fecha o painel mobile se clicar fora
   useEffect(() => {
-    if (persistent) return;
-
     const handlePointerDown = (event: MouseEvent | TouchEvent) => {
-      const target = event.target as HTMLElement;
+      const target = event.target as HTMLElement | null;
+
+      // Se clicar fora do container de busca, fecha o dropdown de sugestões
+      if (searchContainerRef.current && !searchContainerRef.current.contains(target as Node)) {
+        setIsSuggestionsOpen(false);
+      }
+
+      // No desktop persistente, o painel lateral nunca fecha
+      if (persistent) return;
+
       if (
         panelRef.current?.contains(target as Node) ||
-        target.closest?.(".dock-shell") ||
-        target.closest?.(".dock") ||
+        target?.closest?.(".dock-shell") ||
+        target?.closest?.(".dock") ||
         (filterButtonRef?.current && filterButtonRef.current.contains(target as Node))
       ) {
         return;
@@ -148,11 +158,17 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        if (isSuggestionsOpen) {
+          setIsSuggestionsOpen(false);
+          return;
+        }
         if (showLocationModal) {
           setShowLocationModal(false);
           return;
         }
-        onClose();
+        if (!persistent) {
+          onClose();
+        }
       }
     };
 
@@ -162,7 +178,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose, filterButtonRef, persistent, showLocationModal]);
+  }, [onClose, filterButtonRef, persistent, showLocationModal, isSuggestionsOpen]);
 
   // Autocomplete com debounce de 250ms usando /api/geo/autocomplete (insensível a acentos)
   useEffect(() => {
@@ -178,7 +194,11 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
         );
         if (res.ok) {
           const data = await res.json();
-          setSuggestions(data.suggestions || []);
+          const items = data.suggestions || [];
+          setSuggestions(items);
+          if (items.length > 0) {
+            setIsSuggestionsOpen(true);
+          }
         }
       } catch {
         // Silencioso
@@ -216,6 +236,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
   };
 
   const handleSelectSuggestion = (sug: GeoSuggestion) => {
+    setIsSuggestionsOpen(false);
     onSearchTypingChange?.(false);
     // =========================================================================
     // A. SE ESTAMOS NO PASSO 2: ESCOLHER DESTINO
@@ -413,7 +434,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
 
   // 1. NÓ DO INPUT DE BUSCA
   const searchInputNode = (
-    <div className="relative w-full">
+    <div ref={searchContainerRef} className="relative w-full">
       <div className="relative w-full">
         <span
           className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
@@ -428,7 +449,8 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
           value={localSearch}
           onClick={handleInputClick}
           onFocus={() => {
-            if (localSearch.trim().length > 0) {
+            if (localSearch.trim().length >= 2) {
+              setIsSuggestionsOpen(true);
               onSearchTypingChange?.(true);
             }
           }}
@@ -441,9 +463,11 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
             const val = e.target.value;
             setLocalSearch(val);
             onSearchChange(val);
-            if (val.trim().length > 0) {
+            if (val.trim().length >= 2) {
+              setIsSuggestionsOpen(true);
               onSearchTypingChange?.(true);
             } else {
+              setIsSuggestionsOpen(false);
               onSearchTypingChange?.(false);
             }
           }}
@@ -467,6 +491,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
               setLocalSearch("");
               onSearchChange("");
               setSuggestions([]);
+              setIsSuggestionsOpen(false);
               onSearchTypingChange?.(false);
             }}
             className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
@@ -479,7 +504,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       </div>
 
       {/* Dropdown de sugestões do autocomplete de endereços e POIs */}
-      {visibleSuggestions.length > 0 && (
+      {!showLocationModal && isSuggestionsOpen && visibleSuggestions.length > 0 && (
         <div
           className={`absolute left-0 right-0 ${
             persistent ? "top-full mt-1.5" : "bottom-full mb-1.5"
@@ -590,7 +615,9 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
       aria-label="Painel de filtros de horários e rotas"
       className={`${
         persistent ? "desktop-sidebar-panel" : "filter-panel"
-      } w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none relative`}
+      } w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none relative ${
+        showLocationModal ? "min-h-[190px]" : ""
+      }`}
     >
 
       {/* ==================================================================
@@ -767,7 +794,7 @@ export const BusFilterPanel: React.FC<BusFilterPanelProps> = ({
           role="dialog"
           aria-modal="true"
           aria-labelledby="loc-modal-title"
-          className="absolute inset-0 bg-canvas/95 backdrop-blur-md z-40 rounded-dock p-4 flex flex-col justify-between border border-coral/30 shadow-raised-lg animate-scale-in"
+          className="absolute inset-0 bg-canvas/95 backdrop-blur-md z-50 rounded-dock p-4 flex flex-col justify-between border border-coral/30 shadow-raised-lg animate-scale-in"
         >
           <div className="flex flex-col gap-2">
             <div>

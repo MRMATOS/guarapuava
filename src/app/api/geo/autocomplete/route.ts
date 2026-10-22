@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import rawBusData from "@/data/horarios-onibus.json";
-import { normalizeText } from "@/lib/utils/search";
+import { normalizeText, matchesFuzzyQuery } from "@/lib/utils/search";
 import { GUARAPUAVA_POIS } from "@/lib/bus/guarapuava-pois";
 import type { DadosHorariosOnibus } from "@/types/bus";
 
@@ -33,15 +33,11 @@ export async function GET(request: Request) {
   const seenIds = new Set<string>();
   const seenLabels = new Set<string>();
 
-  // 1. Busca nos Pontos de Interesse (POIs) de Guarapuava: Universidades, Shopping, Hospitais, Parques
+  // 1. Busca nos Pontos de Interesse (POIs) de Guarapuava: Universidades, Escolas, Shopping, Hospitais, Parques
   for (const poi of GUARAPUAVA_POIS) {
-    const matchName = normalizeText(poi.name).includes(queryNorm);
-    const matchShort = normalizeText(poi.shortName).includes(queryNorm);
-    const queryWords = queryNorm.split(/\s+/).filter(Boolean);
-    const matchKeywords = poi.keywords.some((k) => {
-      const normK = normalizeText(k);
-      return normK.includes(queryNorm) || queryWords.includes(normK);
-    });
+    const matchName = matchesFuzzyQuery(poi.name, q);
+    const matchShort = matchesFuzzyQuery(poi.shortName, q);
+    const matchKeywords = poi.keywords.some((k) => matchesFuzzyQuery(k, q));
 
     if (matchName || matchShort || matchKeywords) {
       if (!seenIds.has(poi.id) && !seenLabels.has(poi.name)) {
@@ -64,9 +60,9 @@ export async function GET(request: Request) {
 
   // 2. Busca nas Linhas de Ônibus
   for (const linha of busData.linhas) {
-    const matchLinhaNome = normalizeText(linha.nomeExibicao).includes(queryNorm);
-    const matchLinhaBairro = normalizeText(linha.bairro).includes(queryNorm);
-    const matchCodigo = normalizeText(linha.codigo).includes(queryNorm);
+    const matchLinhaNome = matchesFuzzyQuery(linha.nomeExibicao, q);
+    const matchLinhaBairro = matchesFuzzyQuery(linha.bairro, q);
+    const matchCodigo = matchesFuzzyQuery(linha.codigo, q);
 
     if (matchLinhaNome || matchLinhaBairro || matchCodigo) {
       const sugId = `linha-${linha.id}`;
@@ -96,9 +92,9 @@ export async function GET(request: Request) {
   // 3. Busca nos Pontos de Parada Existentes com Coordenadas
   for (const linha of busData.linhas) {
     for (const ponto of linha.pontos) {
-      const matchNome = normalizeText(ponto.nome).includes(queryNorm);
-      const matchRua = ponto.rua ? normalizeText(ponto.rua).includes(queryNorm) : false;
-      const matchRef = ponto.referencia ? normalizeText(ponto.referencia).includes(queryNorm) : false;
+      const matchNome = matchesFuzzyQuery(ponto.nome, q);
+      const matchRua = ponto.rua ? matchesFuzzyQuery(ponto.rua, q) : false;
+      const matchRef = ponto.referencia ? matchesFuzzyQuery(ponto.referencia, q) : false;
 
       if (matchNome || matchRua || matchRef) {
         if (ponto.latitude && ponto.longitude) {

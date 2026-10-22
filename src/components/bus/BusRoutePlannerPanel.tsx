@@ -52,6 +52,8 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
   const [hasPromptedLocation, setHasPromptedLocation] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [suggestions, setSuggestions] = useState<GeoSuggestion[]>([]);
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   // Limpa o campo de busca quando a etapa da rota avança ou reseta
   const [prevRouteStep, setPrevRouteStep] = useState(routeStep);
@@ -65,6 +67,12 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
   useEffect(() => {
     const handlePointerDown = (event: MouseEvent | TouchEvent) => {
       const target = event.target as HTMLElement;
+
+      // Fecha dropdown se clicar fora do container de busca
+      if (searchContainerRef.current && !searchContainerRef.current.contains(target as Node)) {
+        setIsSuggestionsOpen(false);
+      }
+
       if (
         panelRef.current?.contains(target as Node) ||
         target.closest?.(".dock-shell") ||
@@ -78,6 +86,10 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        if (isSuggestionsOpen) {
+          setIsSuggestionsOpen(false);
+          return;
+        }
         if (showLocationModal) {
           setShowLocationModal(false);
           return;
@@ -92,7 +104,7 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose, routeButtonRef, showLocationModal]);
+  }, [onClose, routeButtonRef, showLocationModal, isSuggestionsOpen]);
 
   // Autocomplete com debounce de 250ms
   useEffect(() => {
@@ -107,7 +119,11 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
         );
         if (res.ok) {
           const data = await res.json();
-          setSuggestions(data.suggestions || []);
+          const items = data.suggestions || [];
+          setSuggestions(items);
+          if (items.length > 0) {
+            setIsSuggestionsOpen(true);
+          }
         }
       } catch {
         // Silencioso
@@ -154,6 +170,7 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
 
     setSearchQuery(sug.label);
     setSuggestions([]);
+    setIsSuggestionsOpen(false);
   };
 
   // Determina título e estado do botão de ação
@@ -184,7 +201,9 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
       ref={panelRef}
       role="region"
       aria-label="Planejador de rotas de ônibus"
-      className="filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none relative"
+      className={`filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none relative ${
+        showLocationModal ? "min-h-[190px]" : ""
+      }`}
     >
       {/* ==================================================================
           1. LINHA SUPERIOR: Botões de Ação (Minhas Rotas / Confirmar ou Salvar / Nova)
@@ -256,7 +275,7 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
           2. LINHA INFERIOR: Input de Busca com gatilho para Localização
          ================================================================== */}
       {!isCalculatedStep && (
-        <div className="relative w-full pt-1 border-t border-rule/30">
+        <div ref={searchContainerRef} className="relative w-full pt-1 border-t border-rule/30">
           <div className="relative w-full">
             <span
               className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
@@ -274,7 +293,20 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
               type="text"
               value={searchQuery}
               onClick={handleInputClick}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => {
+                if (searchQuery.trim().length >= 2) {
+                  setIsSuggestionsOpen(true);
+                }
+              }}
+              onChange={(e) => {
+                const val = e.target.value;
+                setSearchQuery(val);
+                if (val.trim().length >= 2) {
+                  setIsSuggestionsOpen(true);
+                } else {
+                  setIsSuggestionsOpen(false);
+                }
+              }}
               placeholder={inputPlaceholder}
               aria-label={inputPlaceholder}
               className="filter-input w-full h-[42px] pl-10 pr-9 text-[16px] placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-coral/40 transition-shadow truncate"
@@ -286,6 +318,7 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
                 onClick={() => {
                   setSearchQuery("");
                   setSuggestions([]);
+                  setIsSuggestionsOpen(false);
                 }}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink active:scale-95 transition-transform touch-manipulation cursor-pointer"
                 aria-label="Limpar pesquisa"
@@ -297,7 +330,7 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
           </div>
 
           {/* Dropdown de sugestões do autocomplete */}
-          {visibleSuggestions.length > 0 && (
+          {!showLocationModal && isSuggestionsOpen && visibleSuggestions.length > 0 && (
             <div className="absolute left-0 right-0 bottom-full mb-1.5 bg-canvas/95 backdrop-blur-md rounded-xl border border-rule/40 shadow-raised-md overflow-hidden z-50 max-h-[190px] overflow-y-auto no-scrollbar">
               <div className="py-1 flex flex-col divide-y divide-rule/20">
                 {visibleSuggestions.map((sug, index) => (
@@ -334,7 +367,7 @@ export const BusRoutePlannerPanel: React.FC<BusRoutePlannerPanelProps> = ({
           role="dialog"
           aria-modal="true"
           aria-labelledby="loc-modal-title"
-          className="absolute inset-0 bg-canvas/95 backdrop-blur-md z-40 rounded-dock p-4 flex flex-col justify-between border border-coral/30 shadow-raised-lg animate-scale-in"
+          className="absolute inset-0 bg-canvas/95 backdrop-blur-md z-50 rounded-dock p-4 flex flex-col justify-between border border-coral/30 shadow-raised-lg animate-scale-in"
         >
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 text-coral">

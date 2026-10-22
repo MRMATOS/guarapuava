@@ -8,11 +8,11 @@ export interface UtilidadeEntry {
 export function getUtilidades(): UtilidadeEntry[] {
   return [
     {
-      id: "onibus",
-      titulo: "Horários de Ônibus",
+      id: "cidade-viva",
+      titulo: "Cidade Viva",
       descricao:
-        "Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.",
-      href: "/utilidades/onibus",
+        "Mapeamento colaborativo para acompanhar e registrar ocorrências de zeladoria urbana, asfalto, iluminação e saneamento em tempo real.",
+      href: "/cidade-viva/mapa",
     },
     {
       id: "descarte",
@@ -20,6 +20,13 @@ export function getUtilidades(): UtilidadeEntry[] {
       descricao:
         "Encontre onde levar pilhas, pneus, remédios vencidos e outros resíduos em Guarapuava.",
       href: "/utilidades/descarte",
+    },
+    {
+      id: "onibus",
+      titulo: "Horários de Ônibus",
+      descricao:
+        "Consulte linhas urbanas e interbairros, horários de saída e pontos de passagem em cada bairro de Guarapuava.",
+      href: "/utilidades/onibus",
     },
   ];
 }

@@ -112,6 +112,39 @@ export function matchesQuery(targetText: string, query: string): boolean {
   });
 }
 
+/**
+ * Normaliza um texto removendo acentos, convertendo para minúsculas e
+ * colapsando letras consecutivas repetidas (ex: "anna" -> "ana", "bassara" -> "basara").
+ */
+export function fuzzyNormalize(text: string): string {
+  return normalizeText(text).replace(/(.)\1+/g, "$1");
+}
+
+/**
+ * Verifica se um texto contém todos os tokens da busca de forma tolerante:
+ * - Insensível a acentos e maiúsculas
+ * - Tolerante a consoantes dobradas (ex: Ana vs Anna, Matos vs Mattos)
+ * - Multi-token: todos os termos digitados devem estar presentes no alvo
+ */
+export function matchesFuzzyQuery(targetText: string, query: string): boolean {
+  if (!query.trim()) return true;
+  if (!targetText) return false;
+
+  const normQuery = normalizeText(query);
+  const normTarget = normalizeText(targetText);
+
+  // 1. Verificação rápida direta
+  if (normTarget.includes(normQuery)) return true;
+
+  // 2. Verificação com colapso de letras duplicadas
+  const fuzzyTarget = fuzzyNormalize(targetText);
+  const fuzzyTokens = fuzzyNormalize(query).split(/\s+/).filter(Boolean);
+
+  if (fuzzyTokens.length === 0) return true;
+
+  return fuzzyTokens.every((token) => fuzzyTarget.includes(token));
+}
+
 export interface JobFilterOptions {
   query: string;
   contractState: number; // 0 = Contrato (todas), 1 = CLT, 2 = PJ
