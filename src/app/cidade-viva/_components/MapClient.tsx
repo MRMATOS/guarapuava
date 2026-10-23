@@ -21,6 +21,7 @@ import { getSavedUserLocation, saveUserLocation } from "../_lib/location-storage
 import { FilterBar } from "./FilterBar";
 import { ReportDrawer } from "./ReportDrawer";
 import { ReportModal } from "./ReportModal";
+import { useHandedness } from "@/context/HandednessContext";
 
 interface MapClientProps {
   initialCategories: Category[];
@@ -39,6 +40,7 @@ export function MapClient({
 }: MapClientProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
+  const { isLeftHanded } = useHandedness();
 
   const [categories] = useState<Category[]>(initialCategories);
   const [reports, setReports] = useState<Report[]>(initialReports);
@@ -484,8 +486,14 @@ export function MapClient({
       {/* Container Principal do Mapa */}
       <div ref={mapContainerRef} className="w-full h-full" />
 
-      {/* Controles Flutuantes Alinhados no Canto Inferior Direito */}
-      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 pointer-events-auto flex flex-col items-end gap-2.5">
+      {/* Controles Flutuantes Alinhados no Canto Inferior (Esquerdo no modo canhoto, Direito no modo destro) */}
+      <div
+        className={`absolute z-30 pointer-events-auto flex flex-col gap-2.5 ${
+          isLeftHanded
+            ? "bottom-4 left-4 sm:bottom-6 sm:left-6 items-start"
+            : "bottom-4 right-4 sm:bottom-6 sm:right-6 items-end"
+        }`}
+      >
         {/* 1. Botão de Voltar */}
         <Link
           href="/utilidades"
