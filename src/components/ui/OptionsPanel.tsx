@@ -15,7 +15,6 @@ export interface OptionsPanelProps {
 export const OptionsPanel: React.FC<OptionsPanelProps> = ({
   onClose,
   onSelectOpcoes,
-  onSelectInfo,
   optionsButtonRef,
 }) => {
   const router = useRouter();

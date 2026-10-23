@@ -567,12 +567,10 @@ export default function Page() {
           activeTab={desktopActiveTab}
           onSelectTab={handleDesktopSelectTab}
           isDetailOpen={isDesktopDetailOpen}
-          onCloseDetail={handleDesktopCloseDetail}
           isOpcoesOpen={isDesktopOpcoesOpen}
           onToggleOpcoes={() => setIsDesktopOpcoesOpen((prev) => !prev)}
           onCloseOpcoes={() => setIsDesktopOpcoesOpen(false)}
           isInfoOpen={isDesktopInfoActive}
-          onToggleInfo={handleToggleDesktopInfo}
           onCloseInfo={handleCloseDesktopInfo}
           slotLeftHeader={
             view === "vaga-detail" ? (

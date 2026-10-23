@@ -8,12 +8,11 @@ export interface DesktopStageProps {
   activeTab: "noticias" | "vagas";
   onSelectTab: (tab: "noticias" | "vagas") => void;
   isDetailOpen: boolean;
-  onCloseDetail: () => void;
+  onCloseDetail?: () => void;
   isOpcoesOpen?: boolean;
   onToggleOpcoes?: () => void;
   onCloseOpcoes?: () => void;
   isInfoOpen?: boolean;
-  onToggleInfo?: () => void;
   onCloseInfo?: () => void;
   slotLeft: React.ReactNode;
   slotLeftHeader?: React.ReactNode;
@@ -26,12 +25,10 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
   activeTab,
   onSelectTab,
   isDetailOpen,
-  onCloseDetail,
   isOpcoesOpen = false,
   onToggleOpcoes,
   onCloseOpcoes,
   isInfoOpen = false,
-  onToggleInfo,
   onCloseInfo,
   slotLeft,
   slotLeftHeader,
