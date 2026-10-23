@@ -20,7 +20,6 @@ export interface DesktopStageProps {
   slotCenter: React.ReactNode;
   slotRightFilter: React.ReactNode;
   slotRightOpcoes?: React.ReactNode;
-  slotRightInfo?: React.ReactNode;
 }
 
 export const DesktopStage: React.FC<DesktopStageProps> = ({
@@ -39,7 +38,6 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
   slotCenter,
   slotRightFilter,
   slotRightOpcoes,
-  slotRightInfo,
 }) => {
   const router = useRouter();
 
@@ -88,10 +86,6 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
            ================================================================== */}
         <main
           aria-label="Conteúdo principal"
-          onClick={() => {
-            if (isInfoOpen) onCloseInfo?.();
-            if (isOpcoesOpen) onCloseOpcoes?.();
-          }}
           className="w-[430px] shrink-0 h-full max-h-full flex flex-col relative"
         >
           {/* Conteúdo Central com dissipação de sombras sem corte rígido no topo ou na base */}
@@ -186,10 +180,10 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
             </div>
           </div>
 
-          {/* Corpo Dinâmico da Lateral: Opções ou Informações ou Filtros com sombra integral sem clipping */}
+          {/* Corpo Dinâmico da Lateral: Opções ou Filtros com sombra integral sem clipping */}
           <div
             className={`w-[calc(100%+64px)] -mx-8 px-8 py-5 flex-1 min-h-0 ${
-              isOpcoesOpen || isInfoOpen
+              isOpcoesOpen
                 ? "overflow-y-auto no-scrollbar overscroll-contain"
                 : "overflow-visible"
             }`}
@@ -201,14 +195,6 @@ export const DesktopStage: React.FC<DesktopStageProps> = ({
                 className="desktop-sidebar-panel w-full p-2"
               >
                 {slotRightOpcoes}
-              </div>
-            ) : isInfoOpen ? (
-              <div
-                role="region"
-                aria-label="Informações do portal"
-                className="desktop-sidebar-panel w-full p-4"
-              >
-                {slotRightInfo}
               </div>
             ) : (
               slotRightFilter

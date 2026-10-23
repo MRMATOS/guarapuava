@@ -173,8 +173,10 @@ export default function Page() {
       const hash = window.location.hash;
       if (hash === "#informacoes" || hash === "#info") {
         setView("info");
+        setIsDesktopOpcoesOpen(true);
       } else if (hash === "#opcoes") {
         setView("opcoes");
+        setIsDesktopOpcoesOpen(true);
       } else if (hash === "#noticias" || hash.startsWith("#noticia-")) {
         if (hash.startsWith("#noticia-")) {
           const datePart = hash.replace("#noticia-", "").replace(/-/g, "/");
@@ -786,22 +788,8 @@ export default function Page() {
                 navigateTo("vagas");
               }}
               onSelectInfo={() => {
-                setIsDesktopOpcoesOpen(false);
+                setIsDesktopOpcoesOpen(true);
                 navigateTo("info");
-              }}
-            />
-          }
-          slotRightInfo={
-            <InfoFeed
-              hideNav
-              onSelectNoticias={() => {
-                handleCloseDesktopInfo();
-                navigateTo("home");
-              }}
-              onSelectVagas={() => {
-                handleCloseDesktopInfo();
-                savedVagasScrollY.current = 0;
-                navigateTo("vagas");
               }}
             />
           }
