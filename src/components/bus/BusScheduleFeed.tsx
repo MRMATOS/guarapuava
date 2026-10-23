@@ -664,6 +664,7 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
 
   // Armazena estado expandido de cada card para revelar todos os horários ao toque
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+  const [confirmingDeleteRouteId, setConfirmingDeleteRouteId] = useState<string | null>(null);
 
   const toggleCardExpanded = useCallback((cardKey: string) => {
     setExpandedCards((prev) => ({
@@ -856,17 +857,31 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
               </div>
               {renderJourneyView(journey, false, expandedCards, toggleCardExpanded)}
 
-              {/* Botão Excluir Rota abaixo do card de desembarque */}
+              {/* Botão Excluir Rota abaixo do card de desembarque com confirmação in-place */}
               <div className="pt-0.5">
-                <Key
-                  type="button"
-                  onClick={() => deleteSavedRoute(saved.id)}
-                  className="w-full text-[13px] font-semibold justify-center text-center text-coral active:scale-[0.99]"
-                  title="Excluir rota salva"
-                  aria-label={`Excluir Rota ${idx + 1}`}
-                >
-                  Excluir Rota
-                </Key>
+                {(() => {
+                  const isConfirming = confirmingDeleteRouteId === saved.id;
+                  return (
+                    <Key
+                      type="button"
+                      onClick={() => {
+                        if (isConfirming) {
+                          deleteSavedRoute(saved.id);
+                          setConfirmingDeleteRouteId(null);
+                        } else {
+                          setConfirmingDeleteRouteId(saved.id);
+                        }
+                      }}
+                      className={`w-full text-[13px] font-semibold justify-center text-center text-coral active:scale-[0.99] transition-all duration-150 ${
+                        isConfirming ? "!border !border-coral !bg-coral/5 shadow-xs" : ""
+                      }`}
+                      title={isConfirming ? "Toque para confirmar a exclusão da rota" : "Excluir rota salva"}
+                      aria-label={isConfirming ? `Confirmar exclusão da Rota ${idx + 1}` : `Excluir Rota ${idx + 1}`}
+                    >
+                      {isConfirming ? "Toque para confirmar a exclusão" : "Excluir Rota"}
+                    </Key>
+                  );
+                })()}
               </div>
 
               {/* Linha divisória entre rotas salvas */}
