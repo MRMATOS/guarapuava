@@ -1,40 +1,31 @@
 "use client";
 
-import React, { useEffect, useRef, useSyncExternalStore } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Key } from "./Key";
-import { useTheme } from "@/context/ThemeContext";
+import { useHandedness } from "@/context/HandednessContext";
 
 export interface OptionsPanelProps {
   onClose: () => void;
-  onSelectInfo: () => void;
+  onSelectOpcoes?: () => void;
+  onSelectInfo?: () => void; // Compatibilidade com chamadas existentes
   optionsButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }
 
-const emptySubscribe = () => () => {};
-
 export const OptionsPanel: React.FC<OptionsPanelProps> = ({
   onClose,
+  onSelectOpcoes,
   onSelectInfo,
   optionsButtonRef,
 }) => {
   const router = useRouter();
   const panelRef = useRef<HTMLDivElement>(null);
-  const { theme, toggleTheme } = useTheme();
+  const { isLeftHanded } = useHandedness();
 
-  const mounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
-
-  const isDark = mounted && theme === "dark";
-
-  // Fecha o bloco se clicar fora (exceto se for no botão Opções do rodapé)
+  // Fecha o bloco se clicar fora (exceto se for no botão Mais do rodapé)
   useEffect(() => {
     const handlePointerDown = (event: MouseEvent | TouchEvent) => {
       const target = event.target as HTMLElement;
-      // Se o clique for dentro do painel ou na área do dock, o dock gerencia a alternância
       if (
         panelRef.current?.contains(target as Node) ||
         target.closest?.(".dock-shell") ||
@@ -60,56 +51,52 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
     };
   }, [onClose, optionsButtonRef]);
 
-  // Se estiver no modo escuro, o texto é "Modo claro"; se estiver no modo claro, "Modo escuro"
-  const themeLabel = isDark ? "Modo claro" : "Modo escuro";
+  const handleOpenOpcoes = () => {
+    onClose();
+    if (onSelectOpcoes) {
+      onSelectOpcoes();
+    } else {
+      router.push("/opcoes");
+    }
+  };
+
+  const handleOpenUtilidades = () => {
+    onClose();
+    router.push("/utilidades");
+  };
 
   return (
     <div
       ref={panelRef}
       role="region"
-      aria-label="Painel de opções"
+      aria-label="Painel de mais opções"
       className="filter-panel w-full p-2.5 sm:p-3 flex flex-col gap-2.5 select-none"
     >
-      {/* Linha única: 1º Informações, 2º Modo claro/escuro, 3º Utilidades */}
-      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-        {/* 1. Botão Informações */}
+      {/* 2 Botões: Opções e Utilidades (Invertidos no modo canhoto) */}
+      <div
+        className={`grid grid-cols-2 gap-1.5 sm:gap-2 ${
+          isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""
+        }`}
+      >
+        {/* 1. Botão Opções */}
         <div className="w-full animate-stagger-item" style={{ animationDelay: "20ms" }}>
           <Key
             type="button"
-            onClick={() => {
-              onClose();
-              onSelectInfo();
-            }}
-            className="w-full px-1 text-[12px] sm:text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-            title="Abrir informações, responsabilidades e termos"
-            aria-label="Informações do site"
+            onClick={handleOpenOpcoes}
+            className="w-full px-1 text-[13px] sm:text-[14px] font-semibold justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+            title="Abrir opções, ajustes e acessibilidade"
+            aria-label="Opções e acessibilidade"
           >
-            Informações
+            Opções
           </Key>
         </div>
 
-        {/* 2. Alternador de Modo Claro / Modo Escuro */}
+        {/* 2. Botão Utilidades */}
         <div className="w-full animate-stagger-item" style={{ animationDelay: "40ms" }}>
           <Key
             type="button"
-            onClick={toggleTheme}
-            className="w-full px-1 text-[12px] sm:text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-            title={`Alternar para ${themeLabel}`}
-            aria-label={`Alternar para ${themeLabel}`}
-          >
-            {themeLabel}
-          </Key>
-        </div>
-
-        {/* 3. Botão Utilidades */}
-        <div className="w-full animate-stagger-item" style={{ animationDelay: "60ms" }}>
-          <Key
-            type="button"
-            onClick={() => {
-              onClose();
-              router.push("/utilidades");
-            }}
-            className="w-full px-1 text-[12px] sm:text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+            onClick={handleOpenUtilidades}
+            className="w-full px-1 text-[13px] sm:text-[14px] font-semibold justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
             title="Abrir utilidades e horários"
             aria-label="Abrir Utilidades"
           >
