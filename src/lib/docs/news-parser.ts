@@ -230,21 +230,22 @@ export function parseNewsParagraphs(paragraphs: { text: string; links: string[] 
       const highlightMatch = text.match(/^([^:]+):\s*(.+)$/);
       if (highlightMatch) {
         const rawCat = highlightMatch[1].trim();
+        // Evita capturar cabeçalhos de metadados
+        if (['Modalidade', 'Local', 'Data e Horário', 'Divulgação', 'Data', 'Horário'].includes(rawCat)) {
+          continue;
+        }
         const cat = normalizeCategory(rawCat);
         const body = highlightMatch[2].trim();
 
-        // Evita capturar cabeçalhos estranhos
-        if (!['Modalidade', 'Local', 'Data e Horário', 'Divulgação'].includes(cat)) {
-          const id = `h-${currentRound.date.replace(/\//g, '')}-${currentRound.highlights.length + 1}`;
-          const link = p.links[0];
-          currentRound.highlights.push({
-            id,
-            category: cat,
-            title: cat,
-            text: body,
-            url: link || undefined,
-          });
-        }
+        const id = `h-${currentRound.date.replace(/\//g, '')}-${currentRound.highlights.length + 1}`;
+        const link = p.links[0];
+        currentRound.highlights.push({
+          id,
+          category: cat,
+          title: cat,
+          text: body,
+          url: link || undefined,
+        });
       }
     }
   }

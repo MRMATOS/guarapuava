@@ -13,68 +13,242 @@ export function normalizeText(text: string): string {
 }
 
 /**
- * Mapeamento canônico de categorias conhecidas de notícias para garantir
- * acentuação correta e evitar botões duplicados (ex: Saude vs Saúde, Politica vs Política).
+ * As 12 categorias canônicas oficiais de notícias do portal (1 palavra cada).
+ * Organizadas em ordem alfabética para facilitar a rápida localização pelo morador.
  */
-export const CANONICAL_NEWS_CATEGORIES: Record<string, string> = {
-  saude: "Saúde",
-  politica: "Política",
-  policia: "Polícia",
-  transito: "Trânsito",
-  educacao: "Educação",
-  seguranca: "Segurança",
-  gestao: "Gestão",
-  economia: "Economia",
-  comunidade: "Social",
-  social: "Social",
-  cultura: "Cultura",
-  clima: "Clima",
-  tecnologia: "Tecnologia",
-  prazos: "Prazos",
-  oportunidade: "Trabalho",
-  oportunidades: "Trabalho",
-  trabalho: "Trabalho",
-  esporte: "Esportes",
-  esportes: "Esportes",
-  habitacao: "Habitação",
-  obras: "Obras",
-  turismo: "Turismo",
-  legislacao: "Legislação",
-  meioambiente: "Meio Ambiente",
-};
-
-export const DEFAULT_NEWS_CATEGORIES: string[] = [
-  "Cultura",
+export const FIXED_NEWS_CATEGORIES: string[] = [
   "Clima",
+  "Cultura",
+  "Economia",
+  "Educação",
+  "Política",
   "Prazos",
   "Saúde",
-  "Política",
-  "Educação",
   "Segurança",
+  "Social",
+  "Tecnologia",
   "Trânsito",
+  "Outros",
 ];
 
+// Compatibilidade regressiva
+export const DEFAULT_NEWS_CATEGORIES: string[] = FIXED_NEWS_CATEGORIES;
+
 /**
- * Normaliza uma categoria de notícia para sua grafia canônica e padronizada.
+ * Mapeamento canônico exaustivo de categorias e termos compostos conhecidos
+ * para direcionar notícias para uma das 12 categorias oficiais fixas.
+ */
+export const CANONICAL_NEWS_CATEGORIES: Record<string, string> = {
+  // Clima
+  clima: "Clima",
+  "clima e tempo": "Clima",
+  "clima e servicos": "Clima",
+  "clima e serviços": "Clima",
+  "servicos e clima": "Clima",
+  "serviços e clima": "Clima",
+  "clima e precipitacao": "Clima",
+  "clima e precipitação": "Clima",
+  "clima e simepar": "Clima",
+  "clima e previsao": "Clima",
+  "clima e previsão": "Clima",
+  "clima e balanco": "Clima",
+  "clima e balanço": "Clima",
+  "clima e frio polar": "Clima",
+  "clima noturno": "Clima",
+  "clima e alerta": "Clima",
+  "defesa civil e clima": "Clima",
+  "clima e defesa civil": "Clima",
+  "clima e prevencao": "Clima",
+  "clima e prevenção": "Clima",
+  "defesa civil": "Clima",
+
+  // Cultura
+  cultura: "Cultura",
+  "cultura e lazer": "Cultura",
+  "cultura e festival": "Cultura",
+  "cultura e festivais": "Cultura",
+  "cultura e festividades": "Cultura",
+  "cultura e religiosidade": "Cultura",
+  "lazer e fim de semana": "Cultura",
+  "negocios e cultura": "Cultura",
+  "negócios e cultura": "Cultura",
+  esportes: "Cultura",
+  esporte: "Cultura",
+
+  // Economia
+  economia: "Economia",
+  trabalho: "Economia",
+  "trabalho e emprego": "Economia",
+  "emprego e renda": "Economia",
+  "governanca fiscal": "Economia",
+  "governança fiscal": "Economia",
+  "equilibrio fiscal": "Economia",
+  "equilíbrio fiscal": "Economia",
+  "oportunidades e servicos": "Economia",
+  "oportunidades e serviços": "Economia",
+  "gestao e oportunidades": "Economia",
+  "gestão e oportunidades": "Economia",
+
+  // Educação
+  educacao: "Educação",
+  educação: "Educação",
+  "alimentacao escolar": "Educação",
+  "alimentação escolar": "Educação",
+  "educacao e atos": "Educação",
+  "educação e atos": "Educação",
+  "educacao e vestibular": "Educação",
+  "educação e vestibular": "Educação",
+  "educacao municipal": "Educação",
+  "educação municipal": "Educação",
+  "obras e educacao": "Educação",
+  "obras e educação": "Educação",
+
+  // Política
+  politica: "Política",
+  política: "Política",
+  "politica e gestao": "Política",
+  "política e gestão": "Política",
+  "gestao municipal": "Política",
+  "gestão municipal": "Política",
+  "gestao e servicos publicos": "Política",
+  "gestão e serviços públicos": "Política",
+  "atos e gestao publica": "Política",
+  "atos e gestão pública": "Política",
+  "atos e servicos": "Política",
+  "atos e serviços": "Política",
+  "atos e transparencia": "Política",
+  "atos e transparência": "Política",
+  "atos e retomada": "Política",
+  "atos e publicacoes": "Política",
+  "atos e publicações": "Política",
+  "poder legislativo": "Política",
+  "atos oficiais": "Política",
+  gestao: "Política",
+  gestão: "Política",
+
+  // Prazos
+  prazos: "Prazos",
+  prazo: "Prazos",
+  "prazos e cultura": "Prazos",
+  "servicos e prazos": "Prazos",
+  "serviços e prazos": "Prazos",
+
+  // Saúde
+  saude: "Saúde",
+  saúde: "Saúde",
+  "saude e servicos": "Saúde",
+  "saúde e serviços": "Saúde",
+  "saude e comunidade": "Saúde",
+  "saúde e comunidade": "Saúde",
+  "saude publica e extensao": "Saúde",
+  "saúde pública e extensão": "Saúde",
+  "servicos e plantao": "Saúde",
+  "serviços e plantão": "Saúde",
+  "saude e prevencao": "Saúde",
+  "saúde e prevenção": "Saúde",
+  "saude e cuidados": "Saúde",
+  "saúde e cuidados": "Saúde",
+  "saude e gestao": "Saúde",
+  "saúde e gestão": "Saúde",
+
+  // Segurança
+  seguranca: "Segurança",
+  segurança: "Segurança",
+  policia: "Segurança",
+  polícia: "Segurança",
+  "seguranca e tecnologia": "Segurança",
+  "segurança e tecnologia": "Segurança",
+  "seguranca e operacoes": "Segurança",
+  "segurança e operações": "Segurança",
+
+  // Social
+  social: "Social",
+  comunidade: "Social",
+  "comunidade e filantropia": "Social",
+  "comunidade e fe": "Social",
+  "comunidade e fé": "Social",
+  "comunidade e empreendedorismo": "Social",
+  "solidariedade e terceiro setor": "Social",
+  "habitacao e solo urbano": "Social",
+  "habitação e solo urbano": "Social",
+  "fe e romarias": "Social",
+  "fé e romarias": "Social",
+  "planejamento e direitos": "Social",
+  "lazer e comunidade": "Social",
+  "cultura e comunidade": "Social",
+  habitacao: "Social",
+  habitação: "Social",
+
+  // Tecnologia
+  tecnologia: "Tecnologia",
+  "servicos digitais": "Tecnologia",
+  "serviços digitais": "Tecnologia",
+  "inovacao e ciencia": "Tecnologia",
+  "inovação e ciência": "Tecnologia",
+  inovacao: "Tecnologia",
+  inovação: "Tecnologia",
+
+  // Trânsito
+  transito: "Trânsito",
+  trânsito: "Trânsito",
+  "transito e rodovias": "Trânsito",
+  "trânsito e rodovias": "Trânsito",
+  "transito e vias": "Trânsito",
+  "trânsito e vias": "Trânsito",
+  "infraestrutura e transito": "Trânsito",
+  "infraestrutura e trânsito": "Trânsito",
+  "transito e seguranca": "Trânsito",
+  "trânsito e segurança": "Trânsito",
+  "transito e servicos": "Trânsito",
+  "trânsito e serviços": "Trânsito",
+
+  // Outros
+  outros: "Outros",
+  outro: "Outros",
+  geral: "Outros",
+  "fechamento do dia": "Outros",
+};
+
+/**
+ * Normaliza uma categoria de notícia para uma das 12 categorias canônicas oficiais.
+ * Mapeia termos compostos, variações e tópicos específicos para a categoria correta.
+ * Qualquer termo não reconhecido é mapeado com segurança para "Outros", garantindo que
+ * nenhuma notícia fique sem filtro ou quebre a interface com botões gigantes.
  */
 export function normalizeCategory(raw: string): string {
-  if (!raw) return "";
+  if (!raw) return "Outros";
   const cleaned = raw.trim();
-  const key = normalizeText(cleaned).replace(/[^a-z0-9]/g, "");
-  if (CANONICAL_NEWS_CATEGORIES[key]) {
-    return CANONICAL_NEWS_CATEGORIES[key];
+  const lower = cleaned.toLowerCase();
+  const norm = normalizeText(cleaned);
+
+  // 1. Dicionário canônico direto (com e sem acentos)
+  if (CANONICAL_NEWS_CATEGORIES[lower]) return CANONICAL_NEWS_CATEGORIES[lower];
+  if (CANONICAL_NEWS_CATEGORIES[norm]) return CANONICAL_NEWS_CATEGORIES[norm];
+
+  // 2. Chave limpa alfanumérica
+  const alphaKey = norm.replace(/[^a-z0-9]/g, "");
+  for (const [k, v] of Object.entries(CANONICAL_NEWS_CATEGORIES)) {
+    if (k.replace(/[^a-z0-9]/g, "") === alphaKey) return v;
   }
-  // Mantém maiúsculas apropriadas respeitando preposições
-  return cleaned
-    .split(/\s+/)
-    .map((word) => {
-      const lower = word.toLowerCase();
-      if (["e", "de", "da", "do", "das", "dos", "em", "na", "no"].includes(lower)) {
-        return lower;
-      }
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
+
+  // 3. Heurísticas por radicais/tokens
+  if (/clima|tempo|precipit|simepar|chuva|geada|frio|defesa\s*civil|meteorol/.test(norm)) return "Clima";
+  if (/saude|hospital|vacina|medic|plantao|preventivo|clinica|dengue|exame/.test(norm)) return "Saúde";
+  if (/transito|rodovia|via\b|rua|asfalto|sinaliza|onibus|tarifa|mobilidade/.test(norm)) return "Trânsito";
+  if (/educa|escola|colegio|vestibular|unicentro|merenda|aluno|professor|academ/.test(norm)) return "Educação";
+  if (/seguranca|policia|pmpr|bope|bombeiro|furto|assalto|crime|apreens|droga/.test(norm)) return "Segurança";
+  if (/cultura|arte|show|teatro|musica|festival|festiv|lazer|esporte|turismo/.test(norm)) return "Cultura";
+  if (/social|comunidade|solidari|voluntar|doacao|filantrop|cras|creas|romaria|fe\b/.test(norm)) return "Social";
+  if (/prazo|edital|inscric|vencimento|calendario|chamada/.test(norm)) return "Prazos";
+  if (/tecnolog|digital|software|inovac|ciencia|startup/.test(norm)) return "Tecnologia";
+  if (/econom|trabalho|emprego|vaga|renda|salario|empresa|comercio|fiscal|tribut/.test(norm)) return "Economia";
+  if (/politica|prefeit|camara|vereador|decreto|governo|gestao|legislat|boletim/.test(norm)) return "Política";
+
+  // 4. Se já for exatamente uma das 12 categorias
+  const directMatch = FIXED_NEWS_CATEGORIES.find((c) => normalizeText(c) === norm);
+  if (directMatch) return directMatch;
+
+  return "Outros";
 }
 
 /**

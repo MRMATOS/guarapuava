@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { X, Search } from "lucide-react";
 import { Key } from "./Key";
-import { normalizeText } from "@/lib/utils/search";
+import { normalizeText, FIXED_NEWS_CATEGORIES } from "@/lib/utils/search";
 
 export interface FilterPanelProps {
   mode: "vagas" | "noticias";
@@ -148,21 +148,21 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           </div>
         </div>
       ) : (
-        /* Linha 1 para Notícias: grid de 4 colunas no desktop (sem scroll horizontal) e carrossel fluido no mobile */
+        /* Linha 1 para Notícias: grid de 4 colunas com exatamente 3 linhas simétricas (12 botões fixos de 1 palavra) */
         <div
           role="toolbar"
           aria-label="Filtro de categorias de notícias"
-          className="w-full flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible no-scrollbar scroll-smooth items-center lg:items-stretch gap-1.5 sm:gap-2 py-1 px-0.5"
+          className="w-full grid grid-cols-4 gap-1.5 sm:gap-2 py-1 px-0.5"
         >
-          {(categories && categories.length > 0 ? categories : ["Política", "Saúde", "Clima"]).map((cat, idx) => {
+          {(categories && categories.length > 0 ? categories : FIXED_NEWS_CATEGORIES).map((cat, idx) => {
             const isPressed =
               selectedCategory !== null &&
               normalizeText(selectedCategory) === normalizeText(cat);
             return (
               <div
                 key={cat}
-                className="shrink-0 lg:shrink lg:w-full animate-stagger-item"
-                style={{ animationDelay: `${25 + idx * 25}ms` }}
+                className="w-full animate-stagger-item"
+                style={{ animationDelay: `${15 + idx * 15}ms` }}
               >
                 <Key
                   pressed={isPressed}
@@ -174,7 +174,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                       ? `Remover filtro ${cat}`
                       : `Filtrar apenas por ${cat}`
                   }
-                  className="w-full text-[12px] sm:text-[12.5px] px-1 sm:px-1.5 justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                  className="w-full text-[11.5px] sm:text-[12.5px] px-0.5 sm:px-1.5 justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
                   aria-label={`Filtrar notícias por ${cat}`}
                 >
                   {cat}

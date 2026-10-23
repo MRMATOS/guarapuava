@@ -13,7 +13,7 @@ import { DesktopStage } from "@/components/desktop/DesktopStage";
 import { FilterPanel } from "@/components/ui/FilterPanel";
 import { listActiveJobs } from "@/lib/supabase/jobs";
 import { listActiveNewsDigests } from "@/lib/supabase/news";
-import { filterJobs, normalizeCategory, DEFAULT_NEWS_CATEGORIES } from "@/lib/utils/search";
+import { filterJobs, normalizeCategory, FIXED_NEWS_CATEGORIES } from "@/lib/utils/search";
 import { sortJobsByPublishedDate } from "@/lib/utils/date";
 import {
   getViewedJobIds,
@@ -161,37 +161,9 @@ export default function Page() {
     loadNews();
   }, []);
 
-  // Extrai tags únicas disponíveis a partir dos lotes do dia selecionado (deduplicadas e ordenadas)
-  const currentNewsTags = useMemo(() => {
-    if (!selectedDigest || !selectedDigest.batches) return DEFAULT_NEWS_CATEGORIES;
-    const tagSet = new Set<string>();
-    for (const batch of selectedDigest.batches) {
-      for (const item of batch.items) {
-        if (item.category) {
-          tagSet.add(normalizeCategory(item.category));
-        }
-      }
-    }
-    if (tagSet.size === 0) return DEFAULT_NEWS_CATEGORIES;
-    return Array.from(tagSet).sort((a, b) => a.localeCompare(b, "pt-BR"));
-  }, [selectedDigest]);
-
-  // Extrai todas as categorias disponíveis somando todos os dias ativos no portal
-  const allNewsCategories = useMemo(() => {
-    const tagSet = new Set<string>();
-    for (const digest of newsDigests) {
-      if (!digest.batches) continue;
-      for (const batch of digest.batches) {
-        for (const item of batch.items) {
-          if (item.category) {
-            tagSet.add(normalizeCategory(item.category));
-          }
-        }
-      }
-    }
-    if (tagSet.size === 0) return DEFAULT_NEWS_CATEGORIES;
-    return Array.from(tagSet).sort((a, b) => a.localeCompare(b, "pt-BR"));
-  }, [newsDigests]);
+  // As 12 categorias fixas de notícias oficiais do portal (estáveis, 1 palavra cada, sem botões gigantes)
+  const currentNewsTags = FIXED_NEWS_CATEGORIES;
+  const allNewsCategories = FIXED_NEWS_CATEGORIES;
 
   // Sincroniza com o histórico do navegador e suporta o botão/gesto voltar nativo do celular
   useEffect(() => {
