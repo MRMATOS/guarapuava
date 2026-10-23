@@ -7,11 +7,12 @@ import { Key } from "@/components/ui/Key";
 import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
-import { InfoFeed } from "@/components/InfoFeed";
+import { OpcoesFeed } from "@/components/opcoes/OpcoesFeed";
 import { DescarteFeed } from "@/components/descarte/DescarteFeed";
 import { UtilidadesAsideNav } from "@/components/utilidades/UtilidadesAsideNav";
 import { DescarteFilterPanel } from "@/components/descarte/DescarteFilterPanel";
 import { useTheme } from "@/context/ThemeContext";
+import { useHandedness } from "@/context/HandednessContext";
 import { filterDescarte, getCategorias, getLocais } from "@/lib/descarte/filter";
 import { withDisplayNames } from "@/lib/descarte/names";
 import { applyRenames } from "@/lib/descarte/renames";
@@ -26,7 +27,7 @@ const emptySubscribe = () => () => {};
 
 export default function DescarteCorretoPage() {
   const router = useRouter();
-  const { theme, toggleTheme } = useTheme();
+  const { isLeftHanded } = useHandedness();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategoria, setSelectedCategoria] = useState<string | null>(null);
@@ -34,15 +35,11 @@ export default function DescarteCorretoPage() {
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-  const [isDesktopInfoOpen, setIsDesktopInfoOpen] = useState(false);
+  const [isDesktopOpcoesOpen, setIsDesktopOpcoesOpen] = useState(false);
 
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const optionsButtonRef = useRef<HTMLButtonElement>(null);
   const transitionTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
-  const isDark = mounted && theme === "dark";
-  const themeLabel = isDark ? "Modo claro" : "Modo escuro";
 
   useEffect(() => {
     return () => {
@@ -59,8 +56,8 @@ export default function DescarteCorretoPage() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        if (isDesktopInfoOpen) {
-          setIsDesktopInfoOpen(false);
+        if (isDesktopOpcoesOpen) {
+          setIsDesktopOpcoesOpen(false);
           return;
         }
         if (isFilterOpen) {
@@ -80,7 +77,7 @@ export default function DescarteCorretoPage() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isDesktopInfoOpen, isFilterOpen, isOptionsOpen, selectedCategoria, selectedLocal, searchQuery, router, handleClearFilters]);
+  }, [isDesktopOpcoesOpen, isFilterOpen, isOptionsOpen, selectedCategoria, selectedLocal, searchQuery, router, handleClearFilters]);
 
   const handleToggleFilter = () => {
     if (transitionTimerRef.current) {
@@ -210,7 +207,7 @@ export default function DescarteCorretoPage() {
             }
             aria-label="Navegação da tela de descarte"
           >
-            <div className="grid grid-cols-3 w-full gap-1.5 sm:gap-2">
+            <div className={`grid grid-cols-3 w-full gap-1.5 sm:gap-2 ${isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""}`}>
               <Key
                 ref={optionsButtonRef}
                 type="button"
@@ -295,59 +292,56 @@ export default function DescarteCorretoPage() {
                   </Key>
                 </div>
 
-                {/* Linha 2: Utilidades, Modo Claro/Escuro e Informações */}
-                <div role="toolbar" aria-label="Opções e preferências secundárias" className="grid grid-cols-3 gap-1.5 sm:gap-2 w-full h-[42px]">
+                {/* Linha 2: Utilidades e Opções */}
+                <div role="toolbar" aria-label="Opções e preferências secundárias" className="grid grid-cols-2 gap-2 w-full h-[42px]">
                   {/* 1. Utilidades */}
                   <Key
                     type="button"
-                    pressed={!isDesktopInfoOpen}
+                    pressed={!isDesktopOpcoesOpen}
                     aria-current="page"
                     onClick={() => {
-                      if (isDesktopInfoOpen) setIsDesktopInfoOpen(false);
+                      if (isDesktopOpcoesOpen) setIsDesktopOpcoesOpen(false);
                       router.push("/utilidades");
                     }}
-                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
                     title="Utilidades e serviços"
                     aria-label="Utilidades"
                   >
                     Utilidades
                   </Key>
 
-                  {/* 2. Modo Claro / Escuro */}
+                  {/* 2. Opções */}
                   <Key
                     type="button"
-                    onClick={toggleTheme}
-                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title={`Alternar para ${themeLabel}`}
-                    aria-label={`Alternar para ${themeLabel}`}
+                    pressed={isDesktopOpcoesOpen}
+                    aria-expanded={isDesktopOpcoesOpen}
+                    onClick={() => setIsDesktopOpcoesOpen((prev) => !prev)}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Abrir opções, ajustes e acessibilidade"
+                    aria-label="Opções e acessibilidade"
                   >
-                    {themeLabel}
-                  </Key>
-
-                  {/* 3. Informações */}
-                  <Key
-                    type="button"
-                    pressed={isDesktopInfoOpen}
-                    aria-expanded={isDesktopInfoOpen}
-                    onClick={() => setIsDesktopInfoOpen((prev) => !prev)}
-                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title="Abrir termos e diretrizes"
-                    aria-label="Informações do site"
-                  >
-                    Informações
+                    Opções
                   </Key>
                 </div>
               </div>
               <div
                 className={`w-[calc(100%+64px)] -mx-8 px-8 py-5 flex-1 min-h-0 ${
-                  isDesktopInfoOpen
+                  isDesktopOpcoesOpen
                     ? "overflow-y-auto no-scrollbar overscroll-contain"
                     : "overflow-visible"
                 }`}
               >
-                {isDesktopInfoOpen ? (
-                  <div role="region" aria-label="Informações do portal" className="desktop-sidebar-panel w-full p-4">
-                    <InfoFeed hideNav onSelectNoticias={() => router.push("/")} onSelectVagas={() => router.push("/#vagas")} />
+                {isDesktopOpcoesOpen ? (
+                  <div role="region" aria-label="Painel de opções" className="desktop-sidebar-panel w-full p-2">
+                    <OpcoesFeed
+                      hideNav
+                      onSelectNoticias={() => router.push("/")}
+                      onSelectVagas={() => router.push("/#vagas")}
+                      onSelectInfo={() => {
+                        setIsDesktopOpcoesOpen(false);
+                        router.push("/#informacoes");
+                      }}
+                    />
                   </div>
                 ) : (
                   <DescarteFilterPanel

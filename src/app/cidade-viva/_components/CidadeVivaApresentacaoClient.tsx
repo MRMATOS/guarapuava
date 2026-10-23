@@ -6,30 +6,22 @@ import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
 import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
-import { InfoFeed } from "@/components/InfoFeed";
+import { OpcoesFeed } from "@/components/opcoes/OpcoesFeed";
 import { useTheme } from "@/context/ThemeContext";
+import { useHandedness } from "@/context/HandednessContext";
 
 const emptySubscribe = () => () => {};
 
 export function CidadeVivaApresentacaoClient() {
   const router = useRouter();
-  const { theme, toggleTheme } = useTheme();
+  const { isLeftHanded } = useHandedness();
 
   // Estados Mobile
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const optionsButtonRef = useRef<HTMLButtonElement>(null);
 
   // Estados Desktop
-  const [isDesktopInfoOpen, setIsDesktopInfoOpen] = useState(false);
-
-  const mounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
-
-  const isDark = mounted && theme === "dark";
-  const themeLabel = isDark ? "Modo claro" : "Modo escuro";
+  const [isDesktopOpcoesOpen, setIsDesktopOpcoesOpen] = useState(false);
 
   return (
     <div className="min-h-[100dvh] bg-canvas text-ink flex justify-center">
@@ -83,7 +75,7 @@ export function CidadeVivaApresentacaoClient() {
             }
             aria-label="Navegação principal do Cidade Viva"
           >
-            <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
+            <div className={`grid grid-cols-4 w-full gap-1.5 sm:gap-2 ${isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""}`}>
               <Key
                 ref={optionsButtonRef}
                 type="button"
@@ -186,33 +178,7 @@ export function CidadeVivaApresentacaoClient() {
               className="w-[360px] shrink-0 h-full max-h-full flex flex-col"
             >
               <div className="w-full shrink-0 z-20 pb-2.5 flex flex-col gap-2">
-                {/* Linha 1: Informações e Modo Claro/Escuro */}
-                <div
-                  role="toolbar"
-                  aria-label="Opções primárias"
-                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
-                >
-                  <Key
-                    type="button"
-                    pressed={isDesktopInfoOpen}
-                    onClick={() => setIsDesktopInfoOpen((prev) => !prev)}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title="Abrir termos e diretrizes"
-                  >
-                    Informações
-                  </Key>
-
-                  <Key
-                    type="button"
-                    onClick={toggleTheme}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title={`Alternar para ${themeLabel}`}
-                  >
-                    {themeLabel}
-                  </Key>
-                </div>
-
-                {/* Linha 2: Notícias e Vagas */}
+                {/* Linha 1: Notícias e Vagas */}
                 <div
                   role="toolbar"
                   aria-label="Navegação de abas"
@@ -237,50 +203,56 @@ export function CidadeVivaApresentacaoClient() {
                   </Key>
                 </div>
 
-                {/* Linha 3: Cidade Viva e Utilidades */}
+                {/* Linha 2: Utilidades e Opções */}
                 <div
                   role="toolbar"
-                  aria-label="Ferramentas e utilidades"
+                  aria-label="Opções e preferências secundárias"
                   className="grid grid-cols-2 gap-2 w-full h-[42px]"
                 >
                   <Key
                     type="button"
-                    pressed={true}
-                    aria-current="page"
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title="Cidade Viva — Mapeamento colaborativo"
+                    onClick={() => router.push("/utilidades")}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Utilidades e serviços"
                   >
-                    Cidade Viva
+                    Utilidades
                   </Key>
 
                   <Key
                     type="button"
-                    onClick={() => router.push("/utilidades")}
-                    className="w-full px-1 text-[13px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title="Utilidades e serviços"
+                    pressed={isDesktopOpcoesOpen}
+                    aria-expanded={isDesktopOpcoesOpen}
+                    onClick={() => setIsDesktopOpcoesOpen((prev) => !prev)}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Abrir opções, ajustes e acessibilidade"
+                    aria-label="Opções e acessibilidade"
                   >
-                    Utilidades
+                    Opções
                   </Key>
                 </div>
               </div>
 
               <div
                 className={`w-[calc(100%+64px)] -mx-8 px-8 py-5 flex-1 min-h-0 ${
-                  isDesktopInfoOpen
+                  isDesktopOpcoesOpen
                     ? "overflow-y-auto no-scrollbar overscroll-contain"
                     : "overflow-visible"
                 }`}
               >
-                {isDesktopInfoOpen && (
+                {isDesktopOpcoesOpen && (
                   <div
                     role="region"
-                    aria-label="Informações do portal"
-                    className="desktop-sidebar-panel w-full p-4"
+                    aria-label="Painel de opções"
+                    className="desktop-sidebar-panel w-full p-2"
                   >
-                    <InfoFeed
+                    <OpcoesFeed
                       hideNav
                       onSelectNoticias={() => router.push("/")}
                       onSelectVagas={() => router.push("/#vagas")}
+                      onSelectInfo={() => {
+                        setIsDesktopOpcoesOpen(false);
+                        router.push("/#informacoes");
+                      }}
                     />
                   </div>
                 )}

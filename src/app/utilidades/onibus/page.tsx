@@ -7,14 +7,15 @@ import { Key } from "@/components/ui/Key";
 import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
 import { FilterIndicator } from "@/components/ui/FilterIndicator";
-import { InfoFeed } from "@/components/InfoFeed";
+import { OpcoesFeed } from "@/components/opcoes/OpcoesFeed";
 import { BusScheduleFeed, computeRouteJourney } from "@/components/bus/BusScheduleFeed";
 import { UtilidadesAsideNav } from "@/components/utilidades/UtilidadesAsideNav";
 import { BusFilterPanel } from "@/components/bus/BusFilterPanel";
 import { BusRouteStepCard } from "@/components/bus/BusRouteStepCard";
 import { useUserLocation } from "@/hooks/useUserLocation";
 import { useTheme } from "@/context/ThemeContext";
-import { saveRoute, isRouteSaved } from "@/lib/bus/saved-routes";
+import { useHandedness } from "@/context/HandednessContext";
+import { saveRoute, isRouteSaved, subscribeSavedRoutes } from "@/lib/bus/saved-routes";
 import { normalizeText, matchesFuzzyQuery } from "@/lib/utils/search";
 import rawBusData from "@/data/horarios-onibus.json";
 import type { DadosHorariosOnibus, LinhaBairro, PontoItinerario } from "@/types/bus";
@@ -25,7 +26,14 @@ const emptySubscribe = () => () => {};
 
 export default function HorariosOnibusPage() {
   const router = useRouter();
-  const { theme, toggleTheme } = useTheme();
+  const { isLeftHanded } = useHandedness();
+
+  // Escuta alterações locais e em storage nas rotas salvas
+  useEffect(() => {
+    return subscribeSavedRoutes(() => {
+      setSavedRoutesVersion((v) => v + 1);
+    });
+  }, []);
 
   // Estados de Filtros e Busca
   const [selectedBairroId, setSelectedBairroId] = useState<string | null>(null);
@@ -58,22 +66,13 @@ export default function HorariosOnibusPage() {
   }, []);
 
   // Estados Desktop
-  const [isDesktopInfoOpen, setIsDesktopInfoOpen] = useState(false);
+  const [isDesktopOpcoesOpen, setIsDesktopOpcoesOpen] = useState(false);
 
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const optionsButtonRef = useRef<HTMLButtonElement>(null);
   const transitionTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const { coords, requestLocation } = useUserLocation();
-
-  const mounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
-
-  const isDark = mounted && theme === "dark";
-  const themeLabel = isDark ? "Modo claro" : "Modo escuro";
 
   useEffect(() => {
     return () => {
@@ -117,8 +116,8 @@ export default function HorariosOnibusPage() {
           setIsStep2FocusActive(false);
           return;
         }
-        if (isDesktopInfoOpen) {
-          setIsDesktopInfoOpen(false);
+        if (isDesktopOpcoesOpen) {
+          setIsDesktopOpcoesOpen(false);
           return;
         }
         if (isShowingSavedRoutes) {
@@ -151,7 +150,7 @@ export default function HorariosOnibusPage() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [
-    isDesktopInfoOpen,
+    isDesktopOpcoesOpen,
     isShowingSavedRoutes,
     isFilterOpen,
     isOptionsOpen,
@@ -163,6 +162,24 @@ export default function HorariosOnibusPage() {
     handleClearFilters,
     handleResetRoute,
   ]);
+
+  const isCurrentRouteSaved = useMemo(() => {
+    if (!selectedOriginPonto || !selectedDestinationPonto) return false;
+    if (savedRoutesVersion < 0) return false;
+    return isRouteSaved(
+      selectedOriginPonto.ponto.id,
+      selectedDestinationPonto.ponto.id
+    );
+  }, [selectedOriginPonto, selectedDestinationPonto, savedRoutesVersion]);
+
+  const handleCloseFilter = useCallback(() => {
+    setIsFilterOpen(false);
+    if (routeStep === "calculated" && isCurrentRouteSaved) {
+      setRouteStep("none");
+      setSelectedOriginPonto(null);
+      setSelectedDestinationPonto(null);
+    }
+  }, [routeStep, isCurrentRouteSaved]);
 
   const handleToggleFilter = () => {
     if (transitionTimerRef.current) {
@@ -176,7 +193,7 @@ export default function HorariosOnibusPage() {
     }
 
     if (isFilterOpen) {
-      setIsFilterOpen(false);
+      handleCloseFilter();
       return;
     }
 
@@ -208,7 +225,7 @@ export default function HorariosOnibusPage() {
     }
 
     if (isFilterOpen) {
-      setIsFilterOpen(false);
+      handleCloseFilter();
       transitionTimerRef.current = setTimeout(() => {
         setIsOptionsOpen(true);
         transitionTimerRef.current = null;
@@ -229,8 +246,22 @@ export default function HorariosOnibusPage() {
   );
 
   const handleToggleSavedRoutes = useCallback(() => {
-    setIsShowingSavedRoutes((prev) => !prev);
-  }, []);
+    setIsShowingSavedRoutes((prev) => {
+      const next = !prev;
+      if (next && !coords) {
+        requestLocation();
+      }
+      return next;
+    });
+  }, [coords, requestLocation]);
+
+  const handleBack = useCallback(() => {
+    if (isShowingSavedRoutes) {
+      setIsShowingSavedRoutes(false);
+      return;
+    }
+    router.push("/utilidades");
+  }, [isShowingSavedRoutes, router]);
 
   const handleSaveRoute = useCallback(() => {
     if (selectedOriginPonto && selectedDestinationPonto) {
@@ -238,15 +269,6 @@ export default function HorariosOnibusPage() {
       setSavedRoutesVersion((v) => v + 1);
     }
   }, [selectedOriginPonto, selectedDestinationPonto]);
-
-  const isCurrentRouteSaved = useMemo(() => {
-    if (!selectedOriginPonto || !selectedDestinationPonto) return false;
-    if (savedRoutesVersion < 0) return false;
-    return isRouteSaved(
-      selectedOriginPonto.ponto.id,
-      selectedDestinationPonto.ponto.id
-    );
-  }, [selectedOriginPonto, selectedDestinationPonto, savedRoutesVersion]);
 
   // Rota calculada para exibir detalhes no card inferior
   const routeJourney = useMemo(() => {
@@ -502,10 +524,15 @@ export default function HorariosOnibusPage() {
       <div className="lg:hidden w-full flex justify-center py-6 px-4 select-text">
         <div className="w-full max-w-[430px] flex flex-col gap-4 pb-32">
             {/* Cabeçalho limpo */}
-            <header className="flex flex-col gap-1 px-1 pt-1">
+            <header className="flex items-center justify-between px-1 pt-1">
               <h1 className="text-[20px] font-bold text-ink tracking-tight">
                 Horários de Ônibus
               </h1>
+              {isShowingSavedRoutes && (
+                <span className="badge-inset">
+                  Minhas Rotas
+                </span>
+              )}
             </header>
 
             {/* Feed de Rolagem Contínua dos Horários */}
@@ -554,7 +581,7 @@ export default function HorariosOnibusPage() {
 
                   {/* Painel de passos da criação de rota na base (mesmo componente BusRouteStepCard) */}
                   {/* Card de rota: inicia centralizado e desliza suavemente até a base */}
-                  {(routeStep === "origin" || routeStep === "destination" || routeStep === "calculated") && !isSearchTyping && (
+                  {(routeStep === "origin" || routeStep === "destination" || (routeStep === "calculated" && !isCurrentRouteSaved)) && !isSearchTyping && (
                     <div
                       style={{
                         transform:
@@ -594,7 +621,7 @@ export default function HorariosOnibusPage() {
                           onSelectBairro={handleSelectBairro}
                           onSelectPonto={handleSelectPonto}
                           onSearchChange={(q) => setSearchQuery(q)}
-                          onClose={() => setIsFilterOpen(false)}
+                          onClose={handleCloseFilter}
                           filterButtonRef={filterButtonRef}
                           showLinesGrid={showLinesGrid}
                           onToggleLinesGrid={handleToggleLinesGrid}
@@ -641,7 +668,7 @@ export default function HorariosOnibusPage() {
               }
               aria-label="Navegação da tela de horários"
             >
-              <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
+              <div className={`grid grid-cols-4 w-full gap-1.5 sm:gap-2 ${isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""}`}>
                 {/* 1. Mais */}
                 <Key
                   ref={optionsButtonRef}
@@ -682,10 +709,10 @@ export default function HorariosOnibusPage() {
                 {/* 4. Voltar */}
                 <Key
                   type="button"
-                  onClick={() => router.push("/utilidades")}
+                  onClick={handleBack}
                   className="w-full px-2 text-[14px] justify-center text-center font-medium"
-                  aria-label="Voltar para a lista de utilidades"
-                  title="Voltar para a página de utilidades"
+                  aria-label={isShowingSavedRoutes ? "Voltar para horários de ônibus" : "Voltar para a lista de utilidades"}
+                  title={isShowingSavedRoutes ? "Voltar para horários de ônibus" : "Voltar para a página de utilidades"}
                 >
                   Voltar
                 </Key>
@@ -715,14 +742,19 @@ export default function HorariosOnibusPage() {
             >
               {/* Cabeçalho Fixo Desktop (Título + Card de Criação de Rota) */}
               <div className="w-full shrink-0 z-40 pb-3 flex flex-col gap-3">
-                <header className="flex flex-col gap-1 px-1 pt-1">
+                <header className="flex items-center justify-between px-1 pt-1">
                   <h1 className="text-[20px] font-bold text-ink tracking-tight">
                     Horários de Ônibus
                   </h1>
+                  {isShowingSavedRoutes && (
+                    <span className="badge-inset">
+                      Minhas Rotas
+                    </span>
+                  )}
                 </header>
 
                 {/* Step Card Fixo no Topo do Desktop durante criação de rota */}
-                {routeStep !== "none" && (
+                {routeStep !== "none" && !(routeStep === "calculated" && isCurrentRouteSaved) && (
                   <div className="w-full">
                     <BusRouteStepCard
                       routeStep={routeStep}
@@ -797,71 +829,64 @@ export default function HorariosOnibusPage() {
                   </Key>
                 </div>
 
-                {/* Linha 2: Utilidades, Modo Claro/Escuro e Informações */}
+                {/* Linha 2: Utilidades e Opções */}
                 <div
                   role="toolbar"
                   aria-label="Opções e preferências secundárias"
-                  className="grid grid-cols-3 gap-1.5 sm:gap-2 w-full h-[42px]"
+                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
                 >
                   {/* 1. Utilidades */}
                   <Key
                     type="button"
-                    pressed={!isDesktopInfoOpen}
+                    pressed={!isDesktopOpcoesOpen}
                     aria-current="page"
                     onClick={() => {
-                      if (isDesktopInfoOpen) setIsDesktopInfoOpen(false);
+                      if (isDesktopOpcoesOpen) setIsDesktopOpcoesOpen(false);
                       router.push("/utilidades");
                     }}
-                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
                     title="Utilidades e horários"
                     aria-label="Utilidades"
                   >
                     Utilidades
                   </Key>
 
-                  {/* 2. Modo Claro / Escuro */}
+                  {/* 2. Opções */}
                   <Key
                     type="button"
-                    onClick={toggleTheme}
-                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title={`Alternar para ${themeLabel}`}
-                    aria-label={`Alternar para ${themeLabel}`}
+                    pressed={isDesktopOpcoesOpen}
+                    aria-expanded={isDesktopOpcoesOpen}
+                    onClick={() => setIsDesktopOpcoesOpen((prev) => !prev)}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Abrir opções, ajustes e acessibilidade"
+                    aria-label="Opções e acessibilidade"
                   >
-                    {themeLabel}
-                  </Key>
-
-                  {/* 3. Informações */}
-                  <Key
-                    type="button"
-                    pressed={isDesktopInfoOpen}
-                    aria-expanded={isDesktopInfoOpen}
-                    onClick={() => setIsDesktopInfoOpen((prev) => !prev)}
-                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title="Abrir termos e diretrizes"
-                    aria-label="Informações do site"
-                  >
-                    Informações
+                    Opções
                   </Key>
                 </div>
               </div>
 
               <div
                 className={`w-[calc(100%+64px)] -mx-8 px-8 py-5 flex-1 min-h-0 ${
-                  isDesktopInfoOpen
+                  isDesktopOpcoesOpen
                     ? "overflow-y-auto no-scrollbar overscroll-contain"
                     : "overflow-visible"
                 }`}
               >
-                {isDesktopInfoOpen ? (
+                {isDesktopOpcoesOpen ? (
                   <div
                     role="region"
-                    aria-label="Informações do portal"
-                    className="desktop-sidebar-panel w-full p-4"
+                    aria-label="Painel de opções"
+                    className="desktop-sidebar-panel w-full p-2"
                   >
-                    <InfoFeed
+                    <OpcoesFeed
                       hideNav
                       onSelectNoticias={() => router.push("/")}
                       onSelectVagas={() => router.push("/#vagas")}
+                      onSelectInfo={() => {
+                        setIsDesktopOpcoesOpen(false);
+                        router.push("/#informacoes");
+                      }}
                     />
                   </div>
                 ) : (

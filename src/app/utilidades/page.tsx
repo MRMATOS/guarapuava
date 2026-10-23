@@ -1,20 +1,18 @@
 "use client";
 
-import React, { useState, useRef, useSyncExternalStore } from "react";
+import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Dock } from "@/components/ui/Dock";
 import { Key } from "@/components/ui/Key";
 import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
-import { InfoFeed } from "@/components/InfoFeed";
-import { useTheme } from "@/context/ThemeContext";
+import { OpcoesFeed } from "@/components/opcoes/OpcoesFeed";
+import { useHandedness } from "@/context/HandednessContext";
 import { getUtilidades } from "@/lib/utilidades/list";
-
-const emptySubscribe = () => () => {};
 
 export default function UtilidadesPage() {
   const router = useRouter();
-  const { theme, toggleTheme } = useTheme();
+  const { isLeftHanded } = useHandedness();
   const utilidades = getUtilidades();
 
   // Estados Mobile
@@ -22,16 +20,7 @@ export default function UtilidadesPage() {
   const optionsButtonRef = useRef<HTMLButtonElement>(null);
 
   // Estados Desktop
-  const [isDesktopInfoOpen, setIsDesktopInfoOpen] = useState(false);
-
-  const mounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
-
-  const isDark = mounted && theme === "dark";
-  const themeLabel = isDark ? "Modo claro" : "Modo escuro";
+  const [isDesktopOpcoesOpen, setIsDesktopOpcoesOpen] = useState(false);
 
   return (
     <div className="min-h-[100dvh] bg-canvas text-ink flex justify-center">
@@ -90,7 +79,7 @@ export default function UtilidadesPage() {
             }
             aria-label="Navegação principal de utilidades"
           >
-            <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
+            <div className={`grid grid-cols-4 w-full gap-1.5 sm:gap-2 ${isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""}`}>
               <Key
                 ref={optionsButtonRef}
                 type="button"
@@ -222,50 +211,39 @@ export default function UtilidadesPage() {
                   </Key>
                 </div>
 
-                {/* Linha 2: Utilidades, Modo Claro/Escuro e Informações */}
+                {/* Linha 2: Utilidades e Opções */}
                 <div
                   role="toolbar"
                   aria-label="Opções e preferências secundárias"
-                  className="grid grid-cols-3 gap-1.5 sm:gap-2 w-full h-[42px]"
+                  className="grid grid-cols-2 gap-2 w-full h-[42px]"
                 >
                   {/* 1. Utilidades */}
                   <Key
                     type="button"
-                    pressed={!isDesktopInfoOpen}
+                    pressed={!isDesktopOpcoesOpen}
                     aria-current="page"
                     onClick={() => {
-                      if (isDesktopInfoOpen) setIsDesktopInfoOpen(false);
+                      if (isDesktopOpcoesOpen) setIsDesktopOpcoesOpen(false);
                       router.push("/utilidades");
                     }}
-                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
                     title="Utilidades e serviços"
                     aria-label="Utilidades"
                   >
                     Utilidades
                   </Key>
 
-                  {/* 2. Modo Claro / Escuro */}
+                  {/* 2. Opções */}
                   <Key
                     type="button"
-                    onClick={toggleTheme}
-                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title={`Alternar para ${themeLabel}`}
-                    aria-label={`Alternar para ${themeLabel}`}
+                    pressed={isDesktopOpcoesOpen}
+                    aria-expanded={isDesktopOpcoesOpen}
+                    onClick={() => setIsDesktopOpcoesOpen((prev) => !prev)}
+                    className="w-full px-1 text-[13px] justify-center text-center font-semibold overflow-hidden text-ellipsis whitespace-nowrap"
+                    title="Abrir opções, ajustes e acessibilidade"
+                    aria-label="Opções e acessibilidade"
                   >
-                    {themeLabel}
-                  </Key>
-
-                  {/* 3. Informações */}
-                  <Key
-                    type="button"
-                    pressed={isDesktopInfoOpen}
-                    aria-expanded={isDesktopInfoOpen}
-                    onClick={() => setIsDesktopInfoOpen((prev) => !prev)}
-                    className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                    title="Abrir termos e diretrizes"
-                    aria-label="Informações do site"
-                  >
-                    Informações
+                    Opções
                   </Key>
                 </div>
               </div>
@@ -273,21 +251,25 @@ export default function UtilidadesPage() {
               {/* Corpo Lateral */}
               <div
                 className={`w-[calc(100%+64px)] -mx-8 px-8 py-5 flex-1 min-h-0 ${
-                  isDesktopInfoOpen
+                  isDesktopOpcoesOpen
                     ? "overflow-y-auto no-scrollbar overscroll-contain"
                     : "overflow-visible"
                 }`}
               >
-                {isDesktopInfoOpen && (
+                {isDesktopOpcoesOpen && (
                   <div
                     role="region"
-                    aria-label="Informações do portal"
-                    className="desktop-sidebar-panel w-full p-4"
+                    aria-label="Painel de opções"
+                    className="desktop-sidebar-panel w-full p-2"
                   >
-                    <InfoFeed
+                    <OpcoesFeed
                       hideNav
                       onSelectNoticias={() => router.push("/")}
                       onSelectVagas={() => router.push("/#vagas")}
+                      onSelectInfo={() => {
+                        setIsDesktopOpcoesOpen(false);
+                        router.push("/#informacoes");
+                      }}
                     />
                   </div>
                 )}

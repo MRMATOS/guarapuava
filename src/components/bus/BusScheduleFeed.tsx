@@ -5,7 +5,7 @@ import { MapPin } from "lucide-react";
 import { Key } from "@/components/ui/Key";
 import type { LinhaBairro, PontoItinerario } from "@/types/bus";
 import { calculateDistanceMeters, formatDistance } from "@/lib/geo/distance";
-import { getSavedRoutes, subscribeSavedRoutes, type SavedBusRoute } from "@/lib/bus/saved-routes";
+import { getSavedRoutes, subscribeSavedRoutes, deleteSavedRoute, type SavedBusRoute } from "@/lib/bus/saved-routes";
 import { normalizeText, matchesFuzzyQuery } from "@/lib/utils/search";
 
 const emptySavedRoutes: SavedBusRoute[] = [];
@@ -174,7 +174,6 @@ export function computeRouteJourney(
   const destPontoId = destinoPonto.ponto.id;
 
   const origDistanceMeters =
-    origemPonto.distanceMeters ??
     (referenceCoords && origemPonto.ponto.latitude && origemPonto.ponto.longitude
       ? calculateDistanceMeters(
           referenceCoords.lat,
@@ -182,7 +181,7 @@ export function computeRouteJourney(
           origemPonto.ponto.latitude,
           origemPonto.ponto.longitude
         )
-      : null);
+      : origemPonto.distanceMeters ?? null);
 
   // 1. Tenta achar linha comum direta
   let matchingLinha: LinhaBairro | null = null;
@@ -786,6 +785,50 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
   }, [activeReferenceCoords, linhas, selectedBairroId, searchQuery]);
 
   // 1. VISUALIZAÇÃO DE ROTAS SALVAS ("Minhas rotas")
+  // Ordena as rotas salvas pela distância do usuário até o ponto de embarque (origem)
+  const orderedSavedRoutes = useMemo(() => {
+    if (!activeReferenceCoords) return savedRoutes;
+
+    const getOriginCoords = (saved: SavedBusRoute) => {
+      const lat = saved.origem.ponto.latitude ?? (saved.origem.ponto as unknown as { lat?: number }).lat;
+      const lon = saved.origem.ponto.longitude ?? (saved.origem.ponto as unknown as { lon?: number }).lon;
+      if (lat != null && lon != null) return { lat, lon };
+
+      for (const linha of linhas) {
+        const found = linha.pontos.find((p) => p.id === saved.origem.ponto.id);
+        if (found?.latitude != null && found?.longitude != null) {
+          return { lat: found.latitude, lon: found.longitude };
+        }
+      }
+      return null;
+    };
+
+    return [...savedRoutes].sort((a, b) => {
+      const coordsA = getOriginCoords(a);
+      const coordsB = getOriginCoords(b);
+
+      const distA = coordsA
+        ? calculateDistanceMeters(
+            activeReferenceCoords.lat,
+            activeReferenceCoords.lon,
+            coordsA.lat,
+            coordsA.lon
+          )
+        : Infinity;
+
+      const distB = coordsB
+        ? calculateDistanceMeters(
+            activeReferenceCoords.lat,
+            activeReferenceCoords.lon,
+            coordsB.lat,
+            coordsB.lon
+          )
+        : Infinity;
+
+      return distA - distB;
+    });
+  }, [savedRoutes, activeReferenceCoords, linhas]);
+
   if (isShowingSavedRoutes) {
     if (savedRoutes.length === 0) {
       return (
@@ -800,25 +843,39 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
 
     return (
       <div className="flex flex-col gap-6 w-full select-text animate-fade-in pb-12">
-        <div className="flex items-center justify-between px-1">
-          <h2 className="text-[15px] font-bold text-ink">Minhas Rotas Salvas</h2>
-          <span className="badge-inset text-[12px] font-bold px-2 py-0.5 text-ink">
-            {savedRoutes.length} {savedRoutes.length === 1 ? "rota" : "rotas"}
-          </span>
-        </div>
-
-        {savedRoutes.map((saved, idx) => {
-          const journey = computeRouteJourney(saved.origem, saved.destino, linhas);
+        {orderedSavedRoutes.map((saved, idx) => {
+          const journey = computeRouteJourney(saved.origem, saved.destino, linhas, activeReferenceCoords);
           return (
-            <div key={saved.id} className="flex flex-col gap-2">
+            <div key={saved.id} className="flex flex-col gap-3">
               <div className="flex items-center justify-between px-1 text-[12.5px] font-semibold text-ink-muted">
-                <span>Rota #{idx + 1}</span>
+                <span>Rota {idx + 1}</span>
                 <span className="truncate max-w-[240px]">
                   {saved.origem.ponto.bairro || saved.origem.linha.bairro} →{" "}
                   {saved.destino.ponto.bairro || saved.destino.linha.bairro}
                 </span>
               </div>
               {renderJourneyView(journey, false, expandedCards, toggleCardExpanded)}
+
+              {/* Botão Excluir Rota abaixo do card de desembarque */}
+              <div className="pt-0.5">
+                <Key
+                  type="button"
+                  onClick={() => deleteSavedRoute(saved.id)}
+                  className="w-full text-[13px] font-semibold justify-center text-center text-coral active:scale-[0.99]"
+                  title="Excluir rota salva"
+                  aria-label={`Excluir Rota ${idx + 1}`}
+                >
+                  Excluir Rota
+                </Key>
+              </div>
+
+              {/* Linha divisória entre rotas salvas */}
+              {idx < orderedSavedRoutes.length - 1 && (
+                <div
+                  className="my-3 border-b border-dotted border-rule/90"
+                  aria-hidden="true"
+                />
+              )}
             </div>
           );
         })}

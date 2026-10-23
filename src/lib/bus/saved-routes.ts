@@ -123,3 +123,18 @@ export function isRouteSaved(origemPontoId?: string, destinoPontoId?: string): b
     (r) => r.origem.ponto.id === origemPontoId && r.destino.ponto.id === destinoPontoId
   );
 }
+
+export function deleteSavedRoute(routeId: string): void {
+  if (typeof window === "undefined") return;
+  const existing = getSavedRoutes();
+  const updated = existing.filter((r) => r.id !== routeId);
+  cachedRoutes = updated;
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    window.dispatchEvent(new CustomEvent("saved-bus-routes-changed"));
+    notify();
+  } catch (error) {
+    console.error("Erro ao excluir rota salva:", error);
+  }
+}
