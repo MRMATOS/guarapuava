@@ -8,6 +8,7 @@ import { DetailedFeed } from "@/components/DetailedFeed";
 import { JobsFeed, JobsDateHeader } from "@/components/JobsFeed";
 import { JobDetail } from "@/components/JobDetail";
 import { InfoFeed } from "@/components/InfoFeed";
+import { OpcoesFeed } from "@/components/opcoes/OpcoesFeed";
 import { NewsCardSkeleton } from "@/components/ui/NewsCardSkeleton";
 import { DesktopStage } from "@/components/desktop/DesktopStage";
 import { FilterPanel } from "@/components/ui/FilterPanel";
@@ -26,7 +27,7 @@ import {
   saveCachedJobs,
 } from "@/lib/utils/storage";
 
-type ActiveView = "home" | "details" | "vagas" | "vaga-detail" | "info";
+type ActiveView = "home" | "details" | "vagas" | "vaga-detail" | "info" | "opcoes";
 
 export default function Page() {
   const [view, setView] = useState<ActiveView>("home");
@@ -49,6 +50,7 @@ export default function Page() {
   const [viewedJobIds, setViewedJobIds] = useState<string[]>(getViewedJobIds);
   const [isJobFilterOpen, setIsJobFilterOpen] = useState(false);
   const [isDesktopInfoOpen, setIsDesktopInfoOpen] = useState(false);
+  const [isDesktopOpcoesOpen, setIsDesktopOpcoesOpen] = useState(false);
 
   // Rastreamento de navegação e posição de scroll para restauração precisa
   const hasNavigatedInApp = useRef(false);
@@ -171,6 +173,8 @@ export default function Page() {
       const hash = window.location.hash;
       if (hash === "#informacoes" || hash === "#info") {
         setView("info");
+      } else if (hash === "#opcoes") {
+        setView("opcoes");
       } else if (hash === "#noticias" || hash.startsWith("#noticia-")) {
         if (hash.startsWith("#noticia-")) {
           const datePart = hash.replace("#noticia-", "").replace(/-/g, "/");
@@ -217,6 +221,8 @@ export default function Page() {
       try {
         if (newView === "info") {
           window.history.pushState(null, "", "#informacoes");
+        } else if (newView === "opcoes") {
+          window.history.pushState(null, "", "#opcoes");
         } else if (newView === "details") {
           const targetDate = (digest || selectedDigest)?.date;
           if (targetDate) {
@@ -254,6 +260,10 @@ export default function Page() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        if (isDesktopOpcoesOpen) {
+          setIsDesktopOpcoesOpen(false);
+          return;
+        }
         if (isDesktopInfoOpen) {
           setIsDesktopInfoOpen(false);
           return;
@@ -286,7 +296,7 @@ export default function Page() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [view, isDesktopInfoOpen, isJobFilterOpen, isNewsFilterOpen, handleBackFromJobDetail, navigateTo]);
+  }, [view, isDesktopOpcoesOpen, isDesktopInfoOpen, isJobFilterOpen, isNewsFilterOpen, handleBackFromJobDetail, navigateTo]);
 
   const desktopActiveTab: "noticias" | "vagas" =
     view === "vagas" || view === "vaga-detail" ? "vagas" : "noticias";
@@ -297,6 +307,7 @@ export default function Page() {
   const handleDesktopSelectTab = useCallback(
     (tab: "noticias" | "vagas") => {
       setIsDesktopInfoOpen(false);
+      setIsDesktopOpcoesOpen(false);
 
       const scrollToCenterTop = (smooth = true) => {
         const centerScroller = document.getElementById("desktop-center-scroller");
@@ -307,6 +318,12 @@ export default function Page() {
       };
 
       if (tab === "vagas") {
+        if (view === "info") {
+          savedVagasScrollY.current = 0;
+          navigateTo("vagas");
+          requestAnimationFrame(() => scrollToCenterTop(true));
+          return;
+        }
         if (desktopActiveTab === "vagas") {
           if (view === "vaga-detail") {
             const centerScroller = document.getElementById("desktop-center-scroller");
@@ -327,6 +344,11 @@ export default function Page() {
           requestAnimationFrame(() => scrollToCenterTop(false));
         }
       } else {
+        if (view === "info") {
+          navigateTo("home");
+          requestAnimationFrame(() => scrollToCenterTop(true));
+          return;
+        }
         if (desktopActiveTab === "noticias") {
           if (view === "details") {
             const centerScroller = document.getElementById("desktop-center-scroller");
@@ -470,6 +492,17 @@ export default function Page() {
           />
         )}
 
+        {view === "opcoes" && (
+          <OpcoesFeed
+            onSelectNoticias={() => navigateTo("home")}
+            onSelectVagas={() => {
+              savedVagasScrollY.current = 0;
+              navigateTo("vagas");
+            }}
+            onSelectInfo={() => navigateTo("info")}
+          />
+        )}
+
         {view === "info" && (
           <InfoFeed
             onSelectNoticias={() => {
@@ -478,6 +511,13 @@ export default function Page() {
             onSelectVagas={() => {
               savedVagasScrollY.current = 0;
               navigateTo("vagas");
+            }}
+            onBack={() => {
+              if (hasNavigatedInApp.current && window.history.length > 1) {
+                window.history.back();
+              } else {
+                navigateTo("opcoes");
+              }
             }}
             onSelectInfo={() => {
               window.scrollTo({ top: 0, behavior: "smooth" });
@@ -526,6 +566,9 @@ export default function Page() {
           onSelectTab={handleDesktopSelectTab}
           isDetailOpen={isDesktopDetailOpen}
           onCloseDetail={handleDesktopCloseDetail}
+          isOpcoesOpen={isDesktopOpcoesOpen}
+          onToggleOpcoes={() => setIsDesktopOpcoesOpen((prev) => !prev)}
+          onCloseOpcoes={() => setIsDesktopOpcoesOpen(false)}
           isInfoOpen={isDesktopInfoActive}
           onToggleInfo={handleToggleDesktopInfo}
           onCloseInfo={handleCloseDesktopInfo}
@@ -590,7 +633,16 @@ export default function Page() {
             ) : null
           }
           slotCenter={
-            view === "details" ? (
+            view === "info" ? (
+              <InfoFeed
+                hideNav
+                onSelectNoticias={() => navigateTo("home")}
+                onSelectVagas={() => {
+                  savedVagasScrollY.current = 0;
+                  navigateTo("vagas");
+                }}
+              />
+            ) : view === "details" ? (
               selectedDigest ? (
                 <DetailedFeed
                   key={selectedDigest.date}
@@ -720,6 +772,24 @@ export default function Page() {
                 onClose={() => {}}
               />
             )
+          }
+          slotRightOpcoes={
+            <OpcoesFeed
+              hideNav
+              onSelectNoticias={() => {
+                setIsDesktopOpcoesOpen(false);
+                navigateTo("home");
+              }}
+              onSelectVagas={() => {
+                setIsDesktopOpcoesOpen(false);
+                savedVagasScrollY.current = 0;
+                navigateTo("vagas");
+              }}
+              onSelectInfo={() => {
+                setIsDesktopOpcoesOpen(false);
+                navigateTo("info");
+              }}
+            />
           }
           slotRightInfo={
             <InfoFeed
