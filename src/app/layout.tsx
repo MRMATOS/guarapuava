@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { HandednessProvider } from "@/context/HandednessContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -78,12 +79,14 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem("guarapuava-theme");var p=window.matchMedia("(prefers-color-scheme: dark)").matches;if(s==="dark"||(!s&&p)){document.documentElement.classList.add("dark");document.documentElement.setAttribute("data-theme","dark");}else{document.documentElement.classList.remove("dark");document.documentElement.setAttribute("data-theme","light");}}catch(e){}})();`,
+            __html: `(function(){try{var s=localStorage.getItem("guarapuava-theme");var p=window.matchMedia("(prefers-color-scheme: dark)").matches;if(s==="dark"||(!s&&p)){document.documentElement.classList.add("dark");document.documentElement.setAttribute("data-theme","dark");}else{document.documentElement.classList.remove("dark");document.documentElement.setAttribute("data-theme","light");}var h=localStorage.getItem("guarapuava:handedness");if(h==="left"){document.documentElement.setAttribute("data-handedness","left");}}catch(e){}})();`,
           }}
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <HandednessProvider>{children}</HandednessProvider>
+        </ThemeProvider>
       </body>
       {gaId && <GoogleAnalytics gaId={gaId} />}
     </html>
