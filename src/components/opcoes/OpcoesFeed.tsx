@@ -66,20 +66,19 @@ export const OpcoesFeed: React.FC<OpcoesFeedProps> = ({
   };
 
   return (
-    <div className="w-full flex flex-col min-h-[100dvh] pb-32 sm:pb-36">
-      <div className="w-full max-w-[430px] mx-auto px-4 pt-4 sm:pt-6 flex-1 flex flex-col">
-        {/* Cabeçalho da Central de Opções (Padrão canônico de Utilidades e InfoFeed) */}
-        <header className="flex items-baseline justify-between mb-6 pb-2 border-b border-rule">
-          <h1 className="text-[17px] font-bold text-ink tracking-tight">
-            Opções
-          </h1>
-          <span className="text-[13px] text-ink-muted">
-            Ajustes e acessibilidade
-          </span>
-        </header>
+    <div className="page-shell">
+      {/* Cabeçalho da Central de Opções (idêntico ao InfoFeed) */}
+      <div className="flex items-center justify-between mb-4 px-1">
+        <h1 className="font-semibold text-ink text-[15px] tracking-tight">
+          Opções
+        </h1>
+        <span className="badge-inset">
+          Ajustes e acessibilidade
+        </span>
+      </div>
 
-        {/* Lista de 3 Cards Clicáveis (Padrão 100% tátil, sem botões internos) */}
-        <div className="flex flex-col gap-3.5">
+      {/* Lista de 3 Cards Clicáveis (Padrão 100% tátil, sem botões internos) */}
+      <div className="flex flex-col gap-4">
           {/* Card 1: Alternador Destro / Canhoto */}
           <button
             type="button"
@@ -125,7 +124,6 @@ export const OpcoesFeed: React.FC<OpcoesFeedProps> = ({
             </p>
           </button>
         </div>
-      </div>
 
       {/* Dock Inferior Mobile (Mais - Filtrar - Notícias - Vagas) */}
       {!hideNav && (
