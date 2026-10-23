@@ -1,13 +1,18 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Key } from "@/components/ui/Key";
-import { MainNav } from "@/components/ui/MainNav";
+import { Dock } from "@/components/ui/Dock";
+import { OptionsPanel } from "@/components/ui/OptionsPanel";
+import { Presence } from "@/components/ui/Presence";
+import { useHandedness } from "@/context/HandednessContext";
 
-interface InfoFeedProps {
-  onSelectNoticias: () => void;
-  onSelectVagas: () => void;
+export interface InfoFeedProps {
+  onSelectNoticias?: () => void;
+  onSelectVagas?: () => void;
   onSelectInfo?: () => void;
+  onBack?: () => void;
   hideNav?: boolean;
 }
 
@@ -15,10 +20,40 @@ export const InfoFeed: React.FC<InfoFeedProps> = ({
   onSelectNoticias,
   onSelectVagas,
   onSelectInfo,
+  onBack,
   hideNav = false,
 }) => {
+  const router = useRouter();
+  const { isLeftHanded } = useHandedness();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const card2Ref = useRef<HTMLElement>(null);
+  const optionsButtonRef = useRef<HTMLButtonElement>(null);
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      router.push("/opcoes");
+    }
+  };
+
+  const handleGoNoticias = () => {
+    if (onSelectNoticias) {
+      onSelectNoticias();
+    } else {
+      router.push("/#noticias");
+    }
+  };
+
+  const handleGoVagas = () => {
+    if (onSelectVagas) {
+      onSelectVagas();
+    } else {
+      router.push("/#vagas");
+    }
+  };
+
   return (
     <div className="page-shell">
       {/* Cabeçalho do Feed de Informações */}
@@ -481,17 +516,75 @@ export const InfoFeed: React.FC<InfoFeedProps> = ({
         </article>
       </div>
 
-      {/* Rodapé padrão com os 4 botões para retorno imediato a Notícias ou Vagas */}
+      {/* Rodapé com 4 botões: Mais - Notícias - Vagas - Voltar (inverte no canhoto) */}
       {!hideNav && (
-        <MainNav
-          active="info"
-          onNoticias={onSelectNoticias}
-          onVagas={onSelectVagas}
-          onSelectInfo={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            onSelectInfo?.();
-          }}
-        />
+        <Dock
+          align="between"
+          above={
+            <div className="w-full">
+              <Presence isVisible={isOptionsOpen} duration={180}>
+                <OptionsPanel
+                  onClose={() => setIsOptionsOpen(false)}
+                  onSelectOpcoes={() => {
+                    setIsOptionsOpen(false);
+                    handleBack();
+                  }}
+                  optionsButtonRef={optionsButtonRef}
+                />
+              </Presence>
+            </div>
+          }
+          aria-label="Navegação da página de informações"
+        >
+          <div
+            className={`grid grid-cols-4 w-full gap-1.5 sm:gap-2 ${
+              isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""
+            }`}
+          >
+            {/* 1. Botão Mais */}
+            <Key
+              ref={optionsButtonRef}
+              type="button"
+              pressed={isOptionsOpen}
+              onClick={() => setIsOptionsOpen((prev) => !prev)}
+              aria-expanded={isOptionsOpen}
+              className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+              aria-label={isOptionsOpen ? "Fechar menu mais" : "Abrir menu mais"}
+            >
+              Mais
+            </Key>
+
+            {/* 2. Botão Notícias */}
+            <Key
+              type="button"
+              onClick={handleGoNoticias}
+              className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+              aria-label="Ir para Notícias"
+            >
+              Notícias
+            </Key>
+
+            {/* 3. Botão Vagas */}
+            <Key
+              type="button"
+              onClick={handleGoVagas}
+              className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+              aria-label="Ir para Vagas"
+            >
+              Vagas
+            </Key>
+
+            {/* 4. Botão Voltar (Retorna para /opcoes) */}
+            <Key
+              type="button"
+              onClick={handleBack}
+              className="w-full px-1 sm:px-2 text-[13px] sm:text-[14px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
+              aria-label="Voltar para a página de opções"
+            >
+              Voltar
+            </Key>
+          </div>
+        </Dock>
       )}
     </div>
   );
