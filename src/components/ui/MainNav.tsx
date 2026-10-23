@@ -5,6 +5,7 @@ import { Dock } from "./Dock";
 import { Key } from "./Key";
 import { OptionsPanel } from "./OptionsPanel";
 import { Presence } from "./Presence";
+import { useHandedness } from "@/context/HandednessContext";
 
 export type Section = "noticias" | "vagas" | "info";
 
@@ -49,6 +50,7 @@ export const MainNav: React.FC<MainNavProps> = ({
   above,
   filterPanel,
 }) => {
+  const { isLeftHanded } = useHandedness();
   // Estado local para Opções caso não seja controlado externamente
   const [internalOptionsOpen, setInternalOptionsOpen] = useState(false);
   const [pendingTarget, setPendingTarget] = useState<"filter" | "options" | null>(null);
@@ -183,7 +185,11 @@ export const MainNav: React.FC<MainNavProps> = ({
       }
       aria-label="Navegação principal"
     >
-      <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
+      <div
+        className={`grid grid-cols-4 w-full gap-1.5 sm:gap-2 ${
+          isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""
+        }`}
+      >
         {/* 1. Botão Mais */}
         <Key
           ref={actualOptionsButtonRef}

@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { X, Search } from "lucide-react";
 import { Key } from "./Key";
 import { normalizeText, FIXED_NEWS_CATEGORIES } from "@/lib/utils/search";
+import { useHandedness } from "@/context/HandednessContext";
 
 export interface FilterPanelProps {
   mode: "vagas" | "noticias";
@@ -50,6 +51,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   selectedCategory = null,
   onSelectCategory,
 }) => {
+  const { isLeftHanded } = useHandedness();
   const panelRef = useRef<HTMLDivElement>(null);
 
   // Fecha o bloco se clicar fora (exceto se for no botão Filtrar do rodapé ou modo persistente)
@@ -107,7 +109,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     >
       {/* Linha 1: 3 Botões Dinâmicos */}
       {mode === "vagas" ? (
-        <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+        <div
+          className={`grid grid-cols-3 gap-1.5 sm:gap-2 ${
+            isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""
+          }`}
+        >
           {/* 1. Botão Contrato (Contrato -> CLT -> PJ -> Contrato) */}
           <div className="w-full animate-stagger-item" style={{ animationDelay: "25ms" }}>
             <Key
@@ -187,7 +193,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {/* Linha 2: Barra de Pesquisa e Botão Favoritas (em vagas) */}
       {mode === "vagas" ? (
-        <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+        <div
+          className={`grid grid-cols-3 gap-1.5 sm:gap-2 ${
+            isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""
+          }`}
+        >
           {/* Input de busca ocupando as 2 primeiras colunas (até o fim do botão PCD) */}
           <div
             className="col-span-2 relative w-full animate-stagger-item"

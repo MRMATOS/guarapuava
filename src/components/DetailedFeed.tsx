@@ -10,6 +10,7 @@ import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
 import { formatRelativeUpdateText } from "@/lib/utils/date";
 import { normalizeText, normalizeCategory, matchesQuery } from "@/lib/utils/search";
+import { useHandedness } from "@/context/HandednessContext";
 
 interface DetailedFeedProps {
   digest: DailyDigest;
@@ -36,6 +37,7 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
   onSelectCategory,
   onResetFilters,
 }) => {
+  const { isLeftHanded } = useHandedness();
   const [internalTag, setInternalTag] = useState<string | null>(null);
   const [internalSearchQuery, setInternalSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -412,7 +414,11 @@ export const DetailedFeed: React.FC<DetailedFeedProps> = ({
         }
         aria-label="Navegação e filtros da notícia"
       >
-        <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
+        <div
+          className={`grid grid-cols-4 w-full gap-1.5 sm:gap-2 ${
+            isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""
+          }`}
+        >
           {/* 1. Botão Mais */}
           <Key
             ref={optionsButtonRef}

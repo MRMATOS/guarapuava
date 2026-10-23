@@ -9,6 +9,7 @@ import { FilterIndicator } from "@/components/ui/FilterIndicator";
 import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
 import { useIncrementalList } from "@/hooks/useIncrementalList";
+import { useHandedness } from "@/context/HandednessContext";
 
 interface JobDetailProps {
   jobs: JobOpening[];
@@ -67,6 +68,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const optionsButtonRef = useRef<HTMLButtonElement>(null);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const { isLeftHanded } = useHandedness();
   const hasInitialScrolled = useRef(false);
   const lastScrolledJobId = useRef<string | null>(null);
 
@@ -586,7 +588,11 @@ export const JobDetail: React.FC<JobDetailProps> = ({
         }
         aria-label="Ações e filtros da vaga"
       >
-        <div className="grid grid-cols-4 w-full gap-1.5 sm:gap-2">
+        <div
+          className={`grid grid-cols-4 w-full gap-1.5 sm:gap-2 ${
+            isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""
+          }`}
+        >
           {/* 1. Botão Mais */}
           <Key
             ref={optionsButtonRef}
