@@ -25,13 +25,13 @@ async function run() {
   console.log("--- Testando persistência de rotas salvas de ônibus ---");
 
   const mockOrigem = {
-    linha: { id: "l1", codigo: "01", nomeExibicao: "Linha 01", bairro: "Centro", pontos: [] },
-    ponto: { id: "p1", nome: "Ponto Praça Central", rua: "Rua XV", bairro: "Centro" },
+    linha: { id: "l1", codigo: "01", nomeExibicao: "Linha 01", bairro: "Centro", tipo: "regular" as const, pontos: [] },
+    ponto: { id: "p1", nome: "Ponto Praça Central", rua: "Rua XV", bairro: "Centro", ordem: 1, horariosUteis: [], horariosSabado: [], horariosDomingo: [] },
   };
 
   const mockDestino = {
-    linha: { id: "l1", codigo: "01", nomeExibicao: "Linha 01", bairro: "Centro", pontos: [] },
-    ponto: { id: "p2", nome: "Ponto Unicentro", rua: "Rua Simeão", bairro: "Santa Cruz" },
+    linha: { id: "l1", codigo: "01", nomeExibicao: "Linha 01", bairro: "Centro", tipo: "regular" as const, pontos: [] },
+    ponto: { id: "p2", nome: "Ponto Unicentro", rua: "Rua Simeão", bairro: "Santa Cruz", ordem: 2, horariosUteis: [], horariosSabado: [], horariosDomingo: [] },
   };
 
   // 1. Inicialmente não deve haver rotas salvas
@@ -54,8 +54,8 @@ async function run() {
 
   // 4. Salva uma segunda rota diferente
   const mockDestino2 = {
-    linha: { id: "l2", codigo: "02", nomeExibicao: "Linha 02", bairro: "Bonsucesso", pontos: [] },
-    ponto: { id: "p3", nome: "Ponto Parque do Lago", rua: "Rua Padre Chagas", bairro: "Bonsucesso" },
+    linha: { id: "l2", codigo: "02", nomeExibicao: "Linha 02", bairro: "Bonsucesso", tipo: "regular" as const, pontos: [] },
+    ponto: { id: "p3", nome: "Ponto Parque do Lago", rua: "Rua Padre Chagas", bairro: "Bonsucesso", ordem: 3, horariosUteis: [], horariosSabado: [], horariosDomingo: [] },
   };
   const saved2 = saveRoute(mockOrigem, mockDestino2);
   assert.equal(getSavedRoutes().length, 2);
