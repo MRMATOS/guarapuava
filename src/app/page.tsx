@@ -14,7 +14,13 @@ import { DesktopStage } from "@/components/desktop/DesktopStage";
 import { FilterPanel } from "@/components/ui/FilterPanel";
 import { listActiveJobs } from "@/lib/supabase/jobs";
 import { listActiveNewsDigests } from "@/lib/supabase/news";
-import { filterJobs, normalizeCategory, FIXED_NEWS_CATEGORIES } from "@/lib/utils/search";
+import {
+  filterJobs,
+  normalizeCategory,
+  FIXED_NEWS_CATEGORIES,
+  JobContractFilter,
+  NEXT_JOB_CONTRACT_FILTER,
+} from "@/lib/utils/search";
 import { sortJobsByPublishedDate } from "@/lib/utils/date";
 import {
   getViewedJobIds,
@@ -42,7 +48,7 @@ export default function Page() {
 
   // Estados dos filtros de Vagas (persistem na navegação)
   const [jobSearchQuery, setJobSearchQuery] = useState("");
-  const [contractState, setContractState] = useState(0); // 0 = Contrato, 1 = CLT, 2 = PJ
+  const [contractState, setContractState] = useState<JobContractFilter>("todos");
   const [pcdState, setPcdState] = useState(0); // 0 = PCD, 1 = Somente PCD, 2 = Aceita PCD
   const [experienceState, setExperienceState] = useState(0); // 0 = Experiência, 1 = Com experiência, 2 = Sem experiência
   const [favoritesOnly, setFavoritesOnly] = useState(false);
@@ -70,12 +76,13 @@ export default function Page() {
     setFavoritesOnly((prev) => !prev);
   };
 
-  const handleCycleContract = () => setContractState((prev) => (prev + 1) % 3);
+  const handleCycleContract = () =>
+    setContractState((prev) => NEXT_JOB_CONTRACT_FILTER[prev]);
   const handleCyclePcd = () => setPcdState((prev) => (prev + 1) % 3);
   const handleCycleExperience = () => setExperienceState((prev) => (prev + 1) % 3);
   const handleResetJobFilters = () => {
     setJobSearchQuery("");
-    setContractState(0);
+    setContractState("todos");
     setPcdState(0);
     setExperienceState(0);
     setFavoritesOnly(false);

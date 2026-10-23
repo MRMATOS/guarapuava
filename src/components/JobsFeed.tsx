@@ -13,7 +13,7 @@ import {
   getLatestJobUpdateDate,
   formatRelativeUpdateText,
 } from "@/lib/utils/date";
-import { filterJobs } from "@/lib/utils/search";
+import { filterJobs, JobContractFilter } from "@/lib/utils/search";
 import { JobCardSkeleton } from "@/components/ui/JobCardSkeleton";
 import { useIncrementalList } from "@/hooks/useIncrementalList";
 
@@ -29,7 +29,7 @@ interface JobsFeedProps {
   // Estados e manipuladores dos filtros
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  contractState: number;
+  contractState: JobContractFilter;
   onCycleContract: () => void;
   pcdState: number;
   onCyclePcd: () => void;
@@ -123,7 +123,7 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
 
   const hasActiveFilters =
     Boolean(searchQuery.trim()) ||
-    contractState !== 0 ||
+    contractState !== "todos" ||
     pcdState !== 0 ||
     experienceState !== 0 ||
     Boolean(favoritesOnly);

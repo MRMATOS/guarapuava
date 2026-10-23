@@ -3,7 +3,12 @@
 import React, { useEffect, useRef } from "react";
 import { X, Search } from "lucide-react";
 import { Key } from "./Key";
-import { normalizeText, FIXED_NEWS_CATEGORIES } from "@/lib/utils/search";
+import {
+  normalizeText,
+  FIXED_NEWS_CATEGORIES,
+  JobContractFilter,
+  JOB_CONTRACT_FILTER_LABELS,
+} from "@/lib/utils/search";
 import { useHandedness } from "@/context/HandednessContext";
 
 export interface FilterPanelProps {
@@ -13,7 +18,7 @@ export interface FilterPanelProps {
   persistent?: boolean;
 
   // Vagas filter states
-  contractState?: number; // 0: Contrato, 1: CLT, 2: PJ
+  contractState?: JobContractFilter;
   onCycleContract?: () => void;
   pcdState?: number; // 0: PCD, 1: Somente PCD, 2: Aceita PCD
   onCyclePcd?: () => void;
@@ -37,7 +42,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onClose,
   filterButtonRef,
   persistent = false,
-  contractState = 0,
+  contractState = "todos",
   onCycleContract,
   pcdState = 0,
   onCyclePcd,
@@ -87,8 +92,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   }, [onClose, filterButtonRef, persistent]);
 
   // Labels dinâmicos para os botões de Vagas
-  const contractLabel =
-    contractState === 1 ? "CLT" : contractState === 2 ? "PJ" : "Contrato";
+  const contractLabel = JOB_CONTRACT_FILTER_LABELS[contractState] || "Contrato";
 
   const pcdLabel =
     pcdState === 1 ? "Somente PCD" : pcdState === 2 ? "Aceita PCD" : "PCD";
@@ -114,10 +118,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             isLeftHanded ? "[direction:rtl] [&>*]:[direction:ltr]" : ""
           }`}
         >
-          {/* 1. Botão Contrato (Contrato -> CLT -> PJ -> Contrato) */}
+          {/* 1. Botão Contrato (todos -> clt -> pj -> estagio -> todos) */}
           <div className="w-full animate-stagger-item" style={{ animationDelay: "25ms" }}>
             <Key
-              pressed={contractState !== 0}
+              pressed={contractState !== "todos"}
               onClick={onCycleContract}
               className="w-full px-1 text-[12.5px] justify-center text-center overflow-hidden text-ellipsis whitespace-nowrap"
               title={`Filtro de Contrato: ${contractLabel} (clique para alternar)`}

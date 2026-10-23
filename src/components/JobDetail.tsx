@@ -10,6 +10,7 @@ import { OptionsPanel } from "@/components/ui/OptionsPanel";
 import { Presence } from "@/components/ui/Presence";
 import { useIncrementalList } from "@/hooks/useIncrementalList";
 import { useHandedness } from "@/context/HandednessContext";
+import { JobContractFilter } from "@/lib/utils/search";
 
 interface JobDetailProps {
   jobs: JobOpening[];
@@ -21,7 +22,7 @@ interface JobDetailProps {
   // Estados e manipuladores dos filtros
   searchQuery?: string;
   onSearchChange?: (query: string) => void;
-  contractState?: number;
+  contractState?: JobContractFilter;
   onCycleContract?: () => void;
   pcdState?: number;
   onCyclePcd?: () => void;
@@ -48,7 +49,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
   onSelectInfo,
   searchQuery = "",
   onSearchChange,
-  contractState = 0,
+  contractState = "todos",
   onCycleContract,
   pcdState = 0,
   onCyclePcd,
@@ -128,7 +129,7 @@ export const JobDetail: React.FC<JobDetailProps> = ({
 
   const hasActiveFilters = Boolean(
     searchQuery.trim() ||
-      contractState !== 0 ||
+      contractState !== "todos" ||
       pcdState !== 0 ||
       experienceState !== 0 ||
       favoritesOnly

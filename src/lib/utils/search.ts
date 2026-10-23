@@ -319,13 +319,52 @@ export function matchesFuzzyQuery(targetText: string, query: string): boolean {
   return fuzzyTokens.every((token) => fuzzyTarget.includes(token));
 }
 
+export type JobContractFilter = "todos" | "clt" | "pj" | "estagio";
+
+export const JOB_CONTRACT_FILTERS: readonly JobContractFilter[] = [
+  "todos",
+  "clt",
+  "pj",
+  "estagio",
+] as const;
+
+export const NEXT_JOB_CONTRACT_FILTER: Record<JobContractFilter, JobContractFilter> = {
+  todos: "clt",
+  clt: "pj",
+  pj: "estagio",
+  estagio: "todos",
+};
+
+export const JOB_CONTRACT_FILTER_LABELS: Record<JobContractFilter, string> = {
+  todos: "Contrato",
+  clt: "CLT",
+  pj: "PJ",
+  estagio: "Estágio",
+};
+
 export interface JobFilterOptions {
   query: string;
-  contractState: number; // 0 = Contrato (todas), 1 = CLT, 2 = PJ
+  contractState: JobContractFilter;
   pcdState: number; // 0 = PCD (todas), 1 = Somente PCD, 2 = Aceita PCD
   experienceState: number; // 0 = Experiência (todas), 1 = Com experiência, 2 = Sem experiência
   favoritesOnly?: boolean;
   favoriteJobIds?: string[];
+}
+
+/**
+ * Identifica se a vaga é de estágio, priorizando a análise do título
+ * (ex.: "estágio", "estagiário"), já que vagas de estágio frequentemente
+ * vêm registradas com modelo de contrato genérico ou como CLT nos agregadores.
+ */
+export function isEstagioJob(job: Partial<JobOpening>): boolean {
+  const titleNorm = normalizeText(job.title || "");
+  if (titleNorm.includes("estag")) return true;
+
+  if (job.contractType && normalizeText(job.contractType).includes("estag")) {
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -375,10 +414,14 @@ export function filterJobs(
     }
 
     // 2. Filtro de Contrato
-    // Estado 0: Contrato (mostra tudo)
-    // Estado 1: CLT
-    // Estado 2: PJ
-    if (contractState === 1) {
+    // "todos": mostra tudo
+    // "clt": CLT (excluindo estágios)
+    // "pj": PJ (excluindo estágios)
+    // "estagio": Estágio exclusivo
+    const isEstagio = isEstagioJob(job);
+
+    if (contractState === "clt") {
+      if (isEstagio) return false;
       const isClt =
         Boolean(job.contractType?.toUpperCase().includes("CLT")) ||
         matchesQuery(
@@ -386,7 +429,8 @@ export function filterJobs(
           "CLT"
         );
       if (!isClt) return false;
-    } else if (contractState === 2) {
+    } else if (contractState === "pj") {
+      if (isEstagio) return false;
       const isPj =
         Boolean(job.contractType?.toUpperCase().includes("PJ")) ||
         Boolean(job.contractType?.toUpperCase().includes("MEI")) ||
@@ -399,6 +443,8 @@ export function filterJobs(
           "MEI"
         );
       if (!isPj) return false;
+    } else if (contractState === "estagio") {
+      if (!isEstagio) return false;
     }
 
     // 3. Filtro de PCD
