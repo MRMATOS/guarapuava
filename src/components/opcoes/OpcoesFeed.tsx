@@ -77,28 +77,45 @@ export const OpcoesFeed: React.FC<OpcoesFeedProps> = ({
         </span>
       </div>
 
-      {/* Lista de 3 Cards Clicáveis (Padrão 100% tátil, sem botões internos) */}
-      <div className="flex flex-col gap-4">
-          {/* Card 1: Alternador Destro / Canhoto */}
+        {/* Lista de 3 Cards Clicáveis (Padrão 100% tátil, sem botões internos) */}
+        <div className="flex flex-col gap-4">
+          {/* Card 1: Alternador Destro / Canhoto (Desativado no desktop, posicionado ao final com aviso 'Somente mobile') */}
           <button
             type="button"
-            onClick={toggleHandedness}
-            className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
-            aria-label={`Alternar para ${handednessCardTitle}`}
+            onClick={() => {
+              if (hideNav || (typeof window !== "undefined" && window.innerWidth >= 1024)) return;
+              toggleHandedness();
+            }}
+            disabled={hideNav}
+            className={`surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 ${
+              hideNav
+                ? "order-3 cursor-not-allowed opacity-60 pointer-events-none"
+                : "order-1 lg:order-3 cursor-pointer active:scale-[0.99] hover:brightness-[1.01] lg:cursor-not-allowed lg:hover:brightness-100 lg:active:scale-100 lg:opacity-60 lg:pointer-events-none"
+            }`}
+            aria-label={`Alternar para ${handednessCardTitle} (somente mobile)`}
           >
-            <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
-              {handednessCardTitle}
-            </h2>
+            <div className="flex items-center justify-between w-full">
+              <h2 className={`text-[17px] font-bold text-ink transition-colors tracking-tight ${
+                hideNav ? "" : "group-hover:text-coral lg:group-hover:text-ink"
+              }`}>
+                {handednessCardTitle}
+              </h2>
+              <span className={`${hideNav ? "inline-block" : "hidden lg:inline-block"} text-[11px] sm:text-[11.5px] font-medium text-ink-muted`}>
+                Somente mobile
+              </span>
+            </div>
             <p className="text-[13.5px] text-ink-body leading-relaxed">
               Alterne entre os modos destro e canhoto para que os botões fiquem ao alcance do seu conforto.
             </p>
           </button>
 
-          {/* Card 2: Alternador Modo Claro / Escuro */}
+          {/* Card 2: Alternador Modo Claro / Escuro (Primeiro card no desktop) */}
           <button
             type="button"
             onClick={toggleTheme}
-            className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
+            className={`surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01] ${
+              hideNav ? "order-1" : "order-2 lg:order-1"
+            }`}
             aria-label={`Alternar para ${themeCardTitle}`}
           >
             <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
@@ -109,11 +126,13 @@ export const OpcoesFeed: React.FC<OpcoesFeedProps> = ({
             </p>
           </button>
 
-          {/* Card 3: Informações */}
+          {/* Card 3: Informações (Segundo card no desktop) */}
           <button
             type="button"
             onClick={handleOpenInfo}
-            className="surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01]"
+            className={`surface-card w-full p-5 text-left flex flex-col gap-2.5 group transition-all duration-150 cursor-pointer active:scale-[0.99] hover:brightness-[1.01] ${
+              hideNav ? "order-2" : "order-3 lg:order-2"
+            }`}
             aria-label="Abrir página de Informações"
           >
             <h2 className="text-[17px] font-bold text-ink group-hover:text-coral transition-colors tracking-tight">
