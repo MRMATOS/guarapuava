@@ -66,9 +66,9 @@ export const OpcoesFeed: React.FC<OpcoesFeedProps> = ({
   };
 
   return (
-    <div className="page-shell">
-      {/* Cabeçalho da Central de Opções (idêntico ao InfoFeed) */}
-      <div className="flex items-center justify-between mb-4 px-1">
+    <div className={`page-shell ${hideNav ? "" : "flex flex-col"}`}>
+      {/* Cabeçalho da Central de Opções (idêntico ao InfoFeed e Utilidades) */}
+      <div className="flex items-center justify-between mb-4 px-1 shrink-0">
         <h1 className="font-semibold text-ink text-[15px] tracking-tight">
           Opções
         </h1>
@@ -77,8 +77,8 @@ export const OpcoesFeed: React.FC<OpcoesFeedProps> = ({
         </span>
       </div>
 
-        {/* Lista de 3 Cards Clicáveis (Padrão 100% tátil, sem botões internos) */}
-        <div className="flex flex-col gap-4">
+      {/* Lista de 3 Cards Clicáveis (alinhada de baixo para cima no mobile como em Utilidades) */}
+      <div className={`flex flex-col gap-3.5 sm:gap-4 ${hideNav ? "" : "flex-1 justify-end"}`}>
           {/* Card 1: Alternador Destro / Canhoto (Desativado no desktop, posicionado ao final com aviso 'Somente mobile') */}
           <button
             type="button"
