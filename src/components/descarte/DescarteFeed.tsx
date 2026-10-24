@@ -87,7 +87,16 @@ export const DescarteFeed: React.FC<DescarteFeedProps> = ({ items, onClearFilter
         return (
           <div
             key={item.id}
+            role="button"
+            tabIndex={0}
+            aria-expanded={isExpanded}
             onClick={() => setExpandedId((prev) => (prev === item.id ? null : item.id))}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setExpandedId((prev) => (prev === item.id ? null : item.id));
+              }
+            }}
             className={`surface-card w-full p-4 flex flex-col gap-3 cursor-pointer transition-all duration-200 active:scale-[0.995] ${
               isExpanded ? "border border-coral/60 shadow-raised-sm" : ""
             }${item.coletaIncerta ? " opacity-80" : ""}`}

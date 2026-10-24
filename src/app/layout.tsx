@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { HandednessProvider } from "@/context/HandednessContext";
+import { CommandPalette } from "@/components/ui/CommandPalette";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -84,8 +85,17 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:px-4 focus:py-2.5 focus:bg-coral focus:text-white focus:font-semibold focus:text-[14px] focus:rounded-xl focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/80"
+        >
+          Pular para o conteúdo principal
+        </a>
         <ThemeProvider>
-          <HandednessProvider>{children}</HandednessProvider>
+          <HandednessProvider>
+            {children}
+            <CommandPalette />
+          </HandednessProvider>
         </ThemeProvider>
       </body>
       {gaId && <GoogleAnalytics gaId={gaId} />}

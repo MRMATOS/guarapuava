@@ -62,6 +62,18 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
 
   return (
     <div className="page-shell">
+      {/* Título semântico da página para leitores de tela e árvore de acessibilidade */}
+      <h1 className="sr-only">Notícias de Guarapuava</h1>
+
+      {/* Região dinâmica de anúncio para leitores de tela ao filtrar */}
+      {hasActiveFilters && (
+        <div aria-live="polite" className="sr-only">
+          {totalFilteredCount === 1
+            ? "1 notícia encontrada com os filtros aplicados"
+            : `${totalFilteredCount} notícias encontradas com os filtros aplicados`}
+        </div>
+      )}
+
       {/* Lista de cartões diários de resumo (Scroll por dias) */}
       <div className="w-full space-y-4">
         {digests.map((digest) => {
@@ -112,7 +124,6 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
                   onOpenDetails(digest);
                 }
               }}
-              aria-label={`Abrir resumo detalhado das notícias de ${digest.date}`}
               className={`surface-card w-full pt-3.5 px-5 pb-6 sm:pt-4 sm:px-6 sm:pb-7 cursor-pointer transition-all duration-150 active:scale-[0.992] touch-manipulation select-none ${
                 isActive ? "ring-2 ring-coral/60 border-coral/50" : ""
               }`}
@@ -128,9 +139,9 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
               </div>
 
               {/* Manchete síntese do dia */}
-              <h1 className="text-[20px] font-bold leading-[1.3] text-ink tracking-[-0.02em] text-balance mb-6">
+              <h2 className="text-[20px] font-bold leading-[1.3] text-ink tracking-[-0.02em] text-balance mb-6">
                 {digest.headline}
-              </h1>
+              </h2>
 
               {/* Tópicos filtrados */}
               {displayHighlights.length > 0 && (
@@ -151,6 +162,11 @@ export const HomeFeed: React.FC<HomeFeedProps> = ({
                   ))}
                 </ul>
               )}
+
+              {/* Instrução audível para leitores de tela sem poluir visualmente */}
+              <span className="sr-only">
+                . Pressione Enter ou espaço para ler o resumo completo de {digest.date}.
+              </span>
             </article>
           );
         })}

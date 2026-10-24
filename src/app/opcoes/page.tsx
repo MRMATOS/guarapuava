@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function OpcoesPage() {
   return (
-    <main className="min-h-[100dvh] bg-canvas text-ink flex justify-center">
+    <main id="main-content" tabIndex={-1} className="min-h-[100dvh] bg-canvas text-ink flex justify-center outline-none">
       <OpcoesFeed />
     </main>
   );

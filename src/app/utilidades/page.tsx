@@ -23,7 +23,7 @@ export default function UtilidadesPage() {
   const [isDesktopOpcoesOpen, setIsDesktopOpcoesOpen] = useState(false);
 
   return (
-    <div className="min-h-[100dvh] bg-canvas text-ink flex justify-center">
+    <div id="main-content" tabIndex={-1} className="min-h-[100dvh] bg-canvas text-ink flex justify-center outline-none">
       {/* ==================================================================
           1. CASCA MOBILE (< 1024px) COM DOCK NO PADRÃO CANÔNICO
          ================================================================== */}

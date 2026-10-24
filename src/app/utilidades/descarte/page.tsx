@@ -157,7 +157,7 @@ export default function DescarteCorretoPage() {
   );
 
   return (
-    <div className="min-h-[100dvh] bg-canvas text-ink flex justify-center">
+    <div id="main-content" tabIndex={-1} className="min-h-[100dvh] bg-canvas text-ink flex justify-center outline-none">
       <div className="lg:hidden w-full flex justify-center py-6 px-4 select-text">
         <div className="w-full max-w-[430px] flex flex-col gap-4 pb-32">
           <header className="flex flex-col gap-1 px-1 pt-1">

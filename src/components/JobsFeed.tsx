@@ -141,6 +141,15 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
       {/* Título semântico para acessibilidade/SEO */}
       <h1 className="sr-only">Vagas em Guarapuava</h1>
 
+      {/* Região dinâmica de anúncio para leitores de tela ao filtrar */}
+      {hasActiveFilters && (
+        <div aria-live="polite" className="sr-only">
+          {filteredJobs.length === 1
+            ? "1 vaga encontrada com os filtros aplicados"
+            : `${filteredJobs.length} vagas encontradas com os filtros aplicados`}
+        </div>
+      )}
+
       {/* Card compacto com data de hoje e status da última atualização (ocultado quando fixo no palco desktop) */}
       {!hideHeader && (
         <JobsDateHeader
@@ -177,7 +186,6 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
                     onSelectJob(job);
                   }
                 }}
-                aria-label={`Ver detalhes da vaga: ${job.title}`}
                 className={`surface-card w-full p-5 sm:p-6 cursor-pointer transition-all duration-150 active:scale-[0.99] touch-manipulation select-none ${
                   isActive ? "ring-2 ring-coral/60 border-coral/50" : ""
                 }`}
@@ -215,6 +223,11 @@ export const JobsFeed: React.FC<JobsFeedProps> = ({
                     </span>
                   )}
                 </div>
+
+                {/* Instrução audível para leitores de tela sem poluir visualmente */}
+                <span className="sr-only">
+                  . Pressione Enter ou espaço para ver detalhes da vaga.
+                </span>
               </article>
             );
           })}

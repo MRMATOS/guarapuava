@@ -462,7 +462,8 @@ export const JobDetail: React.FC<JobDetailProps> = ({
                     rel="noopener noreferrer"
                     className="key key--coral w-full sm:w-auto inline-flex items-center justify-center px-6"
                   >
-                    Abrir site da vaga
+                    <span>Abrir site da vaga</span>
+                    <span className="sr-only"> (abre em nova aba)</span>
                   </a>
 
                   {onToggleFavorite && (

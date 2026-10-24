@@ -245,13 +245,16 @@ export function ReportModal({
       {/* Overlay Principal */}
       <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="report-modal-title"
           className={`bg-canvas border border-rule/70 dark:border-white/10 rounded-3xl shadow-none relative w-full p-4 sm:p-6 my-auto transition-all ${
             step === 1 ? "max-w-lg md:max-w-xl" : "max-w-md"
           }`}
         >
           {/* Cabeçalho */}
           <div className="flex items-center justify-between pb-3.5 border-b border-rule/50 gap-2">
-            <h2 className="text-lg font-bold text-ink tracking-tight">
+            <h2 id="report-modal-title" className="text-lg font-bold text-ink tracking-tight">
               {step === 1 ? "Qual é o problema?" : "Foto e Detalhes"}
             </h2>
             <div className="flex items-center gap-2 shrink-0">

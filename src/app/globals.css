@@ -239,6 +239,11 @@ body {
     box-shadow: var(--shadow-raised-lg);
   }
 
+  .surface-card:focus-visible {
+    outline: 2px solid var(--color-coral);
+    outline-offset: 3px;
+  }
+
   /* Selo em baixo-relevo (horário, status) */
   .badge-inset {
     display: inline-flex;

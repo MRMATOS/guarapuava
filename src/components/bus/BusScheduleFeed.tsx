@@ -454,7 +454,16 @@ function renderJourneyView(
         const isOrigemExpanded = Boolean(expandedCards?.[origemKey]);
         return (
           <div
+            role="button"
+            tabIndex={0}
+            aria-expanded={isOrigemExpanded}
             onClick={() => toggleCardExpanded?.(origemKey)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                toggleCardExpanded?.(origemKey);
+              }
+            }}
             className="surface-card w-full p-4 flex flex-col gap-3 border border-coral/60 shadow-raised-sm cursor-pointer transition-all duration-200 active:scale-[0.995]"
           >
             {/* Linha, Distância e Mapa */}
@@ -549,7 +558,16 @@ function renderJourneyView(
         const isDestinoExpanded = Boolean(expandedCards?.[destinoKey]);
         return (
           <div
+            role="button"
+            tabIndex={0}
+            aria-expanded={isDestinoExpanded}
             onClick={() => toggleCardExpanded?.(destinoKey)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                toggleCardExpanded?.(destinoKey);
+              }
+            }}
             className="surface-card w-full p-4 flex flex-col gap-3 border border-emerald-500/60 shadow-raised-sm cursor-pointer transition-all duration-200 active:scale-[0.995]"
           >
             {/* Linha, Distância e Mapa */}
@@ -993,7 +1011,18 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                 key={`near-${linha.id}-${ponto.id}-${index}`}
                 id={`ponto-${linha.codigo}-${ponto.id}`}
                 ref={isSelectedByFilter ? selectedPontoRef : null}
+                role={isOriginDisabledInDestStep ? undefined : "button"}
+                tabIndex={isOriginDisabledInDestStep ? -1 : 0}
+                aria-expanded={isExpanded}
+                aria-disabled={isOriginDisabledInDestStep || undefined}
                 onClick={handleCardClick}
+                onKeyDown={(e) => {
+                  if (isOriginDisabledInDestStep) return;
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleCardClick();
+                  }
+                }}
                 title={
                   isOriginDisabledInDestStep
                     ? "Parada selecionada como local de embarque. Escolha outro destino."
@@ -1246,7 +1275,18 @@ export const BusScheduleFeed: React.FC<BusScheduleFeedProps> = ({
                     key={`${linha.id}-${ponto.id}-${index}`}
                     id={`ponto-${linha.codigo}-${ponto.id}`}
                     ref={isSelectedByFilter ? selectedPontoRef : null}
+                    role={isOriginDisabledInDestStep ? undefined : "button"}
+                    tabIndex={isOriginDisabledInDestStep ? -1 : 0}
+                    aria-expanded={isExpanded}
+                    aria-disabled={isOriginDisabledInDestStep || undefined}
                     onClick={handleCardClick}
+                    onKeyDown={(e) => {
+                      if (isOriginDisabledInDestStep) return;
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleCardClick();
+                      }
+                    }}
                     title={
                       isOriginDisabledInDestStep
                         ? "Parada selecionada como local de embarque. Escolha outro destino."
